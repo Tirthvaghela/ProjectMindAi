@@ -1,0 +1,529 @@
+/*
+ * "Gallery Mono" design system (see DESIGN.md) — scoped entirely under
+ * .landing-mono so it cannot bleed into the rest of the app, which keeps
+ * its own light/dark teal-branded system untouched. This is a deliberately
+ * separate, hand-authored stylesheet rather than Tailwind utilities: the
+ * token set (surface/on-surface/outline-variant/...) doesn't map cleanly
+ * onto the app's existing brand-* Tailwind scale, and duplicating DESIGN.md's
+ * exact values here keeps this page a direct, easy-to-diff translation of
+ * the reference mockup.
+ */
+
+.landing-mono {
+  /* No full-bleed breakout needed here: Layout.jsx renders an unconstrained
+     <main> (no max-w-6xl, no padding) specifically for this route, so this
+     element is already edge-to-edge without fighting a parent container. */
+
+  --surface: #131313;
+  --surface-dim: #131313;
+  --surface-bright: #393939;
+  --surface-container-lowest: #0e0e0e;
+  --surface-container-low: #1b1b1b;
+  --surface-container: #1f1f1f;
+  --surface-container-high: #2a2a2a;
+  --surface-container-highest: #353535;
+  --on-surface: #e2e2e2;
+  --on-surface-variant: #c4c7c8;
+  --outline: #8e9192;
+  --outline-variant: #444748;
+  --primary: #ffffff;
+  --on-primary: #2f3131;
+  --border-technical: #27272a;
+  --surface-glass: rgba(255, 255, 255, 0.03);
+  --background: #000000;
+  --on-background: #e2e2e2;
+
+  background: var(--background);
+  color: var(--on-background);
+  font-family: 'Geist', -apple-system, 'Segoe UI', sans-serif;
+  position: relative;
+  isolation: isolate;
+}
+
+.landing-mono ::selection {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+/* ---------- typography (DESIGN.md's exact scale) ---------- */
+.landing-mono .t-headline-xl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+.landing-mono .t-headline-lg {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.landing-mono .t-headline-md {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.landing-mono .t-body-lg {
+  font-family: 'Geist', sans-serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+.landing-mono .t-body-md {
+  font-family: 'Geist', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+.landing-mono .t-label-caps {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.landing-mono .t-label-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+@media (max-width: 767px) {
+  .landing-mono .t-headline-xl {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: normal;
+  }
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- wide layout ----------
+   Replaces the old max-w-6xl (1152px) containers, which left huge empty
+   margins on real desktop screens. 90vw with a 1560px cap reads as
+   "intentionally uses the screen" without stretching text past a
+   comfortable measure on ultra-wide monitors (columns inside still cap
+   their own width). */
+.landing-mono .container-wide {
+  width: min(90vw, 1560px);
+  margin-inline: auto;
+}
+@media (max-width: 767px) {
+  .landing-mono .container-wide {
+    width: 100%;
+    padding-inline: 20px;
+  }
+}
+
+/* ---------- flow chains / pipeline diagrams ----------
+   Shared by every "A -> B -> C" explainer in this page (ideation pipeline,
+   discovery pipeline, planning pipeline, decision pipeline) so each one
+   isn't hand-built with one-off flex markup. */
+.landing-mono .flow-chain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.landing-mono .flow-chain.vertical {
+  flex-direction: column;
+  align-items: stretch;
+}
+/* Guarantees the chain reads as one unbroken pipeline at any width — a
+   flex-wrap here would strand a trailing arrow at the end of a line with
+   nothing following it. The parent supplies overflow-x-auto so it scrolls
+   instead of wrapping if it doesn't fit. */
+.landing-mono .flow-chain.nowrap {
+  flex-wrap: nowrap;
+}
+.landing-mono .flow-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border-technical);
+  background: var(--surface-glass);
+  color: var(--on-surface-variant);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  line-height: 1.3;
+  white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s, background 0.2s, transform 0.2s;
+}
+.landing-mono .flow-step:hover {
+  border-color: var(--outline);
+  color: var(--on-surface);
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+.landing-mono .flow-step.emphasis {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.landing-mono .flow-arrow {
+  color: var(--outline);
+  font-size: 16px;
+  flex-shrink: 0;
+  transition: color 0.2s;
+}
+.landing-mono .flow-chain.vertical .flow-step {
+  white-space: normal;
+}
+/* In a vertical chain, `align-items: stretch` (above) makes the arrow span
+   the same full width as the step boxes above/below it — without this, the
+   glyph itself renders at that span's left edge instead of under the
+   center of the boxes it's supposed to visually connect. */
+.landing-mono .flow-chain.vertical .flow-arrow {
+  text-align: center;
+}
+@media (max-width: 640px) {
+  .landing-mono .flow-step {
+    white-space: normal;
+  }
+}
+
+/* Culminating node of a pipeline (e.g. the Decision Engine's final
+   "Recommendation") — visually distinct from the steps feeding into it, so
+   the result reads as an outcome rather than one more box in the chain. */
+.landing-mono .flow-callout {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--primary);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--primary);
+  border-radius: 8px;
+  padding: 14px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+/* ---------- surfaces ---------- */
+.landing-mono .glass-panel {
+  background: rgba(14, 16, 15, 0.7);
+  border: 1px solid var(--border-technical);
+  backdrop-filter: blur(12px);
+}
+
+.landing-mono .shimmer-border {
+  position: relative;
+}
+.landing-mono .shimmer-border::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.1));
+  background-size: 200% 100%;
+  z-index: -1;
+  animation: landing-shimmer 3s infinite linear;
+  border-radius: inherit;
+}
+@keyframes landing-shimmer {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.landing-mono .card-hover {
+  transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.landing-mono .card-hover:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: scale(1.02);
+}
+
+/* ---------- form + button primitives ----------
+   Reused across every page's forms (search, résumé match, team builder,
+   chat, feedback, account) so focus/hover states stay identical without
+   repeating them per-component. */
+.landing-mono .gm-input {
+  background: var(--surface-container-low);
+  border: 1px solid var(--border-technical);
+  color: var(--on-surface);
+  border-radius: 8px;
+  font-family: 'Geist', sans-serif;
+  transition: border-color 0.2s;
+}
+.landing-mono .gm-input::placeholder {
+  color: var(--outline);
+}
+.landing-mono .gm-input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+/* Account access panel (pages/Account.jsx) only — a slightly more polished
+   focus state than the bare border-color flip every other .gm-input gets,
+   scoped to .auth-panel specifically so this doesn't change focus behavior
+   on any other form (résumé match, team builder, search) in the app. */
+.landing-mono .auth-panel .gm-input:focus {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.07);
+}
+
+.landing-mono .btn-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  border-radius: 8px;
+  transition: opacity 0.2s, transform 0.15s;
+}
+.landing-mono .btn-primary:hover {
+  opacity: 0.85;
+}
+.landing-mono .btn-primary:active {
+  transform: scale(0.97);
+}
+.landing-mono .btn-primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.landing-mono .btn-secondary {
+  background: transparent;
+  color: var(--on-surface);
+  border: 1px solid var(--border-technical);
+  border-radius: 8px;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+.landing-mono .btn-secondary:hover {
+  border-color: var(--outline);
+  background: rgba(255, 255, 255, 0.04);
+}
+.landing-mono .btn-secondary:active {
+  transform: scale(0.97);
+}
+.landing-mono .btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.landing-mono input[type='file']::file-selector-button {
+  margin-right: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-technical);
+  border-radius: 8px;
+  background: var(--surface-container-high);
+  color: var(--on-surface);
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.landing-mono input[type='file']::file-selector-button:hover {
+  border-color: var(--outline);
+}
+
+.landing-mono .gm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--border-technical);
+  color: var(--on-surface-variant);
+  border-radius: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+/* Dashboard.jsx's chat composer — same glow-on-focus technique as the
+   landing hero's input (.hero-input-shell), scoped separately since this
+   one wraps a full form (label + textarea + toolbar), not just an input. */
+.landing-mono .composer-shell {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.landing-mono .composer-shell:has(textarea:focus) {
+  border-color: var(--outline-variant);
+  box-shadow: 0 0 0 1px var(--outline-variant), 0 0 24px rgba(255, 255, 255, 0.06);
+}
+
+/* Extremely low-opacity corner labels + nodes behind the empty dashboard
+   state (see Dashboard.jsx's EmptyStateBackdrop) — decorative texture only,
+   matching the landing page's technical aesthetic without competing with
+   the actual quick-start content in front of it. */
+.landing-mono .backdrop-label {
+  position: absolute;
+  color: var(--outline);
+  opacity: 0.3;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.landing-mono .backdrop-node {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--outline);
+  opacity: 0.38;
+  pointer-events: none;
+}
+
+/* AppSidebar's active nav item — a left accent bar instead of a color
+   change, so "current page" stays legible within the existing monochrome
+   dark/gray palette rather than introducing a new highlight color. */
+.landing-mono .nav-item-active {
+  position: relative;
+}
+.landing-mono .nav-item-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: var(--primary);
+  border-radius: 0 2px 2px 0;
+}
+
+/* Used by Dashboard.jsx's app-shell background — a faint technical grid plus
+   a slow light sweep, both purely decorative and cheap (no canvas/WebGL). */
+.landing-mono .grid-bg {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.landing-mono .scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.02), transparent);
+  animation: landing-scan 8s linear infinite;
+  pointer-events: none;
+  z-index: 50;
+}
+@keyframes landing-scan {
+  0% {
+    transform: translateY(-100px);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .landing-mono .scanline {
+    display: none;
+  }
+}
+
+/* Landing/account navbar (BareTopBar) — starts flush with the black page,
+   picks up a blurred, slightly-lifted surface once the page scrolls under
+   it so it reads as "floating chrome" rather than a static banner.
+   `position: sticky` is repeated here (not just Tailwind's `.sticky`
+   utility) because this element also carries the `.landing-mono` class,
+   whose own `position: relative` (see top of this file) otherwise wins:
+   Tailwind v4 emits utilities inside a CSS cascade layer, and per the
+   Cascade Layers spec, any unlayered rule — this whole hand-authored
+   stylesheet — beats a layered one regardless of selector specificity or
+   source order. The two-class selector below out-specifies `.landing-mono`
+   alone within this same unlayered stylesheet, so it wins the tie instead. */
+.landing-mono header.site-header {
+  position: sticky;
+  top: 0;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.25s ease, border-color 0.25s ease, backdrop-filter 0.25s ease;
+}
+.landing-mono header.site-header.scrolled {
+  background: rgba(19, 19, 19, 0.78);
+  border-bottom-color: var(--border-technical);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Hero input — a faint glow on focus so the primary action reads as "live"
+   without relying purely on the shimmer border. */
+.landing-mono .hero-input-shell:has(input:focus) {
+  box-shadow: 0 0 0 1px var(--primary), 0 0 24px rgba(255, 255, 255, 0.12);
+}
+
+/* Small always-visible eyebrow marking which capability group a card
+   belongs to — lets an 11-card grid read as related clusters instead of
+   one flat undifferentiated list. */
+.landing-mono .cap-group {
+  color: var(--outline);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Compact credibility checklist rows next to the trust-metrics band. */
+.landing-mono .trust-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--on-surface-variant);
+  font-family: 'Geist', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.landing-mono .trust-check .material-symbols-outlined {
+  color: var(--primary);
+  font-size: 16px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* Staggered scroll-reveal, driven by an IntersectionObserver toggling
+   .visible (see LandingHero.jsx) rather than scroll-linked JS animation. */
+.landing-mono .stagger-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.landing-mono .stagger-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.landing-mono ::-webkit-scrollbar {
+  width: 8px;
+}
+.landing-mono ::-webkit-scrollbar-track {
+  background: #000000;
+}
+.landing-mono ::-webkit-scrollbar-thumb {
+  background: var(--border-technical);
+}
+.landing-mono ::-webkit-scrollbar-thumb:hover {
+  background: var(--outline-variant);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-mono .stagger-item {
+    transition: opacity 0.2s linear;
+    transform: none;
+  }
+  .landing-mono .shimmer-border::before {
+    animation: none;
+  }
+}

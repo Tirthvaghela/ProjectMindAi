@@ -1,0 +1,40 @@
+# ProjectMind AI — backend dependencies
+#
+# NOTE: install PyTorch FIRST from the CPU index, otherwise pip pulls the
+# CUDA build (~2.5 GB) which this project never uses:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements.txt
+
+# --- Web layer ---
+flask~=3.1
+flask-cors~=5.0
+python-dotenv~=1.0
+
+# --- Database ---
+pymongo~=4.10
+
+# --- Semantic search (dense retrieval) ---
+sentence-transformers~=3.3
+
+# --- Keyword search (sparse retrieval, hybrid half) ---
+rank-bm25~=0.2
+
+# --- Classical NLP: tokenise / stopwords / lemmatise ---
+#     Used for the BM25 path and explainability, NOT for the embedding path.
+nltk~=3.9
+spacy~=3.8
+
+# --- Numerics / metrics ---
+numpy~=2.2
+scikit-learn~=1.6
+
+# --- AI assistant (optional — chat, gated on GROQ_API_KEY) ---
+groq~=0.13
+flask-limiter~=3.8
+
+# --- Resume text extraction (résumé-based project suggestions) ---
+pypdf~=5.1
+python-docx~=1.1
+
+# --- Testing ---
+pytest~=8.3

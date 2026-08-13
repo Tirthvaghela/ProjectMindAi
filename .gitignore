@@ -1,0 +1,43 @@
+# --- Environment / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+backend/venv/
+venv/
+.venv/
+
+# --- Generated artifacts ---
+backend/data/embeddings.npy
+backend/data/ids.json
+
+# --- Node / frontend ---
+node_modules/
+dist/
+.vite/
+build/
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Uploads / temporary files ---
+uploads/
+tmp/
+temp/
+
+# --- Local databases ---
+*.db
+*.sqlite
+*.sqlite3
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

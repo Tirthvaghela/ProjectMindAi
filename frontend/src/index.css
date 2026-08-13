@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  /* The whole app renders inside the "Gallery Mono" system now (see
+     DESIGN.md, components/landing/landing.css) — Geist leads the stack so
+     anything that ever renders outside that scope still matches. */
+  --font-sans: 'Geist', ui-sans-serif, system-ui, -apple-system, "Segoe UI Variable Text",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  /* Defensive: nothing in this app relies on horizontal overflow, so guard
+     against it globally rather than per-component. */
+  overflow-x: hidden;
+  background: #000;
+  font-family: var(--font-sans);
+  /* Grade the stems down slightly — at these sizes the default rendering is
+     heavier than the layout is spaced for. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings are set tighter than body copy. Without this every heading inherits
+   the same loose tracking as paragraphs and the hierarchy reads flat. */
+h1,
+h2,
+h3 {
+  letter-spacing: -0.015em;
+}
+
+/* Default focus treatment for things that don't style their own — links,
+   buttons, and anything explicitly focusable. :focus-visible means mouse users
+   never see it and keyboard users always do.
+ *
+ * Text inputs and selects are deliberately excluded: they define their own
+ * focus border at the component level (see .gm-input in landing.css), and a
+ * global outline on top of that renders as two concentric rings. `:where()`
+ * also keeps this at zero specificity so any component that does opt out
+ * with `outline-none` actually wins. */
+:where(a, button, [tabindex], summary):focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+
+::selection {
+  background: #fff;
+  color: #000;
+}
+
+/* Respect users who asked the OS to reduce motion. The Framer Motion work here
+   is decorative, so switching it off costs nothing and prevents nausea for
+   people with vestibular disorders. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
