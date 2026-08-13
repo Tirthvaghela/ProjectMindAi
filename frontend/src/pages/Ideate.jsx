@@ -226,14 +226,32 @@ export default function Ideate() {
     return data.conversation_id
   }
 
+  // A "busy right now" failure (LLM_RATE_LIMITED — every configured Groq key
+  // momentarily out of quota, see nlp/ai_assistant.py) usually clears within
+  // a few seconds, unlike every other failure here — see the identical
+  // comment in Dashboard.jsx/ProjectChat.jsx. `id` is a plain parameter here
+  // (not re-read from `conversationId` state), so the retry can never race
+  // ensureConversationId() into creating a second, duplicate conversation.
+  const sendToConversation = async (id, text, isAutoRetry = false) => {
+    try {
+      const { data } = await api.sendConversationMessage(id, text)
+      return data
+    } catch (err) {
+      if (err.serverCode === 'LLM_RATE_LIMITED' && !isAutoRetry) {
+        await new Promise((resolve) => setTimeout(resolve, 4000))
+        return sendToConversation(id, text, true)
+      }
+      throw err
+    }
+  }
+
   // One conversation for the whole session — every generate/refine/roadmap/
   // follow-up call goes through it, which is what lets the model resolve
   // "the third one" later purely from the stored blocks (see the module
   // docstring above); this page never tracks idea context itself.
   const sendMessage = async (text) => {
     const id = await ensureConversationId()
-    const { data } = await api.sendConversationMessage(id, text)
-    return data
+    return sendToConversation(id, text)
   }
 
   const extractIdeasBlock = (blocks) => blocks?.find((b) => b.type === 'generated_project_ideas') ?? null

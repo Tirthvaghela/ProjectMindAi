@@ -820,6 +820,14 @@ export default function Dashboard() {
   const { user, loading: authLoading } = useAuth()
   const [searchParams, setSearchParams] = useSearchParams()
   const conversationId = searchParams.get('c')
+  // Mirrors `conversationId` for performSend's auto-retry timer below: that
+  // timer's callback is a closure fixed to the render it was scheduled in,
+  // so a plain read of `conversationId` there would still see "no
+  // conversation yet" even after the first (failed) attempt already created
+  // one — a ref is mutable and always reflects the latest render, exactly
+  // what a callback firing after a delay needs.
+  const conversationIdRef = useRef(conversationId)
+  conversationIdRef.current = conversationId
 
   const [available, setAvailable] = useState(null)
   const [messages, setMessages] = useState([])
@@ -849,6 +857,17 @@ export default function Dashboard() {
   const loadedConversationRef = useRef(null)
   const loadedProjectRef = useRef(null)
   const { supported: voiceSupported, listening, start, stop } = useVoiceSearch()
+  // A "busy right now" failure (routes/assistant.py's LLM_RATE_LIMITED —
+  // every configured Groq key momentarily out of quota) usually clears
+  // within a few seconds, unlike every other chat failure here. One silent,
+  // bounded auto-retry per message beats making the student notice and
+  // click Retry themselves for something that resolves on its own — see
+  // performSend below. autoRetriedRef caps it at exactly one attempt per
+  // message so a *persistent* outage still falls through to the normal
+  // error + manual Retry state instead of retrying forever.
+  const autoRetriedRef = useRef(false)
+  const retryTimerRef = useRef(null)
+  useEffect(() => () => window.clearTimeout(retryTimerRef.current), [])
 
   useEffect(() => {
     api
@@ -978,16 +997,20 @@ export default function Dashboard() {
   // again post-login with the exact text that was gated, instead of routing
   // back through `send()` and risking a stale `user` closure re-opening the
   // modal it was just called from.
-  const performSend = async (message) => {
-    setInput('')
+  const performSend = async (message, isAutoRetry = false) => {
+    if (!isAutoRetry) {
+      autoRetriedRef.current = false
+      setInput('')
+      setMessages((m) => [...m, { role: 'user', content: message }])
+    }
     setBusy(true)
     setError(null)
     setFailedMessage(null)
-    setMessages((m) => [...m, { role: 'user', content: message }])
 
+    let retrying = false
     try {
       if (available) {
-        let id = conversationId
+        let id = conversationIdRef.current
         if (!id) {
           const { data } = await api.createConversation()
           id = data.conversation_id
@@ -1017,12 +1040,19 @@ export default function Dashboard() {
         setMessages((m) => [...m, { role: 'assistant', content, blocks }])
       }
     } catch (err) {
-      setError(err.message)
-      setFailedMessage(message)
-      // Roll back the optimistic user message so Retry doesn't duplicate it.
-      setMessages((m) => m.slice(0, -1))
+      if (err.serverCode === 'LLM_RATE_LIMITED' && !autoRetriedRef.current) {
+        retrying = true
+        autoRetriedRef.current = true
+        setError('The AI assistant is handling a lot of requests right now — retrying automatically…')
+        retryTimerRef.current = window.setTimeout(() => performSend(message, true), 4000)
+      } else {
+        setError(err.message)
+        setFailedMessage(message)
+        // Roll back the optimistic user message so Retry doesn't duplicate it.
+        setMessages((m) => m.slice(0, -1))
+      }
     } finally {
-      setBusy(false)
+      if (!retrying) setBusy(false)
     }
   }
 

@@ -493,6 +493,7 @@ def test_project_chat_returns_503_when_the_assistant_is_not_configured(client, m
     monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", False)
     resp = client.post(f"/api/project/{project['project_id']}/chat", json={"message": "hello"})
     assert resp.status_code == 503
+    assert resp.get_json()["code"] == "LLM_UNAVAILABLE"
 
 
 def test_project_chat_grounds_replies_in_the_real_project(client, monkeypatch, project):
@@ -500,3 +501,150 @@ def test_project_chat_grounds_replies_in_the_real_project(client, monkeypatch, p
     resp = client.post(f"/api/project/{project['project_id']}/chat", json={"message": "what ML library should I use?"})
     assert resp.status_code == 200
     assert resp.get_json()["data"]["reply"] == "Use scikit-learn as the project already does."
+
+
+# --- LLM failure -> HTTP status/code mapping (reliability sections 2/7) -----
+#
+# Full-stack: a real request through the Flask test client, down through
+# reply()/general_reply(), _create_completion()'s retry/rotation, and back
+# out through routes/assistant.py's _raise_for_llm_failure — not just the
+# service-layer behaviour test_ai_assistant.py already covers in isolation.
+# APPLICATION FAILURE (a bug on our side) is deliberately not exercised here
+# — every case below is an EXTERNAL SERVICE FAILURE (Groq not configured,
+# rate-limited, or erroring), and the point of these tests is that each one
+# still produces a clean, typed HTTP response instead of a raw 500.
+
+
+def _groq_rate_limit_error():
+    import httpx
+    from groq import RateLimitError
+
+    request = httpx.Request("POST", "https://api.groq.test/openai/v1/chat/completions")
+    response = httpx.Response(429, request=request)
+    return RateLimitError("rate limited", response=response, body=None)
+
+
+def _groq_request_too_large_error():
+    # Groq's real shape for "this request's tokens exceed the model's
+    # tokens-per-minute budget" — a plain APIStatusError at HTTP 413, not
+    # RateLimitError, and not something any of the named exception
+    # subclasses (BadRequestError, ...) cover — reproduced live against a
+    # real over-budget conversation during this investigation.
+    import httpx
+    from groq import APIStatusError
+
+    request = httpx.Request("POST", "https://api.groq.test/openai/v1/chat/completions")
+    response = httpx.Response(413, request=request)
+    return APIStatusError("Request too large", response=response, body=None)
+
+
+def test_project_chat_returns_502_with_llm_error_code_on_an_unexpected_failure(client, monkeypatch, project):
+    def boom(**_):
+        raise RuntimeError("simulated provider/network failure")
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", boom)
+    resp = client.post(f"/api/project/{project['project_id']}/chat", json={"message": "hello"})
+
+    assert resp.status_code == 502
+    body = resp.get_json()
+    assert body["code"] == "LLM_ERROR"
+    assert "error" in body  # existing string-message contract is unchanged
+
+
+def test_project_chat_returns_502_with_rate_limited_code_when_every_key_is_exhausted(client, monkeypatch, project):
+    monkeypatch.setattr(ai_assistant, "_sleep", lambda _s: None)
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [object()])  # one "key"; create() below always 429s
+
+    def always_rate_limited(**_):
+        raise _groq_rate_limit_error()
+
+    # _create_completion calls client.chat.completions.create(...) — patch
+    # the call site directly rather than building a full fake client, since
+    # this test only cares about the HTTP mapping, not the retry mechanics
+    # already covered in test_ai_assistant.py.
+    monkeypatch.setattr(ai_assistant, "_call_with_retry", lambda _client, _kwargs: always_rate_limited())
+
+    resp = client.post(f"/api/project/{project['project_id']}/chat", json={"message": "hello"})
+
+    assert resp.status_code == 502
+    assert resp.get_json()["code"] == "LLM_RATE_LIMITED"
+
+
+def test_project_chat_returns_context_too_large_code_on_a_413(client, monkeypatch, project):
+    """RELIABILITY: a request-too-large failure must be told apart from a
+    flaky rate limit — "wait and retry" is actively wrong advice for it (the
+    retried request is identically oversized and fails identically), so it
+    gets its own code and an honest "start a new chat" message instead."""
+    monkeypatch.setattr(ai_assistant, "_sleep", lambda _s: None)
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [object()])
+
+    def always_too_large(**_):
+        raise _groq_request_too_large_error()
+
+    monkeypatch.setattr(ai_assistant, "_call_with_retry", lambda _client, _kwargs: always_too_large())
+
+    resp = client.post(f"/api/project/{project['project_id']}/chat", json={"message": "hello"})
+
+    assert resp.status_code == 502
+    body = resp.get_json()
+    assert body["code"] == "LLM_CONTEXT_TOO_LARGE"
+    assert body["code"] != "LLM_RATE_LIMITED"
+    assert "start a new chat" in body["error"]
+
+
+def test_send_message_returns_503_with_llm_unavailable_code_when_not_configured(client, monkeypatch):
+    conversation_id = _create_conversation(client)
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", False)
+
+    resp = client.post(
+        f"/api/conversations/{conversation_id}/messages", json={"message": "hello"}, headers=_hdr(DEVICE_A)
+    )
+
+    assert resp.status_code == 503
+    assert resp.get_json()["code"] == "LLM_UNAVAILABLE"
+
+
+def test_send_message_returns_502_with_llm_error_code_on_an_unexpected_failure(client, monkeypatch):
+    conversation_id = _create_conversation(client)
+
+    def boom(**_):
+        raise RuntimeError("simulated provider/network failure")
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", boom)
+    resp = client.post(
+        f"/api/conversations/{conversation_id}/messages", json={"message": "hello"}, headers=_hdr(DEVICE_A)
+    )
+
+    assert resp.status_code == 502
+    body = resp.get_json()
+    assert body["code"] == "LLM_ERROR"
+    assert "error" in body
+
+
+def test_conversation_is_still_readable_and_unmodified_after_a_failed_turn(client, monkeypatch):
+    """RELIABILITY: an LLM failure must not corrupt or partially write the
+    conversation — the failed turn is never persisted, so a retry starts
+    from exactly the same state as before the failure."""
+    conversation_id = _create_conversation(client)
+
+    def boom(**_):
+        raise RuntimeError("simulated provider/network failure")
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", boom)
+    resp = client.post(
+        f"/api/conversations/{conversation_id}/messages", json={"message": "hello"}, headers=_hdr(DEVICE_A)
+    )
+    assert resp.status_code == 502
+
+    doc = client.get(f"/api/conversations/{conversation_id}", headers=_hdr(DEVICE_A)).get_json()["data"]
+    assert doc["messages"] == []
+    assert doc["title"] == "New chat"
+
+    # A subsequent, successful turn works normally — the earlier failure
+    # left no residue behind to interfere with it.
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: _text_completion("Hi there!"))
+    resp = client.post(
+        f"/api/conversations/{conversation_id}/messages", json={"message": "hello"}, headers=_hdr(DEVICE_A)
+    )
+    assert resp.status_code == 200
+    assert resp.get_json()["data"]["reply"] == "Hi there!"

@@ -112,6 +112,14 @@ export default function ProjectChat({ projectId }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
   const bottomRef = useRef(null)
+  // See Dashboard.jsx's identical comment: a "busy right now" failure
+  // (LLM_RATE_LIMITED — every configured Groq key momentarily out of quota)
+  // usually clears within a few seconds, unlike every other chat failure
+  // here, so it gets exactly one silent, bounded auto-retry instead of
+  // making the student notice and click Retry themselves.
+  const autoRetriedRef = useRef(false)
+  const retryTimerRef = useRef(null)
+  useEffect(() => () => window.clearTimeout(retryTimerRef.current), [])
 
   useEffect(() => {
     api
@@ -142,25 +150,41 @@ export default function ProjectChat({ projectId }) {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }, [messages, busy])
 
-  const send = async (text = input) => {
+  const send = async (text = input, isAutoRetry = false) => {
     const message = text.trim()
-    if (!message || busy) return
+    if (!message || (busy && !isAutoRetry)) return
 
+    // The retry timer below calls this same closure again, which still
+    // reads `messages` from *this* render — i.e. from before the optimistic
+    // message a few lines down gets added — so `history` comes out
+    // identical on a retry as it was on the original attempt, correctly
+    // excluding the message currently being (re)sent.
     const history = messages.map(({ role, content }) => ({ role, content }))
-    setMessages((m) => [...m, { role: 'user', content: message }])
-    setInput('')
+    if (!isAutoRetry) {
+      autoRetriedRef.current = false
+      setMessages((m) => [...m, { role: 'user', content: message }])
+      setInput('')
+    }
     setBusy(true)
     setError(null)
 
+    let retrying = false
     try {
       const { data } = await api.chat(projectId, message, history)
       setMessages((m) => [...m, { role: 'assistant', content: data.reply }])
     } catch (err) {
-      setError(err.message)
-      // Roll back the optimistic message so retrying doesn't duplicate it.
-      setMessages((m) => m.slice(0, -1))
+      if (err.serverCode === 'LLM_RATE_LIMITED' && !autoRetriedRef.current) {
+        retrying = true
+        autoRetriedRef.current = true
+        setError('The AI assistant is handling a lot of requests right now — retrying automatically…')
+        retryTimerRef.current = window.setTimeout(() => send(message, true), 4000)
+      } else {
+        setError(err.message)
+        // Roll back the optimistic message so retrying doesn't duplicate it.
+        setMessages((m) => m.slice(0, -1))
+      }
     } finally {
-      setBusy(false)
+      if (!retrying) setBusy(false)
     }
   }
 

@@ -190,3 +190,66 @@ def test_revoke_all_sessions_invalidates_every_token_for_that_account(mongo_test
 
     assert user_from_token(token_a) is None
     assert user_from_token(token_b) is None
+
+
+# --- Duplicate-email race handling (reliability section 12: "duplicate
+# record") --------------------------------------------------------------
+#
+# signup()/update_profile() both pre-check "is this email taken?" before
+# writing — a TOCTOU gap in principle (two concurrent calls for the same new
+# email could both pass the check). db/client.py's unique index on `email`
+# is the actual backstop; these tests simulate that backstop firing by
+# proxying db.users() so insert_one/update_one raise DuplicateKeyError
+# exactly as Mongo would once two racing writers hit the real index —
+# without needing genuinely concurrent threads to reproduce it.
+
+
+class _DuplicateKeyOnInsert:
+    """Passes every read through to the real collection; insert_one always
+    raises, as if the unique email index had just rejected a racing write."""
+
+    def __init__(self, real):
+        self._real = real
+
+    def find_one(self, *args, **kwargs):
+        return self._real.find_one(*args, **kwargs)
+
+    def insert_one(self, *args, **kwargs):
+        from pymongo.errors import DuplicateKeyError
+
+        raise DuplicateKeyError("E11000 duplicate key error collection: test.users index: uq_email")
+
+
+class _DuplicateKeyOnUpdate:
+    """Same idea, for update_profile()'s write instead of signup()'s insert."""
+
+    def __init__(self, real):
+        self._real = real
+
+    def find_one(self, *args, **kwargs):
+        return self._real.find_one(*args, **kwargs)
+
+    def update_one(self, *args, **kwargs):
+        from pymongo.errors import DuplicateKeyError
+
+        raise DuplicateKeyError("E11000 duplicate key error collection: test.users index: uq_email")
+
+
+def test_signup_converts_a_racing_duplicate_key_error_into_a_clean_auth_error(monkeypatch, mongo_test_db):
+    # The pre-check (find_one) sees no existing user and passes — the
+    # collision only surfaces when the write itself hits the unique index,
+    # exactly like two real concurrent signups for the same email would.
+    real_collection = db.users()
+    monkeypatch.setattr(db, "users", lambda: _DuplicateKeyOnInsert(real_collection))
+
+    with pytest.raises(AuthError, match="already exists"):
+        signup("racer@example.com", "correcthorse20", "Racer")
+
+
+def test_update_profile_converts_a_racing_duplicate_key_error_into_a_clean_auth_error(monkeypatch, mongo_test_db):
+    user = signup("tina@example.com", "correcthorse21", "Tina")
+    real_collection = db.users()
+    monkeypatch.setattr(db, "users", lambda: _DuplicateKeyOnUpdate(real_collection))
+
+    with pytest.raises(AuthError, match="already exists"):
+        update_profile(user["user_id"], email="new-address@example.com")

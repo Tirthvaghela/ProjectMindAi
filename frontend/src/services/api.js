@@ -129,7 +129,16 @@ client.interceptors.response.use(
     if (!error.response && error.code !== 'ECONNABORTED') {
       message = 'Cannot reach the server. Is the Flask backend running?'
     }
-    return Promise.reject(new Error(message))
+    const rejected = new Error(message)
+    // A stable, machine-readable failure reason (e.g. "LLM_RATE_LIMITED"),
+    // when the backend sent one — see routes/helpers.py's ApiError.code.
+    // Deliberately a new property, not `.code`: axios's own error already
+    // uses `.code` for its own values ("ECONNABORTED" etc, checked above),
+    // and that's a different error object than the one being constructed
+    // here, so reusing the name would be confusing even though it's safe.
+    rejected.serverCode = error.response?.data?.code || null
+    rejected.status = error.response?.status || null
+    return Promise.reject(rejected)
   },
 )
 

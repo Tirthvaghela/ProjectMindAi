@@ -83,6 +83,36 @@ def test_shown_ideas_note_includes_full_fields_for_later_refinement():
     assert IDEA["unique_point"] in note
 
 
+def test_shown_ideas_note_truncates_long_free_text_fields():
+    # RELIABILITY: unlike technologies/domain/difficulty, problem/solution/
+    # unique_point are unbounded model prose — replayed on every later turn,
+    # several of these per idea across a conversation that generates ideas
+    # more than once has driven a real request over a tools-heavy model's
+    # tokens-per-minute budget (a 413 from Groq). Must stay short enough to
+    # matter, long enough to still ground a follow-up question.
+    long_idea = {
+        **IDEA,
+        "problem": "x" * 400,
+        "solution": "y" * 400,
+        "unique_point": "z" * 400,
+    }
+    note = ai_assistant._shown_ideas_note([{"type": "generated_project_ideas", "ideas": [long_idea]}])
+    assert "x" * 400 not in note
+    assert "y" * 400 not in note
+    assert "z" * 400 not in note
+    assert "…" in note
+    # Still grounded in the idea's real content, not replaced wholesale.
+    assert note.count("x") <= ai_assistant._IDEA_NOTE_FIELD_PREVIEW_CHARS + 5
+    assert note.startswith("\n\n[Context")
+
+
+def test_shown_ideas_note_leaves_short_fields_untouched():
+    note = ai_assistant._shown_ideas_note([{"type": "generated_project_ideas", "ideas": [IDEA]}])
+    assert IDEA["problem"] in note
+    assert IDEA["solution"] in note
+    assert "…" not in note
+
+
 # --- _active_project_note / _active_idea_note --------------------------------
 
 
@@ -215,6 +245,88 @@ def test_project_system_template_forbids_claiming_implementation():
     content = ai_assistant._SYSTEM_TEMPLATE
     assert "never claim to have implemented, written, tested, or changed" in content
     assert "say plainly that it isn't specified rather than inventing" in content
+
+
+# --- _history_messages: only the most-recent shown-projects/ideas note --------
+#
+# RELIABILITY (unbounded request growth): before this, every assistant turn
+# in the replayed window that ever showed projects/ideas got its full note
+# threaded in on every later turn — a conversation that searches or
+# generates ideas more than once accumulated every earlier turn's note
+# without bound. This is exactly the shape of the real conversation that
+# drove a request over Groq's tokens-per-minute limit (a 413, not a flaky
+# rate limit) investigated live against that account.
+
+
+def test_history_messages_only_threads_the_most_recent_ideas_note():
+    older_idea = {**IDEA, "id": "idea-1", "name": "Older Idea"}
+    newer_idea = {**IDEA, "id": "idea-9", "name": "Newer Idea"}
+    history = [
+        {"role": "user", "content": "give me ideas"},
+        {"role": "assistant", "content": "Here are some.", "blocks": [{"type": "generated_project_ideas", "ideas": [older_idea]}]},
+        {"role": "user", "content": "give me different ideas"},
+        {"role": "assistant", "content": "Here are more.", "blocks": [{"type": "generated_project_ideas", "ideas": [newer_idea]}]},
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=True)
+
+    all_content = " ".join(m["content"] for m in messages)
+    assert "Newer Idea" in all_content
+    assert "Older Idea" not in all_content
+
+
+def test_history_messages_only_threads_the_most_recent_projects_note():
+    history = [
+        {"role": "user", "content": "find nlp projects"},
+        {
+            "role": "assistant",
+            "content": "Here are some.",
+            "blocks": [{"type": "project_recommendations", "projects": [{"project_id": "pm-old", "title": "Old Project"}]}],
+        },
+        {"role": "user", "content": "find cv projects instead"},
+        {
+            "role": "assistant",
+            "content": "Here are those.",
+            "blocks": [{"type": "project_recommendations", "projects": [{"project_id": "pm-new", "title": "New Project"}]}],
+        },
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=True)
+
+    all_content = " ".join(m["content"] for m in messages)
+    assert "pm-new" in all_content
+    assert "pm-old" not in all_content
+
+
+def test_history_messages_tracks_projects_and_ideas_most_recent_independently():
+    # A projects note and an ideas note are tracked separately — the most
+    # recent of EACH kind survives, not just the single most recent turn
+    # overall (a projects turn must not suppress an earlier ideas turn).
+    history = [
+        {
+            "role": "assistant",
+            "content": "Ideas first.",
+            "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}],
+        },
+        {
+            "role": "assistant",
+            "content": "Then projects.",
+            "blocks": [{"type": "project_recommendations", "projects": [{"project_id": "pm-later", "title": "Later Project"}]}],
+        },
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=True)
+
+    all_content = " ".join(m["content"] for m in messages)
+    assert IDEA["name"] in all_content
+    assert "pm-later" in all_content
+
+
+def test_history_messages_without_shown_projects_never_adds_notes():
+    # reply()'s call path (no `blocks` concept at all) must stay exactly as
+    # lean as before — this flag exists only for general_reply().
+    history = [
+        {"role": "assistant", "content": "Here are some.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}]},
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=False)
+    assert messages == [{"role": "assistant", "content": "Here are some."}]
 
 
 # --- _match_scores_from_history -----------------------------------------------
@@ -350,6 +462,16 @@ def _bad_request_error():
     return BadRequestError("malformed request", response=_fake_response(400), body=None)
 
 
+def _request_too_large_error():
+    # Groq's real shape for "this account's tokens-per-minute budget can't
+    # fit this request" — a plain APIStatusError at HTTP 413, not
+    # RateLimitError and not any of the other named subclasses (BadRequestError
+    # etc.) — reproduced live against a real over-budget conversation.
+    from groq import APIStatusError
+
+    return APIStatusError("request too large", response=_fake_response(413), body=None)
+
+
 def test_create_completion_retries_a_transient_error_then_succeeds(monkeypatch):
     sleeps = []
     monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
@@ -400,6 +522,51 @@ def test_create_completion_rotates_to_the_next_key_once_retries_are_exhausted(mo
     assert result.choices[0].message.content == "From the second key"
     assert failing.completions.calls == ai_assistant.MAX_LLM_RETRIES + 1
     assert working.completions.calls == 1
+
+
+def test_create_completion_rotates_to_the_next_key_on_a_413_immediately(monkeypatch):
+    """A 413 ("request too large for THIS key's account tokens-per-minute
+    budget") is specific to the account behind the failing key — a
+    different key (e.g. a different Groq account, its own independent
+    budget, per the multi-account GROQ_API_KEYS setup this app supports)
+    can genuinely succeed where this one failed, so it must be tried
+    immediately, with no same-key backoff retry wasted first (unlike the
+    transient-error case above)."""
+    import itertools
+
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    monkeypatch.setattr(ai_assistant, "_sleep", lambda _s: pytest.fail("must never sleep before rotating on a 413"))
+    monkeypatch.setattr(ai_assistant, "_key_rotation", itertools.count())
+
+    too_large = _FakeClient([_request_too_large_error()])
+    working = _FakeClient([_text_completion("From a different account's key")])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [too_large, working])
+
+    result = ai_assistant._create_completion(model="x", messages=[])
+
+    assert result.choices[0].message.content == "From a different account's key"
+    assert too_large.completions.calls == 1  # no same-key retry attempted
+    assert working.completions.calls == 1
+
+
+def test_create_completion_raises_when_every_key_rejects_the_request_as_too_large(monkeypatch):
+    import itertools
+    from groq import APIStatusError
+
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    monkeypatch.setattr(ai_assistant, "_sleep", lambda _s: None)
+    monkeypatch.setattr(ai_assistant, "_key_rotation", itertools.count())
+
+    key_a = _FakeClient([_request_too_large_error()])
+    key_b = _FakeClient([_request_too_large_error()])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [key_a, key_b])
+
+    with pytest.raises(APIStatusError) as excinfo:
+        ai_assistant._create_completion(model="x", messages=[])
+
+    assert excinfo.value.status_code == 413
+    assert key_a.completions.calls == 1
+    assert key_b.completions.calls == 1
 
 
 def test_create_completion_does_not_retry_a_permanent_error(monkeypatch):

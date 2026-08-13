@@ -57,7 +57,7 @@ def _raise_for_llm_failure(error: Exception) -> None:
             code="LLM_UNAVAILABLE",
         ) from None
 
-    from groq import RateLimitError
+    from groq import APIStatusError, RateLimitError
 
     if isinstance(error, RateLimitError):
         # Every configured Groq key (see nlp/ai_assistant.py:_create_completion)
@@ -68,6 +68,23 @@ def _raise_for_llm_failure(error: Exception) -> None:
             "The AI assistant is receiving too many requests right now — try again shortly.",
             status=502,
             code="LLM_RATE_LIMITED",
+        ) from None
+
+    if isinstance(error, APIStatusError) and getattr(error, "status_code", None) == 413:
+        # Groq's own "request too large for this model's tokens-per-minute
+        # budget" response — a long conversation (or one that's generated
+        # several batches of ideas) plus the assistant's own system prompt
+        # and tool schemas together outgrew it. Deliberately NOT labelled
+        # LLM_RATE_LIMITED: that code tells the frontend "wait a few seconds
+        # and silently retry" (see api.js), which is actively wrong here —
+        # retrying resends this exact same oversized request and fails
+        # identically every time. The only real fix is a smaller request, so
+        # the honest answer is "start a new chat," not "try again."
+        raise ApiError(
+            "This conversation has grown too large for the assistant to process in one go — "
+            "start a new chat to continue.",
+            status=502,
+            code="LLM_CONTEXT_TOO_LARGE",
         ) from None
 
     raise ApiError(

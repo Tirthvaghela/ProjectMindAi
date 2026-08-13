@@ -288,6 +288,24 @@ def _shown_projects_note(blocks: list[dict[str, Any]]) -> str:
     return "\n\n[Context — projects shown above, in order:\n" + "\n".join(lines) + "]"
 
 
+# problem/solution/unique_point are free-form model prose and, unlike a
+# project's technologies/domain/difficulty, have no natural length cap —
+# five ideas' worth of all three, replayed on every later turn, is real,
+# measured budget pressure against a tools-heavy model's tokens-per-minute
+# limit (see _history_messages' docstring). Previewed the same way
+# _active_project_note already previews a project's description, at a
+# length still long enough for the model to ground a follow-up question or
+# a refine_project_idea call in what the idea actually is.
+_IDEA_NOTE_FIELD_PREVIEW_CHARS = 160
+
+
+def _preview(text: Optional[str], limit: int) -> str:
+    text = (text or "").strip()
+    if len(text) <= limit:
+        return text
+    return text[:limit].rsplit(" ", 1)[0].rstrip(",;: ") + "…"
+
+
 def _shown_ideas_note(blocks: list[dict[str, Any]]) -> str:
     """Compact, model-facing summary of generated_project_ideas blocks on one
     stored assistant turn — full enough (problem, solution, unique point,
@@ -302,10 +320,13 @@ def _shown_ideas_note(blocks: list[dict[str, Any]]) -> str:
             continue
         for i, idea in enumerate(block.get("ideas") or [], start=1):
             tech = ", ".join(idea.get("technologies") or [])
+            problem = _preview(idea.get("problem"), _IDEA_NOTE_FIELD_PREVIEW_CHARS)
+            solution = _preview(idea.get("solution"), _IDEA_NOTE_FIELD_PREVIEW_CHARS)
+            unique = _preview(idea.get("unique_point"), _IDEA_NOTE_FIELD_PREVIEW_CHARS)
             lines.append(
                 f"{i}. id={idea.get('id')} \"{idea.get('name')}\" — "
-                f"problem: {idea.get('problem')} | solution: {idea.get('solution')} | "
-                f"unique: {idea.get('unique_point')} | tech: {tech} | "
+                f"problem: {problem} | solution: {solution} | "
+                f"unique: {unique} | tech: {tech} | "
                 f"domain: {idea.get('domain')} | difficulty: {idea.get('difficulty')} | "
                 f"duration: {idea.get('duration_weeks')}wk | originality: {idea.get('originality_score')}%"
             )
@@ -496,14 +517,22 @@ def _call_with_retry(client: Any, kwargs: dict[str, Any]) -> Any:
 def _create_completion(**kwargs: Any):
     """client.chat.completions.create(**kwargs), retrying transient failures
     on the current key (_call_with_retry) and rotating across every
-    configured Groq key on a 429 — or once retries are exhausted on a
-    transient error — before giving up. A permanent failure (bad request,
-    bad credentials, ...) is never retried or rotated past: it would fail
-    identically on every key, so it propagates on the first attempt. With
-    one key configured and no failures (the common case) this is exactly the
-    single request it always was.
+    configured Groq key on a 429, a 413 (see below), or once retries are
+    exhausted on a transient error — before giving up.
+
+    Most permanent failures (bad request, bad credentials, ...) are never
+    retried or rotated past: they would fail identically on every key, so
+    they propagate on the first attempt. A 413 is the one deliberate
+    exception — it means THIS key's account tokens-per-minute budget can't
+    fit the request, which is a property of the account behind the key, not
+    of the request itself, so a different key (especially one on a
+    different Groq account, with its own independent budget) genuinely can
+    succeed where this one failed.
+
+    With one key configured and no failures (the common case) this is
+    exactly the single request it always was.
     """
-    from groq import APIConnectionError, InternalServerError, RateLimitError
+    from groq import APIConnectionError, APIStatusError, InternalServerError, RateLimitError
 
     clients = _clients()
     if not clients:
@@ -514,11 +543,12 @@ def _create_completion(**kwargs: Any):
 
     last_error: Optional[Exception] = None
     for index, client in enumerate(ordered):
+        has_next_key = index < len(ordered) - 1
         try:
             return _call_with_retry(client, kwargs)
         except (RateLimitError, APIConnectionError, InternalServerError) as error:
             last_error = error
-            if index < len(ordered) - 1:
+            if has_next_key:
                 if isinstance(error, RateLimitError):
                     log.warning("Groq key %d/%d rate-limited, trying next key", index + 1, len(ordered))
                 else:
@@ -529,7 +559,24 @@ def _create_completion(**kwargs: Any):
                         type(error).__name__,
                     )
             continue
-    raise last_error  # every configured key is rate-limited or failing
+        except APIStatusError as error:
+            # A 413 ("request too large for this key's tokens-per-minute
+            # budget") is a property of the ACCOUNT behind this key, not of
+            # the request itself — a different key, especially one on a
+            # different Groq account (its own independent TPM budget), can
+            # genuinely succeed where this one just failed. Worth trying the
+            # next key; not worth a same-key backoff retry first (see
+            # _call_with_retry) since this account's ceiling won't have
+            # moved a few hundred milliseconds later. Any other APIStatusError
+            # (bad request, bad credentials, ...) is a permanent failure that
+            # would fail identically on every key, so it still propagates
+            # immediately, exactly as before this branch existed.
+            last_error = error
+            if getattr(error, "status_code", None) == 413 and has_next_key:
+                log.warning("Groq key %d/%d rejected the request as too large (413), trying next key", index + 1, len(ordered))
+                continue
+            raise
+    raise last_error  # every configured key is rate-limited, too-large, or failing
 
 
 def _system_message(doc: dict[str, Any]) -> dict[str, str]:
@@ -554,20 +601,46 @@ def _history_messages(
     running conversation and just replay it, capped so a long chat can't
     grow the request without bound.
 
-    `with_shown_projects` appends each assistant turn's shown-projects note
-    (see `_shown_projects_note`) to that turn's replayed content — used only
-    by `general_reply()`, which is the one entry point where a stored turn
-    can carry `blocks`.
+    `with_shown_projects` appends a shown-projects/shown-ideas note (see
+    `_shown_projects_note`/`_shown_ideas_note`) — used only by
+    `general_reply()`, which is the one entry point where a stored turn can
+    carry `blocks`. Only the MOST RECENT turn of each kind gets its note
+    replayed, not every one in the trimmed window: once a fresh batch of
+    projects or ideas is shown, that's the current set the student is
+    looking at (Ideate.jsx's own mergeIdea replaces the grid the same way on
+    a new batch) — older ones are superseded, not additive context. Without
+    this cap, a conversation that searches or generates ideas more than
+    once keeps replaying every earlier turn's full note (per-idea
+    problem/solution/unique_point text, for every idea, every time) on every
+    later turn — unbounded growth that has driven a real request over a
+    model's tokens-per-minute budget (a 413 from Groq, not a flaky rate
+    limit — retrying an identical oversized request fails identically).
     """
+    trimmed = (history or [])[-MAX_HISTORY_MESSAGES:]
+
+    last_projects_index: Optional[int] = None
+    last_ideas_index: Optional[int] = None
+    if with_shown_projects:
+        for i, turn in enumerate(trimmed):
+            if turn.get("role") != "assistant":
+                continue
+            blocks = turn.get("blocks") or []
+            if any(b.get("type") == "project_recommendations" for b in blocks):
+                last_projects_index = i
+            if any(b.get("type") == "generated_project_ideas" for b in blocks):
+                last_ideas_index = i
+
     messages = []
-    for turn in (history or [])[-MAX_HISTORY_MESSAGES:]:
+    for i, turn in enumerate(trimmed):
         role = turn.get("role")
         content = (turn.get("content") or "")[:MAX_MESSAGE_CHARS]
         if role not in ("user", "assistant") or not content:
             continue
         if with_shown_projects and role == "assistant":
-            content += _shown_projects_note(turn.get("blocks"))
-            content += _shown_ideas_note(turn.get("blocks"))
+            if i == last_projects_index:
+                content += _shown_projects_note(turn.get("blocks"))
+            if i == last_ideas_index:
+                content += _shown_ideas_note(turn.get("blocks"))
         messages.append({"role": role, "content": content})
     return messages
 
