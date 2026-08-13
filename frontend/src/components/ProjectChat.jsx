@@ -11,16 +11,14 @@ const STARTERS = [
 ]
 
 // Unlike the full-page Chat, this widget has no server-side conversation to
-// reload from — /project/<id>/chat is stateless (see routes/assistant.py) —
-// so "persisted history" here means the browser remembers it, keyed per
-// project so switching projects doesn't bleed one conversation into another.
-function storageKey(projectId) {
-  return `projectmind.chat.${projectId}`
-}
-
-function loadSavedMessages(projectId) {
+// reload from — /project/<id>/chat and /idea/chat are both stateless (see
+// routes/assistant.py / routes/ideas.py) — so "persisted history" here means
+// the browser remembers it, keyed by the caller's own `storageKey` (per
+// project, or per generated idea) so switching subjects doesn't bleed one
+// conversation into another.
+function loadSavedMessages(storageKey) {
   try {
-    const raw = localStorage.getItem(storageKey(projectId))
+    const raw = localStorage.getItem(storageKey)
     const parsed = raw ? JSON.parse(raw) : []
     return Array.isArray(parsed) ? parsed : []
   } catch {
@@ -98,16 +96,24 @@ function TypingDots() {
 }
 
 /**
- * Project-grounded chat, backed by an external LLM (see backend/nlp/ai_assistant.py).
+ * Project- or idea-grounded chat, backed by an external LLM (see
+ * backend/nlp/ai_assistant.py).
  *
  * Availability is checked once against /api/health rather than discovered by
  * letting a user's first message fail — a deployment without GROQ_API_KEY set
  * simply never shows this panel, instead of showing an input box that always
  * errors.
+ *
+ * `onSend(message, history) => Promise<{data}>` and `storageKey` are the
+ * only things that differ between a catalogue project
+ * (pages/ProjectDetail.jsx, POST /project/<id>/chat) and a generated idea
+ * (pages/IdeaDetail.jsx, POST /api/idea/chat — a generated idea has no
+ * project_id, see backend/routes/ideas.py) — both share this exact
+ * component rather than forking it.
  */
-export default function ProjectChat({ projectId }) {
+export default function ProjectChat({ storageKey, onSend }) {
   const [available, setAvailable] = useState(null)
-  const [messages, setMessages] = useState(() => loadSavedMessages(projectId))
+  const [messages, setMessages] = useState(() => loadSavedMessages(storageKey))
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
@@ -128,23 +134,23 @@ export default function ProjectChat({ projectId }) {
       .catch(() => setAvailable(false))
   }, [])
 
-  // Re-load whenever the project changes — this component doesn't remount
-  // across a client-side navigation between two ProjectDetail pages.
+  // Re-load whenever the subject changes — this component doesn't remount
+  // across a client-side navigation between two ProjectDetail/IdeaDetail pages.
   useEffect(() => {
-    setMessages(loadSavedMessages(projectId))
-  }, [projectId])
+    setMessages(loadSavedMessages(storageKey))
+  }, [storageKey])
 
   useEffect(() => {
     try {
       if (messages.length > 0) {
-        localStorage.setItem(storageKey(projectId), JSON.stringify(messages))
+        localStorage.setItem(storageKey, JSON.stringify(messages))
       } else {
-        localStorage.removeItem(storageKey(projectId))
+        localStorage.removeItem(storageKey)
       }
     } catch {
       /* private mode, quota, storage disabled — the chat still works this session */
     }
-  }, [messages, projectId])
+  }, [messages, storageKey])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
@@ -170,7 +176,7 @@ export default function ProjectChat({ projectId }) {
 
     let retrying = false
     try {
-      const { data } = await api.chat(projectId, message, history)
+      const { data } = await onSend(message, history)
       setMessages((m) => [...m, { role: 'assistant', content: data.reply }])
     } catch (err) {
       if (err.serverCode === 'LLM_RATE_LIMITED' && !autoRetriedRef.current) {

@@ -95,11 +95,20 @@ export function clearAuthToken() {
 // 20s used to be tight enough that the backend's one-time NLP warmup (model +
 // index load, first request only) could trip it before ever reaching the
 // server's own response. The backend now warms up at startup (see
-// recommend.warmup() in app.py), but LLM calls still legitimately vary, so
-// this stays generous rather than razor-thin.
+// recommend.warmup() in app.py). 30s was raised from there but STILL too
+// tight for the tool-calling model (GROQ_TOOL_MODEL) specifically — a real,
+// live idea-generation call was directly measured at ~32s server-side, so
+// this endpoint failed with "the server took too long to respond" on
+// nearly every attempt (a deterministic near-miss, not flakiness) even
+// though the backend itself finished successfully a couple of seconds
+// later. Distinct from, and in addition to, the 413/context-too-large
+// failure mode investigated separately (see nlp/ai_assistant.py) — both
+// surface the same user-facing message, but this one is a plain client
+// timeout with nothing to shrink. 60s gives real margin above the measured
+// latency.
 const client = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
-  timeout: 30000,
+  timeout: 60000,
 })
 
 client.interceptors.request.use((config) => {
@@ -184,6 +193,33 @@ export const api = {
 
   teamBuilder: (projectId, members) =>
     client.post('/team-builder', { project_id: projectId, members }).then(unwrap),
+
+  // Idea-scoped mirrors of the project-scoped calls above, for the Idea
+  // Workspace page (pages/IdeaDetail.jsx) — a generated idea has no
+  // project_id (see backend/routes/ideas.py), so each of these sends the
+  // idea's own fields directly instead. `idea` is spread as-is; the backend
+  // only reads the fields each route actually needs and ignores the rest
+  // (originality_score, similar_projects, id, ...), so callers never have to
+  // pick fields out themselves.
+  ideaSkillGap: (idea, skills) =>
+    client.post('/idea/skill-gap', { ...idea, skills }).then(unwrap),
+
+  ideaSynopsis: (idea) => client.post('/idea/synopsis', idea).then(unwrap),
+
+  ideaRoadmap: (idea) => client.post('/idea/roadmap', idea).then(unwrap),
+
+  ideaMilestones: (idea) => client.post('/idea/milestones', idea).then(unwrap),
+
+  ideaTimeline: (idea, { teamSize, experienceLevel } = {}) =>
+    client
+      .post('/idea/timeline', { ...idea, team_size: teamSize, experience_level: experienceLevel || undefined })
+      .then(unwrap),
+
+  ideaTeamBuilder: (idea, members) =>
+    client.post('/idea/team-builder', { domain: idea.domain, technologies: idea.technologies, members }).then(unwrap),
+
+  ideaChat: (idea, message, history) =>
+    client.post('/idea/chat', { idea, message, history }).then(unwrap),
 
   learningPath: (skills) => client.post('/learning-path', { skills }).then(unwrap),
 

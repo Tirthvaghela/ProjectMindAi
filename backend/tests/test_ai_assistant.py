@@ -179,6 +179,137 @@ def test_active_idea_and_active_project_notes_are_never_both_relevant_at_once(pr
     assert project_note and not idea_note
 
 
+# --- _named_reference_note ----------------------------------------------------
+#
+# RELIABILITY (reported live): every per-card action button in this app
+# (Create Roadmap, Compare, Check Uniqueness, ...) sends a message that names
+# its idea/project by exact quoted title — 'Create a roadmap for "QuizWhiz".'
+# — trusting the model to resolve that against the shown-ideas/shown-projects
+# note attached several turns back in history. Direct testing against the
+# real message-construction code found that note WAS present in the request
+# the model received, yet the model still asked the student to redescribe an
+# idea whose fields were already right there — a model reliability gap, not
+# a missing-context bug. _named_reference_note closes it deterministically:
+# resolve the quoted name in code, and hand the model those exact fields on
+# the turn it's actually reading (the current user message), not one it has
+# to reach back for.
+
+
+def test_named_reference_note_is_empty_without_a_quoted_name():
+    history = [{"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}]}]
+    assert ai_assistant._named_reference_note("tell me about it", history) == ""
+
+
+def test_named_reference_note_is_empty_without_a_matching_block():
+    assert ai_assistant._named_reference_note('Create a roadmap for "QuizWhiz".', None) == ""
+    assert ai_assistant._named_reference_note('Create a roadmap for "QuizWhiz".', []) == ""
+
+
+def test_named_reference_note_resolves_a_quoted_idea_name():
+    history = [{"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}]}]
+    note = ai_assistant._named_reference_note(f'Create a roadmap for "{IDEA["name"]}".', history)
+    assert IDEA["name"] in note
+    assert IDEA["problem"] in note
+    assert IDEA["solution"] in note
+    assert "already shown in this conversation" in note
+    assert "never ask the student to redescribe it" in note
+
+
+def test_named_reference_note_ignores_a_quoted_name_that_matches_nothing():
+    history = [{"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}]}]
+    assert ai_assistant._named_reference_note('Create a roadmap for "Not A Real Idea".', history) == ""
+
+
+def test_named_reference_note_resolves_a_quoted_project_title(project):
+    history = [
+        {
+            "role": "assistant",
+            "content": "Here.",
+            "blocks": [{"type": "project_recommendations", "projects": [{"project_id": project["project_id"], "title": project["title"]}]}],
+        }
+    ]
+    note = ai_assistant._named_reference_note(f'Create a roadmap for "{project["title"]}".', history)
+    assert project["title"] in note
+    assert project["project_id"] in note
+    assert project["description"] in note
+
+
+def test_named_reference_note_skips_the_name_already_covered_by_the_active_idea_note():
+    """RELIABILITY (token budget): don't pay twice for the same idea's fields
+    on one turn — _active_idea_note already carries them when the referenced
+    idea IS the active one."""
+    history = [{"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}]}]
+    note = ai_assistant._named_reference_note(
+        f'Tell me more about "{IDEA["name"]}".', history, selected_idea=IDEA
+    )
+    assert note == ""
+
+
+def test_named_reference_note_skips_the_name_already_covered_by_the_active_project_note(project):
+    history = [
+        {
+            "role": "assistant",
+            "content": "Here.",
+            "blocks": [{"type": "project_recommendations", "projects": [{"project_id": project["project_id"], "title": project["title"]}]}],
+        }
+    ]
+    note = ai_assistant._named_reference_note(
+        f'Tell me more about "{project["title"]}".',
+        history,
+        selected_project_id=project["project_id"],
+    )
+    assert note == ""
+
+
+def test_named_reference_note_resolves_multiple_quoted_names_in_one_message():
+    idea_2 = {**IDEA, "id": "idea-3", "name": "Second Idea"}
+    history = [
+        {"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA, idea_2]}]},
+    ]
+    note = ai_assistant._named_reference_note(
+        f'Compare "{IDEA["name"]}" with "{idea_2["name"]}".', history
+    )
+    assert IDEA["name"] in note
+    assert idea_2["name"] in note
+
+
+def test_named_reference_note_prefers_the_most_recent_matching_block():
+    older = {**IDEA, "id": "idea-old", "problem": "an old, superseded problem statement"}
+    newer = {**IDEA, "id": "idea-new", "problem": "the current, up-to-date problem statement"}
+    history = [
+        {"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [older]}]},
+        {"role": "assistant", "content": "Here again.", "blocks": [{"type": "generated_project_ideas", "ideas": [newer]}]},
+    ]
+    note = ai_assistant._named_reference_note(f'Create a roadmap for "{IDEA["name"]}".', history)
+    assert "current, up-to-date" in note
+    assert "old, superseded" not in note
+
+
+def test_general_reply_threads_the_named_reference_note_into_the_user_message(monkeypatch, mongo_test_db):
+    """End-to-end: the exact live repro — a Dashboard 'Create Roadmap' click
+    on an unselected generated idea must still ground the model, even though
+    nothing was ever select_idea'd."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    captured = {}
+
+    def capture(**kwargs):
+        captured["messages"] = kwargs["messages"]
+        return _text_completion("Here's the roadmap.")
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", capture)
+
+    history = [
+        {"role": "user", "content": "Generate 5 new ideas."},
+        {"role": "assistant", "content": "Here are five.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}]},
+    ]
+    ai_assistant.general_reply(f'Create a roadmap for "{IDEA["name"]}".', history)
+
+    last_user_message = captured["messages"][-1]["content"]
+    assert IDEA["name"] in last_user_message
+    assert IDEA["problem"] in last_user_message
+    assert "never ask the student to redescribe it" in last_user_message
+
+
 # --- _resume_context_note -----------------------------------------------------
 
 
@@ -896,3 +1027,190 @@ def test_general_reply_threads_the_resume_context_note_into_the_user_message(mon
     assert "Python" in last_user_message
     assert "React" in last_user_message
     assert "résumé skills" in last_user_message
+
+
+# --- History-shrink retry on a persistent 413 (reply() / general_reply()) ----
+#
+# RELIABILITY: _create_completion's own 413 handling rotates across
+# configured KEYS, but that has nothing left to try once every key alike
+# rejects a request as too large — the fix at that point is a smaller
+# REQUEST, not a different key. These verify reply() and general_reply()
+# retry the turn with a shrinking history window (_HISTORY_SHRINK_STEPS)
+# instead of surfacing "conversation grown too large" on the first 413, so a
+# student can keep chatting in the SAME conversation whenever a smaller
+# request would actually have fit the budget.
+
+
+def test_reply_shrinks_history_and_retries_when_every_key_rejects_as_too_large(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    calls = []
+
+    def flaky(**kwargs):
+        calls.append(kwargs["messages"])
+        if len(calls) < len(ai_assistant._HISTORY_SHRINK_STEPS):
+            raise _request_too_large_error()
+        return _text_completion("Still here.")
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", flaky)
+
+    history = [{"role": "user", "content": f"turn {i}"} for i in range(20)]
+    result = ai_assistant.reply({"title": "P"}, "hello", history)
+
+    assert result == "Still here."
+    # One attempt per shrink step until the last one succeeds.
+    assert len(calls) == len(ai_assistant._HISTORY_SHRINK_STEPS)
+    lengths = [len(m) for m in calls]
+    assert lengths[0] > lengths[1] > lengths[2] > lengths[3]
+    assert lengths[-1] == 2  # system message + this turn's user message only
+
+
+def test_reply_raises_immediately_on_a_non_413_error(monkeypatch):
+    """A rate-limit failure (already exhausted every key inside
+    _create_completion) is not a 'too large' problem — shrinking history
+    cannot fix it, so it must propagate on the very first attempt, not after
+    burning through every shrink step first."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    from groq import RateLimitError
+
+    calls = {"n": 0}
+
+    def always_rate_limited(**_):
+        calls["n"] += 1
+        raise _rate_limit_error()
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", always_rate_limited)
+
+    with pytest.raises(RateLimitError):
+        ai_assistant.reply({"title": "P"}, "hello", [])
+
+    assert calls["n"] == 1
+
+
+def test_reply_raises_the_413_once_shrinking_to_zero_history_still_fails(monkeypatch):
+    """Genuine floor: the fixed system-prompt overhead alone outgrows the
+    budget, so no amount of history-shrinking can help — must still surface
+    as the honest 413, not retry forever."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    from groq import APIStatusError
+
+    calls = {"n": 0}
+
+    def always_too_large(**_):
+        calls["n"] += 1
+        raise _request_too_large_error()
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", always_too_large)
+
+    with pytest.raises(APIStatusError) as excinfo:
+        ai_assistant.reply({"title": "P"}, "hello", [])
+
+    assert excinfo.value.status_code == 413
+    # Empty history collapses every shrink step to the same 0-history
+    # request (see _effective_shrink_steps) — one honest attempt, not four
+    # identical, doomed ones.
+    assert calls["n"] == 1
+
+
+def test_general_reply_shrinks_history_and_retries_the_whole_turn_on_a_413(monkeypatch):
+    """The Dashboard chat's tool-calling turn (GROQ_TOOL_MODEL) is the exact
+    scenario reported live: several batches of generated ideas pushed one
+    conversation's request past the account's tokens-per-minute budget. This
+    must now recover in the same conversation rather than forcing a new one."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    calls = []
+
+    def flaky(**kwargs):
+        calls.append(kwargs["messages"])
+        if len(calls) < len(ai_assistant._HISTORY_SHRINK_STEPS):
+            raise _request_too_large_error()
+        return _text_completion("Still here, with tools available.")
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", flaky)
+
+    history = [{"role": "user", "content": f"turn {i}"} for i in range(20)]
+    content, blocks, selected_project_id, selected_idea = ai_assistant.general_reply("hello", history)
+
+    assert content == "Still here, with tools available."
+    assert blocks == []
+    assert selected_project_id is None
+    assert selected_idea is None
+    assert len(calls) == len(ai_assistant._HISTORY_SHRINK_STEPS)
+    lengths = [len(m) for m in calls]
+    assert lengths[0] > lengths[1] > lengths[2] > lengths[3]
+
+
+def test_general_reply_raises_the_413_once_shrinking_to_zero_history_still_fails(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    from groq import APIStatusError
+
+    calls = {"n": 0}
+
+    def always_too_large(**_):
+        calls["n"] += 1
+        raise _request_too_large_error()
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", always_too_large)
+
+    with pytest.raises(APIStatusError) as excinfo:
+        ai_assistant.general_reply("hello", [{"role": "user", "content": "hi"}])
+
+    assert excinfo.value.status_code == 413
+    # 1 history message: steps 12/6/3 are all identical to "keep the one
+    # message" (no dedup benefit lost) — only the trailing 0-history step
+    # differs, so exactly 2 distinct attempts, not 4.
+    assert calls["n"] == 2
+
+
+# --- _effective_shrink_steps: skip retries that can't possibly help --------
+#
+# RELIABILITY (wasted latency, reported live): a short conversation can
+# already be too large purely on the fixed system-prompt/tool-schema
+# overhead plus one context-bearing turn. Without deduping, a student who
+# just generated a batch of ideas and immediately asked a follow-up (2
+# stored messages) would pay for THREE identical, doomed attempts (caps 12,
+# 6, 3 all equal "keep both messages") before ever reaching the one cap (0)
+# that changes anything — real added wall-clock time on a turn that was
+# always going to need the last-resort step, observed live as the "Create a
+# roadmap" follow-up itself timing out.
+
+
+def test_effective_shrink_steps_dedupes_when_history_is_shorter_than_every_cap():
+    assert ai_assistant._effective_shrink_steps(2) == (2, 0)
+
+
+def test_effective_shrink_steps_dedupes_partial_overlap():
+    # 5 history messages: caps 12 and 6 both collapse to "keep all 5"; cap 3
+    # and cap 0 each still cut something further.
+    assert ai_assistant._effective_shrink_steps(5) == (5, 3, 0)
+
+
+def test_effective_shrink_steps_collapses_to_one_step_for_empty_history():
+    assert ai_assistant._effective_shrink_steps(0) == (0,)
+
+
+def test_effective_shrink_steps_keeps_every_step_for_a_long_history():
+    # Unchanged behaviour for the case _HISTORY_SHRINK_STEPS was designed
+    # for: a long-running conversation where every cap genuinely trims more.
+    assert ai_assistant._effective_shrink_steps(20) == ai_assistant._HISTORY_SHRINK_STEPS
+
+
+def test_reply_skips_redundant_shrink_attempts_on_a_short_history(monkeypatch):
+    """LATENCY: a 2-message history must not retry 4 times when only 2
+    distinct request sizes are possible — each wasted attempt is a real
+    network round trip the student is waiting on."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    calls = {"n": 0}
+
+    def always_too_large(**_):
+        calls["n"] += 1
+        raise _request_too_large_error()
+
+    monkeypatch.setattr(ai_assistant, "_create_completion", always_too_large)
+
+    history = [{"role": "user", "content": "a"}, {"role": "assistant", "content": "b"}]
+    from groq import APIStatusError
+
+    with pytest.raises(APIStatusError):
+        ai_assistant.reply({"title": "P"}, "hello", history)
+
+    assert calls["n"] == 2  # (2, 0), not the full (12, 6, 3, 0)

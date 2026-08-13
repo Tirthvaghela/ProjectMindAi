@@ -28,6 +28,7 @@ from __future__ import annotations
 import itertools
 import json
 import logging
+import re
 import time
 from functools import lru_cache
 from typing import Any, Optional
@@ -335,10 +336,11 @@ def _shown_ideas_note(blocks: list[dict[str, Any]]) -> str:
     return "\n\n[Context — generated ideas shown above, in order:\n" + "\n".join(lines) + "]"
 
 
-def _active_project_note(selected_project_id: Optional[str]) -> str:
-    """Tells the model which project is currently selected, if any, so a
-    vague follow-up ('how should I build the backend?') doesn't need the
-    student to re-name the project or the model to guess from search history.
+def _project_detail_note(project_id: str, *, label: str, suffix: str = "") -> str:
+    """Shared builder behind _active_project_note and _named_reference_note
+    — the only thing that differs between "this is the student's active
+    project" and "this is what the student's current message just named" is
+    the label/suffix wording; the lookup and field formatting are identical.
     A plain get_project_details lookup — same tool the model itself has, not
     a second source of project data.
 
@@ -348,9 +350,7 @@ def _active_project_note(selected_project_id: Optional[str]) -> str:
     get_project_details round trip just to learn what the project actually
     requires — get_project_details already returns all of this, this just
     stops leaving most of it on the floor."""
-    if not selected_project_id:
-        return ""
-    project, _block = chat_tools.call_tool("get_project_details", {"project_id": selected_project_id})
+    project, _block = chat_tools.call_tool("get_project_details", {"project_id": project_id})
     if project.get("error"):
         return ""
     tech = ", ".join((project.get("technologies") or [])[:6])
@@ -370,49 +370,166 @@ def _active_project_note(selected_project_id: Optional[str]) -> str:
         ]
         if part
     )
-    return (
-        f"\n\n[Context — active project: {project['project_id']} \"{project.get('title', '')}\""
+    body = (
+        f"{label}: {project['project_id']} \"{project.get('title', '')}\""
         f"{' — ' + description if description else ''}"
-        f"{' (' + detail + ')' if detail else ''}]"
+        f"{' (' + detail + ')' if detail else ''}"
     )
+    return f"\n\n[Context — {body}{suffix}]"
 
 
-def _active_idea_note(selected_idea: Optional[dict[str, Any]]) -> str:
-    """Tells the model which GENERATED idea is currently the student's active
-    build target, if any — the idea-context mirror of _active_project_note.
-    No lookup needed: `selected_idea` already carries the idea's full fields
-    (see chat_tools.select_idea), since a generated idea has no catalogue
-    record to fetch it back from. Mutually exclusive with an active project
-    (see general_reply below), so at most one of these two notes is ever
-    non-empty on a given turn.
+def _active_project_note(selected_project_id: Optional[str]) -> str:
+    """Tells the model which project is currently selected, if any, so a
+    vague follow-up ('how should I build the backend?') doesn't need the
+    student to re-name the project or the model to guess from search history."""
+    if not selected_project_id:
+        return ""
+    return _project_detail_note(selected_project_id, label="active project")
+
+
+def _idea_detail_note(idea: dict[str, Any], *, label: str, suffix: str = "") -> str:
+    """Shared builder behind _active_idea_note and _named_reference_note —
+    the idea-context mirror of _project_detail_note. No lookup needed:
+    `idea` already carries its full fields (see chat_tools.select_idea, or a
+    generated_project_ideas block), since a generated idea has no catalogue
+    record to fetch it back from.
 
     Surfaces problem/solution too (select_idea already stores them, this just
     stops leaving them out of the note) — the same "what does this project
-    actually require" grounding _active_project_note carries via description,
+    actually require" grounding _project_detail_note carries via description,
     just from the idea's own fields instead of a Mongo lookup."""
-    name = (selected_idea or {}).get("name") if selected_idea else None
+    name = idea.get("name") if idea else None
     if not name:
         return ""
-    tech = ", ".join((selected_idea.get("technologies") or [])[:5])
-    weeks = selected_idea.get("duration_weeks")
-    problem = (selected_idea.get("problem") or "").strip()
-    solution = (selected_idea.get("solution") or "").strip()
+    tech = ", ".join((idea.get("technologies") or [])[:5])
+    weeks = idea.get("duration_weeks")
+    problem = (idea.get("problem") or "").strip()
+    solution = (idea.get("solution") or "").strip()
     core = " — ".join(part for part in [f"problem: {problem}" if problem else "", f"solution: {solution}" if solution else ""] if part)
     detail = ", ".join(
         part
         for part in [
-            selected_idea.get("difficulty", ""),
-            selected_idea.get("domain", ""),
+            idea.get("difficulty", ""),
+            idea.get("domain", ""),
             f"{weeks}wk" if weeks else "",
             tech,
         ]
         if part
     )
-    return (
-        f"\n\n[Context — active idea (AI-generated, not a catalogue project): \"{name}\""
+    body = (
+        f"{label}: \"{name}\""
         f"{' — ' + core if core else ''}"
-        f"{' (' + detail + ')' if detail else ''}]"
+        f"{' (' + detail + ')' if detail else ''}"
     )
+    return f"\n\n[Context — {body}{suffix}]"
+
+
+def _active_idea_note(selected_idea: Optional[dict[str, Any]]) -> str:
+    """Tells the model which GENERATED idea is currently the student's active
+    build target, if any — the idea-context mirror of _active_project_note.
+    Mutually exclusive with an active project (see general_reply below), so
+    at most one of these two notes is ever non-empty on a given turn."""
+    if not selected_idea or not selected_idea.get("name"):
+        return ""
+    return _idea_detail_note(selected_idea, label="active idea (AI-generated, not a catalogue project)")
+
+
+_QUOTED_NAME_RE = re.compile(r'"([^"]{1,200})"')
+
+# Appended to every named-reference note so the model treats the fields as
+# sufficient, rather than asking the student to restate what's already here
+# — exactly the failure mode this function exists to close (see its own
+# docstring below).
+_NAMED_REFERENCE_SUFFIX = " — use these exact fields, never ask the student to redescribe it"
+
+
+def _named_reference_note(
+    message: str,
+    history: Optional[list[dict[str, Any]]],
+    *,
+    selected_project_id: Optional[str] = None,
+    selected_idea: Optional[dict[str, Any]] = None,
+) -> str:
+    """Grounds an exact quoted name in the CURRENT message directly against
+    the idea/project it names, from the most recent matching block in
+    `history` — every per-card action button in this app (Create Roadmap,
+    Compare, Check Uniqueness, Improve Idea, ...) sends exactly this shape
+    ('Create a roadmap for "QuizWhiz".', see frontend Dashboard.jsx's
+    IDEA_ACTIONS/PROJECT_ACTIONS and Ideate.jsx) for a project/idea the
+    student has NOT necessarily made their active build target — that's
+    select_project/select_idea's job, triggered by 'Build This'/'select this
+    one', not by asking about one shown idea among several.
+
+    Exists because relying on the model to notice the same match against an
+    older '[Context — generated ideas shown above]'/'[Context — projects
+    shown above]' note (attached several turns back, on an *assistant*
+    turn — see _shown_ideas_note/_shown_projects_note) proved unreliable in
+    practice: live testing found the model asking the student to redescribe
+    a project/idea whose exact fields (problem, solution, technologies,
+    duration, ...) were already sitting in that note, unprompted by any real
+    ambiguity — the note was present in the request the model received, so
+    this is a parsing/attention gap in the model's behaviour, not a missing
+    context bug. Handing the same fields back on THIS turn's own user
+    message, addressed directly at the exact name just used, is far harder
+    for the model to miss than a name match buried several turns back.
+
+    Deliberately does not touch `selected_idea`/`selected_project_id` — this
+    grounds one question about one named idea/project, not a change of the
+    student's active build target, same as referring to 'the second one'
+    doesn't select it either. Skips a name that's already the active
+    project/idea (already covered by _active_project_note/_active_idea_note,
+    see below) purely to avoid paying twice for the same tokens.
+    """
+    names = _QUOTED_NAME_RE.findall(message)
+    if not names or not history:
+        return ""
+
+    remaining = set(names)
+    found_ideas: dict[str, dict[str, Any]] = {}
+    found_project_ids: dict[str, str] = {}
+    for turn in reversed(history):
+        if not remaining:
+            break
+        if turn.get("role") != "assistant":
+            continue
+        for block in turn.get("blocks") or []:
+            if block.get("type") == "generated_project_ideas":
+                for idea in block.get("ideas") or []:
+                    if idea.get("name") in remaining:
+                        found_ideas[idea["name"]] = idea
+                        remaining.discard(idea["name"])
+            elif block.get("type") == "project_recommendations":
+                for project in block.get("projects") or []:
+                    if project.get("title") in remaining:
+                        found_project_ids[project["title"]] = project["project_id"]
+                        remaining.discard(project["title"])
+
+    notes = []
+    for name in names:  # preserve the order the student's own message used
+        if name in found_ideas:
+            idea = found_ideas[name]
+            if selected_idea and selected_idea.get("id") and selected_idea.get("id") == idea.get("id"):
+                continue
+            notes.append(
+                _idea_detail_note(
+                    idea,
+                    label="idea the current message names, already shown in this conversation "
+                    "(AI-generated, not a catalogue project)",
+                    suffix=_NAMED_REFERENCE_SUFFIX,
+                )
+            )
+        elif name in found_project_ids:
+            project_id = found_project_ids[name]
+            if selected_project_id and selected_project_id == project_id:
+                continue
+            notes.append(
+                _project_detail_note(
+                    project_id,
+                    label="project the current message names, already shown in this conversation",
+                    suffix=_NAMED_REFERENCE_SUFFIX,
+                )
+            )
+    return "".join(notes)
 
 
 def _resume_context_note(resume_skills: Optional[list[str]]) -> str:
@@ -592,7 +709,10 @@ def _system_message(doc: dict[str, Any]) -> dict[str, str]:
 
 
 def _history_messages(
-    history: Optional[list[dict[str, Any]]], *, with_shown_projects: bool = False
+    history: Optional[list[dict[str, Any]]],
+    *,
+    with_shown_projects: bool = False,
+    max_messages: int = MAX_HISTORY_MESSAGES,
 ) -> list[dict[str, str]]:
     """Caller-supplied turns, trimmed and validated to role/content shape.
 
@@ -600,6 +720,11 @@ def _history_messages(
     server-side session for the *model call itself*; both are handed the
     running conversation and just replay it, capped so a long chat can't
     grow the request without bound.
+
+    `max_messages` overrides the default trim window — see
+    `_HISTORY_SHRINK_STEPS` below, which retries a turn with a smaller window
+    when even the default-sized request is rejected as too large for the
+    account's tokens-per-minute budget.
 
     `with_shown_projects` appends a shown-projects/shown-ideas note (see
     `_shown_projects_note`/`_shown_ideas_note`) — used only by
@@ -616,7 +741,11 @@ def _history_messages(
     model's tokens-per-minute budget (a 413 from Groq, not a flaky rate
     limit — retrying an identical oversized request fails identically).
     """
-    trimmed = (history or [])[-MAX_HISTORY_MESSAGES:]
+    # `[-0:]` is a classic Python trap — it slices the WHOLE list, not none of
+    # it, since -0 == 0 — so the max_messages == 0 shrink step (see
+    # _HISTORY_SHRINK_STEPS) needs its own branch rather than falling through
+    # to the general slice.
+    trimmed = (history or [])[-max_messages:] if max_messages > 0 else []
 
     last_projects_index: Optional[int] = None
     last_ideas_index: Optional[int] = None
@@ -664,10 +793,86 @@ def _complete(messages: list[dict[str, str]], *, temperature: float, max_tokens:
     return (completion.choices[0].message.content or "").strip()
 
 
+# A turn's fixed overhead (the system prompt, and for general_reply() also
+# every tool schema) can't be shrunk without changing what the assistant can
+# do — but the history replayed alongside it can. Shrinking that window is
+# the one lever left once _create_completion's own 413 rotation has already
+# tried every configured key and every one of them rejected the request as
+# too large: that means the request is oversized for every account behind
+# them, not just rate-limited on one, so a different key won't help either
+# (see _create_completion's docstring). Retrying the identical request would
+# fail identically forever (this is exactly the "grown too large" case
+# routes/assistant.py used to send straight to the student as "start a new
+# chat") — a smaller request is the only real fix, so these steps retry the
+# whole turn with progressively less history before giving up. 0 is the last
+# resort: no prior turns replayed at all, just the system/tool overhead plus
+# this one message — still grounded via the active-project/active-idea/
+# résumé notes, which are attached to the current message regardless of
+# history, not to the trimmed window.
+_HISTORY_SHRINK_STEPS = (MAX_HISTORY_MESSAGES, 6, 3, 0)
+
+
+def _is_context_too_large(error: Exception) -> bool:
+    """True for the specific Groq 413 that _create_completion propagates once
+    every configured key has rejected a request as too large — see its own
+    docstring. Distinguishes that one shrink-and-retry case from every other
+    exception (rate-limit exhaustion, a malformed request, ...), which a
+    smaller history window cannot fix and so must propagate unchanged."""
+    from groq import APIStatusError
+
+    return isinstance(error, APIStatusError) and getattr(error, "status_code", None) == 413
+
+
+def _effective_shrink_steps(history_length: int) -> tuple[int, ...]:
+    """_HISTORY_SHRINK_STEPS, deduplicated against how much history there
+    actually is to trim.
+
+    A short conversation can already be too large purely on the fixed
+    system-prompt/tool-schema overhead plus one note-bearing turn (e.g. a
+    turn that just generated several project ideas) — trying caps of 12,
+    then 6, then 3 against a 2-message history sends the exact same
+    oversized request three times before ever reaching the one cap (0) that
+    actually changes anything. Each of those wasted attempts still pays for
+    a full key-rotation pass (and for general_reply's tool-calling turn, a
+    full LLM round trip), which is real, user-visible latency for a turn
+    that could not have succeeded any of those times — worth skipping
+    outright rather than paying for on the way to the cap that might.
+    """
+    steps: list[int] = []
+    for cap in _HISTORY_SHRINK_STEPS:
+        effective = min(cap, max(history_length, 0))
+        if not steps or steps[-1] != effective:
+            steps.append(effective)
+    return tuple(steps)
+
+
 def reply(doc: dict[str, Any], message: str, history: Optional[list[dict[str, str]]] = None) -> str:
-    """One assistant reply, grounded in `doc`, given the running `history`."""
-    messages = [_system_message(doc), *_history_messages(history), {"role": "user", "content": message[:MAX_MESSAGE_CHARS]}]
-    return _complete(messages, temperature=0.4, max_tokens=600)
+    """One assistant reply, grounded in `doc`, given the running `history`.
+
+    Retries with a smaller history window (`_HISTORY_SHRINK_STEPS`, deduped
+    against the actual history length by `_effective_shrink_steps`) on a 413
+    that survived key rotation in `_create_completion` — see that function's
+    docstring and `_HISTORY_SHRINK_STEPS` above for why a smaller request,
+    not a different key, is the fix for that specific failure. Any other
+    exception propagates from the first attempt, unchanged.
+    """
+    steps = _effective_shrink_steps(len(history or []))
+    for step, cap in enumerate(steps):
+        messages = [
+            _system_message(doc),
+            *_history_messages(history, max_messages=cap),
+            {"role": "user", "content": message[:MAX_MESSAGE_CHARS]},
+        ]
+        try:
+            return _complete(messages, temperature=0.4, max_tokens=600)
+        except Exception as error:  # noqa: BLE001
+            if step == len(steps) - 1 or not _is_context_too_large(error):
+                raise
+            log.warning(
+                "Request too large for every configured key with %d history messages; "
+                "retrying with a smaller history window",
+                cap,
+            )
 
 
 def general_reply(
@@ -697,13 +902,63 @@ def general_reply(
     attach_resume_skills) — nothing in this turn's tool loop mutates it, so
     unlike the two selections above it is not part of the return value; the
     caller already has whatever it passed in.
+
+    Retries the whole turn with a smaller history window
+    (`_HISTORY_SHRINK_STEPS`, deduped against the actual history length by
+    `_effective_shrink_steps`) on a 413 that survived key rotation in
+    `_create_completion` — the tool-calling system prompt plus every tool
+    schema (GROQ_TOOL_MODEL) is already substantial fixed cost per request,
+    so a conversation that has shown several batches of projects/ideas can
+    still outgrow the account's tokens-per-minute budget even after that
+    per-key rotation. Safe to re-run from scratch: every chat_tools.py tool
+    is a read (or a same-turn-only selection returned to, not persisted by,
+    this function — see routes/assistant.py, which only writes after
+    general_reply returns), so repeating the tool loop on retry has no
+    side effect to duplicate. See reply()'s docstring for the same trade-off
+    on the simpler project-grounded chat.
+
+    Note the unavoidable trade-off at the last-resort (0-history) step: a
+    GENERATED idea/project the student hasn't explicitly selected is only
+    nameable via the shown-ideas/shown-projects note threaded through
+    history (see _shown_ideas_note/_shown_projects_note) — dropping all
+    history to fit the budget drops that note too, so the model may
+    correctly (per its own system-prompt instructions) ask which idea/
+    project is meant rather than guess. An explicitly selected project/idea
+    is unaffected: its own note is attached to the current message
+    regardless of history (see _active_project_note/_active_idea_note).
     """
     if not config.AI_ASSISTANT_ENABLED:
         raise AssistantUnavailable("GROQ_API_KEY is not configured.")
 
+    steps = _effective_shrink_steps(len(history or []))
+    for step, cap in enumerate(steps):
+        try:
+            return _general_reply_once(message, history, cap, selected_project_id, selected_idea, resume_skills)
+        except Exception as error:  # noqa: BLE001
+            if step == len(steps) - 1 or not _is_context_too_large(error):
+                raise
+            log.warning(
+                "Request too large for every configured key with %d history messages; "
+                "retrying the turn with a smaller history window",
+                cap,
+            )
+
+
+def _general_reply_once(
+    message: str,
+    history: Optional[list[dict[str, Any]]],
+    history_cap: int,
+    selected_project_id: Optional[str],
+    selected_idea: Optional[dict[str, Any]],
+    resume_skills: Optional[list[str]],
+) -> tuple[str, list[dict[str, Any]], Optional[str], Optional[dict[str, Any]]]:
+    """One attempt at general_reply()'s full tool-calling turn, at a given
+    history window size — factored out purely so general_reply() can retry
+    the entire turn with a smaller `history_cap` on a 413 (see
+    _HISTORY_SHRINK_STEPS) without duplicating the tool loop below."""
     messages: list[dict[str, Any]] = [
         _GENERAL_SYSTEM_MESSAGE,
-        *_history_messages(history, with_shown_projects=True),
+        *_history_messages(history, with_shown_projects=True, max_messages=history_cap),
         {
             "role": "user",
             "content": (
@@ -711,6 +966,12 @@ def general_reply(
                 + _active_project_note(selected_project_id)
                 + _active_idea_note(selected_idea)
                 + _resume_context_note(resume_skills)
+                + _named_reference_note(
+                    message[:MAX_MESSAGE_CHARS],
+                    history,
+                    selected_project_id=selected_project_id,
+                    selected_idea=selected_idea,
+                )
             ),
         },
     ]
