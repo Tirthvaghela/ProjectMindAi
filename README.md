@@ -486,5 +486,4 @@ educational purposes.
 ---
 
 ## ⭐ If you like this project, don't forget to give it a star on GitHub!
-#   P r o j e c t M i n d A i  
- 
+#
