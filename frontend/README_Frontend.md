@@ -40,17 +40,27 @@ src/
     PageHeader.jsx           the one place a page title is styled
     ProjectCard.jsx          card + relevance/explainability display
     SearchControls.jsx       SearchBar (+ mic button), ExampleQueries, FilterPanel
+    RecommendedForYou.jsx    "Best fit for you" panel on Search — calls /api/recommend
     ProjectPlanner.jsx       synopsis + roadmap tabs, PDF export, timeline personalisation
-    TeamBuilder.jsx          stateless skill-matching role suggestions (no account needed)
+    TeamBuilder.jsx          stateless skill-matching role suggestions (no account needed) —
+                             also exports AssignmentCard, reused by TeamRoom's live-roster version
+    StartTeamWorkspace.jsx   shared "start a team" control — posts a project_id (ProjectDetail)
+                             or a generated idea (IdeaDetail) to the same POST /api/teams
+    SkillGapPanel.jsx        readiness-check panel, shared between ProjectDetail and IdeaDetail
+    GeneratedIdeaCard.jsx    AI-idea card used on Dashboard
+    BlueprintCard.jsx        AI-idea card used on Ideate (own layout — action row, meta icons, badge)
+    Modal.jsx, AuthGateModal.jsx   dialogs with real focus management (see useFocusTrap below)
     ProjectChat.jsx          project-grounded AI chat widget (only renders if the backend has it enabled)
     MarkdownLite.jsx         dependency-free Markdown renderer for chat replies — renders straight
                              to React elements, no dangerouslySetInnerHTML, since the text is model output
-    NotificationsBell.jsx    polls /api/notifications every 30s
+    NotificationsBell.jsx    polls /api/notifications every 30s; per-item and "mark all" read
     FeedbackForm.jsx         star rating + comment -> POST /api/feedback
     Feedback.jsx             Spinner, ErrorNotice, EmptyState
     ErrorBoundary.jsx        catches render-time exceptions below it in the tree
-  pages/                     Search, Browse, ResumeMatch, Chat, Teams, TeamRoom, Account,
-                             ProjectDetail, Favorites, History, Analytics, Dashboard, About
+    useFocusTrap.js          hook: Escape-to-close, Tab cycling confined to a dialog, focus
+                             restored to the trigger on close — used by Modal.jsx/AuthGateModal.jsx
+  pages/                     Search, Ideate, IdeaDetail, ResumeMatch, UniquenessCheck, Teams,
+                             TeamRoom, Account, ProjectDetail, Favorites, History, Dashboard
 ```
 
 `Layout.jsx` is now just a thin wrapper: every route (bar `/dashboard`, which

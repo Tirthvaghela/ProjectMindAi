@@ -64,16 +64,19 @@ pick here over gunicorn (Unix-only) for a project developed on Windows.
 venv\Scripts\python -m pytest tests/ -v
 ```
 
-76 tests, mostly pure-function unit tests needing no fixture at all —
+442 tests. Most are pure-function unit tests needing no fixture at all —
 `db/schema.py`, `nlp/preprocess.py`, `nlp/generator.py`, `nlp/team_builder.py`,
 `nlp/timeline.py`, `nlp/learning_path.py`, `nlp/resume.py`, and
 `nlp/similarity.py` (the query-encoding step there is monkeypatched to a
 hand-picked vector rather than loading the real embedding model, so those
-tests stay fast). `test_auth.py` and `test_teams.py` are the exception —
-they genuinely touch MongoDB, via the `mongo_test_db` fixture in
-`conftest.py`, which redirects to a throwaway `projectmind_test` database on
-the same server and drops it afterward. Those two files skip themselves if
-`mongod` isn't reachable rather than failing.
+tests stay fast). The `test_*_routes.py` files (including `test_idea_routes.py`
+and `test_teams_routes.py`) and `test_auth.py`/`test_teams.py` genuinely touch
+MongoDB, via the `mongo_test_db` fixture in `conftest.py`, which redirects to
+a throwaway `projectmind_test` database on the same server and drops it
+afterward. Those files skip themselves if `mongod` isn't reachable rather
+than failing. A handful of proxied-collection tests (`test_teams.py`) simulate
+a `DuplicateKeyError` mid-write to exercise the team-join and invite-code
+races without needing real concurrent requests.
 
 ## API
 
@@ -100,6 +103,8 @@ frontend generates once and stores in `localStorage`. There are no accounts.
 | POST | `/api/learning-path` | `{skills[]}` → resources per skill |
 | POST | `/api/uniqueness` | `{title, description}` → duplicate check |
 | POST | `/api/resume-suggest` | Multipart file or `{text}` → ranked projects |
+| POST | `/api/recommend` | `{skills[], experience_level?, team_size?, max_duration_weeks?}` → explainable multi-factor ranking (`nlp/recommend.py:personalized_recommend`) |
+| POST | `/api/idea/skill-gap`, `/synopsis`, `/roadmap`, `/milestones`, `/timeline`, `/team-builder`, `/chat` | Same tools as their `/api/project/<id>/...` and `/api/skill-gap`/`/api/team-builder` equivalents, but for a generated idea that was never written to Mongo — built via `nlp/generator.py:idea_doc()` from the idea's own fields (title/description/domain/technologies/duration) instead of a catalogue lookup |
 | POST | `/api/favorite` | `{project_id}` (idempotent) |
 | DELETE | `/api/favorite/<id>` | Remove |
 | GET | `/api/favorites` | Full project documents, not just ids |
@@ -112,8 +117,8 @@ frontend generates once and stores in `localStorage`. There are no accounts.
 | POST | `/api/conversations/<id>/messages` | `{message}` → reply, appended server-side |
 | POST | `/api/auth/signup`, `/login`, `/logout` | Email/password accounts, bearer-token sessions |
 | GET | `/api/auth/me` | Resolve the current `X-Auth-Token` |
-| POST | `/api/teams`, `/api/teams/join` | Create a team workspace / join by invite code |
-| GET | `/api/teams/mine`, `/api/teams/<id>` | List own teams / one team — includes the live `project` context (description/technologies/difficulty/duration/skills), not just a title |
+| POST | `/api/teams`, `/api/teams/join` | Create a team workspace (from a `project_id` or a generated `idea`, mutually exclusive) / join by invite code |
+| GET | `/api/teams/mine`, `/api/teams/<id>` | List own teams / one team — includes the live `project` context (description/technologies/difficulty/duration/skills) for a project-backed team, or a snapshotted idea for an idea-backed one. `invite_code` is stripped from the payload for everyone except the team's owner. |
 | PATCH | `/api/teams/<id>` | `{name}` — rename, owner-only |
 | DELETE | `/api/teams/<id>/members/<user_id>` | Owner removes another member, or a member removes themselves |
 | POST | `/api/teams/<id>/skills` | `{skills[]}` — a member records their own skills, self-service |

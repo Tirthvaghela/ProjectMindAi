@@ -74,6 +74,16 @@ required skills, a reference repository, and learning resources.
 - Résumé matcher — upload a PDF/DOCX and get ranked project suggestions
 - Voice search (Web Speech API)
 
+## Generate your own idea
+
+- No catalogue project fits? Describe a domain/interest and get AI-generated
+  project concepts (title, problem/solution, tech stack, difficulty) — each
+  one gets its own synopsis, roadmap, skill-gap check, and can start a team
+  directly, with no catalogue project required
+- "Best fit for you" — a dedicated panel that blends search relevance,
+  skill-gap fit, and timeline fit into one explained score, distinct from
+  plain keyword/semantic search
+
 ## Once you've picked a project
 
 - Auto-generated synopsis and week-by-week roadmap, exportable to PDF
@@ -82,7 +92,9 @@ required skills, a reference repository, and learning resources.
 - Team-role suggestions from a list of teammates' skills
 - Timeline prediction (estimated completion time for a team size/experience level)
 - "Is my idea original?" duplicate-detection check
-- A shared team workspace: invite code, member list, message board
+- A shared team workspace: invite code (visible to the owner only), rename,
+  leave/remove members, per-member skills, role suggestions from the team's
+  real roster, message board
 - Favourites and search history (device-scoped, no account needed)
 
 ## AI Assistant (optional — needs `GROQ_API_KEY`)
@@ -90,20 +102,17 @@ required skills, a reference repository, and learning resources.
 - **Ask about this project** — a chat widget on each project's page, grounded
   in that project's own fields, with Markdown replies, message copy, and a
   history that persists locally per project
-- **Full assistant page** (`/chat`) — a ChatGPT-style page with a sidebar of
-  saved conversations, for general brainstorming/debugging/concept questions
-  not tied to one project
+- **Dashboard** (`/dashboard`) — a ChatGPT-style conversational page fusing
+  project search and general brainstorming/debugging/concept questions into
+  one thread, with a sidebar of saved conversations
 
 ## Accounts & notifications
 
 - Lightweight email/password accounts (bearer-token sessions, no third-party
   auth) — used only for teams and notifications; search, favourites and
   history stay anonymous and device-scoped regardless of sign-in state
-- In-app notifications, optionally mirrored to email over SMTP
-
-## Analytics
-
-- Aggregate dashboard: trending domains, popular technologies, search volume
+- In-app notifications (mark one read or all at once), optionally mirrored to
+  email over SMTP
 
 ---
 
@@ -213,27 +222,30 @@ NLP- Project Recommendation System/
 │       │   ├── ProjectChat.jsx  project-grounded AI chat widget
 │       │   ├── MarkdownLite.jsx dependency-free Markdown renderer for chat replies
 │       │   ├── ProjectPlanner.jsx, TeamBuilder.jsx, ProjectCard.jsx, ...
+│       │   ├── BlueprintCard.jsx, GeneratedIdeaCard.jsx  AI-generated idea cards (Ideate/Dashboard)
+│       │   ├── SkillGapPanel.jsx, RecommendedForYou.jsx, StartTeamWorkspace.jsx
+│       │   ├── Modal.jsx, AuthGateModal.jsx  focus-trapped dialogs
 │       │   └── Feedback.jsx, PageHeader.jsx, ErrorBoundary.jsx
-│       ├── pages/                Search, Browse, ResumeMatch, Chat, Teams, TeamRoom,
-│       │                         ProjectDetail, Favorites, History, Analytics,
-│       │                         Dashboard, Account, About
-│       ├── hooks/                useAuth, useFavorites, useVoiceSearch
+│       ├── pages/                Search, Ideate, IdeaDetail, ResumeMatch, UniquenessCheck,
+│       │                         Teams, TeamRoom, ProjectDetail, Favorites, History,
+│       │                         Dashboard, Account
+│       ├── hooks/                useAuth, useFavorites, useVoiceSearch, useFocusTrap
 │       ├── services/api.js       axios client, device/auth identity, error normalising
 │       └── utils/pdf.js
 │
 ├── backend/
 │   ├── app.py                   Flask application factory
 │   ├── config.py                all environment-driven configuration
-│   ├── routes/                  search, projects, user, assistant, auth, teams, notifications
+│   ├── routes/                  search, projects, user, assistant, ideas, auth, teams, notifications
 │   ├── nlp/                     preprocess, embeddings, similarity, recommend, generator,
 │   │                             skill/team/timeline/learning_path tools, ai_assistant, resume
 │   ├── auth/                    email/password + bearer-token sessions
-│   ├── teams/                   team workspace service layer
+│   ├── teams/                   team workspace service layer (project- or idea-backed)
 │   ├── db/                      MongoDB client, indexes, schema
 │   ├── dataset/projects_seed.json   500 seed projects across 14 domains
 │   ├── data/                    embeddings.npy + ids.json (built, not committed)
 │   ├── scripts/                 seed_db, build_index, evaluate, validate_dataset, smoke_search
-│   └── tests/                   76 tests (pytest)
+│   └── tests/                   442 tests (pytest)
 │
 ├── ROADMAP.md                   product roadmap / vision (source of truth for planning)
 ├── DESIGN.md                    "Gallery Mono" design tokens
@@ -280,15 +292,18 @@ failure. Routes needing identity read `X-Device-Id` (anonymous, always) or
 | GET | `/api/project/<id>` | Single project |
 | GET | `/api/project/<id>/synopsis` | Generated synopsis |
 | GET | `/api/project/<id>/roadmap` | Generated week-by-week roadmap |
+| GET | `/api/project/<id>/milestones` | Build checkpoints derived from the roadmap |
 | GET | `/api/similar/<id>` | Nearest projects by embedding |
 | GET | `/api/filters` | Filter options for the UI |
-| GET | `/api/analytics` | Aggregate counts + trending searches |
+| GET | `/api/analytics` | Aggregate counts + trending searches (no linked page currently) |
 | POST | `/api/skill-gap` | Readiness % against a project |
 | POST | `/api/team-builder` | Role suggestions from teammates' skills |
 | POST | `/api/timeline-predict` | Estimated completion time |
 | POST | `/api/learning-path` | Resources for a list of skills |
 | POST | `/api/uniqueness` | Duplicate-idea check |
 | POST | `/api/resume-suggest` | Résumé (PDF/DOCX or text) → ranked projects |
+| POST | `/api/recommend` | Explainable multi-factor "best fit for you" ranking |
+| POST | `/api/idea/{skill-gap,synopsis,roadmap,milestones,timeline,team-builder,chat}` | Same tools as above, for a not-yet-catalogued AI-generated idea |
 | POST / DELETE | `/api/favorite`, `/api/favorite/<id>` | Save / remove |
 | GET | `/api/favorites` | Full project documents |
 | GET / DELETE | `/api/history` | Recent searches |
@@ -299,7 +314,11 @@ failure. Routes needing identity read `X-Device-Id` (anonymous, always) or
 | POST | `/api/conversations/<id>/messages` | Send a message, get a reply (rate-limited) |
 | POST | `/api/auth/signup`, `/api/auth/login`, `/api/auth/logout` | Account auth |
 | GET | `/api/auth/me` | Current session |
-| POST / GET | `/api/teams`, `/api/teams/join`, `/api/teams/mine`, `/api/teams/<id>` | Team workspace |
+| POST / GET | `/api/teams`, `/api/teams/join`, `/api/teams/mine`, `/api/teams/<id>` | Team workspace — create from a `project_id` or a generated `idea` |
+| PATCH | `/api/teams/<id>` | Rename (owner-only) |
+| DELETE | `/api/teams/<id>/members/<uid>` | Leave, or owner removes a member |
+| POST | `/api/teams/<id>/skills` | Record your own skills for role-matching |
+| GET | `/api/teams/<id>/roles` | Role suggestions for the team's real roster |
 | GET / POST | `/api/teams/<id>/messages` | Team message board |
 | GET / POST | `/api/notifications`, `/api/notifications/<id>/read`, `/api/notifications/read-all` | In-app notifications |
 
@@ -307,9 +326,10 @@ failure. Routes needing identity read `X-Device-Id` (anonymous, always) or
 
 # 📱 Frontend Pages
 
-`Search` (index/landing) · `Browse` · `Résumé Match` · `Chat` · `Teams` /
-`Team Room` · `Project Detail` · `Favourites` · `History` · `Analytics` ·
-`Dashboard` (conversational project search) · `Account` · `About`
+`Search` (index/landing) · `Ideate` (AI idea generation) · `Idea Detail` ·
+`Résumé Match` · `Idea Check` (uniqueness) · `Teams` / `Team Room` ·
+`Project Detail` · `Favourites` · `History` · `Dashboard` (conversational
+project search) · `Account`
 
 ---
 
@@ -335,8 +355,8 @@ one exception, and the rest of the app is fully functional with
 - **Project chat** — stateless on the server; the frontend resends the
   conversation each turn, grounded in one project's title/domain/description/
   technologies/skills.
-- **General chat** (`/chat`) — persists conversations server-side per device
-  (no project in scope), with a saved-conversation sidebar.
+- **General chat** (Dashboard) — persists conversations server-side per
+  device (no project in scope), with a saved-conversation sidebar.
 
 Set `GROQ_API_KEY` in `backend/.env` to enable both.
 
@@ -408,7 +428,7 @@ server — see [`backend/README.md`](backend/README.md#running-in-production).
 
 ```powershell
 cd backend
-venv\Scripts\python -m pytest tests/ -v     # 76 tests
+venv\Scripts\python -m pytest tests/ -v     # 442 tests
 
 cd frontend
 npm run lint                                 # oxlint
