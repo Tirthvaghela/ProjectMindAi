@@ -15,8 +15,7 @@ const MODULES = [
  * The app's permanent chrome — a ChatGPT-style shell. Dashboard.jsx is the
  * one home now (chat + project search fused into a single thread, see its
  * own header comment), so "Recents" here is conversation history, not a
- * separate search log. Browse/Chat/Analytics/About are parked, not
- * deleted — see App.jsx.
+ * separate search log.
  */
 export default function AppSidebar({ open = false, onClose }) {
   const { user, loading: authLoading } = useAuth()

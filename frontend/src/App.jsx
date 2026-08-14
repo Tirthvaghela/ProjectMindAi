@@ -7,11 +7,6 @@ import { EmptyState, Spinner } from './components/Feedback'
 // Search stays a static import — it's the index route (query-results deep
 // links like History's "run again" still land here). Everything else is
 // fetched only when actually navigated to.
-//
-// Browse, Chat, Analytics and About are parked, not deleted (see
-// AppSidebar.jsx / Dashboard.jsx) — their pages still exist on disk, just
-// unrouted, since Dashboard absorbed browse+chat and analytics/about were
-// dropped for now.
 const ResumeMatch = lazy(() => import('./pages/ResumeMatch'))
 const UniquenessCheck = lazy(() => import('./pages/UniquenessCheck'))
 const Ideate = lazy(() => import('./pages/Ideate'))
