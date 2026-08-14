@@ -246,7 +246,15 @@ class HybridRetriever:
         scores = embeddings.cosine_scores(self.matrix[index], self.matrix)
         scores[index] = -np.inf  # never recommend the project itself
 
-        top_k = max(1, min(top_k, config.MAX_TOP_K, len(self.ids) - 1))
+        # No other project exists to recommend — max(1, ...) below would
+        # otherwise still force a request for 1 neighbour and argpartition
+        # would hand back the excluded project itself (its -inf score and
+        # all), since a 1-project corpus has nothing else to return.
+        available = len(self.ids) - 1
+        if available <= 0:
+            return []
+
+        top_k = max(1, min(top_k, config.MAX_TOP_K, available))
         top = np.argpartition(-scores, top_k - 1)[:top_k]
         top = top[np.argsort(-scores[top])]
 

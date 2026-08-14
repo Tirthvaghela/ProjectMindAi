@@ -68,16 +68,27 @@ function RepoButton({ url, title }) {
  * surface *why* it matched: the matched keyword terms come straight from the
  * backend's BM25 half, and a semantic-only match is labelled as such rather
  * than shown as an empty list.
+ *
+ * `overallScore`/`matchingFactors` are the two fields unique to
+ * POST /api/recommend (nlp/recommend.py:personalized_recommend) — plain
+ * search results never carry them, so the fallback below (relevance.score +
+ * matched-term chips) is exactly the old behaviour. When they ARE present,
+ * `overallScore` replaces the raw hybrid score as the headline percent (it
+ * already blends relevance with skill/timeline fit) and `matchingFactors`
+ * — already-composed strings like "Skill match: you already have Python" —
+ * render as the roadmap's own "✓ this matched, ✓ that matched" checklist
+ * instead of bare keyword chips.
  */
-function RelevanceBar({ relevance, why }) {
+function RelevanceBar({ relevance, why, overallScore, matchingFactors }) {
   if (!relevance) return null
-  const percent = Math.round(relevance.score * 100)
+  const percent = Math.round(overallScore ?? relevance.score * 100)
+  const explained = matchingFactors?.length > 0
 
   return (
     <div className="mt-4 pt-3" style={{ borderTop: '1px solid var(--border-technical)' }}>
       <div className="mb-1.5 flex items-center justify-between">
         <span className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9.5 }}>
-          Hybrid match
+          {explained ? 'Best-fit score' : 'Hybrid match'}
         </span>
         <span className="t-label-mono shrink-0 tabular-nums" style={{ color: 'var(--on-surface)' }}>
           {percent}%
@@ -101,18 +112,29 @@ function RelevanceBar({ relevance, why }) {
         <p className="t-body-md mt-2.5" style={{ color: 'var(--on-surface-variant)', fontSize: 13 }}>{why}</p>
       )}
 
-      {relevance.matched_terms?.length > 0 && (
-        <div className="mt-2.5 flex flex-wrap gap-1">
-          {relevance.matched_terms.slice(0, 6).map((term) => (
-            <span
-              key={term}
-              className="t-label-mono px-1.5 py-0.5"
-              style={{ border: '1px solid var(--primary)', color: 'var(--primary)', fontSize: 11, borderRadius: 4 }}
-            >
-              {term}
-            </span>
+      {explained ? (
+        <ul className="mt-2.5 space-y-1">
+          {matchingFactors.map((factor) => (
+            <li key={factor} className="flex items-start gap-1.5">
+              <span className="t-label-mono shrink-0" style={{ color: 'var(--primary)', fontSize: 12 }} aria-hidden="true">✓</span>
+              <span className="t-body-md" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>{factor}</span>
+            </li>
           ))}
-        </div>
+        </ul>
+      ) : (
+        relevance.matched_terms?.length > 0 && (
+          <div className="mt-2.5 flex flex-wrap gap-1">
+            {relevance.matched_terms.slice(0, 6).map((term) => (
+              <span
+                key={term}
+                className="t-label-mono px-1.5 py-0.5"
+                style={{ border: '1px solid var(--primary)', color: 'var(--primary)', fontSize: 11, borderRadius: 4 }}
+              >
+                {term}
+              </span>
+            ))}
+          </div>
+        )
       )}
     </div>
   )
@@ -236,7 +258,12 @@ export default function ProjectCard({ project, isFavorite, onToggleFavorite, ind
 
         {/* Pushes the relevance block to the bottom so cards in a row align. */}
         <div className="mt-auto">
-          <RelevanceBar relevance={project.relevance} why={project.why_recommended} />
+          <RelevanceBar
+            relevance={project.relevance}
+            why={project.why_recommended || project.recommendation_reason}
+            overallScore={project.overall_score}
+            matchingFactors={project.matching_factors}
+          />
           <CardActions project={project} />
         </div>
       </Link>

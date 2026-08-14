@@ -191,6 +191,21 @@ def test_skill_gap_missing_project_raises_keyerror():
         recommend.skill_gap("does-not-exist", ["Python"])
 
 
+def test_skill_gap_for_doc_needs_no_retriever_lookup():
+    # The doc-based core routes/ideas.py's idea-skill-gap endpoint uses —
+    # skill_gap() above is now just this plus a project_id -> doc lookup, so
+    # this must work from a plain dict with no retriever/Mongo involved at
+    # all (a generated idea's synthetic doc, via nlp/generator.py:idea_doc).
+    doc = {"project_id": None, "skills": ["React development", "Smart contract development"]}
+
+    result = recommend.skill_gap_for_doc(doc, ["React"])
+
+    assert result["skills_you_have"] == ["React development"]
+    assert result["skills_to_learn"] == ["Smart contract development"]
+    assert result["readiness_percent"] == 50.0
+    assert result["project_id"] is None
+
+
 # --- chat_tools.compare_projects / recommend_decision ------------------------
 
 DECISION_DOCS = {

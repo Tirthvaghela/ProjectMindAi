@@ -105,6 +105,15 @@ def test_similar_excludes_the_project_itself(retriever):
     assert all(r.project_id != "a" for r in results)
 
 
+def test_similar_returns_nothing_for_a_single_project_corpus():
+    # max(1, min(top_k, MAX_TOP_K, len(ids) - 1)) used to force a request
+    # for 1 neighbour even when len(ids) - 1 == 0 — the only project in a
+    # 1-project corpus is itself, already excluded, so there is nothing left
+    # to hand back.
+    solo = HybridRetriever(np.array([[1.0, 0.0, 0.0]], dtype=np.float32), ["a"], {"a": DOCS["a"]})
+    assert solo.similar("a", top_k=5) == []
+
+
 def test_find_duplicates_flags_near_identical_vectors():
     matrix = np.array([[1.0, 0.0], [0.999, 0.0447], [0.0, 1.0]], dtype=np.float32)
     matrix = matrix / np.linalg.norm(matrix, axis=1, keepdims=True)

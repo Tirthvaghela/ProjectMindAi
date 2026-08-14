@@ -30,18 +30,28 @@ MAX_TEAM_NAME_CHARS = 80
 
 @bp.post("")
 def create():
+    """Body: {name, project_id} for a catalogue project, or {name, idea} for
+    a generated idea (that idea's own fields — see routes/ideas.py) — a
+    generated idea has no project_id to key a team on (nlp/ai_assistant.py's
+    module docstring: never written to Mongo), so this is the one place a
+    team can be grounded in one directly instead."""
     user = current_user()
     body = json_body()
-    project_id = (body.get("project_id") or "").strip()
+    project_id = (body.get("project_id") or "").strip() or None
+    idea = body.get("idea")
     name = (body.get("name") or "").strip()
 
-    if not project_id:
-        raise ApiError("'project_id' is required.", status=400)
+    if not project_id and not idea:
+        raise ApiError("Provide either 'project_id' or 'idea'.", status=400)
+    if project_id and idea:
+        raise ApiError("Provide only one of 'project_id' or 'idea'.", status=400)
+    if idea is not None and not isinstance(idea, dict):
+        raise ApiError("'idea' must be an object.", status=400)
     if len(name) > MAX_TEAM_NAME_CHARS:
         raise ApiError(f"'name' must be {MAX_TEAM_NAME_CHARS} characters or fewer.", status=400)
 
     try:
-        team = create_team(project_id, name, user)
+        team = create_team(name, user, project_id=project_id, idea=idea)
     except TeamError as error:
         raise ApiError(str(error), status=error.status) from None
 

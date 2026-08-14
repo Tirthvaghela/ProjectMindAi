@@ -348,6 +348,52 @@
   font-size: 11px;
 }
 
+/* Ideate.jsx's "Idea Volume" control — a filled track is painted per-render
+   via an inline `background` gradient (the fill position depends on the
+   current value), this stylesheet only owns the track/thumb shape so it
+   still looks native to the rest of the form. */
+.landing-mono .gm-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border-technical);
+  outline: none;
+  cursor: pointer;
+}
+.landing-mono .gm-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--primary);
+  border: 2px solid var(--on-primary);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.landing-mono .gm-range::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+.landing-mono .gm-range::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--primary);
+  border: 2px solid var(--on-primary);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.landing-mono .gm-range::-moz-range-thumb:hover {
+  transform: scale(1.15);
+}
+.landing-mono .gm-range::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: transparent;
+}
+
 /* Dashboard.jsx's chat composer — same glow-on-focus technique as the
    landing hero's input (.hero-input-shell), scoped separately since this
    one wraps a full form (label + textarea + toolbar), not just an input. */

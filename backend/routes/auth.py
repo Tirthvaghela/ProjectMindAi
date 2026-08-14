@@ -83,7 +83,14 @@ def update_profile_route():
             new_password=new_password,
         )
     except AuthError as error:
-        raise ApiError(str(error), status=400) from None
+        # Every other AuthError here is a validation problem with the
+        # request itself (bad name/email/password) — a clean 400. This one
+        # is different: the session token was genuinely valid, but the
+        # account it points to is gone (deleted between the request being
+        # issued and this one landing), which is a 404 on the resource, not
+        # a malformed request.
+        status = 404 if str(error) == "Account not found." else 400
+        raise ApiError(str(error), status=status) from None
 
     if new_password is not None:
         # A password change invalidates every session for this account,

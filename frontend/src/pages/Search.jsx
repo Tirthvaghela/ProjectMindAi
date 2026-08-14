@@ -5,6 +5,7 @@ import api from '../services/api'
 import useAuth from '../hooks/useAuth.jsx'
 import useFavorites from '../hooks/useFavorites'
 import ProjectCard from '../components/ProjectCard'
+import RecommendedForYou from '../components/RecommendedForYou'
 import PageHeader from '../components/PageHeader'
 import { SearchBar, FilterPanel } from '../components/SearchControls'
 import { ErrorNotice, EmptyState } from '../components/Feedback'
@@ -291,7 +292,7 @@ export default function Search() {
   const { isFavorite, toggle } = useFavorites()
 
   const runSearch = useCallback(
-    async (query, activeFilters, usePersonal) => {
+    async (query, activeFilters, usePersonal, isCancelled = () => false) => {
       if (!query.trim()) return
       setStatus('loading')
       setError(null)
@@ -302,9 +303,11 @@ export default function Search() {
           top_k: 12,
           personalize: usePersonal,
         })
+        if (isCancelled()) return
         setResults(response)
         setStatus('done')
       } catch (err) {
+        if (isCancelled()) return
         setError(err.message)
         setStatus('error')
       }
@@ -314,9 +317,16 @@ export default function Search() {
 
   // Re-run whenever the URL query, the filters, or the personalisation
   // preference change. Filters deliberately do not need a second Search click —
-  // changing one should update results.
+  // changing one should update results. Guarded against out-of-order
+  // responses: changing a filter twice before the first request resolves
+  // must not let the stale first response overwrite the newer one.
   useEffect(() => {
-    if (urlQuery) runSearch(urlQuery, filters, personalize)
+    if (!urlQuery) return
+    let cancelled = false
+    runSearch(urlQuery, filters, personalize, () => cancelled)
+    return () => {
+      cancelled = true
+    }
   }, [urlQuery, filters, personalize, runSearch])
 
   const submit = (query = input) => {
@@ -390,6 +400,7 @@ export default function Search() {
           />
 
           <DiscoveryHero input={input} setInput={setInput} submit={submit} />
+          <RecommendedForYou isFavorite={isFavorite} onToggleFavorite={toggle} />
           <SearchMethodExplainer />
 
           <div className="grid gap-6 lg:grid-cols-[260px_1fr]">

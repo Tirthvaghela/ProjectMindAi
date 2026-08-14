@@ -1285,36 +1285,6 @@ def refine_project_idea(
     return refined, block
 
 
-def _idea_weeks(duration_weeks: Optional[int]) -> int:
-    try:
-        return max(1, min(int(duration_weeks), 24)) if duration_weeks is not None else 8
-    except (TypeError, ValueError):
-        return 8
-
-
-def _idea_doc(
-    name: str,
-    domain: Optional[str] = None,
-    duration_weeks: Optional[int] = None,
-    difficulty: Optional[str] = None,
-    technologies: Optional[list[str]] = None,
-) -> dict[str, Any]:
-    """A synthetic project-shaped doc from a GENERATED idea's own fields, fed
-    to the exact same generator/timeline functions a catalogue project's
-    project_id would resolve to via Mongo — a generated idea just has no
-    project_id to look up, so this stands in for the lookup. Shared by every
-    generate_idea_* tool below so they all build the doc the same way."""
-    return {
-        "project_id": None,
-        "title": name,
-        "domain": domain if domain in DOMAINS else "",
-        "difficulty": difficulty if difficulty in DIFFICULTIES else "",
-        "duration_weeks": _idea_weeks(duration_weeks),
-        "technologies": [t.strip() for t in (technologies or []) if isinstance(t, str) and t.strip()],
-        "skills": [],
-    }
-
-
 def generate_idea_roadmap(
     name: str,
     domain: Optional[str] = None,
@@ -1326,7 +1296,7 @@ def generate_idea_roadmap(
     idea's own fields instead of a Mongo lookup — a generated idea has no
     project_id to look up. Passing technologies grounds the phase tasks the
     same way a catalogue project's own technologies would."""
-    doc = _idea_doc(name, domain=domain, duration_weeks=duration_weeks, technologies=technologies)
+    doc = generator.idea_doc(name, domain=domain, duration_weeks=duration_weeks, technologies=technologies)
     return generator.roadmap_for(doc)
 
 
@@ -1342,7 +1312,7 @@ def generate_idea_timeline(
     (see predict_timeline above), fed a synthetic idea doc — the idea-context
     mirror of generate_idea_roadmap, for "how long will this take" instead of
     "what are the phases"."""
-    doc = _idea_doc(name, domain=domain, duration_weeks=duration_weeks, difficulty=difficulty)
+    doc = generator.idea_doc(name, domain=domain, duration_weeks=duration_weeks, difficulty=difficulty)
     try:
         size = int(team_size) if team_size is not None else 1
     except (TypeError, ValueError):
@@ -1358,7 +1328,7 @@ def generate_idea_milestones(
 ) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
     """Same generator.milestones_for() a catalogue project's milestones use
     (see generate_milestones above), fed a synthetic idea doc."""
-    doc = _idea_doc(name, domain=domain, duration_weeks=duration_weeks)
+    doc = generator.idea_doc(name, domain=domain, duration_weeks=duration_weeks)
     result = generator.milestones_for(doc)
     return result, {"type": "milestones", **result}
 

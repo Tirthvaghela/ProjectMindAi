@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import api from '../services/api'
 import Panel from './Panel'
 
 function emptyMember() {
@@ -38,7 +37,11 @@ function MemberRow({ index, member, onChange, onRemove, canRemove }) {
   )
 }
 
-function AssignmentCard({ assignment, index }) {
+// Exported so TeamRoom.jsx's "Suggest roles" panel (GET /teams/<id>/roles —
+// same suggest_roles() engine, just fed the team's real persisted roster
+// instead of a typed-in one) renders the exact same assignment shape rather
+// than a second, drifting copy of this card.
+export function AssignmentCard({ assignment, index }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -87,8 +90,15 @@ function AssignmentCard({ assignment, index }) {
  * Roles come from the same domain module breakdown the roadmap/synopsis
  * generator uses (nlp/generator.py), so the roles shown here line up with
  * what "Plan this project" already told the student the build looks like.
+ *
+ * `onBuild(members) => Promise<{data}>` is the only thing that differs
+ * between a catalogue project (pages/ProjectDetail.jsx, POST
+ * /api/team-builder keyed by project_id) and a generated idea
+ * (pages/IdeaDetail.jsx, POST /api/idea/team-builder — a generated idea has
+ * no project_id, see backend/routes/ideas.py) — both share this exact
+ * component rather than forking it.
  */
-export default function TeamBuilder({ projectId }) {
+export default function TeamBuilder({ onBuild }) {
   const [members, setMembers] = useState([emptyMember(), emptyMember()])
   const [result, setResult] = useState(null)
   const [status, setStatus] = useState('idle')
@@ -121,7 +131,7 @@ export default function TeamBuilder({ projectId }) {
     setStatus('loading')
     setError(null)
     try {
-      const { data } = await api.teamBuilder(projectId, payload)
+      const { data } = await onBuild(payload)
       setResult(data)
       setStatus('done')
     } catch (err) {

@@ -1,4 +1,4 @@
-from nlp.generator import milestones_for, milestones_from_phases, phase_plan, roadmap_for, synopsis_for
+from nlp.generator import idea_doc, milestones_for, milestones_from_phases, phase_plan, roadmap_for, synopsis_for
 
 DOC = {
     "project_id": "pm-001",
@@ -28,6 +28,17 @@ def test_roadmap_handles_a_very_short_duration_without_zero_week_phases():
     assert roadmap["total_weeks"] == 1
     assert all(p["weeks"] > 0 for p in roadmap["phases"])
     assert sum(p["weeks"] for p in roadmap["phases"]) == 1
+
+
+def test_roadmap_handles_the_half_week_floor_edge_case_without_a_zero_week_phase():
+    # duration_weeks=4 used to floor all 6 earlier phases to exactly 0.5
+    # weeks each (sum 4.0), leaving the last phase — whatever's left over —
+    # at exactly 0, landing its milestone on the same week as the phase
+    # before it.
+    for weeks in (3.5, 4, 4.5):
+        phases = phase_plan(weeks, DOC["domain"])
+        assert all(p["weeks"] > 0 for p in phases), f"a phase hit 0 weeks at duration_weeks={weeks}"
+        assert sum(p["weeks"] for p in phases) == weeks
 
 
 def test_roadmap_falls_back_to_default_profile_for_unknown_domain():
@@ -142,3 +153,71 @@ def test_milestones_from_phases_matches_a_personalised_timeline_phase_list():
     milestones = milestones_from_phases(personalised_phases)
     assert len(milestones) == len(personalised_phases)
     assert milestones[-1]["week"] == sum(p["weeks"] for p in personalised_phases)
+
+
+# --- idea_doc: synthetic doc for a GENERATED idea (no project_id) ------------
+#
+# A generated idea is never written to Mongo, so every idea-scoped caller
+# (nlp/chat_tools.py's generate_idea_* tools, routes/ideas.py's REST
+# endpoints) builds a doc from the idea's own fields via this function
+# instead of a Mongo lookup — same shape roadmap_for/synopsis_for/
+# milestones_for/skill_gap_for_doc already expect.
+
+
+def test_idea_doc_has_no_project_id():
+    assert idea_doc("My Idea")["project_id"] is None
+
+
+def test_idea_doc_uses_the_name_as_title():
+    assert idea_doc("Smart Notes Hub")["title"] == "Smart Notes Hub"
+
+
+def test_idea_doc_mirrors_technologies_into_skills():
+    # A generated idea has no separate skills taxonomy distinct from its tech
+    # stack (unlike a catalogue project's curated "skills" list) — technologies
+    # is the honest stand-in, so skill_gap_for_doc() has something real to
+    # compare a student's known skills against.
+    doc = idea_doc("X", technologies=["Python", "React"])
+    assert doc["skills"] == ["Python", "React"] == doc["technologies"]
+
+
+def test_idea_doc_defaults_description_to_empty_string():
+    assert idea_doc("X")["description"] == ""
+
+
+def test_idea_doc_uses_the_given_description():
+    doc = idea_doc("X", description="A problem. A solution.")
+    assert doc["description"] == "A problem. A solution."
+
+
+def test_idea_doc_normalises_an_invalid_domain_and_difficulty_to_empty():
+    doc = idea_doc("X", domain="Not A Real Domain", difficulty="Not A Real Difficulty")
+    assert doc["domain"] == ""
+    assert doc["difficulty"] == ""
+
+
+def test_idea_doc_clamps_duration_weeks_and_defaults_when_missing():
+    assert idea_doc("X")["duration_weeks"] == 8
+    assert idea_doc("X", duration_weeks=999)["duration_weeks"] == 24
+    assert idea_doc("X", duration_weeks=0)["duration_weeks"] == 1
+    assert idea_doc("X", duration_weeks="not a number")["duration_weeks"] == 8
+
+
+def test_idea_doc_roadmap_and_synopsis_are_grounded_in_the_ideas_own_fields():
+    # End-to-end: idea_doc() feeds straight into the same generators a
+    # catalogue project's own roadmap/synopsis use.
+    doc = idea_doc(
+        "Smart Notes Hub",
+        domain="Artificial Intelligence",
+        duration_weeks=10,
+        technologies=["Python", "FastAPI"],
+        description="Students lose track of scattered lecture notes. A unifying, searchable hub.",
+    )
+    roadmap = roadmap_for(doc)
+    assert roadmap["total_weeks"] == 10
+    assert "Model Development & Training" in [p["phase"] for p in roadmap["phases"]]
+
+    synopsis = synopsis_for(doc)
+    assert synopsis["title"] == "Smart Notes Hub"
+    assert "scattered lecture notes" in synopsis["abstract"]
+    assert "Python" in synopsis["technology_stack"]

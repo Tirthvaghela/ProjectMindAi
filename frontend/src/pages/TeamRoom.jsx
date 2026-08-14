@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import useAuth from '../hooks/useAuth.jsx'
 import useVoiceSearch from '../hooks/useVoiceSearch'
@@ -7,6 +7,7 @@ import api from '../services/api'
 import MarkdownLite from '../components/MarkdownLite'
 import { Spinner, ErrorNotice, EmptyState } from '../components/Feedback'
 import Panel from '../components/Panel'
+import { AssignmentCard } from '../components/TeamBuilder'
 import { formatClockTime, formatDate } from '../utils/time'
 
 /**
@@ -57,6 +58,35 @@ function MessageRow({ message, mine }) {
 }
 
 /**
+ * Links to whatever this team is actually grounded in — a catalogue project
+ * (`/project/<id>`) or a generated idea (`/idea`, fed the team's own stored
+ * idea snapshot as navigation state, since a generated idea has no
+ * persistent id to link by — see backend/teams/service.py's idea snapshot).
+ * Plain text in the (rare) case neither is available.
+ */
+function SubjectLink({ team, className, style, children }) {
+  if (team.project_id) {
+    return (
+      <Link to={`/project/${team.project_id}`} className={className} style={style}>
+        {children}
+      </Link>
+    )
+  }
+  if (team.idea) {
+    return (
+      <Link to="/idea" state={{ idea: team.idea }} className={className} style={style}>
+        {children}
+      </Link>
+    )
+  }
+  return (
+    <span className={className} style={style}>
+      {children}
+    </span>
+  )
+}
+
+/**
  * Polls for new messages every 4s rather than a websocket connection — see
  * backend/teams/service.py for why: a handful of people, infrequent
  * messages, and it keeps this deployment's story identical to the rest of
@@ -64,9 +94,9 @@ function MessageRow({ message, mine }) {
  */
 export default function TeamRoom() {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { user, loading: authLoading } = useAuth()
   const [team, setTeam] = useState(null)
-  const [project, setProject] = useState(null)
   const [messages, setMessages] = useState([])
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState(null)
@@ -75,6 +105,23 @@ export default function TeamRoom() {
   const bottomRef = useRef(null)
   const stickToBottom = useRef(true)
   const { supported: voiceSupported, listening, start, stop } = useVoiceSearch()
+
+  const [renaming, setRenaming] = useState(false)
+  const [nameDraft, setNameDraft] = useState('')
+  const [renameBusy, setRenameBusy] = useState(false)
+  const [renameError, setRenameError] = useState(null)
+
+  const [removingId, setRemovingId] = useState(null)
+  const [memberError, setMemberError] = useState(null)
+
+  const [skillsInput, setSkillsInput] = useState('')
+  const [skillsBusy, setSkillsBusy] = useState(false)
+  const [skillsError, setSkillsError] = useState(null)
+  const [skillsSaved, setSkillsSaved] = useState(false)
+
+  const [rolesStatus, setRolesStatus] = useState('idle') // idle | loading | done | error
+  const [rolesResult, setRolesResult] = useState(null)
+  const [rolesError, setRolesError] = useState(null)
 
   // Team rooms are account-only, same as the Teams list (backend/routes/
   // teams.py requires current_user() on every route) — without this guard a
@@ -92,12 +139,11 @@ export default function TeamRoom() {
         if (cancelled) return
         setTeam(teamRes.data)
         setMessages(messagesRes.data)
+        // Prefill from whatever this member already recorded, so opening the
+        // page doesn't blank out a skills list set on a previous visit.
+        const mine = teamRes.data.members.find((m) => m.user_id === user.user_id)
+        if (mine?.skills?.length) setSkillsInput(mine.skills.join(', '))
         setStatus('done')
-        // Secondary — the room still works even if this fails, it just
-        // won't show the project's domain/tech-stack chips in the sidebar.
-        api.getProject(teamRes.data.project_id).then(({ data }) => {
-          if (!cancelled) setProject(data)
-        }).catch(() => {})
       })
       .catch((err) => {
         if (cancelled) return
@@ -143,6 +189,87 @@ export default function TeamRoom() {
     }
   }
 
+  const startRename = () => {
+    setNameDraft(team.name)
+    setRenameError(null)
+    setRenaming(true)
+  }
+
+  const submitRename = async (event) => {
+    event.preventDefault()
+    const name = nameDraft.trim()
+    if (!name) return
+    setRenameBusy(true)
+    setRenameError(null)
+    try {
+      const { data } = await api.updateTeam(id, name)
+      setTeam(data)
+      setRenaming(false)
+    } catch (err) {
+      setRenameError(err.message)
+    } finally {
+      setRenameBusy(false)
+    }
+  }
+
+  // Same action for both directions — a member removing themselves (leave)
+  // and the owner removing someone else (kick) — backend/teams/service.py's
+  // remove_member tells the two apart from who's calling and who the target
+  // is; this just picks the right confirmation copy and, on leaving
+  // yourself, navigates away since this room is no longer yours to view.
+  const handleRemoveMember = async (member) => {
+    const isSelf = member.user_id === user.user_id
+    const question = isSelf
+      ? 'Leave this team? You can rejoin later with the invite code.'
+      : `Remove ${member.name} from this team?`
+    if (!window.confirm(question)) return
+
+    setRemovingId(member.user_id)
+    setMemberError(null)
+    try {
+      const { data } = await api.removeMember(id, member.user_id)
+      if (isSelf) {
+        navigate('/teams')
+        return
+      }
+      setTeam(data)
+    } catch (err) {
+      setMemberError(err.message)
+    } finally {
+      setRemovingId(null)
+    }
+  }
+
+  const submitSkills = async (event) => {
+    event.preventDefault()
+    const skills = skillsInput.split(',').map((s) => s.trim()).filter(Boolean)
+    setSkillsBusy(true)
+    setSkillsError(null)
+    setSkillsSaved(false)
+    try {
+      const { data } = await api.setMemberSkills(id, skills)
+      setTeam(data)
+      setSkillsSaved(true)
+    } catch (err) {
+      setSkillsError(err.message)
+    } finally {
+      setSkillsBusy(false)
+    }
+  }
+
+  const suggestRoles = async () => {
+    setRolesStatus('loading')
+    setRolesError(null)
+    try {
+      const { data } = await api.teamRoles(id)
+      setRolesResult(data)
+      setRolesStatus('done')
+    } catch (err) {
+      setRolesError(err.message)
+      setRolesStatus('error')
+    }
+  }
+
   if (authLoading) return <div className="mx-auto max-w-6xl px-6 py-14"><Spinner /></div>
 
   if (!user) {
@@ -160,6 +287,8 @@ export default function TeamRoom() {
   if (status === 'loading') return <div className="mx-auto max-w-6xl px-6 py-14"><Spinner label="Loading team…" /></div>
   if (status === 'error') return <div className="mx-auto max-w-6xl px-6 py-14"><ErrorNotice message={error} /></div>
 
+  const isOwner = team.owner_user_id === user.user_id
+
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-6 py-14">
       <Link
@@ -176,14 +305,53 @@ export default function TeamRoom() {
       <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
         <section className="glass-panel flex h-[38rem] flex-col" style={{ borderRadius: 8 }}>
           <div className="px-5 py-4" style={{ borderBottom: '1px solid var(--border-technical)' }}>
-            <h1 className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 16 }}>
-              # {team.name}
-            </h1>
+            {renaming ? (
+              <form onSubmit={submitRename} className="flex items-center gap-2">
+                <input
+                  value={nameDraft}
+                  onChange={(e) => setNameDraft(e.target.value)}
+                  autoFocus
+                  maxLength={80}
+                  aria-label="Team name"
+                  className="gm-input px-2 py-1 text-sm"
+                  style={{ fontSize: 15 }}
+                />
+                <button type="submit" disabled={renameBusy || !nameDraft.trim()} className="btn-primary t-label-caps px-2.5 py-1" style={{ fontSize: 10 }}>
+                  {renameBusy ? '…' : 'Save'}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRenaming(false)}
+                  className="t-label-caps px-2 py-1 transition hover:opacity-75"
+                  style={{ color: 'var(--outline)', fontSize: 10 }}
+                >
+                  Cancel
+                </button>
+              </form>
+            ) : (
+              <div className="flex items-center gap-1.5">
+                <h1 className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 16 }}>
+                  # {team.name}
+                </h1>
+                {isOwner && (
+                  <button
+                    type="button"
+                    onClick={startRename}
+                    aria-label="Rename team"
+                    className="grid h-6 w-6 place-items-center transition hover:bg-white/5"
+                    style={{ color: 'var(--outline)', borderRadius: 6 }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>edit</span>
+                  </button>
+                )}
+              </div>
+            )}
+            {renameError && <p className="t-body-md mt-1" style={{ color: '#ffb4ab', fontSize: 11.5 }}>{renameError}</p>}
             <p className="t-label-mono mt-0.5" style={{ color: 'var(--outline)', fontSize: 11 }}>
               {team.members.length} member{team.members.length === 1 ? '' : 's'} ·{' '}
-              <Link to={`/project/${team.project_id}`} className="transition hover:opacity-75" style={{ color: 'var(--on-surface-variant)' }}>
+              <SubjectLink team={team} className="transition hover:opacity-75" style={{ color: 'var(--on-surface-variant)' }}>
                 {team.project_title}
-              </Link>
+              </SubjectLink>
             </p>
           </div>
 
@@ -242,40 +410,114 @@ export default function TeamRoom() {
         <aside className="space-y-4">
           <Panel icon="groups" title={`Members (${team.members.length})`} compact>
             <ul className="space-y-2">
-              {team.members.map((m) => (
-                <motion.li key={m.user_id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center gap-2 text-sm">
-                  <span
-                    className="t-label-mono grid h-6 w-6 shrink-0 place-items-center rounded-full"
-                    style={{ background: 'var(--surface-container-highest)', color: 'var(--on-surface)', fontSize: 11 }}
-                  >
-                    {m.name.charAt(0).toUpperCase()}
-                  </span>
-                  <span className="t-body-md" style={{ color: 'var(--on-surface-variant)' }}>
-                    {m.name}
-                    {m.user_id === team.owner_user_id && (
-                      <span className="t-label-mono ml-1.5" style={{ color: 'var(--outline)', fontSize: 11 }}>(owner)</span>
+              {team.members.map((m) => {
+                const isSelf = m.user_id === user.user_id
+                // Owner can remove anyone but themselves; a non-owner can
+                // only remove themselves (leave) — mirrors the exact rule
+                // backend/teams/service.py:remove_member enforces server-side.
+                const canRemove = isOwner ? m.user_id !== team.owner_user_id : isSelf
+                return (
+                  <motion.li key={m.user_id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex items-center justify-between gap-2 text-sm">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <span
+                        className="t-label-mono grid h-6 w-6 shrink-0 place-items-center rounded-full"
+                        style={{ background: 'var(--surface-container-highest)', color: 'var(--on-surface)', fontSize: 11 }}
+                      >
+                        {m.name.charAt(0).toUpperCase()}
+                      </span>
+                      <span className="t-body-md truncate" style={{ color: 'var(--on-surface-variant)' }}>
+                        {m.name}
+                        {m.user_id === team.owner_user_id && (
+                          <span className="t-label-mono ml-1.5" style={{ color: 'var(--outline)', fontSize: 11 }}>(owner)</span>
+                        )}
+                      </span>
+                    </div>
+                    {canRemove && (
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveMember(m)}
+                        disabled={removingId === m.user_id}
+                        className="t-label-caps shrink-0 transition hover:opacity-75 disabled:opacity-50"
+                        style={{ color: 'var(--outline)', fontSize: 10 }}
+                      >
+                        {removingId === m.user_id ? '…' : isSelf ? 'Leave' : 'Remove'}
+                      </button>
                     )}
-                  </span>
-                </motion.li>
-              ))}
+                  </motion.li>
+                )
+              })}
             </ul>
+            {memberError && <p className="t-body-md mt-2" style={{ color: '#ffb4ab', fontSize: 11.5 }}>{memberError}</p>}
           </Panel>
 
-          <Panel icon="folder_open" title="Project" compact>
-            <Link to={`/project/${team.project_id}`} className="block transition hover:opacity-80">
+          <Panel icon="psychology" title="My skills" description="Feeds role suggestions below." compact>
+            <form onSubmit={submitSkills} className="flex gap-2">
+              <input
+                value={skillsInput}
+                onChange={(e) => {
+                  setSkillsInput(e.target.value)
+                  setSkillsSaved(false)
+                }}
+                placeholder="Python, React, testing…"
+                aria-label="Your skills, comma separated"
+                className="gm-input flex-1 px-2.5 py-1.5 text-sm"
+                style={{ fontSize: 12.5 }}
+              />
+              <button type="submit" disabled={skillsBusy} className="btn-primary t-label-caps shrink-0 px-3 py-1.5" style={{ fontSize: 10 }}>
+                {skillsBusy ? '…' : 'Save'}
+              </button>
+            </form>
+            {skillsError && <p className="t-body-md mt-2" style={{ color: '#ffb4ab', fontSize: 11.5 }}>{skillsError}</p>}
+            {skillsSaved && !skillsError && (
+              <p className="t-label-mono mt-2" style={{ color: 'var(--primary)', fontSize: 11 }}>Saved.</p>
+            )}
+          </Panel>
+
+          <Panel icon="assignment_ind" title="Suggested roles" description="Who should work on what, for this exact roster." compact>
+            {rolesStatus === 'idle' && (
+              <button type="button" onClick={suggestRoles} className="btn-secondary t-label-caps w-full px-3 py-2" style={{ fontSize: 10.5 }}>
+                Suggest roles
+              </button>
+            )}
+            {rolesStatus === 'loading' && <Spinner label="Assigning roles…" />}
+            {rolesStatus === 'error' && <ErrorNotice message={rolesError} onRetry={suggestRoles} />}
+            {rolesStatus === 'done' && rolesResult && (
+              <div className="space-y-2">
+                {rolesResult.assignments.map((a, i) => (
+                  <AssignmentCard key={`${a.member}-${a.assigned_role}`} assignment={a} index={i} />
+                ))}
+                {rolesResult.unfilled_roles?.length > 0 && (
+                  <p className="t-body-md p-3" style={{ background: 'var(--surface-container-low)', color: 'var(--on-surface-variant)', fontSize: 11.5, borderRadius: 8 }}>
+                    Still open: {rolesResult.unfilled_roles.join(', ')}.
+                  </p>
+                )}
+                <button
+                  type="button"
+                  onClick={suggestRoles}
+                  className="t-label-caps transition hover:opacity-75"
+                  style={{ color: 'var(--outline)', fontSize: 10 }}
+                >
+                  Refresh
+                </button>
+              </div>
+            )}
+          </Panel>
+
+          <Panel icon={team.project_id ? 'folder_open' : 'auto_awesome'} title={team.project_id ? 'Project' : 'AI-Generated Idea'} compact>
+            <SubjectLink team={team} className="block transition hover:opacity-80">
               <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 13 }}>
                 {team.project_title}
               </p>
-            </Link>
-            {project && (
+            </SubjectLink>
+            {team.project && (
               <>
                 <div className="mt-2 flex flex-wrap gap-1.5">
-                  <span className="gm-chip px-2 py-0.5">{project.domain}</span>
-                  <span className="gm-chip px-2 py-0.5">{project.difficulty}</span>
+                  <span className="gm-chip px-2 py-0.5">{team.project.domain}</span>
+                  <span className="gm-chip px-2 py-0.5">{team.project.difficulty}</span>
                 </div>
-                {project.technologies?.length > 0 && (
+                {team.project.technologies?.length > 0 && (
                   <div className="mt-2 flex flex-wrap gap-1.5">
-                    {project.technologies.slice(0, 4).map((t) => (
+                    {team.project.technologies.slice(0, 4).map((t) => (
                       <span
                         key={t}
                         className="t-label-mono px-1.5 py-0.5"
@@ -290,17 +532,25 @@ export default function TeamRoom() {
             )}
           </Panel>
 
-          <Panel icon="key" title="Invite code" compact>
-            <p
-              className="t-label-mono px-3 py-2 text-center tracking-widest"
-              style={{ background: 'var(--surface-container-low)', color: 'var(--on-surface)', fontSize: 18, borderRadius: 8 }}
-            >
-              {team.invite_code}
-            </p>
-            <p className="t-label-mono mt-2" style={{ color: 'var(--outline)', fontSize: 11 }}>
-              Share this with teammates so they can join. Formed {formatDate(team.created_at)}.
-            </p>
-          </Panel>
+          {team.invite_code ? (
+            <Panel icon="key" title="Invite code" compact>
+              <p
+                className="t-label-mono px-3 py-2 text-center tracking-widest"
+                style={{ background: 'var(--surface-container-low)', color: 'var(--on-surface)', fontSize: 18, borderRadius: 8 }}
+              >
+                {team.invite_code}
+              </p>
+              <p className="t-label-mono mt-2" style={{ color: 'var(--outline)', fontSize: 11 }}>
+                Share this with teammates so they can join. Formed {formatDate(team.created_at)}.
+              </p>
+            </Panel>
+          ) : (
+            <Panel icon="info" title="Team info" compact>
+              <p className="t-label-mono" style={{ color: 'var(--outline)', fontSize: 11 }}>
+                Only the team owner can see and share the invite code. Formed {formatDate(team.created_at)}.
+              </p>
+            </Panel>
+          )}
         </aside>
       </div>
     </div>

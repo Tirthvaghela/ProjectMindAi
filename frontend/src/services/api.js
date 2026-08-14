@@ -288,11 +288,33 @@ export const api = {
   createTeam: (projectId, name) =>
     client.post('/teams', { project_id: projectId, name }).then(unwrap),
 
+  // Idea-backed team — a generated idea has no project_id (see
+  // backend/routes/ideas.py), so the team is grounded in the idea's own
+  // fields directly instead (backend/routes/teams.py, backend/teams/service.py).
+  createIdeaTeam: (idea, name) => client.post('/teams', { idea, name }).then(unwrap),
+
   joinTeam: (inviteCode) => client.post('/teams/join', { invite_code: inviteCode }).then(unwrap),
 
   myTeams: () => client.get('/teams/mine').then(unwrap),
 
   getTeam: (teamId) => client.get(`/teams/${teamId}`).then(unwrap),
+
+  // Owner-only — backend/teams/service.py:update_team enforces it, this just
+  // surfaces whatever error that rejection comes back as.
+  updateTeam: (teamId, name) => client.patch(`/teams/${teamId}`, { name }).then(unwrap),
+
+  // Same endpoint for both "I'm leaving" (targetUserId === your own id) and
+  // "owner removes someone else" — backend/teams/service.py:remove_member
+  // tells the two apart and enforces who's allowed to do which.
+  removeMember: (teamId, targetUserId) => client.delete(`/teams/${teamId}/members/${targetUserId}`).then(unwrap),
+
+  // Self-service — records only the caller's own skills for this team, feeds
+  // GET /teams/<id>/roles below (backend/teams/service.py:set_member_skills).
+  setMemberSkills: (teamId, skills) => client.post(`/teams/${teamId}/skills`, { skills }).then(unwrap),
+
+  // Role suggestions for this team's real, persisted roster — the
+  // POST /api/team-builder flavour reads a typed-in member list instead.
+  teamRoles: (teamId) => client.get(`/teams/${teamId}/roles`).then(unwrap),
 
   teamMessages: (teamId) => client.get(`/teams/${teamId}/messages`).then(unwrap),
 

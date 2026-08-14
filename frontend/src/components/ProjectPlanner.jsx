@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import api from '../services/api'
 import { Spinner } from './Feedback'
 import Panel from './Panel'
 import { synopsisToPdf, roadmapToPdf, milestonesToPdf } from '../utils/pdf'
@@ -79,7 +78,7 @@ function Chips({ items }) {
   )
 }
 
-function SynopsisView({ synopsis }) {
+export function SynopsisView({ synopsis }) {
   const [copied, setCopied] = useState(false)
 
   const copy = async () => {
@@ -125,11 +124,13 @@ const EXPERIENCE_LEVELS = ['', 'Beginner', 'Intermediate', 'Advanced']
 
 /**
  * Team-size + experience controls that re-plan the same phase list against a
- * personalised duration (POST /api/timeline-predict) instead of the flat
- * per-project baseline. Kept inside the Roadmap tab rather than a separate
- * tab — it's the same phase list, just re-sized, not a different feature.
+ * personalised duration (`onPersonalize`, e.g. POST /api/timeline-predict
+ * for a catalogue project or POST /api/idea/timeline for a generated idea —
+ * see RoadmapView below) instead of the flat baseline. Kept inside the
+ * Roadmap tab rather than a separate tab — it's the same phase list, just
+ * re-sized, not a different feature.
  */
-function TimelineControls({ projectId, onResult }) {
+function TimelineControls({ onPersonalize, onResult }) {
   const [teamSize, setTeamSize] = useState(1)
   const [experienceLevel, setExperienceLevel] = useState('')
   const [busy, setBusy] = useState(false)
@@ -137,7 +138,7 @@ function TimelineControls({ projectId, onResult }) {
   const recalculate = async () => {
     setBusy(true)
     try {
-      const { data } = await api.timelinePredict(projectId, { teamSize, experienceLevel })
+      const { data } = await onPersonalize({ teamSize, experienceLevel })
       onResult(data)
     } catch {
       /* Leave the baseline roadmap showing — personalising is an enhancement, not required. */
@@ -178,7 +179,7 @@ function TimelineControls({ projectId, onResult }) {
   )
 }
 
-function RoadmapView({ roadmap, projectId }) {
+export function RoadmapView({ roadmap, onPersonalize }) {
   const [personal, setPersonal] = useState(null)
   const totalWeeks = personal?.predicted_weeks ?? roadmap.total_weeks
   // /api/timeline-predict re-plans weeks against a personalised duration but
@@ -195,7 +196,7 @@ function RoadmapView({ roadmap, projectId }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <TimelineControls projectId={projectId} onResult={setPersonal} />
+      <TimelineControls onPersonalize={onPersonalize} onResult={setPersonal} />
 
       <div className="flex flex-wrap items-start justify-between gap-3">
         <p className="t-label-mono" style={{ color: 'var(--outline)', fontSize: 11 }}>
@@ -295,7 +296,7 @@ function RoadmapView({ roadmap, projectId }) {
  * from it (backend/nlp/generator.py:milestones_for) so a milestone's week can
  * never disagree with the roadmap's own phase weeks.
  */
-function MilestonesView({ milestones }) {
+export function MilestonesView({ milestones }) {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -340,8 +341,15 @@ function MilestonesView({ milestones }) {
  * page load, matching the on-demand pattern SkillGap and the uniqueness
  * checker already use elsewhere in this app, so a project detail page that
  * nobody plans doesn't pay for it.
+ *
+ * `fetchers` is `{ synopsis, roadmap, milestones, timeline }`, each an async
+ * function returning the same `{data}` shape api.js's own calls resolve to —
+ * this is what lets pages/ProjectDetail.jsx (catalogue project, keyed by
+ * project_id) and pages/IdeaDetail.jsx (a generated idea, no project_id —
+ * see backend/routes/ideas.py) share this exact component instead of
+ * forking it, each just wiring the four calls to its own endpoints.
  */
-export default function ProjectPlanner({ projectId }) {
+export default function ProjectPlanner({ fetchers }) {
   const [tab, setTab] = useState('synopsis')
   const [synopsis, setSynopsis] = useState(null)
   const [roadmap, setRoadmap] = useState(null)
@@ -352,9 +360,9 @@ export default function ProjectPlanner({ projectId }) {
     if (status[which] === 'loading' || status[which] === 'done') return
     setStatus((s) => ({ ...s, [which]: 'loading' }))
     try {
-      if (which === 'synopsis') setSynopsis((await api.synopsis(projectId)).data)
-      else if (which === 'roadmap') setRoadmap((await api.roadmap(projectId)).data)
-      else setMilestones((await api.milestones(projectId)).data)
+      if (which === 'synopsis') setSynopsis((await fetchers.synopsis()).data)
+      else if (which === 'roadmap') setRoadmap((await fetchers.roadmap()).data)
+      else setMilestones((await fetchers.milestones()).data)
       setStatus((s) => ({ ...s, [which]: 'done' }))
     } catch {
       setStatus((s) => ({ ...s, [which]: 'error' }))
@@ -421,7 +429,7 @@ export default function ProjectPlanner({ projectId }) {
 
       {tab === 'synopsis' && status.synopsis === 'done' && synopsis && <SynopsisView synopsis={synopsis} />}
       {tab === 'roadmap' && status.roadmap === 'done' && roadmap && (
-        <RoadmapView roadmap={roadmap} projectId={projectId} />
+        <RoadmapView roadmap={roadmap} onPersonalize={fetchers.timeline} />
       )}
       {tab === 'milestones' && status.milestones === 'done' && milestones && (
         <MilestonesView milestones={milestones} />

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useId, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import useAuth from '../hooks/useAuth.jsx'
 import './landing/landing.css'
+import { useFocusTrap } from './useFocusTrap'
 
 /**
  * The sign-in prompt that interrupts search/chat for a signed-out visitor —
@@ -20,15 +21,9 @@ export default function AuthGateModal({ open, onClose, onAuthenticated, message 
   const [password, setPassword] = useState('')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
-
-  useEffect(() => {
-    if (!open) return
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
-  }, [open, onClose])
+  const dialogRef = useRef(null)
+  const titleId = useId()
+  useFocusTrap(dialogRef, open, onClose)
 
   if (!open) return null
 
@@ -59,13 +54,18 @@ export default function AuthGateModal({ open, onClose, onAuthenticated, message 
         onClick={onClose}
       >
         <motion.div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          tabIndex={-1}
           initial={{ opacity: 0, y: 12, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 12, scale: 0.98 }}
           transition={{ duration: 0.2 }}
           onClick={(event) => event.stopPropagation()}
           className="glass-panel relative w-full max-w-sm p-7"
-          style={{ borderRadius: 12 }}
+          style={{ borderRadius: 12, outline: 'none' }}
         >
           <button
             onClick={onClose}
@@ -84,7 +84,7 @@ export default function AuthGateModal({ open, onClose, onAuthenticated, message 
           >
             Account access
           </span>
-          <h2 className="t-headline-lg mt-5" style={{ color: 'var(--primary)' }}>
+          <h2 id={titleId} className="t-headline-lg mt-5" style={{ color: 'var(--primary)' }}>
             {mode === 'login' ? 'Sign in to continue' : 'Create an account'}
           </h2>
           <p className="t-body-md mt-3" style={{ color: 'var(--on-surface-variant)', fontSize: 13 }}>
@@ -95,7 +95,7 @@ export default function AuthGateModal({ open, onClose, onAuthenticated, message 
             {mode === 'signup' && (
               <label className="block">
                 <span className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>Name</span>
-                <input value={name} onChange={(e) => setName(e.target.value)} required autoFocus className="gm-input w-full px-4 py-3 text-sm" />
+                <input value={name} onChange={(e) => setName(e.target.value)} required autoFocus maxLength={80} className="gm-input w-full px-4 py-3 text-sm" />
               </label>
             )}
             <label className="block">

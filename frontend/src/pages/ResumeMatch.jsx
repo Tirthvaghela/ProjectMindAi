@@ -8,6 +8,10 @@ import Panel from '../components/Panel'
 import { Spinner, ErrorNotice, EmptyState } from '../components/Feedback'
 
 const ACCEPTED = '.pdf,.docx,.txt'
+// Mirrors backend/app.py's MAX_CONTENT_LENGTH — checked client-side so an
+// oversized file is caught the moment it's picked, not after a full upload
+// ends in a generic 413.
+const MAX_FILE_BYTES = 5 * 1024 * 1024
 
 /** Same have/missing layout as Dashboard's SkillGapBlock (backend/nlp/recommend.py:skill_gap),
  * just for the résumé-match card instead of a chat turn. */
@@ -141,6 +145,16 @@ export default function ResumeMatch() {
     }
   }
 
+  const selectFile = (chosen) => {
+    if (chosen && chosen.size > MAX_FILE_BYTES) {
+      setFile(null)
+      setError(`"${chosen.name}" is ${(chosen.size / (1024 * 1024)).toFixed(1)}MB — résumés must be 5MB or smaller.`)
+      return
+    }
+    setError(null)
+    setFile(chosen)
+  }
+
   const submit = async () => {
     if (!file && !text.trim()) {
       setError('Upload a résumé file, or paste your résumé text below.')
@@ -170,13 +184,14 @@ export default function ResumeMatch() {
           <Panel icon="upload_file" title="Add your résumé" compact>
             <div className="space-y-4">
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
-                  Résumé file (PDF, DOCX or TXT)
+                <label htmlFor="resume-file" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                  Résumé file (PDF, DOCX or TXT, max 5MB)
                 </label>
                 <input
+                  id="resume-file"
                   type="file"
                   accept={ACCEPTED}
-                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  onChange={(e) => selectFile(e.target.files?.[0] ?? null)}
                   className="block w-full text-sm file:mr-3 file:border-0 file:px-3 file:py-2 file:text-sm file:font-medium"
                   style={{ color: 'var(--on-surface-variant)' }}
                 />
@@ -197,10 +212,11 @@ export default function ResumeMatch() {
               </div>
 
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                <label htmlFor="resume-text" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
                   Paste your résumé text
                 </label>
                 <textarea
+                  id="resume-text"
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   rows={8}

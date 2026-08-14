@@ -9,7 +9,6 @@ const MODULES = [
   { icon: 'fingerprint', label: 'Idea Check', to: '/uniqueness' },
   { icon: 'groups', label: 'Teams', to: '/teams' },
   { icon: 'bookmark', label: 'Favourites', to: '/favorites' },
-  { icon: 'history', label: 'History', to: '/history' },
 ]
 
 /**

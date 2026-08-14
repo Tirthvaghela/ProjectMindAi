@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useId, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import './landing/landing.css'
+import { useFocusTrap } from './useFocusTrap'
 
 /**
  * Generic dialog scaffold — portal + blurred backdrop + glass-panel box +
@@ -10,14 +11,9 @@ import './landing/landing.css'
  * each re-hand-roll it.
  */
 export default function Modal({ open, onClose, title, eyebrow, children, maxWidth = 560 }) {
-  useEffect(() => {
-    if (!open) return
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') onClose()
-    }
-    document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
-  }, [open, onClose])
+  const dialogRef = useRef(null)
+  const titleId = useId()
+  useFocusTrap(dialogRef, open, onClose)
 
   if (!open) return null
 
@@ -33,13 +29,19 @@ export default function Modal({ open, onClose, title, eyebrow, children, maxWidt
         onClick={onClose}
       >
         <motion.div
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={title ? titleId : undefined}
+          aria-label={!title ? eyebrow || 'Dialog' : undefined}
+          tabIndex={-1}
           initial={{ opacity: 0, y: 12, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 12, scale: 0.98 }}
           transition={{ duration: 0.2 }}
           onClick={(event) => event.stopPropagation()}
           className="glass-panel relative w-full max-h-[85vh] overflow-y-auto p-7"
-          style={{ borderRadius: 12, maxWidth }}
+          style={{ borderRadius: 12, maxWidth, outline: 'none' }}
         >
           <button
             onClick={onClose}
@@ -61,7 +63,7 @@ export default function Modal({ open, onClose, title, eyebrow, children, maxWidt
             </span>
           )}
           {title && (
-            <h2 className="t-label-mono mb-5 pr-8" style={{ color: 'var(--primary)', fontSize: 17 }}>
+            <h2 id={titleId} className="t-label-mono mb-5 pr-8" style={{ color: 'var(--primary)', fontSize: 17 }}>
               {title}
             </h2>
           )}

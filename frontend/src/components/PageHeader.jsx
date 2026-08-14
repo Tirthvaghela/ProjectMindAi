@@ -6,7 +6,7 @@
  * divider — so every page reads as the same design, not a plainer "app"
  * layer bolted underneath the marketing pages.
  */
-export default function PageHeader({ eyebrow, title, description, actions }) {
+export default function PageHeader({ eyebrow, title, description, actions, accentDescription = false }) {
   return (
     <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
       <div className="min-w-0">
@@ -22,7 +22,13 @@ export default function PageHeader({ eyebrow, title, description, actions }) {
           {title}
         </h1>
         {description && (
-          <p className="t-body-md mt-3 max-w-2xl" style={{ color: 'var(--on-surface-variant)' }}>
+          <p
+            className="t-body-md mt-3 max-w-2xl"
+            style={{
+              color: 'var(--on-surface-variant)',
+              ...(accentDescription ? { borderLeft: '2px solid var(--primary)', paddingLeft: 12 } : {}),
+            }}
+          >
             {description}
           </p>
         )}

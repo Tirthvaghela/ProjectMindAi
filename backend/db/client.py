@@ -134,6 +134,17 @@ def ensure_indexes() -> None:
     teams().create_index([("invite_code", ASCENDING)], unique=True, name="uq_invite_code")
     teams().create_index([("project_id", ASCENDING)], name="ix_project")
     teams().create_index([("members.user_id", ASCENDING)], name="ix_member")
+    # Backstops join_team()'s check-then-$push: a unique index over a
+    # multikey field rejects a second array element with the same
+    # (team_id, user_id) pair even within one document, so two concurrent
+    # joins for the same user can't both land. ix_member above stays too —
+    # it serves the team-id-less "which teams is this user on" lookup this
+    # compound index can't.
+    teams().create_index(
+        [("team_id", ASCENDING), ("members.user_id", ASCENDING)],
+        unique=True,
+        name="uq_team_member",
+    )
 
     team_messages().create_index([("team_id", ASCENDING), ("created_at", ASCENDING)], name="ix_team_recent")
 

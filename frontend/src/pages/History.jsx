@@ -9,6 +9,9 @@ export default function History() {
   const [entries, setEntries] = useState([])
   const [status, setStatus] = useState('loading')
   const [error, setError] = useState(null)
+  const [confirmingClear, setConfirmingClear] = useState(false)
+  const [clearError, setClearError] = useState(null)
+  const [clearing, setClearing] = useState(false)
 
   const load = () => {
     setStatus('loading')
@@ -27,8 +30,17 @@ export default function History() {
   useEffect(load, [])
 
   const clear = async () => {
-    await api.clearHistory()
-    setEntries([])
+    setClearing(true)
+    setClearError(null)
+    try {
+      await api.clearHistory()
+      setEntries([])
+      setConfirmingClear(false)
+    } catch (err) {
+      setClearError(err.message)
+    } finally {
+      setClearing(false)
+    }
   }
 
   if (status === 'loading') return <div className="mx-auto max-w-6xl px-6 py-14"><Spinner label="Loading history…" /></div>
@@ -40,17 +52,49 @@ export default function History() {
         title="Search history"
         description="Your recent searches. Select one to run it again."
         actions={
-          entries.length > 0 && (
+          entries.length > 0 &&
+          (confirmingClear ? (
+            <div className="flex items-center gap-2">
+              <span className="t-label-mono" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+                Clear all history?
+              </span>
+              <button
+                onClick={clear}
+                disabled={clearing}
+                className="t-label-caps px-3 py-1.5 transition hover:opacity-80 disabled:opacity-60"
+                style={{ border: '1px solid rgba(255,180,171,0.3)', color: '#ffb4ab', borderRadius: 8 }}
+              >
+                {clearing ? 'Clearing…' : 'Confirm'}
+              </button>
+              <button
+                onClick={() => {
+                  setConfirmingClear(false)
+                  setClearError(null)
+                }}
+                disabled={clearing}
+                className="t-label-caps px-3 py-1.5 transition hover:opacity-80 disabled:opacity-60"
+                style={{ border: '1px solid var(--border-technical)', color: 'var(--on-surface-variant)', borderRadius: 8 }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
             <button
-              onClick={clear}
+              onClick={() => setConfirmingClear(true)}
               className="t-label-caps px-3 py-1.5 transition hover:opacity-80"
               style={{ border: '1px solid rgba(255,180,171,0.3)', color: '#ffb4ab', borderRadius: 8 }}
             >
               Clear all
             </button>
-          )
+          ))
         }
       />
+
+      {clearError && (
+        <p className="t-body-md mb-6" style={{ color: '#ffb4ab', fontSize: 13 }}>
+          Could not clear history: {clearError}
+        </p>
+      )}
 
       {entries.length === 0 ? (
         <EmptyState title="No searches yet" hint="Your recent searches will appear here." />

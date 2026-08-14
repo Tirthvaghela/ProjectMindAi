@@ -92,9 +92,11 @@ function TeamTile({ team, featured }) {
           {team.members.length}
         </span>
       </div>
-      <p className="t-label-mono mt-1" style={{ color: 'var(--outline)', fontSize: 11 }}>
-        INVITE {team.invite_code}
-      </p>
+      {team.invite_code && (
+        <p className="t-label-mono mt-1" style={{ color: 'var(--outline)', fontSize: 11 }}>
+          INVITE {team.invite_code}
+        </p>
+      )}
       <p className="t-body-md mt-3 flex-1" style={{ color: 'var(--on-surface-variant)', fontSize: featured ? 14 : 13 }}>
         {team.project_title}
       </p>

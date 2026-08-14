@@ -149,10 +149,11 @@ export default function UniquenessCheck() {
           <Panel icon="fingerprint" title="Describe your idea" compact>
             <div className="space-y-4">
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                <label htmlFor="uniq-title" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
                   Project title
                 </label>
                 <input
+                  id="uniq-title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="AI-based student attendance system"
@@ -161,10 +162,11 @@ export default function UniquenessCheck() {
               </div>
 
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                <label htmlFor="uniq-description" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
                   What does it do?
                 </label>
                 <textarea
+                  id="uniq-description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={6}
@@ -174,10 +176,10 @@ export default function UniquenessCheck() {
               </div>
 
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                <label htmlFor="uniq-domain" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
                   Domain (optional)
                 </label>
-                <select value={domain} onChange={(e) => setDomain(e.target.value)} className="gm-input w-full px-3 py-2 text-sm">
+                <select id="uniq-domain" value={domain} onChange={(e) => setDomain(e.target.value)} className="gm-input w-full px-3 py-2 text-sm">
                   <option value="">Not specified</option>
                   {domains.map((d) => (
                     <option key={d} value={d}>{d}</option>
@@ -186,10 +188,11 @@ export default function UniquenessCheck() {
               </div>
 
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                <label htmlFor="uniq-technologies" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
                   Technologies (optional)
                 </label>
                 <input
+                  id="uniq-technologies"
                   value={technologies}
                   onChange={(e) => setTechnologies(e.target.value)}
                   placeholder="Python, OpenCV, Flask"

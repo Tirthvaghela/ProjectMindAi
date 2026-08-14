@@ -20,6 +20,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Teams = lazy(() => import('./pages/Teams'))
 const TeamRoom = lazy(() => import('./pages/TeamRoom'))
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
+const IdeaDetail = lazy(() => import('./pages/IdeaDetail'))
 const Favorites = lazy(() => import('./pages/Favorites'))
 const History = lazy(() => import('./pages/History'))
 
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="teams" element={<Teams />} />
             <Route path="teams/:id" element={<TeamRoom />} />
             <Route path="project/:id" element={<ProjectDetail />} />
+            <Route path="idea" element={<IdeaDetail />} />
             <Route path="favorites" element={<Favorites />} />
             <Route path="history" element={<History />} />
             <Route

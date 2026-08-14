@@ -262,7 +262,7 @@ function ProfileEditor({ user, onDone }) {
     >
       <label className="block">
         <span className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>Name</span>
-        <input value={name} onChange={(e) => setName(e.target.value)} className="gm-input w-full px-3 py-2 text-sm" />
+        <input value={name} onChange={(e) => setName(e.target.value)} maxLength={80} className="gm-input w-full px-3 py-2 text-sm" />
       </label>
       <label className="block">
         <span className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>Email</span>
@@ -503,7 +503,7 @@ export default function Account() {
               {mode === 'signup' && (
                 <label className="block">
                   <span className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>Name</span>
-                  <input value={name} onChange={(e) => setName(e.target.value)} required autoFocus className="gm-input w-full px-4 py-3.5 text-sm" />
+                  <input value={name} onChange={(e) => setName(e.target.value)} required autoFocus maxLength={80} className="gm-input w-full px-4 py-3.5 text-sm" />
                 </label>
               )}
               <label className="block">

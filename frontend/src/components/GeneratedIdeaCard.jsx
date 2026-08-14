@@ -47,7 +47,15 @@ export default function GeneratedIdeaCard({ idea, actions, selected = false, bus
         </span>
       </div>
 
-      <h3 className="t-label-mono mt-2.5" style={{ color: 'var(--on-surface)', fontSize: 15 }}>{idea.name}</h3>
+      <Link
+        to="/idea"
+        state={{ idea }}
+        className="t-label-mono mt-2.5 block transition hover:opacity-75"
+        style={{ color: 'var(--on-surface)', fontSize: 15 }}
+        title="Open this idea's full workspace"
+      >
+        {idea.name}
+      </Link>
       <p className="t-label-mono mt-0.5" style={{ color: 'var(--outline)', fontSize: 11.5 }}>
         {idea.difficulty} · {idea.domain} · ~{idea.duration_weeks} weeks
       </p>

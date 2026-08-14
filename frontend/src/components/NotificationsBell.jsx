@@ -42,16 +42,24 @@ export default function NotificationsBell() {
     return () => document.removeEventListener('mousedown', onClickOutside)
   }, [])
 
-  const openPanel = async () => {
+  const openPanel = () => {
     setOpen((o) => !o)
-    if (!open && unread > 0) {
-      try {
-        await api.markAllNotificationsRead()
-        setUnread(0)
-      } catch {
-        /* Next successful poll will reconcile the count either way. */
-      }
-    }
+  }
+
+  // Marks just this one read, on click — separate from openPanel's old
+  // "mark everything read the moment you open the panel" behaviour, which
+  // never gave a reader the chance to actually see what was unread before
+  // it was cleared. Local-first (flips the item + decrements the badge
+  // immediately) since waiting on the network here would make every click
+  // feel laggy for something this low-stakes; a failed request just leaves
+  // it unread until the next poll, no rollback needed.
+  const markRead = (notification) => {
+    if (notification.read) return
+    setItems((current) => current.map((n) => (n.notification_id === notification.notification_id ? { ...n, read: true } : n)))
+    setUnread((n) => Math.max(0, n - 1))
+    api.markNotificationRead(notification.notification_id).catch(() => {
+      /* Next successful poll will reconcile the read state either way. */
+    })
   }
 
   return (
@@ -86,10 +94,24 @@ export default function NotificationsBell() {
             style={{ background: 'var(--surface-container)', borderRadius: 8 }}
           >
             <div
-              className="t-label-caps px-4 py-2.5"
-              style={{ borderBottom: '1px solid var(--border-technical)', color: 'var(--outline)' }}
+              className="flex items-center justify-between px-4 py-2.5"
+              style={{ borderBottom: '1px solid var(--border-technical)' }}
             >
-              Notifications
+              <span className="t-label-caps" style={{ color: 'var(--outline)' }}>Notifications</span>
+              {unread > 0 && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setItems((current) => current.map((n) => ({ ...n, read: true })))
+                    setUnread(0)
+                    api.markAllNotificationsRead().catch(() => {})
+                  }}
+                  className="t-label-caps transition hover:opacity-75"
+                  style={{ color: 'var(--primary)', fontSize: 10.5 }}
+                >
+                  Mark all read
+                </button>
+              )}
             </div>
             {items.length === 0 ? (
               <p className="t-body-md px-4 py-6 text-center" style={{ color: 'var(--outline)', fontSize: 13 }}>Nothing yet</p>
@@ -99,12 +121,23 @@ export default function NotificationsBell() {
                   <li key={n.notification_id} style={{ borderTop: '1px solid var(--border-technical)' }} className="first:border-t-0">
                     <Link
                       to={n.team_id ? `/teams/${n.team_id}` : '/teams'}
-                      onClick={() => setOpen(false)}
-                      className="block px-4 py-3 transition hover:bg-white/5"
+                      onClick={() => {
+                        markRead(n)
+                        setOpen(false)
+                      }}
+                      className="flex items-start gap-2 px-4 py-3 transition hover:bg-white/5"
+                      style={{ background: n.read ? 'transparent' : 'var(--surface-glass)' }}
                     >
-                      <p className="t-label-mono" style={{ color: 'var(--on-surface)' }}>{n.title}</p>
-                      <p className="t-body-md mt-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>{n.body}</p>
-                      <p className="t-label-mono mt-1" style={{ color: 'var(--outline)', fontSize: 11 }}>{formatRelative(n.created_at)}</p>
+                      <span
+                        aria-hidden="true"
+                        className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full"
+                        style={{ background: n.read ? 'transparent' : 'var(--primary)' }}
+                      />
+                      <div className="min-w-0">
+                        <p className="t-label-mono" style={{ color: 'var(--on-surface)' }}>{n.title}</p>
+                        <p className="t-body-md mt-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>{n.body}</p>
+                        <p className="t-label-mono mt-1" style={{ color: 'var(--outline)', fontSize: 11 }}>{formatRelative(n.created_at)}</p>
+                      </div>
                     </Link>
                   </li>
                 ))}

@@ -5,7 +5,7 @@ import api from '../services/api'
 import PageHeader from '../components/PageHeader'
 import Panel from '../components/Panel'
 import Modal from '../components/Modal'
-import GeneratedIdeaCard from '../components/GeneratedIdeaCard'
+import BlueprintCard from '../components/BlueprintCard'
 import GettingStartedPanel from '../components/GettingStartedPanel'
 import MarkdownLite from '../components/MarkdownLite'
 import AuthGateModal from '../components/AuthGateModal'
@@ -174,6 +174,7 @@ export default function Ideate() {
   const [selectError, setSelectError] = useState(null)
   const [compareIds, setCompareIds] = useState(new Set())
   const [showCompare, setShowCompare] = useState(false)
+  const [view, setView] = useState('grid')
 
   const [refineTarget, setRefineTarget] = useState(null)
   const [refineOptionKey, setRefineOptionKey] = useState(null)
@@ -436,25 +437,28 @@ export default function Ideate() {
   const activeRefineOption = REFINE_OPTIONS.find((o) => o.key === refineOptionKey)
 
   return (
-    <div className="mx-auto max-w-6xl px-6 py-14">
+    <div className={`mx-auto max-w-6xl px-6 pt-10 ${ideas.length > 0 ? 'pb-32' : 'pb-10'}`}>
       <PageHeader
-        eyebrow="AI Ideation Engine"
-        title="Invent your next project"
-        description={
-          'Describe what you want to build — ProjectMind’s AI will think up original project concepts, ' +
-          'check each one against the catalogue, and help you turn one into a plan.'
-        }
+        title="Project Ideation Engine"
+        description="Describe your vision — ProjectMind will synthesize original concepts and validate them against the global research catalogue."
+        accentDescription
       />
 
-      <div className="grid gap-6 lg:grid-cols-[340px_1fr]">
+      <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
         <aside className="lg:sticky lg:top-20 lg:self-start">
-          <Panel icon="auto_awesome" title="Describe what you want to build" compact>
+          <Panel
+            icon="tune"
+            title="Inquiry Parameters"
+            compact
+            actions={<span className="t-label-mono" style={{ color: 'var(--outline)', fontSize: 10.5 }}>v2.4.1</span>}
+          >
             <div className="space-y-4">
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
-                  What are you building?
+                <label htmlFor="ideate-topic" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                  Project Concept
                 </label>
                 <textarea
+                  id="ideate-topic"
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
                   rows={4}
@@ -465,10 +469,10 @@ export default function Ideate() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                  <label htmlFor="ideate-domain" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
                     Domain
                   </label>
-                  <select value={domain} onChange={(e) => setDomain(e.target.value)} className="gm-input w-full px-2 py-2 text-sm">
+                  <select id="ideate-domain" value={domain} onChange={(e) => setDomain(e.target.value)} className="gm-input w-full px-2 py-2 text-sm">
                     <option value="">Any</option>
                     {domains.map((d) => (
                       <option key={d} value={d}>{d}</option>
@@ -476,10 +480,10 @@ export default function Ideate() {
                   </select>
                 </div>
                 <div>
-                  <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
-                    Difficulty
+                  <label htmlFor="ideate-difficulty" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                    Complexity
                   </label>
-                  <select value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className="gm-input w-full px-2 py-2 text-sm">
+                  <select id="ideate-difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)} className="gm-input w-full px-2 py-2 text-sm">
                     <option value="">Any</option>
                     {difficulties.map((d) => (
                       <option key={d} value={d}>{d}</option>
@@ -489,14 +493,26 @@ export default function Ideate() {
               </div>
 
               <div>
-                <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
-                  How many ideas?
-                </label>
-                <select value={count} onChange={(e) => setCount(Number(e.target.value))} className="gm-input w-full px-2 py-2 text-sm">
-                  {Array.from({ length: IDEA_COUNT_MAX }, (_, i) => i + 1).map((n) => (
-                    <option key={n} value={n}>{n}</option>
-                  ))}
-                </select>
+                <div className="mb-1.5 flex items-center justify-between">
+                  <label className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                    Idea Volume
+                  </label>
+                  <span className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 12 }}>
+                    {count} Concept{count === 1 ? '' : 's'}
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min={1}
+                  max={IDEA_COUNT_MAX}
+                  step={1}
+                  value={count}
+                  onChange={(e) => setCount(Number(e.target.value))}
+                  className="gm-range"
+                  style={{
+                    background: `linear-gradient(to right, var(--primary) ${((count - 1) / (IDEA_COUNT_MAX - 1)) * 100}%, var(--border-technical) ${((count - 1) / (IDEA_COUNT_MAX - 1)) * 100}%)`,
+                  }}
+                />
               </div>
 
               <button
@@ -504,7 +520,7 @@ export default function Ideate() {
                 disabled={status === 'loading'}
                 className="btn-primary t-label-caps w-full px-4 py-2"
               >
-                {status === 'loading' ? 'Thinking…' : ideas.length > 0 ? 'Generate more ideas' : 'Generate ideas'}
+                {status === 'loading' ? 'Thinking…' : ideas.length > 0 ? 'Generate More Blueprints →' : 'Generate Blueprints →'}
               </button>
 
               {status === 'error' && error && (
@@ -538,10 +554,12 @@ export default function Ideate() {
 
         <section>
           {status === 'idle' && ideas.length === 0 && (
-            <EmptyState
-              title="Describe an idea to get started"
-              hint="Fill in the panel on the left, then generate — ProjectMind will invent, validate, and originality-check a set of project concepts for you."
-            />
+            <div className="mx-auto max-w-md">
+              <EmptyState
+                title="Describe an idea to get started"
+                hint="Fill in the panel on the left, then generate — ProjectMind will invent, validate, and originality-check a set of project concepts for you."
+              />
+            </div>
           )}
           {status === 'loading' && ideas.length === 0 && <Spinner label="Thinking up original project concepts…" />}
           {status === 'error' && ideas.length === 0 && <ErrorNotice message={error} onRetry={() => generate()} />}
@@ -549,17 +567,45 @@ export default function Ideate() {
           {ideas.length > 0 && (
             <>
               <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-                <p className="t-label-mono" style={{ color: 'var(--outline)' }}>
-                  {ideas.length} AI-generated idea{ideas.length === 1 ? '' : 's'}
+                <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 11 }}>
+                  AI-Generated Ideas ({ideas.length})
                 </p>
-                {status === 'loading' && (
-                  <span className="t-label-mono" style={{ color: 'var(--outline)' }}>Generating more…</span>
-                )}
+                <div className="flex items-center gap-3">
+                  {status === 'loading' && (
+                    <span className="t-label-mono" style={{ color: 'var(--outline)' }}>Generating more…</span>
+                  )}
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setView('list')}
+                      aria-label="List view"
+                      aria-pressed={view === 'list'}
+                      className="flex items-center justify-center p-1.5 transition hover:opacity-80"
+                      style={{ border: `1px solid ${view === 'list' ? 'var(--primary)' : 'var(--border-technical)'}`, borderRadius: 6 }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 15, color: view === 'list' ? 'var(--primary)' : 'var(--outline)' }}>
+                        view_list
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setView('grid')}
+                      aria-label="Grid view"
+                      aria-pressed={view === 'grid'}
+                      className="flex items-center justify-center p-1.5 transition hover:opacity-80"
+                      style={{ border: `1px solid ${view === 'grid' ? 'var(--primary)' : 'var(--border-technical)'}`, borderRadius: 6 }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 15, color: view === 'grid' ? 'var(--primary)' : 'var(--outline)' }}>
+                        grid_view
+                      </span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+              <div className={`grid gap-4 ${view === 'grid' ? 'sm:grid-cols-2 xl:grid-cols-3' : 'grid-cols-1'}`}>
                 {ideas.map((idea) => (
-                  <GeneratedIdeaCard
+                  <BlueprintCard
                     key={idea.id}
                     idea={idea}
                     selected={idea.id === selectedIdeaId}
@@ -621,75 +667,88 @@ export default function Ideate() {
                   </div>
                 </div>
               )}
-
-              <div className="glass-panel mt-6 p-4" style={{ borderRadius: 8 }}>
-                <p className="t-label-caps mb-2" style={{ color: 'var(--outline)', fontSize: 10 }}>
-                  Ask about these ideas
-                </p>
-                {followUpThread.length > 0 && (
-                  <div className="mb-3 max-h-64 space-y-3 overflow-y-auto pr-1">
-                    {followUpThread.map((m, i) => (
-                      <div key={i}>
-                        <span className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9 }}>
-                          {m.role === 'user' ? 'You' : 'Assistant'}
-                        </span>
-                        <div className="t-body-md mt-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 13 }}>
-                          {m.role === 'user' ? m.content : <MarkdownLite content={m.content} />}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    withAuth(submitFollowUp)()
-                  }}
-                  className="flex gap-2"
-                >
-                  <input
-                    value={followUpText}
-                    onChange={(e) => setFollowUpText(e.target.value)}
-                    placeholder='e.g. "Make the third one more innovative" or "Can I build it in 3 months?"'
-                    className="gm-input flex-1 px-3 py-2 text-sm"
-                  />
-                  <button type="submit" disabled={followUpBusy || !followUpText.trim()} className="btn-primary t-label-caps px-4 py-2">
-                    {followUpBusy ? '…' : 'Ask'}
-                  </button>
-                </form>
-                <p className="t-label-mono mt-2" style={{ color: 'var(--outline)', fontSize: 10.5 }}>
-                  Context carries across the whole session — refer to ideas by name or position ("the third one") and follow-ups stay grounded in whichever one you mean.
-                </p>
-              </div>
             </>
           )}
         </section>
       </div>
 
-      {compareIds.size > 0 && (
-        <div className="fixed inset-x-0 bottom-0 z-40 flex justify-center px-4 pb-5">
-          <div className="glass-panel flex items-center gap-4 px-4 py-3" style={{ borderRadius: 999 }}>
-            <span className="t-label-mono" style={{ color: 'var(--on-surface)', fontSize: 12.5 }}>
-              {compareIds.size} idea{compareIds.size === 1 ? '' : 's'} selected to compare
-            </span>
-            <button
-              type="button"
-              disabled={compareIds.size < 2}
-              onClick={() => setShowCompare(true)}
-              className="btn-primary t-label-caps px-3 py-1.5"
-              style={{ fontSize: 10.5 }}
-            >
-              Compare
-            </button>
-            <button
-              type="button"
-              onClick={() => setCompareIds(new Set())}
-              className="t-label-mono transition hover:opacity-70"
-              style={{ color: 'var(--outline)', fontSize: 12 }}
-            >
-              Clear
-            </button>
-          </div>
+      {(ideas.length > 0 || compareIds.size > 0) && (
+        <div className="fixed inset-x-0 bottom-0 z-40 flex flex-col items-center gap-3 px-4 pb-5">
+          {compareIds.size > 0 && (
+            <div className="glass-panel flex items-center gap-4 px-4 py-3" style={{ borderRadius: 999 }}>
+              <span className="t-label-mono" style={{ color: 'var(--on-surface)', fontSize: 12.5 }}>
+                {compareIds.size} idea{compareIds.size === 1 ? '' : 's'} selected to compare
+              </span>
+              <button
+                type="button"
+                disabled={compareIds.size < 2}
+                onClick={() => setShowCompare(true)}
+                className="btn-primary t-label-caps px-3 py-1.5"
+                style={{ fontSize: 10.5 }}
+              >
+                Compare
+              </button>
+              <button
+                type="button"
+                onClick={() => setCompareIds(new Set())}
+                className="t-label-mono transition hover:opacity-70"
+                style={{ color: 'var(--outline)', fontSize: 12 }}
+              >
+                Clear
+              </button>
+            </div>
+          )}
+
+          {ideas.length > 0 && (
+            <div className="glass-panel w-full max-w-xl p-3" style={{ borderRadius: 20 }}>
+              {followUpThread.length > 0 && (
+                <div className="mb-2 max-h-56 space-y-3 overflow-y-auto px-2 pt-1" style={{ borderBottom: '1px solid var(--border-technical)', paddingBottom: 10 }}>
+                  {followUpThread.map((m, i) => (
+                    <div key={i}>
+                      <span className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9 }}>
+                        {m.role === 'user' ? 'You' : 'Assistant'}
+                      </span>
+                      <div className="t-body-md mt-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 13 }}>
+                        {m.role === 'user' ? m.content : <MarkdownLite content={m.content} />}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  withAuth(submitFollowUp)()
+                }}
+                className="flex items-center gap-2"
+              >
+                <div
+                  className="flex h-8 w-8 shrink-0 items-center justify-center"
+                  style={{ background: 'var(--surface-container-highest)', border: '1px solid var(--border-technical)', borderRadius: 999 }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 15, color: 'var(--primary)' }}>auto_awesome</span>
+                </div>
+                <input
+                  value={followUpText}
+                  onChange={(e) => setFollowUpText(e.target.value)}
+                  placeholder='Refine these ideas (e.g., "Make the first one use fewer resources")…'
+                  className="gm-input flex-1 px-3 py-2 text-sm"
+                  style={{ borderRadius: 999 }}
+                />
+                <button
+                  type="submit"
+                  disabled={followUpBusy || !followUpText.trim()}
+                  aria-label="Send"
+                  className="btn-primary flex h-9 w-9 shrink-0 items-center justify-center"
+                  style={{ borderRadius: 999 }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>
+                    {followUpBusy ? 'hourglass_empty' : 'arrow_forward'}
+                  </span>
+                </button>
+              </form>
+            </div>
+          )}
         </div>
       )}
 

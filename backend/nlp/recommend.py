@@ -213,18 +213,18 @@ def explain(result: ScoredProject, query: str) -> str:
     return sentence
 
 
-def skill_gap(project_id: str, known_skills: list[str]) -> dict[str, Any]:
-    """Compare a student's skills against a project's requirements.
+def skill_gap_for_doc(doc: dict[str, Any], known_skills: list[str]) -> dict[str, Any]:
+    """Compare a student's skills against a project-shaped doc's own
+    "skills" field — the doc-based core `skill_gap()` (a catalogue project,
+    looked up by project_id) and routes/ideas.py's idea-skill-gap endpoint
+    (a synthetic doc from generator.idea_doc(), which mirrors technologies
+    into skills — a generated idea has no separate skills taxonomy) both
+    delegate to this, so the exact same matching logic backs both.
 
     Deliberately a set operation over lemmatised tokens rather than exact
     string equality, so "developing REST APIs" is credited against a required
     skill of "REST API development".
     """
-    documents = get_retriever().documents
-    doc = documents.get(project_id)
-    if doc is None:
-        raise KeyError(project_id)
-
     required = doc.get("skills", [])
     known_tokens: set[str] = set()
     for skill in known_skills:
@@ -247,12 +247,21 @@ def skill_gap(project_id: str, known_skills: list[str]) -> dict[str, Any]:
 
     total = len(required) or 1
     return {
-        "project_id": project_id,
+        "project_id": doc.get("project_id"),
         "required_skills": required,
         "skills_you_have": have,
         "skills_to_learn": need,
         "readiness_percent": round(100 * len(have) / total, 1),
     }
+
+
+def skill_gap(project_id: str, known_skills: list[str]) -> dict[str, Any]:
+    """skill_gap_for_doc(), for a catalogue project looked up by project_id."""
+    documents = get_retriever().documents
+    doc = documents.get(project_id)
+    if doc is None:
+        raise KeyError(project_id)
+    return skill_gap_for_doc(doc, known_skills)
 
 
 def _timeline_fit_score(predicted_weeks: float, max_duration_weeks: int) -> float:

@@ -16,6 +16,8 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
+from db.schema import DIFFICULTIES, DOMAINS
+
 # domain -> (core phase name, one-line focus, typical modules)
 _DOMAIN_PROFILES: dict[str, dict[str, Any]] = {
     "Artificial Intelligence": {
@@ -205,6 +207,20 @@ def _phase_plan(duration_weeks: float, domain: str) -> list[dict[str, Any]]:
         if not is_last:
             allocated += phase_weeks
         phases.append({"phase": name, "description": description, "weeks": phase_weeks})
+
+    # The half-week floor on every earlier phase can, for a handful of
+    # specific durations (duration_weeks=4 is the smallest), consume the
+    # whole budget before the last phase — whatever's left over — gets any
+    # of its own, landing it at exactly 0 weeks. Whenever that happens, at
+    # least one earlier phase must be sitting above its own 0.5 floor (six
+    # phases floored at 0.5 each sum to 3.0, below the 3.5-week minimum for
+    # this branch), so borrowing 0.5 from the largest one is always safe —
+    # it can't go below 0.5 itself — and keeps the total equal to
+    # duration_weeks exactly, same as every other duration already does.
+    if use_half_week_floor and phases[-1]["weeks"] <= 0:
+        donor = max(phases[:-1], key=lambda p: p["weeks"])
+        donor["weeks"] = round(donor["weeks"] - 0.5, 2)
+        phases[-1]["weeks"] = 0.5
 
     return phases
 
@@ -430,4 +446,48 @@ def synopsis_for(doc: dict[str, Any]) -> dict[str, Any]:
         "technology_stack": technologies,
         "expected_results": expected_results,
         "future_scope": future_scope,
+    }
+
+
+def _idea_weeks(duration_weeks: Optional[int]) -> int:
+    try:
+        return max(1, min(int(duration_weeks), 24)) if duration_weeks is not None else 8
+    except (TypeError, ValueError):
+        return 8
+
+
+def idea_doc(
+    name: str,
+    domain: Optional[str] = None,
+    duration_weeks: Optional[int] = None,
+    difficulty: Optional[str] = None,
+    technologies: Optional[list[str]] = None,
+    description: Optional[str] = None,
+) -> dict[str, Any]:
+    """A synthetic project-shaped doc from a GENERATED idea's own fields, fed
+    to the exact same generator/timeline/skill_gap functions a catalogue
+    project's project_id would resolve to via Mongo — a generated idea just
+    has no project_id to look up, so this stands in for the lookup. Shared by
+    every idea-scoped tool/route (nlp/chat_tools.py's generate_idea_* tools,
+    routes/ideas.py's REST endpoints) so they all build the doc the same way.
+
+    `skills` mirrors `technologies` rather than staying empty: a generated
+    idea has no separate skills taxonomy distinct from its tech stack (unlike
+    a catalogue project's curated "skills" list), so technologies is the
+    honest stand-in — the same substitution the assistant's own idea-context
+    notes already lean on (see nlp/ai_assistant.py's _idea_detail_note).
+    `description` defaults to "" (fine for roadmap/timeline/milestones, which
+    never read it) but should be passed — typically f"{problem} {solution}"
+    — for synopsis_for(), whose abstract/problem_statement need real prose.
+    """
+    tech = [t.strip() for t in (technologies or []) if isinstance(t, str) and t.strip()]
+    return {
+        "project_id": None,
+        "title": name,
+        "description": (description or "").strip(),
+        "domain": domain if domain in DOMAINS else "",
+        "difficulty": difficulty if difficulty in DIFFICULTIES else "",
+        "duration_weeks": _idea_weeks(duration_weeks),
+        "technologies": tech,
+        "skills": tech,
     }

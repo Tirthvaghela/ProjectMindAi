@@ -105,10 +105,27 @@ def get_int(source: dict[str, Any], key: str, default: int, lo: int, hi: int) ->
 
 
 def parse_filters(source: dict[str, Any]) -> dict[str, Any]:
-    """Normalise filter inputs from either query string or JSON body."""
+    """Normalise filter inputs from either query string or JSON body.
+
+    Query-string values are always strings by construction, but a JSON POST
+    body (search, recommend) can hand this a number, object, or list for any
+    field — validated here, once, rather than trusting every caller to check
+    first: a wrong type used to reach `.strip()`/a set comprehension
+    downstream and crash with an unhandled 500 instead of a clean 400.
+    """
+    domain = source.get("domain")
+    if domain is not None and not isinstance(domain, str):
+        raise ApiError("'domain' must be a string.", status=400)
+
+    difficulty = source.get("difficulty")
+    if difficulty is not None and not isinstance(difficulty, str):
+        raise ApiError("'difficulty' must be a string.", status=400)
+
     technologies = source.get("technologies") or source.get("tech") or []
     if isinstance(technologies, str):
         technologies = [t.strip() for t in technologies.split(",") if t.strip()]
+    elif not isinstance(technologies, list) or not all(isinstance(t, str) for t in technologies):
+        raise ApiError("'technologies' must be a string or a list of strings.", status=400)
 
     max_weeks = source.get("max_duration_weeks")
     try:
@@ -117,8 +134,8 @@ def parse_filters(source: dict[str, Any]) -> dict[str, Any]:
         max_weeks = None
 
     filters = {
-        "domain": (source.get("domain") or "").strip() or None,
-        "difficulty": (source.get("difficulty") or "").strip() or None,
+        "domain": (domain or "").strip() or None,
+        "difficulty": (difficulty or "").strip() or None,
         "technologies": technologies,
         "max_duration_weeks": max_weeks,
     }

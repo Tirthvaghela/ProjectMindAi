@@ -11,6 +11,7 @@ one actually exists.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 from urllib.parse import quote_plus
 
@@ -120,7 +121,7 @@ _SEQUENCE_TIERS: list[tuple[str, list[str]]] = [
     (
         "Programming language — everything else in this stack is written in it.",
         [
-            "python", "javascript", "typescript", "java", "c++", "c#", "golang", " go",
+            "python", "javascript", "typescript", "java", "c++", "c#", "golang",
             "dart", "solidity", "php", "ruby", "swift", "kotlin", "rust",
         ],
     ),
@@ -170,6 +171,15 @@ _SEQUENCE_TIERS: list[tuple[str, list[str]]] = [
 ]
 _UNRECOGNISED_REASON = "Supporting tool/technology for this project."
 
+# "go" can't just be a plain substring keyword in _SEQUENCE_TIERS above — it
+# would also match inside "diango", "monGOdb", and "alGOrithm". A leading-
+# space " go" used to work around that, but it also stopped the bare word
+# "Go" (the language) from ever matching, since a 2-character lowered skill
+# string can never contain a 3-character " go". Word-boundary matching is
+# the correct fix either way, so the language gets its own regex check
+# instead of a fragile string trick.
+_GO_LANGUAGE_PATTERN = re.compile(r"\bgo\b")
+
 
 def sequence_technologies(technologies: list[str]) -> list[dict[str, str]]:
     """Order a technology/skill list into a sensible learn-this-before-that
@@ -188,11 +198,14 @@ def sequence_technologies(technologies: list[str]) -> list[dict[str, str]]:
             continue
         seen.add(key)
 
-        tier_index, reason = len(_SEQUENCE_TIERS), _UNRECOGNISED_REASON
-        for index, (tier_reason, keywords) in enumerate(_SEQUENCE_TIERS):
-            if any(keyword in key for keyword in keywords):
-                tier_index, reason = index, tier_reason
-                break
+        if _GO_LANGUAGE_PATTERN.search(key):
+            tier_index, reason = 0, _SEQUENCE_TIERS[0][0]
+        else:
+            tier_index, reason = len(_SEQUENCE_TIERS), _UNRECOGNISED_REASON
+            for index, (tier_reason, keywords) in enumerate(_SEQUENCE_TIERS):
+                if any(keyword in key for keyword in keywords):
+                    tier_index, reason = index, tier_reason
+                    break
         tiered.append((tier_index, clean, reason))
 
     # Stable sort: within a tier, and among unrecognised terms, the caller's

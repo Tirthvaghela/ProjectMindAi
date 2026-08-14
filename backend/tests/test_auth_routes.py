@@ -8,6 +8,7 @@ and whether a header is even read in the first place.
 
 from __future__ import annotations
 
+from auth.service import AuthError
 from db import client as db
 
 
@@ -247,6 +248,40 @@ def test_update_profile_rejects_taking_another_users_email(client):
     _signup(client, "taken@example.com")
     token_b, _ = _signup(client, "wants-taken@example.com")
     res = client.patch("/api/auth/me", json={"email": "taken@example.com"}, headers=_auth(token_b))
+    assert res.status_code == 400
+
+
+def test_update_profile_maps_a_vanished_account_to_404(client, monkeypatch):
+    # The real trigger is a narrow race — the account gets deleted in the
+    # gap between current_user()'s read (which already succeeded; the
+    # session itself is genuinely valid) and update_profile()'s own — not
+    # reproducible by simply deleting the account first, since current_user()
+    # would already 401 before this route's own mapping is ever reached.
+    # This tests routes/auth.py's mapping directly instead, the same way the
+    # DuplicateKeyError tests mock the failure point rather than reproducing
+    # genuine concurrency.
+    import routes.auth as auth_routes
+
+    def _account_vanished(*args, **kwargs):
+        raise AuthError("Account not found.")
+
+    token, _ = _signup(client, "vanishing@example.com")
+    monkeypatch.setattr(auth_routes, "update_profile", _account_vanished)
+
+    res = client.patch("/api/auth/me", json={"name": "Ghost"}, headers=_auth(token))
+    assert res.status_code == 404
+
+
+def test_update_profile_still_maps_ordinary_validation_errors_to_400(client, monkeypatch):
+    import routes.auth as auth_routes
+
+    def _bad_name(*args, **kwargs):
+        raise AuthError("Name is required.")
+
+    token, _ = _signup(client, "ordinary-error@example.com")
+    monkeypatch.setattr(auth_routes, "update_profile", _bad_name)
+
+    res = client.patch("/api/auth/me", json={"name": "x"}, headers=_auth(token))
     assert res.status_code == 400
 
 
