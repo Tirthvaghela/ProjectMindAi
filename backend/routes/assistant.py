@@ -27,7 +27,7 @@ import config
 from db import client as db
 from extensions import limiter
 from nlp.ai_assistant import AssistantUnavailable, general_reply, reply
-from routes.helpers import ApiError, device_id, json_body, ok
+from routes.helpers import ApiError, current_user, device_id, json_body, ok
 
 bp = Blueprint("assistant", __name__, url_prefix="/api")
 
@@ -141,9 +141,26 @@ def _serialize(doc: dict, *, with_messages: bool) -> dict:
     return payload
 
 
-def _owned_conversation(caller: str, conversation_id: str) -> dict:
+def _ownership_filter() -> dict:
+    """Who a conversation belongs to.
+
+    Signed-in callers own conversations by account (user_id), so the sidebar's
+    history follows them across devices and survives sign-out/sign-in — a
+    fresh browser (or one that rotated its device id at a previous sign-out,
+    see api.js:rotateDeviceId) used to mean "No conversations yet." even for
+    a returning, authenticated user, since chat_conversations was keyed only
+    on the anonymous X-Device-Id header, same as favourites/history. Anonymous
+    callers still own by device_id, unchanged from before accounts existed.
+    """
+    user = current_user(required=False)
+    if user:
+        return {"user_id": user["user_id"]}
+    return {"device_id": device_id()}
+
+
+def _owned_conversation(conversation_id: str) -> dict:
     doc = db.conversations().find_one(
-        {"conversation_id": conversation_id, "device_id": caller}, {"_id": 0}
+        {"conversation_id": conversation_id, **_ownership_filter()}, {"_id": 0}
     )
     if doc is None:
         raise ApiError(f"No conversation with id '{conversation_id}'.", status=404)
@@ -152,10 +169,9 @@ def _owned_conversation(caller: str, conversation_id: str) -> dict:
 
 @bp.get("/conversations")
 def list_conversations():
-    caller = device_id()
     rows = (
         db.conversations()
-        .find({"device_id": caller}, {"_id": 0, "messages": 0, "device_id": 0})
+        .find(_ownership_filter(), {"_id": 0, "messages": 0, "device_id": 0, "user_id": 0})
         .sort("updated_at", -1)
         .limit(config.MAX_CONVERSATIONS_PER_DEVICE)
     )
@@ -169,10 +185,13 @@ def list_conversations():
 @bp.post("/conversations")
 def create_conversation():
     caller = device_id()
+    user = current_user(required=False)
     now = datetime.now(timezone.utc)
     doc = {
         "conversation_id": uuid.uuid4().hex,
         "device_id": caller,
+        # None for an anonymous chat — see _ownership_filter().
+        "user_id": user["user_id"] if user else None,
         "title": "New chat",
         "messages": [],
         "created_at": now,
@@ -184,15 +203,15 @@ def create_conversation():
 
 @bp.get("/conversations/<conversation_id>")
 def get_conversation(conversation_id: str):
-    caller = device_id()
-    doc = _owned_conversation(caller, conversation_id)
+    doc = _owned_conversation(conversation_id)
     return ok(_serialize(doc, with_messages=True))
 
 
 @bp.delete("/conversations/<conversation_id>")
 def delete_conversation(conversation_id: str):
-    caller = device_id()
-    result = db.conversations().delete_one({"conversation_id": conversation_id, "device_id": caller})
+    result = db.conversations().delete_one(
+        {"conversation_id": conversation_id, **_ownership_filter()}
+    )
     if result.deleted_count == 0:
         raise ApiError(f"No conversation with id '{conversation_id}'.", status=404)
     return ok({"deleted": True})
@@ -204,11 +223,10 @@ def send_conversation_message(conversation_id: str):
     """Body: {message}. Unlike /project/<id>/chat, history is not re-sent by
     the caller — it's read back from the stored conversation, since this is
     the one chat surface that actually persists one."""
-    caller = device_id()
     body = json_body()
     message = _validate_message(body)
 
-    doc = _owned_conversation(caller, conversation_id)
+    doc = _owned_conversation(conversation_id)
     history = [
         {"role": m["role"], "content": m["content"], "blocks": m.get("blocks")}
         for m in doc["messages"]
@@ -279,13 +297,12 @@ def select_project(conversation_id: str):
     round-trip needed for a deterministic action; natural-language "select
     this project" still works too, via the select_project tool in a normal
     chat turn (see nlp/ai_assistant.py)."""
-    caller = device_id()
     body = json_body()
     project_id = (body.get("project_id") or "").strip()
     if not project_id:
         raise ApiError("'project_id' is required.", status=400)
 
-    _owned_conversation(caller, conversation_id)
+    _owned_conversation(conversation_id)
     if db.projects().count_documents({"project_id": project_id}, limit=1) == 0:
         raise ApiError(f"No project with id '{project_id}'.", status=404)
 
@@ -320,7 +337,6 @@ def attach_resume_skills(conversation_id: str):
     so this never re-parses or stores the résumé itself, only the same
     derived skill list already shown to the student.
     """
-    caller = device_id()
     body = json_body()
     skills = body.get("skills") or []
     if not isinstance(skills, list) or not all(isinstance(s, str) for s in skills):
@@ -329,7 +345,7 @@ def attach_resume_skills(conversation_id: str):
     if not skills:
         raise ApiError("'skills' must contain at least one non-empty skill.", status=400)
 
-    _owned_conversation(caller, conversation_id)
+    _owned_conversation(conversation_id)
     db.conversations().update_one(
         {"conversation_id": conversation_id},
         {"$set": {"resume_skills": skills, "updated_at": datetime.now(timezone.utc)}},

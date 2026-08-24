@@ -18,7 +18,7 @@ from werkzeug.exceptions import HTTPException
 import config
 from db import client as db
 from extensions import limiter
-from nlp import embeddings, recommend
+from nlp import ai_assistant, embeddings, recommend
 from routes.helpers import ApiError
 
 logging.basicConfig(
@@ -149,6 +149,32 @@ def _register_health(app: Flask) -> None:
 
         project_count = db.projects().count_documents({}) if mongo_up else 0
 
+        # Cheap (in-memory, no rebuild) staleness signal: the retriever's own
+        # id list is frozen at the moment it was last built (startup, or the
+        # last explicit rebuild — see nlp/recommend.py:reset()), so comparing
+        # it against a fresh Mongo count on every health check catches
+        # catalogue/index drift as it happens, not just at the one moment the
+        # retriever itself was built. Never triggers a build: if the
+        # retriever isn't already up (warmup() failed, or the index is
+        # missing), this is just skipped rather than attempting one here.
+        indexed_count = None
+        if mongo_up and index_built:
+            try:
+                indexed_count = len(recommend.get_retriever().ids)
+            except Exception:  # noqa: BLE001
+                indexed_count = None
+
+        # A cached, cheap (models.list(), no completion tokens) reachability
+        # check — see nlp/ai_assistant.py:model_status for why this exists:
+        # nothing else here would ever notice a dead/renamed configured
+        # model until a real chat request hit it. Deliberately never factored
+        # into `healthy`/the top-level status code below, same reasoning as
+        # ai_assistant.enabled already not being: every other feature works
+        # with the assistant unreachable, so a Groq-side outage shouldn't
+        # report the whole app as degraded — it's surfaced in its own field
+        # instead, for whoever is specifically checking on it.
+        ai_model_status = ai_assistant.model_status()
+
         healthy = mongo_up and index_built and project_count > 0
         return (
             jsonify(
@@ -163,12 +189,25 @@ def _register_health(app: Flask) -> None:
                     "search_index": {
                         "built": index_built,
                         "model": config.EMBEDDING_MODEL,
+                        "indexed_projects": indexed_count,
+                        # True only once both sides are actually known — an
+                        # unbuilt/unreachable retriever (indexed_count is
+                        # None) says nothing about staleness, it says the
+                        # index couldn't be checked at all.
+                        "stale": (
+                            indexed_count is not None and indexed_count != project_count
+                        ),
                     },
                     "ai_assistant": {
                         # Deliberately not degraded/unhealthy when this is off — every
                         # other feature works without it; see nlp/ai_assistant.py.
                         "enabled": config.AI_ASSISTANT_ENABLED,
                         "model": config.GROQ_MODEL if config.AI_ASSISTANT_ENABLED else None,
+                        "tool_model": config.GROQ_TOOL_MODEL if config.AI_ASSISTANT_ENABLED else None,
+                        # None when AI_ASSISTANT_ENABLED is False (nothing configured
+                        # to check) — distinct from a dict, which means configured but
+                        # possibly unreachable; see model_status() itself.
+                        "model_status": ai_model_status,
                     },
                 }
             ),

@@ -187,18 +187,30 @@ GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "").strip()
 _extra_groq_keys = [k.strip() for k in os.environ.get("GROQ_API_KEYS", "").split(",") if k.strip()]
 GROQ_API_KEYS = ([GROQ_API_KEY] if GROQ_API_KEY else []) + [k for k in _extra_groq_keys if k != GROQ_API_KEY]
 
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile")
+# llama-3.3-70b-versatile (the previous default here) was removed from
+# Groq's catalogue — a plain chat completion now 404s with "model does not
+# exist or you do not have access to it" on every account, not a quota or
+# key problem, so key rotation can't work around it. gpt-oss-20b is Groq's
+# current lightweight general-purpose replacement, confirmed working for
+# both `reply()`'s prose and nlp/ideation.py's JSON-mode idea generation.
+# It is a reasoning model: unlike llama-3.3, part of its output is a hidden
+# "thinking" pass that counts against the same max_tokens budget as the
+# visible answer — both call sites pass reasoning_effort="low" alongside it
+# so that budget isn't silently spent on reasoning before any visible
+# content is produced (confirmed live: without it, `reply()`'s max_tokens=600
+# was fully consumed by reasoning, returning an empty answer with no error).
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-20b")
 
 # Separate model for the tool-calling Dashboard chat (nlp/ai_assistant.py:
-# general_reply). Measured directly against this app's tool schemas:
-# llama-3.3-70b-versatile frequently emits a text-based pseudo tool call
-# ("<function=search_projects>{...}</function>" inside `content`) instead of
-# a native tool_calls entry, which Groq's own validator then rejects outright
-# — observed on real turns in this app's exact flow, not a hypothetical.
-# gpt-oss-120b was trained specifically for agentic tool use and produced
-# clean, correctly-typed native tool calls on the same schema every time it
-# was tested. GROQ_MODEL (above) is untouched for `reply()`, which never
-# calls a tool and has no such reliability problem.
+# general_reply). Measured directly against this app's tool schemas: models
+# that aren't trained for agentic tool use frequently emit a text-based
+# pseudo tool call ("<function=search_projects>{...}</function>" inside
+# `content`) instead of a native tool_calls entry, which Groq's own validator
+# then rejects outright — observed on real turns in this app's exact flow,
+# not a hypothetical. gpt-oss-120b was trained specifically for agentic tool
+# use and produced clean, correctly-typed native tool calls on the same
+# schema every time it was tested. GROQ_MODEL (above) is untouched for
+# `reply()`, which never calls a tool and has no such reliability problem.
 GROQ_TOOL_MODEL = os.environ.get("GROQ_TOOL_MODEL", "openai/gpt-oss-120b")
 
 AI_ASSISTANT_ENABLED = bool(GROQ_API_KEYS)

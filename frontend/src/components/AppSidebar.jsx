@@ -154,6 +154,21 @@ export default function AppSidebar({ open = false, onClose }) {
             Sign in to see your chat history.
           </p>
         )}
+        {status === 'error' && (
+          <div className="px-4">
+            <p className="t-label-mono text-xs" style={{ color: '#ffb4ab' }}>
+              Couldn't load your conversations.
+            </p>
+            <button
+              type="button"
+              onClick={load}
+              className="t-label-mono mt-1 text-xs transition hover:opacity-75"
+              style={{ color: 'var(--outline)', textDecoration: 'underline' }}
+            >
+              Try again
+            </button>
+          </div>
+        )}
         {status === 'done' && conversations.length === 0 && (
           <p className="t-label-mono px-4 text-xs" style={{ color: 'var(--outline)' }}>
             No conversations yet.

@@ -105,6 +105,10 @@ def idea_timeline():
 
 
 @bp.post("/team-builder")
+# Same rationale as the catalogue variant, POST /api/team-builder
+# (routes/search.py) — unauthenticated, unbounded-looking members list, no
+# limit previously.
+@limiter.limit("30 per minute")
 def idea_team_builder():
     """Body: {domain?, technologies?, members: [{name?, skills: [str]}]}.
 

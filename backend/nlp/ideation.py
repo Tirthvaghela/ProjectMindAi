@@ -83,6 +83,10 @@ def _generate_raw(user_content: str, *, _retrying: bool = False) -> list[dict[st
         temperature=0.9,
         max_tokens=1800,
         response_format={"type": "json_object"},
+        # See config.py's GROQ_MODEL comment: a reasoning model, whose hidden
+        # "thinking" tokens share this same max_tokens budget with the actual
+        # JSON output unless capped low.
+        reasoning_effort="low",
     )
     # Malformed/empty provider response (no choices at all) is treated the
     # same as unparseable content below — not an IndexError.

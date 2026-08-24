@@ -38,3 +38,10 @@ python-docx~=1.1
 
 # --- Testing ---
 pytest~=8.3
+
+# --- Production WSGI server ---
+# The dev server (`python app.py`) is Werkzeug's own — fine for local work,
+# but flask-limiter's in-memory rate-limit counters measurably fail to
+# persist between requests under it (see extensions.py). Use waitress for
+# any real deployment; README.md documents the exact command.
+waitress~=3.0

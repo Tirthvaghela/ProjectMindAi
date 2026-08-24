@@ -17,6 +17,14 @@ import { Spinner, ErrorNotice, EmptyState } from '../components/Feedback'
 const IDEA_COUNT_DEFAULT = 5
 const IDEA_COUNT_MAX = 6
 
+// generate() below wraps this in a fixed instruction sentence plus optional
+// Domain/Difficulty context (well under 200 chars combined) before sending
+// it as `message` to routes/assistant.py's chat pipeline, which rejects
+// anything over MAX_MESSAGE_CHARS=2000 total. Capped here well short of
+// that so a long paste fails fast with a visible counter instead of only
+// discovering the limit after a full round trip to the server.
+const TOPIC_MAX_CHARS = 1500
+
 const STARTER_TOPICS = [
   'An innovative NLP project I can finish in 3 months',
   'Something in computer vision for a beginner',
@@ -454,13 +462,22 @@ export default function Ideate() {
           >
             <div className="space-y-4">
               <div>
-                <label htmlFor="ideate-topic" className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }}>
-                  Project Concept
-                </label>
+                <div className="mb-1.5 flex items-center justify-between">
+                  <label htmlFor="ideate-topic" className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                    Project Concept
+                  </label>
+                  <span
+                    className="t-label-mono"
+                    style={{ color: topic.length >= TOPIC_MAX_CHARS ? '#ffb4ab' : 'var(--outline)', fontSize: 10.5 }}
+                  >
+                    {topic.length}/{TOPIC_MAX_CHARS}
+                  </span>
+                </div>
                 <textarea
                   id="ideate-topic"
                   value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
+                  onChange={(e) => setTopic(e.target.value.slice(0, TOPIC_MAX_CHARS))}
+                  maxLength={TOPIC_MAX_CHARS}
                   rows={4}
                   placeholder='e.g. "An innovative NLP project I can finish in 3 months"'
                   className="gm-input w-full px-3 py-2 text-sm"
@@ -494,7 +511,7 @@ export default function Ideate() {
 
               <div>
                 <div className="mb-1.5 flex items-center justify-between">
-                  <label className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                  <label htmlFor="ideate-count" className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>
                     Idea Volume
                   </label>
                   <span className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 12 }}>
@@ -502,6 +519,7 @@ export default function Ideate() {
                   </span>
                 </div>
                 <input
+                  id="ideate-count"
                   type="range"
                   min={1}
                   max={IDEA_COUNT_MAX}

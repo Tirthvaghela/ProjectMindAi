@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
 import api from '../services/api'
 import MarkdownLite from './MarkdownLite'
 import Panel from './Panel'
+import { CopyButton, TypingDots } from './ChatPrimitives'
 
 const STARTERS = [
   'What should I build first?',
@@ -26,38 +26,6 @@ function loadSavedMessages(storageKey) {
   }
 }
 
-function CopyButton({ text }) {
-  const [copied, setCopied] = useState(false)
-  return (
-    <button
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(text)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 1500)
-        } catch {
-          /* Clipboard API unavailable (insecure context, permissions) — not worth surfacing. */
-        }
-      }}
-      className="shrink-0 self-end p-1 opacity-0 transition group-hover:opacity-100 hover:bg-white/10"
-      style={{ color: 'var(--outline)', borderRadius: 6 }}
-      aria-label="Copy message"
-      title={copied ? 'Copied' : 'Copy'}
-    >
-      {copied ? (
-        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-      ) : (
-        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <rect x="9" y="9" width="11" height="11" rx="2" />
-          <path d="M5 15V5a2 2 0 012-2h10" />
-        </svg>
-      )}
-    </button>
-  )
-}
-
 function Bubble({ role, content }) {
   const isUser = role === 'user'
   return (
@@ -73,24 +41,8 @@ function Bubble({ role, content }) {
         >
           {isUser ? content : <MarkdownLite content={content} />}
         </div>
-        {!isUser && <CopyButton text={content} />}
+        {!isUser && <CopyButton text={content} label="message" />}
       </div>
-    </div>
-  )
-}
-
-function TypingDots() {
-  return (
-    <div className="flex w-fit items-center gap-1 px-3.5 py-3" style={{ background: 'var(--surface-container-low)', border: '1px solid var(--border-technical)', borderRadius: 8 }}>
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="h-1.5 w-1.5 rounded-full"
-          style={{ background: 'var(--outline)' }}
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{ duration: 1, repeat: Infinity, delay: i * 0.15 }}
-        />
-      ))}
     </div>
   )
 }

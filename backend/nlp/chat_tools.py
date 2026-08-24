@@ -49,21 +49,15 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "search_projects",
             "description": (
-                "Search ProjectMind's EXISTING catalogue of real student project briefs using "
-                "hybrid semantic + keyword search. Use for finding/recommending projects that "
-                "already exist in the catalogue, or projects matching the student's skills. For "
-                "'projects similar to X' about ONE specific project already shown, use "
-                "find_similar_projects instead — it uses the real embedding similarity index "
-                "rather than a re-typed query. Do NOT use this when the student asks for NEW, "
-                "innovative, original, or fresh project ideas, or 'what can I build' / 'give me "
-                "something different' — that is a request to invent something that isn't in the "
-                "catalogue yet, which is generate_project_ideas' job, not this one. Never invent "
-                "a project that isn't returned here. Pass known_skills/team_size/experience_level "
-                "too whenever the student has already told you theirs (even earlier in the "
-                "conversation) — it blends skill fit and timeline fit into the ranking instead of "
-                "ranking on topic relevance alone, and each result comes back with its own "
-                "matching_factors and skills_you_have/skills_to_learn so you never have to guess "
-                "why something was recommended."
+                "Search ProjectMind's EXISTING catalogue using hybrid semantic + keyword search — "
+                "for finding/recommending projects that already exist, or matching the student's "
+                "skills. For 'projects similar to X' about ONE project already shown, use "
+                "find_similar_projects instead (real embedding similarity, not a re-typed query). "
+                "Do NOT use this for NEW/innovative/original/fresh ideas or 'what can I build' — "
+                "that's generate_project_ideas' job. Never invent a project not returned here. "
+                "Pass known_skills/team_size/experience_level whenever already known — blends "
+                "skill/timeline fit into the ranking, and each result carries matching_factors "
+                "and skills_you_have/skills_to_learn."
             ),
             "parameters": {
                 "type": "object",
@@ -118,13 +112,10 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "find_similar_projects",
             "description": (
-                "Retrieve real catalogue projects most similar to ONE specific existing project, "
-                "using ProjectMind's embedding similarity index directly — not a text search. Use "
-                "this whenever the student names or references one specific project already "
-                "shown/selected and asks for similar/related/alternative ones ('projects like "
-                "this', 'anything similar to the chatbot one', 'what else is like project X'). "
-                "Prefer this over search_projects for that case — it compares the two projects' "
-                "full meaning, not just a re-typed description."
+                "Real catalogue projects most similar to ONE existing project, via embedding "
+                "similarity — not a text search. Use when the student references one project "
+                "already shown/selected and asks for similar/related/alternative ones ('projects "
+                "like this', 'what else is like project X'). Prefer over search_projects here."
             ),
             "parameters": {
                 "type": "object",
@@ -144,10 +135,9 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "get_project_details",
             "description": (
-                "Fetch full details (description, technologies, skills, duration) for one "
-                "specific project by its project_id. Call this before answering a specific "
-                "question — technologies used, duration, skills needed — about a project "
-                "already shown in this conversation."
+                "Full details (description, technologies, skills, duration) for one project by "
+                "its project_id. Call before answering a specific question about a project "
+                "already shown."
             ),
             "parameters": {
                 "type": "object",
@@ -188,12 +178,10 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "generate_milestones",
             "description": (
-                "Generate measurable build milestones (M1, M2, ...) for one catalogue project by "
-                "its project_id, one per roadmap phase with the week it should be done by — use "
-                "for 'give me milestones', 'what are the checkpoints', or 'break this into "
-                "deliverables'. Derived directly from the same roadmap generate_roadmap uses, so "
-                "milestones always agree with the phases/timeline — never invent milestones "
-                "yourself or make them up from generate_roadmap's own result."
+                "Measurable build milestones (M1, M2, ...) for one catalogue project, one per "
+                "roadmap phase with its due week — use for 'milestones', 'checkpoints', or "
+                "'deliverables'. Derived from the same roadmap generate_roadmap uses; never "
+                "invent milestones yourself."
             ),
             "parameters": {
                 "type": "object",
@@ -207,10 +195,9 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "compare_projects",
             "description": (
-                "Compare two or more projects already shown in this conversation, side by side, "
-                "using their real catalogue data (difficulty, duration, technologies, skills). "
-                "Resolve references like 'the first and third one' to project_ids using the "
-                "'[Context — projects shown above]' note before calling this."
+                "Compare 2+ projects already shown, side by side, using real catalogue data "
+                "(difficulty, duration, technologies, skills). Resolve 'the first and third one' "
+                "to project_ids via context before calling."
             ),
             "parameters": {
                 "type": "object",
@@ -230,10 +217,9 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "check_skill_gap",
             "description": (
-                "Compare a student's own skills against one project's requirements — readiness %, "
-                "skills they already have, and skills they're missing. If the student hasn't told "
-                "you their skills yet in this conversation, ask them first instead of guessing or "
-                "calling this with an empty list."
+                "Compare a student's skills against one project's requirements — readiness %, "
+                "skills they have/are missing. Ask for their skills first if not yet known; never "
+                "call with an empty list."
             ),
             "parameters": {
                 "type": "object",
@@ -254,14 +240,11 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "match_resume_projects",
             "description": (
-                "Find and rank catalogue projects against the student's own uploaded-résumé "
-                "skills — use for 'which project fits me best', 'recommend projects based on my "
-                "résumé', or 'which project matches my experience/skills' once a "
-                "'[Context — résumé skills already on file...]' note is present. Returns each "
-                "match's real overall fit plus the skills the student already has and is missing "
-                "for it, using the same skill-gap logic as check_skill_gap — never invent this "
-                "breakdown yourself. If no résumé context note is present, do not call this — "
-                "tell the student to upload their résumé on the Résumé Match page first."
+                "Rank catalogue projects against the student's uploaded-résumé skills — for "
+                "'which project fits me best' once a '[Context — résumé skills...]' note is "
+                "present. Returns each match's fit plus skills the student has/is missing (same "
+                "logic as check_skill_gap). If no résumé note is present, tell them to upload "
+                "their résumé on the Résumé Match page instead of calling this."
             ),
             "parameters": {
                 "type": "object",
@@ -322,10 +305,8 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "select_project",
             "description": (
-                "Mark one project as the student's selected/active project for the rest of this "
-                "conversation, so future questions (architecture, database choice, how to build X) "
-                "are grounded in it automatically. Call this whenever the student says things like "
-                "'select this one', 'I'll go with the second one', or 'let's build the chatbot'."
+                "Mark one project as the student's active project so future questions are grounded "
+                "in it automatically. Call for 'select this one', 'let's build the chatbot'."
             ),
             "parameters": {
                 "type": "object",
@@ -339,16 +320,11 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "select_idea",
             "description": (
-                "Mark one previously generated idea (from generate_project_ideas or "
-                "refine_project_idea) as the student's selected/active build target for the rest "
-                "of this conversation, so future questions (architecture, database choice, how to "
-                "build X) are grounded in it automatically — the idea-context mirror of "
-                "select_project, for a GENERATED idea rather than a catalogue project. Call this "
-                "whenever the student says things like 'let's build this one', 'I'll go with the "
-                "second idea', or 'build the smart notes idea'. Use the idea's exact current "
-                "fields from the '[Context — generated ideas shown above]' note. Selecting an idea "
-                "replaces any previously selected catalogue project as the active build target, "
-                "and vice versa for select_project — only one can be active at a time."
+                "Mark one previously generated idea as the student's active build target — the "
+                "idea-context mirror of select_project, for a GENERATED idea instead of a "
+                "catalogue project. Call for 'let's build this one', 'I'll go with the second "
+                "idea'. Use the idea's exact current fields from context. Replaces any selected "
+                "catalogue project — only one build target is ever active."
             ),
             "parameters": {
                 "type": "object",
@@ -372,20 +348,14 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "recommend_decision",
             "description": (
-                "Help the student decide between project(s) already shown, searched, or compared "
-                "in this conversation — call this for 'which one should I choose?', 'which is "
-                "easiest?', 'which is most unique?', 'which fits my skills/resume best?', 'which "
-                "can I finish in N weeks/months?', or 'give me your final recommendation'. "
-                "Combines four real signals for each project into one ranked, explained result — "
-                "Skill Fit (vs known_skills), Timeline Fit (vs target_weeks or the project's own "
-                "duration), Difficulty Fit (vs experience_level), and catalogue Uniqueness — never "
-                "re-derive or guess these judgements yourself, always call this. For a narrower "
-                "question ('which is easiest', 'which fits my skills') just speak to that one "
-                "factor from the result rather than the overall ranking. Works even with only one "
-                "project_id (a straight suitability check) or with no known_skills/team_size/"
-                "experience_level yet (don't block on asking first — use whatever the student has "
-                "already said in this conversation; a factor with no input becomes explicitly "
-                "unavailable rather than guessed, and the tool still works without it)."
+                "Help the student decide between project(s) already shown/searched/compared — "
+                "for 'which should I choose', 'which is easiest/most unique/fits my skills best', "
+                "'which can I finish in N weeks', or 'give me your recommendation'. Combines four "
+                "signals into one ranked result — Skill Fit, Timeline Fit, Difficulty Fit, "
+                "catalogue Uniqueness — never guess these yourself, always call this. For a "
+                "narrower question, speak to just that one factor from the result. Works with one "
+                "project_id alone, or with no known_skills/team_size/experience_level yet — a "
+                "factor with no input just becomes unavailable, not guessed."
             ),
             "parameters": {
                 "type": "object",
@@ -420,11 +390,9 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "check_project_uniqueness",
             "description": (
-                "Check how original the student's OWN project idea is against ProjectMind's "
-                "catalogue, by meaning (not just shared words). Call this when the student "
-                "describes an idea of their own and asks things like 'is my idea unique?', "
-                "'check this project idea', or 'is this too similar to existing projects?' — "
-                "not for questions about a catalogue project they're already looking at."
+                "Check how original the student's OWN idea is against the catalogue, by meaning. "
+                "Call for 'is my idea unique?', 'is this too similar to existing projects?' — not "
+                "for a catalogue project already being discussed."
             ),
             "parameters": {
                 "type": "object",
@@ -443,13 +411,10 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "generate_project_ideas",
             "description": (
-                "Invent NEW project concepts that do NOT exist in ProjectMind's catalogue yet — "
-                "call this (never search_projects) when the student asks for new/innovative/"
-                "original/fresh/unique project ideas, 'what can I build', 'suggest a project' "
-                "with no catalogue qualifier, or explicitly says they want something different "
-                "from what exists. Each idea is generated then automatically checked for real "
-                "originality against the catalogue before being returned, so you never need to "
-                "call check_project_uniqueness yourself right after this."
+                "Invent NEW project concepts not in the catalogue — call (never search_projects) "
+                "for new/innovative/original/fresh/unique ideas, 'what can I build', or wanting "
+                "something different. Each idea is auto-checked for originality before returning, "
+                "so no need to call check_project_uniqueness right after."
             ),
             "parameters": {
                 "type": "object",
@@ -474,11 +439,9 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "refine_project_idea",
             "description": (
-                "Regenerate ONE previously generated idea (from generate_project_ideas) against "
-                "the student's follow-up instruction — 'make it more innovative', 'use a "
-                "different tech stack', 'simplify it'. Use the idea's exact current fields from "
-                "the '[Context — ideas shown above]' note; re-validated for originality "
-                "automatically, same as a fresh idea."
+                "Regenerate ONE previously generated idea against a follow-up instruction — "
+                "'make it more innovative', 'simplify it'. Use the idea's exact current fields "
+                "from context; re-validated for originality automatically."
             ),
             "parameters": {
                 "type": "object",
@@ -503,13 +466,10 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "generate_idea_roadmap",
             "description": (
-                "Phase-by-phase development roadmap for a GENERATED idea (one with no catalogue "
-                "project_id) — use this instead of generate_roadmap when the student asks for a "
-                "roadmap, implementation plan, or phases for one of the ideas from "
-                "generate_project_ideas rather than a catalogue project. Each phase comes back with "
-                "objective/tasks/technologies/expected_output already filled in, grounded in the "
-                "idea's own technologies where you pass them — always pass technologies from the "
-                "idea's context so this is as grounded as a catalogue project's roadmap."
+                "Phase-by-phase roadmap for a GENERATED idea (no project_id) — use instead of "
+                "generate_roadmap for a roadmap/implementation-plan request about a generated "
+                "idea. Always pass technologies from the idea's context so phase tasks aren't "
+                "left empty."
             ),
             "parameters": {
                 "type": "object",
@@ -532,10 +492,8 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "generate_idea_timeline",
             "description": (
-                "Realistic completion estimate for a GENERATED idea (no catalogue project_id), "
-                "given a team size and/or experience level — use this instead of predict_timeline "
-                "when the student asks 'how long will this take' about one of the ideas from "
-                "generate_project_ideas rather than a catalogue project."
+                "Completion estimate for a GENERATED idea (no project_id) given team "
+                "size/experience — use instead of predict_timeline for a generated idea."
             ),
             "parameters": {
                 "type": "object",
@@ -556,10 +514,8 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "generate_idea_milestones",
             "description": (
-                "Measurable build milestones for a GENERATED idea (no catalogue project_id) — use "
-                "this instead of generate_milestones when the student asks for milestones/"
-                "checkpoints/deliverables for one of the ideas from generate_project_ideas rather "
-                "than a catalogue project."
+                "Build milestones for a GENERATED idea (no project_id) — use instead of "
+                "generate_milestones for a generated idea."
             ),
             "parameters": {
                 "type": "object",

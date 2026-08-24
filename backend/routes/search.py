@@ -230,6 +230,10 @@ def uniqueness():
 
 
 @bp.post("/team-builder")
+# Unauthenticated, deterministic, but takes an unbounded-looking members list
+# and no rate limit at all — matches search/recommend's own limit above since
+# it's the same shape of route (unauthenticated POST in this blueprint).
+@limiter.limit("30 per minute")
 def team_builder():
     """Suggest a project role for each team member, given their skills.
 

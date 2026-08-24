@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from flask import Blueprint
 
+from extensions import limiter
 from routes.helpers import ApiError, current_user, json_body, ok
 from teams.service import (
     TeamError,
@@ -170,6 +171,12 @@ def messages(team_id: str):
 
 
 @bp.post("/<team_id>/messages")
+# Matches POST /api/conversations/<id>/messages' own rate (routes/assistant.py)
+# — the closest existing analog: a persisted, human-typed message-send route.
+# Real cost here isn't an LLM call, it's the notification/email fan-out to
+# every other team member (notify.py, teams/service.py:post_message) — the
+# same "expensive/external side effect" bar every other limited route meets.
+@limiter.limit("30 per hour")
 def post_message_route(team_id: str):
     user = current_user()
     body = json_body()

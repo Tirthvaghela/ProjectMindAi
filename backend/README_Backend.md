@@ -17,6 +17,22 @@ copy .env.example .env
 Install PyTorch from the CPU index first — the default PyPI wheel bundles CUDA
 (~2.5 GB) that this project never uses. The CPU wheel is ~120 MB.
 
+`requirements.txt` is the loose, top-level spec (what this project actually
+depends on, `~=` version bands); `requirements.lock.txt` is its fully pinned
+transitive closure, for a reproducible install (`pip install -r
+requirements.lock.txt` instead of `requirements.txt`). Regenerate it from a
+**clean** venv built only from `requirements.txt` (+ the CPU torch index
+above) — not a plain `pip freeze` of an existing dev venv, which can quietly
+carry unrelated packages installed for something else along with it.
+
+## Environment Variables
+
+`.env.example` (copied above) is the source of truth, with every variable's
+default/placeholder and a comment on what it does — see the root
+[`README.md`](../README.md)'s own Environment Variables table for the full
+list at a glance. Nothing is required beyond MongoDB itself; every
+`GROQ_*`/`SMTP_*` block is optional and the app runs fully without it.
+
 ## Running
 
 ```powershell
@@ -38,9 +54,11 @@ arbitrary code from the browser on an unhandled exception). Use a real WSGI
 server instead:
 
 ```powershell
-venv\Scripts\python -m pip install waitress
 venv\Scripts\waitress-serve --host=127.0.0.1 --port=5000 app:app
 ```
+
+(`waitress` is already in `requirements.txt`/`requirements.lock.txt` — no
+separate install needed.)
 
 Waitress is pure Python — no C extensions to build, which is why it's the
 pick here over gunicorn (Unix-only) for a project developed on Windows.
@@ -64,30 +82,47 @@ pick here over gunicorn (Unix-only) for a project developed on Windows.
 venv\Scripts\python -m pytest tests/ -v
 ```
 
-442 tests. Most are pure-function unit tests needing no fixture at all —
+581 tests. Most are pure-function unit tests needing no fixture at all —
 `db/schema.py`, `nlp/preprocess.py`, `nlp/generator.py`, `nlp/team_builder.py`,
-`nlp/timeline.py`, `nlp/learning_path.py`, `nlp/resume.py`, and
-`nlp/similarity.py` (the query-encoding step there is monkeypatched to a
-hand-picked vector rather than loading the real embedding model, so those
-tests stay fast). The `test_*_routes.py` files (including `test_idea_routes.py`
-and `test_teams_routes.py`) and `test_auth.py`/`test_teams.py` genuinely touch
-MongoDB, via the `mongo_test_db` fixture in `conftest.py`, which redirects to
-a throwaway `projectmind_test` database on the same server and drops it
-afterward. Those files skip themselves if `mongod` isn't reachable rather
-than failing. A handful of proxied-collection tests (`test_teams.py`) simulate
-a `DuplicateKeyError` mid-write to exercise the team-join and invite-code
-races without needing real concurrent requests.
+`nlp/timeline.py`, `nlp/learning_path.py`, `nlp/resume.py` (including
+`test_resume_parsing.py`'s real, hand-built PDF/DOCX fixtures for the actual
+file-parsing path — not just the pure skill-detection functions downstream
+of it), and `nlp/similarity.py` (the query-encoding step there is
+monkeypatched to a hand-picked vector rather than loading the real embedding
+model, so those tests stay fast). The `test_*_routes.py` files (`test_idea_routes.py`,
+`test_teams_routes.py`, `test_search_routes.py`, `test_projects_routes.py`,
+`test_health_route.py`) and `test_auth.py`/`test_teams.py`/`test_build_retriever.py`
+genuinely touch MongoDB, via the `mongo_test_db` fixture in `conftest.py`,
+which redirects to a throwaway `projectmind_test` database on the same
+server and drops it afterward. Those files skip themselves if `mongod` isn't
+reachable rather than failing. A handful of proxied-collection tests
+(`test_teams.py`) simulate a `DuplicateKeyError` mid-write to exercise the
+team-join and invite-code races without needing real concurrent requests.
+`test_embeddings.py` exercises the on-disk vector index (save/load,
+corruption, missing files) against a `tmp_path`, never the real
+`data/embeddings.npy`. `test_rate_limits.py` and
+`test_ai_assistant.py::test_model_status_*` assert configuration/behaviour
+directly (Flask-Limiter's `limit_manager`, a faked `models.list()`) rather
+than by hammering a route for a real 429 — rate limiting is only verified to
+enforce correctly under waitress, not the dev server used here (see
+`extensions.py`).
 
 ## API
 
 All responses are wrapped: `{"data": ...}` on success, `{"error": "..."}` on failure.
 
-Endpoints needing user identity read an `X-Device-Id` header — a UUID the
-frontend generates once and stores in `localStorage`. There are no accounts.
+Two independent identity headers, not one — see `routes/helpers.py`:
+`X-Device-Id` (a UUID the frontend generates once and stores in
+`localStorage`) scopes anonymous favourites/history/personalisation/chat and
+needs no account; `X-Auth-Token` (a bearer session token from
+`/api/auth/login`/`/signup`) identifies a signed-in account and is required
+only for teams and notifications. Most routes need at most one of the two,
+never both — see the root [`README.md`](../README.md)'s "Known Limitations"
+section for the trade-off that anonymous identity model makes.
 
 | Method | Endpoint | Notes |
 |---|---|---|
-| GET | `/api/health` | Per-dependency status; 503 when degraded |
+| GET | `/api/health` | Per-dependency status; 503 when degraded. `ai_assistant.model_status` is a cached (5 min), `models.list()`-based reachability check for the configured Groq model(s) — costs no completion tokens, never affects the top-level status. `search_index.stale` compares MongoDB's live project count against the retriever's indexed count, no rebuild triggered. |
 | POST | `/api/search` | `{query, domain?, difficulty?, technologies?, max_duration_weeks?, top_k?, personalize?}` |
 | GET | `/api/projects` | Paginated browse: `?limit=&skip=&domain=&difficulty=` |
 | GET | `/api/project/<id>` | Single project |
@@ -96,7 +131,6 @@ frontend generates once and stores in `localStorage`. There are no accounts.
 | GET | `/api/project/<id>/milestones` | Measurable build checkpoints, derived from the same roadmap |
 | GET | `/api/similar/<id>` | Nearest projects by embedding |
 | GET | `/api/filters` | Filter options for the UI |
-| GET | `/api/analytics` | Aggregate counts + trending searches |
 | POST | `/api/skill-gap` | `{project_id, skills[]}` → readiness % |
 | POST | `/api/team-builder` | `{project_id, members[]}` → role suggestions |
 | POST | `/api/timeline-predict` | `{project_id, team_size?, experience_level?}` |
@@ -127,9 +161,29 @@ frontend generates once and stores in `localStorage`. There are no accounts.
 | GET | `/api/notifications` | Recent notifications |
 | POST | `/api/notifications/<id>/read`, `/read-all` | Mark read |
 
-`/project/<id>/chat` and `/conversations/<id>/messages` are rate-limited
-(20/hour and 30/hour respectively) — the only routes that call an external,
-cost-bearing API. Both return 503 if `GROQ_API_KEY` is unset.
+Rate limits (`extensions.py`; see its own comment on why they only enforce
+correctly under waitress, not the dev server) opt in per route rather than a
+blanket default — either a real external cost, or otherwise expensive/
+abusable with no auth to fall back on:
+
+| Route | Limit | Why |
+|---|---|---|
+| `/project/<id>/chat`, `/idea/chat` | 20/hour | Calls Groq (external, cost-bearing) |
+| `/conversations/<id>/messages` | 30/hour | Calls Groq |
+| `/search`, `/recommend` | 30/minute | Hybrid retrieval — real, if bounded, CPU cost |
+| `/uniqueness` | 20/minute | Embeds + scores against the whole catalogue |
+| `/resume-suggest` | 10/minute | File parsing (PDF/DOCX) |
+| `/team-builder`, `/idea/team-builder` | 30/minute | Unauthenticated, unbounded-looking `members` list |
+| `/teams/<id>/messages` | 30/hour | Triggers a notification (and optionally an email) to every teammate |
+| `/notifications`, `/notifications/<id>/read`, `/notifications/read-all` | 60/minute | Defense-in-depth floor, not a real cost — generous enough for the 30s poll `NotificationsBell.jsx` already does |
+| `/auth/signup` | 10/hour | Security-sensitive |
+| `/auth/login` | 20/hour | Security-sensitive |
+
+Every route that calls Groq returns 503 if `GROQ_API_KEY` is unset. Every
+other route in this table — favourites, history, feedback, teams (besides
+messages), auth's `/me`/`/logout` — has no rate limit at all: cheap,
+authenticated-or-ownership-checked reads/writes, the same category as the
+rest of this API.
 
 ## How retrieval works
 

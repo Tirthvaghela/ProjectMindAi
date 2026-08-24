@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import pytest
 
+import config
 from db import client as db
 from nlp import ai_assistant, chat_tools
 
@@ -376,6 +377,33 @@ def test_project_system_template_forbids_claiming_implementation():
     content = ai_assistant._SYSTEM_TEMPLATE
     assert "never claim to have implemented, written, tested, or changed" in content
     assert "say plainly that it isn't specified rather than inventing" in content
+
+
+def test_general_system_message_defers_skill_gathering_until_after_selection():
+    # A plain "give me a cybersecurity capstone project" is DISCOVERY and must
+    # go straight to search_projects (cards + a select_project option on
+    # each) rather than stalling on a skills questionnaire first — regression
+    # guard for a prompt wording ("clearly being discussed") that was broad
+    # enough for the model to treat a topic the student merely named as a
+    # project already "being discussed" and ask about skills before ever
+    # searching.
+    content = ai_assistant._GENERAL_SYSTEM_MESSAGE["content"]
+    assert "always gets an immediate search_projects/generate_project_ideas call" in content
+    assert "never ask what the student already knows before that first search" in content
+    assert "Only AFTER the student has actually selected a project or idea" in content
+
+
+def test_general_system_message_declines_off_topic_personal_conversation():
+    # The Dashboard chat has no fixed project scope (unlike reply()'s
+    # per-project prompt, which already tells the model to steer back
+    # on-topic), so without an explicit guard the model will happily answer
+    # unrelated personal chit-chat (family, friends, life advice) instead of
+    # staying a project-recommendation assistant. Team-related questions are
+    # still in scope when they're about building the project itself.
+    content = ai_assistant._GENERAL_SYSTEM_MESSAGE["content"]
+    assert "not a general-purpose chatbot" in content
+    assert "family, friends, relationships, or personal life" in content
+    assert "team size, splitting roles/tasks" in content
 
 
 # --- _history_messages: only the most-recent shown-projects/ideas note --------
@@ -1214,3 +1242,130 @@ def test_reply_skips_redundant_shrink_attempts_on_a_short_history(monkeypatch):
         ai_assistant.reply({"title": "P"}, "hello", history)
 
     assert calls["n"] == 2  # (2, 0), not the full (12, 6, 3, 0)
+
+
+# --- model_status() — /api/health's AI reachability check ---------------------
+#
+# Uses client.models.list(), never a chat completion, so a fake here only
+# ever needs a `.models.list()` returning an object with `.data` of
+# id-bearing items — nothing shared with _FakeClient's chat.completions
+# shape above.
+
+
+class _FakeModel:
+    def __init__(self, model_id):
+        self.id = model_id
+
+
+class _FakeModelList:
+    def __init__(self, ids):
+        self.data = [_FakeModel(i) for i in ids]
+
+
+class _FakeModelsResource:
+    def __init__(self, ids=None, error=None):
+        self._ids = ids or []
+        self._error = error
+        self.calls = 0
+
+    def list(self):
+        self.calls += 1
+        if self._error:
+            raise self._error
+        return _FakeModelList(self._ids)
+
+
+class _FakeModelsClient:
+    def __init__(self, ids=None, error=None):
+        self.models = _FakeModelsResource(ids, error)
+
+
+@pytest.fixture(autouse=True)
+def _reset_model_status_cache(monkeypatch):
+    """Every test below gets a clean, expired cache — model_status() itself
+    is what's under test, so nothing here should depend on cache state a
+    previous test (or a previous call in this same test) left behind."""
+    monkeypatch.setitem(ai_assistant._model_status_cache, "checked_at", 0.0)
+    monkeypatch.setitem(ai_assistant._model_status_cache, "result", None)
+
+
+def test_model_status_is_none_when_the_assistant_is_not_configured(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", False)
+    assert ai_assistant.model_status() is None
+
+
+def test_model_status_reachable_when_both_configured_models_are_listed(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    client = _FakeModelsClient(ids=[config.GROQ_MODEL, config.GROQ_TOOL_MODEL, "some-other-model"])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [client])
+
+    result = ai_assistant.model_status()
+
+    assert result["reachable"] is True
+    assert result["missing_models"] == []
+    assert result["checked_model"] == config.GROQ_MODEL
+    assert result["checked_tool_model"] == config.GROQ_TOOL_MODEL
+
+
+def test_model_status_unreachable_when_the_configured_model_was_removed(monkeypatch):
+    """The exact real-world failure this exists to catch — see config.py's
+    own comment on the incident where GROQ_MODEL pointed at a model Groq had
+    already removed from its catalogue, discovered only when a live chat
+    request 404'd."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    client = _FakeModelsClient(ids=[config.GROQ_TOOL_MODEL])  # GROQ_MODEL missing
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [client])
+
+    result = ai_assistant.model_status()
+
+    assert result["reachable"] is False
+    assert result["missing_models"] == [config.GROQ_MODEL]
+
+
+def test_model_status_fails_gracefully_when_the_provider_call_errors(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    client = _FakeModelsClient(error=ConnectionError("Groq is unreachable"))
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [client])
+
+    result = ai_assistant.model_status()  # must not raise
+
+    assert result["reachable"] is False
+    assert "Groq is unreachable" in result["error"]
+
+
+def test_model_status_reports_no_client_configured_distinctly(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [])
+
+    result = ai_assistant.model_status()
+
+    assert result["reachable"] is False
+    assert "No Groq client configured" in result["error"]
+
+
+def test_model_status_is_cached_within_the_ttl_window(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    client = _FakeModelsClient(ids=[config.GROQ_MODEL, config.GROQ_TOOL_MODEL])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [client])
+
+    first = ai_assistant.model_status()
+    second = ai_assistant.model_status()
+
+    assert first == second
+    assert client.models.calls == 1  # the second call was served from cache
+
+
+def test_model_status_rechecks_once_the_cache_expires(monkeypatch):
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    client = _FakeModelsClient(ids=[config.GROQ_MODEL, config.GROQ_TOOL_MODEL])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [client])
+
+    ai_assistant.model_status()
+    assert client.models.calls == 1
+
+    # Simulate the TTL having elapsed rather than sleeping the real
+    # _MODEL_STATUS_CACHE_SECONDS in a test.
+    monkeypatch.setitem(ai_assistant._model_status_cache, "checked_at", 0.0)
+    ai_assistant.model_status()
+
+    assert client.models.calls == 2

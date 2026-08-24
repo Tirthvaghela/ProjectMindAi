@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -15,5 +16,14 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+  },
+  // Vitest reuses this same Vite config (aliases, the react/tailwind
+  // plugins) rather than a second config file — jsdom gives the component
+  // tree a real DOM without a browser, and setupFiles wires in jest-dom's
+  // matchers (toBeInTheDocument, etc.) globally.
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.js'],
+    css: false,
   },
 })

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import useAuth from '../hooks/useAuth.jsx'
 import useVoiceSearch from '../hooks/useVoiceSearch'
 import api from '../services/api'
@@ -8,6 +7,7 @@ import MarkdownLite from '../components/MarkdownLite'
 import { Spinner } from '../components/Feedback'
 import AuthGateModal from '../components/AuthGateModal'
 import GeneratedIdeaCard from '../components/GeneratedIdeaCard'
+import { CopyButton, TypingDots } from '../components/ChatPrimitives'
 import { clearPendingQuery, takePendingQuery } from '../utils/pendingQuery'
 
 const STARTERS = [
@@ -76,37 +76,6 @@ const IDEA_BUILD_ACTIONS = [
 // hybrid search, it just shouldn't be shown as if it were relevant.
 const RELEVANCE_THRESHOLD = 0.3
 
-function CopyButton({ text }) {
-  const [copied, setCopied] = useState(false)
-  return (
-    <button
-      onClick={async () => {
-        try {
-          await navigator.clipboard.writeText(text)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 1500)
-        } catch {
-          /* Clipboard API unavailable (insecure context, permissions) — not worth surfacing. */
-        }
-      }}
-      className="shrink-0 self-end p-1 opacity-0 transition group-hover:opacity-100 hover:bg-white/10"
-      style={{ color: 'var(--outline)', borderRadius: 6 }}
-      aria-label="Copy response"
-      title={copied ? 'Copied' : 'Copy'}
-    >
-      {copied ? (
-        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-        </svg>
-      ) : (
-        <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <rect x="9" y="9" width="11" height="11" rx="2" />
-          <path d="M5 15V5a2 2 0 012-2h10" />
-        </svg>
-      )}
-    </button>
-  )
-}
 
 /** Pulls the card list out of a stored/returned message's `blocks` — the
  * structured shape nlp/ai_assistant.py:general_reply attaches to a turn that
@@ -179,7 +148,23 @@ function SkillFitLines({ have, missing }) {
 function MiniProjectCard({ project, conversationId, selectedProjectId, onSelectProject }) {
   return (
     <div className="glass-panel card-hover flex shrink-0 flex-col p-3" style={{ width: 240, borderRadius: 8 }}>
-      <Link to={`/project/${project.project_id}`} className="flex flex-1 flex-col">
+      <Link
+        to={`/project/${project.project_id}`}
+        className="flex flex-1 flex-col"
+        onClick={() => {
+          // Clicking through to the project page is the obvious gesture for
+          // "I want this one" — it shouldn't silently leave this
+          // conversation without an active project just because the student
+          // didn't separately hit [Select Project]. Marking it here means a
+          // later "tell me more"-style follow-up back in this chat still
+          // resolves to it via _active_project_note (nlp/ai_assistant.py),
+          // instead of landing on ProjectDetail's own unrelated, stateless
+          // chat widget with no memory of this conversation at all.
+          if (conversationId && onSelectProject && project.project_id !== selectedProjectId) {
+            onSelectProject(project)
+          }
+        }}
+      >
         <div className="flex items-start justify-between gap-2">
           <p className="t-label-mono truncate" style={{ color: 'var(--primary)', fontSize: 13 }}>
             {project.title}
@@ -655,22 +640,6 @@ function Bubble({ role, content, blocks, conversationId, selectedProjectId, onSe
         <DecisionBlock block={decision} selectedProjectId={selectedProjectId} onSelectProject={onSelectProject} />
       )}
       {generatedIdeas && <GeneratedIdeasBlock block={generatedIdeas} onAction={onAction} />}
-    </div>
-  )
-}
-
-function TypingDots() {
-  return (
-    <div className="flex w-fit items-center gap-1 px-3.5 py-3" style={{ background: 'var(--surface-container-low)', border: '1px solid var(--border-technical)', borderRadius: 8 }}>
-      {[0, 1, 2].map((i) => (
-        <motion.span
-          key={i}
-          className="h-1.5 w-1.5 rounded-full"
-          style={{ background: 'var(--outline)' }}
-          animate={{ opacity: [0.3, 1, 0.3] }}
-          transition={{ duration: 1, repeat: Infinity, delay: i * 0.15 }}
-        />
-      ))}
     </div>
   )
 }

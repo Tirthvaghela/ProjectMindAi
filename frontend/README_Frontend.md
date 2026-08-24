@@ -4,7 +4,7 @@ React 19 + Vite 8 + Tailwind v4 + Framer Motion. Talks to the Flask backend.
 
 ## Running
 
-The backend must be running first (see `../backend/README.md`).
+The backend must be running first (see `../backend/README_Backend.md`).
 
 ```powershell
 cd frontend
@@ -13,9 +13,11 @@ npm run dev      # http://localhost:5173
 ```
 
 ```powershell
-npm run build    # production bundle into dist/
-npm run preview  # serve the built bundle
-npm run lint     # oxlint
+npm run build        # production bundle into dist/
+npm run preview      # serve the built bundle
+npm run lint         # oxlint
+npm run test         # Vitest + React Testing Library (run once, CI-style)
+npm run test:watch   # same, in watch mode
 ```
 
 > Vite binds to `localhost`, which resolves to IPv6 `::1` on Windows. Use
@@ -33,9 +35,14 @@ src/
     useFavorites.js           favourite set + optimistic toggle
     useVoiceSearch.js         SpeechRecognition wrapper for the mic button
     useAuth.jsx                signed-in state as context (teams + notifications only)
+  test/                      setup.js (jest-dom matchers, scrollIntoView polyfill for jsdom),
+                              testUtils.jsx (renderWithProviders: Router + real AuthProvider)
   components/
-    Layout.jsx               routes everything through LandingNav/LandingFooter — see below
-    landing/                 LandingNav, LandingFooter, LandingHero, WireframeCubes,
+    ChatPrimitives.jsx       CopyButton, TypingDots — shared by Dashboard.jsx and ProjectChat.jsx
+    Layout.jsx               two chrome modes: bare (BareTopBar only — the landing screen with
+                              no search yet, /account, and a signed-out visit to an account-gated
+                              route like /teams) vs full (AppSidebar + TopBar) for everything else
+    landing/                 LandingHero, ShaderBackground, WireframeCubes,
                               landing.css — the "Gallery Mono" design tokens (see ../DESIGN.md)
     PageHeader.jsx           the one place a page title is styled
     ProjectCard.jsx          card + relevance/explainability display
@@ -62,11 +69,6 @@ src/
   pages/                     Search, Ideate, IdeaDetail, ResumeMatch, UniquenessCheck, Teams,
                              TeamRoom, Account, ProjectDetail, Favorites, History, Dashboard
 ```
-
-`Layout.jsx` is now just a thin wrapper: every route (bar `/dashboard`, which
-brings its own shell) renders inside `LandingNav` + `LandingFooter`, the same
-chrome the marketing landing screen always used — see the "One nav" note
-below.
 
 ## Deployment
 
@@ -107,23 +109,46 @@ technologies and a multi-select that long is unreadable and painful on touch.
 semantically-matched result with no shared keywords is labelled as such rather
 than showing an empty list.
 
-**One nav, and it's dark-only.** The app used to run a light/dark Tailwind
-theme with its own header, distinct from the marketing landing page's chrome.
-Both have since merged into a single "Gallery Mono" identity (see
-`../DESIGN.md`) — `LandingNav`/`LandingFooter` are the only chrome in the
-app now, and there is no light mode or theme toggle. The feature-link row in
-`LandingNav` is hidden specifically on the true landing screen (`/` with no
-search run yet) so a first-time visitor sees the clean hero, not a nine-item
-menu; every other route keeps the full nav, since it's the only way to reach
-most pages. Reduced-motion preferences still disable the Framer Motion
-animations.
+**One design identity, two chrome modes, no theme toggle.** The whole app
+shares a single dark "Gallery Mono" identity (see `../DESIGN.md`) — there is
+no light mode. `Layout.jsx` picks between a bare, full-bleed shell
+(`BareTopBar` only — no sidebar) and the full app shell (`AppSidebar` +
+`TopBar`) per route, not per theme: bare chrome is for entry points — the
+true landing screen (`/` with no search run yet), `/account`, and (since the
+protected-page-UX fix) a signed-out visit to an account-gated route like
+`/teams`, so a visitor who isn't signed in gets a clean entry screen instead
+of the full sidebar/workspace shell wrapped around an inline "please sign
+in" message. Every other route gets the full shell. Reduced-motion
+preferences still disable the Framer Motion animations throughout.
+
+## Testing
+
+Vitest + React Testing Library (`npm run test`), jsdom environment
+(`vite.config.js`'s own `test` block — no second config file). Two things
+worth knowing before adding more:
+
+- **Mock `services/api.js` with a *partial* factory, not a blanket
+  `vi.mock('../services/api')`.** The bare form auto-mocks every export,
+  including the named `getAuthToken`/`setAuthToken`/`getDeviceId`/
+  `rotateDeviceId` helpers `hooks/useAuth.jsx` imports directly — those are
+  plain, real localStorage wrappers, not network calls, and stubbing them
+  out silently breaks every "signed in" test scenario (`getAuthToken()`
+  always returns `undefined` regardless of what's actually in
+  `localStorage`, so `useAuth` never calls `api.me()`). Every test file so
+  far uses the same inline factory: `vi.mock('../services/api', async
+  (importOriginal) => { const actual = await importOriginal(); return
+  {...actual, default: Object.fromEntries(Object.keys(actual.default).map(k
+  => [k, vi.fn()]))} })` — real named exports, mocked default-object
+  methods only. It has to be inlined per file (not imported from a shared
+  helper): Vitest hoists `vi.mock(...)` above every import in the file,
+  including an import of the factory itself, so a shared factory function
+  triggers "Cannot access '...' before initialization".
+- **jsdom implements no `scrollIntoView`, no real layout.** A no-op stub for
+  the former lives in `src/test/setup.js` — components that scroll a
+  message list into view (Dashboard.jsx) would otherwise throw in any test
+  that renders them.
 
 ## Known issue
 
-`npm audit` reports 2 high-severity advisories in `react-router-dom`
-(GHSA-qwww-vcr4-c8h2). It is a CSRF bypass in **React Server Components mode**,
-affecting server-side actions. This is a pure client-side SPA with no RSC and no
-server actions, so the vulnerable path is unreachable. The only offered fix is a
-**major-version downgrade** to 7.11.0, which is not worth a functional
-regression for a feature we do not use. Re-evaluate if the app ever adopts RSC
-or a server-rendered router.
+None currently tracked — `npm audit` reports 0 vulnerabilities as of the
+Vitest/React Testing Library addition above.

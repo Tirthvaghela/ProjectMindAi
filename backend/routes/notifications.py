@@ -6,12 +6,23 @@ from __future__ import annotations
 from flask import Blueprint, request
 
 from db import client as db
+from extensions import limiter
 from routes.helpers import current_user, get_int, ok
 
 bp = Blueprint("notifications", __name__, url_prefix="/api/notifications")
 
+# Cheap, authenticated Mongo reads/writes — not "expensive" in the sense the
+# rest of this app's rate limits target (an external API call, an SMTP send,
+# a heavy aggregation). The frontend bell polls list_notifications every 30s
+# (NotificationsBell.jsx), so this is a generous ceiling that comfortably
+# covers that plus normal manual mark-read clicks, purely as a defense-in-
+# depth floor against a runaway/malicious client rather than a real cost
+# concern.
+_NOTIFICATIONS_LIMIT = "60 per minute"
+
 
 @bp.get("")
+@limiter.limit(_NOTIFICATIONS_LIMIT)
 def list_notifications():
     user = current_user()
     limit = get_int(request.args.to_dict(), "limit", 30, 1, 100)
@@ -29,6 +40,7 @@ def list_notifications():
 
 
 @bp.post("/<notification_id>/read")
+@limiter.limit(_NOTIFICATIONS_LIMIT)
 def mark_read(notification_id: str):
     user = current_user()
     db.notifications().update_one(
@@ -39,6 +51,7 @@ def mark_read(notification_id: str):
 
 
 @bp.post("/read-all")
+@limiter.limit(_NOTIFICATIONS_LIMIT)
 def mark_all_read():
     user = current_user()
     db.notifications().update_many(

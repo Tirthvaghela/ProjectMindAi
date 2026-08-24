@@ -124,52 +124,8 @@ def available_filters():
     )
 
 
-@bp.get("/analytics")
-def analytics():
-    """Aggregate counts for the dashboard."""
-    projects = db.projects()
-
-    def group_count(field: str) -> list[dict]:
-        return list(
-            projects.aggregate(
-                [
-                    {"$group": {"_id": f"${field}", "count": {"$sum": 1}}},
-                    {"$sort": {"count": -1}},
-                    {"$project": {"_id": 0, "name": "$_id", "count": 1}},
-                ]
-            )
-        )
-
-    top_technologies = list(
-        projects.aggregate(
-            [
-                {"$unwind": "$technologies"},
-                {"$group": {"_id": "$technologies", "count": {"$sum": 1}}},
-                {"$sort": {"count": -1}},
-                {"$limit": 15},
-                {"$project": {"_id": 0, "name": "$_id", "count": 1}},
-            ]
-        )
-    )
-
-    trending = list(
-        db.history().aggregate(
-            [
-                {"$group": {"_id": "$query", "count": {"$sum": 1}}},
-                {"$sort": {"count": -1}},
-                {"$limit": 10},
-                {"$project": {"_id": 0, "query": "$_id", "count": 1}},
-            ]
-        )
-    )
-
-    return ok(
-        {
-            "total_projects": projects.count_documents({}),
-            "total_searches": db.history().count_documents({}),
-            "by_domain": group_count("domain"),
-            "by_difficulty": group_count("difficulty"),
-            "top_technologies": top_technologies,
-            "trending_searches": trending,
-        }
-    )
+# GET /api/analytics was removed 2026-08-24: its frontend page/route was
+# already deleted (see git history — "Remove unrouted dead-code pages") and
+# nothing else called this endpoint (confirmed via a full-repo grep before
+# removal). Restore only alongside a real analytics page, not as an orphaned
+# backend-only endpoint — see the technical audit for the reasoning.

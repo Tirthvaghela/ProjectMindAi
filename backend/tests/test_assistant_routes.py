@@ -109,6 +109,21 @@ def _create_conversation(client, device=DEVICE_A) -> str:
     return resp.get_json()["data"]["conversation_id"]
 
 
+def _signup(client, email="chatuser@example.com") -> str:
+    resp = client.post(
+        "/api/auth/signup", json={"email": email, "password": "correcthorse1", "name": "Chat User"}
+    )
+    assert resp.status_code == 201, resp.get_json()
+    return resp.get_json()["token"]
+
+
+def _auth_hdr(token: str, device: str = DEVICE_A) -> dict[str, str]:
+    # A signed-in request always carries both headers in the real app (see
+    # services/api.js's interceptor) — X-Auth-Token for who, X-Device-Id for
+    # which browser, same as every other authenticated request.
+    return {**_hdr(device), "X-Auth-Token": token}
+
+
 def _seed_recommendations_turn(conversation_id: str) -> None:
     """Simulate an earlier turn that already showed catalogue projects —
     written straight to Mongo the same shape send_conversation_message
@@ -202,6 +217,63 @@ def test_delete_conversation_404s_for_a_different_device_and_leaves_it_intact(cl
 def test_create_conversation_requires_a_device_id(client):
     resp = client.post("/api/conversations")
     assert resp.status_code == 400
+
+
+# --- account-scoped ownership (signed-in callers) --------------------------
+
+
+def test_signed_in_conversation_is_visible_from_a_second_device(client):
+    # The whole point of owning by account: history follows the person, not
+    # the browser that happened to create it — see _ownership_filter().
+    token = _signup(client)
+    anonymous_conversation_id = _create_conversation(client, DEVICE_A)
+
+    signed_in_conversation_id = client.post(
+        "/api/conversations", headers=_auth_hdr(token, DEVICE_A)
+    ).get_json()["data"]["conversation_id"]
+
+    resp = client.get("/api/conversations", headers=_auth_hdr(token, DEVICE_B))
+    ids = [row["conversation_id"] for row in resp.get_json()["data"]]
+    assert signed_in_conversation_id in ids
+    # Created before sign-in, so never linked to the account — a stranger's
+    # anonymous chat isn't retroactively adopted just by sharing a browser.
+    assert anonymous_conversation_id not in ids
+
+
+def test_list_conversations_is_isolated_between_accounts(client):
+    token_a = _signup(client, "chat-a@example.com")
+    token_b = _signup(client, "chat-b@example.com")
+    conversation_id = client.post(
+        "/api/conversations", headers=_auth_hdr(token_a)
+    ).get_json()["data"]["conversation_id"]
+
+    resp = client.get("/api/conversations", headers=_auth_hdr(token_b))
+    assert resp.get_json()["data"] == []
+    resp = client.get("/api/conversations", headers=_auth_hdr(token_a))
+    assert conversation_id in [row["conversation_id"] for row in resp.get_json()["data"]]
+
+
+def test_get_conversation_404s_for_a_different_account_even_on_the_same_device(client):
+    token_a = _signup(client, "chat-a@example.com")
+    token_b = _signup(client, "chat-b@example.com")
+    conversation_id = client.post(
+        "/api/conversations", headers=_auth_hdr(token_a, DEVICE_A)
+    ).get_json()["data"]["conversation_id"]
+
+    resp = client.get(f"/api/conversations/{conversation_id}", headers=_auth_hdr(token_b, DEVICE_A))
+    assert resp.status_code == 404
+
+
+def test_signed_in_conversation_survives_a_device_id_rotation(client):
+    # Mirrors api.js:rotateDeviceId on sign-out/sign-in — a device id change
+    # must not orphan an account-owned conversation.
+    token = _signup(client)
+    conversation_id = client.post(
+        "/api/conversations", headers=_auth_hdr(token, DEVICE_A)
+    ).get_json()["data"]["conversation_id"]
+
+    resp = client.get(f"/api/conversations/{conversation_id}", headers=_auth_hdr(token, DEVICE_B))
+    assert resp.status_code == 200
 
 
 # --- chat history / message + block persistence ---------------------------

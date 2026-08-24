@@ -67,6 +67,25 @@ def _build_retriever() -> HybridRetriever:
         matrix = matrix[keep]
         ids = known
 
+    # The other direction of drift: a project added (or re-seeded) in MongoDB
+    # since the last index build has no embedding at all, so it can never
+    # appear in search/similar/skill-gap results — silently, with nothing in
+    # the response to say why. Detected here (once, at build time) rather
+    # than on every request; this only ever logs a warning; it does not
+    # rebuild anything itself, on purpose (see scripts/build_index.py — that
+    # stays an explicit, operator-run step). /api/health surfaces the same
+    # count comparison on every check so this isn't log-only.
+    unindexed = [pid for pid in documents if pid not in known]
+    if unindexed:
+        log.warning(
+            "%d MongoDB project(s) are not in the search index yet, so they "
+            "will not appear in search results: %s%s. Rebuild with: "
+            "python -m scripts.build_index",
+            len(unindexed),
+            ", ".join(unindexed[:5]),
+            ", ..." if len(unindexed) > 5 else "",
+        )
+
     log.info("Retriever ready with %d projects", len(ids))
     return HybridRetriever(matrix, ids, documents)
 

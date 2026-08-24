@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import api from '../services/api'
@@ -11,6 +11,7 @@ import { SearchBar, FilterPanel } from '../components/SearchControls'
 import { ErrorNotice, EmptyState } from '../components/Feedback'
 import LandingHero from '../components/landing/LandingHero'
 import AuthGateModal from '../components/AuthGateModal'
+import { useFocusTrap } from '../components/useFocusTrap'
 import { clearPendingQuery, setPendingQuery } from '../utils/pendingQuery'
 
 /**
@@ -175,8 +176,15 @@ function MobileFilterButton({ activeCount, onClick }) {
 
 /** FilterPanel in an off-canvas drawer below `lg` — same slide + backdrop
  * pattern as AppSidebar's mobile nav (see components/Layout.jsx), so
- * filters don't have to fight the result grid for width on a small screen. */
+ * filters don't have to fight the result grid for width on a small screen.
+ * Uses the same useFocusTrap Modal.jsx/AuthGateModal.jsx already share —
+ * this is a real dialog (it blocks interaction with the page behind it via
+ * the backdrop) and needs the same Escape/Tab-containment/role="dialog"
+ * behaviour those already have, not just their visual shape. */
 function MobileFilterDrawer({ open, onClose, filters, onChange }) {
+  const dialogRef = useRef(null)
+  useFocusTrap(dialogRef, open, onClose)
+
   return (
     <>
       {open && (
@@ -188,8 +196,13 @@ function MobileFilterDrawer({ open, onClose, filters, onChange }) {
         />
       )}
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal={open || undefined}
+        aria-label="Filters"
+        tabIndex={-1}
         className={`fixed inset-y-0 right-0 z-50 h-full w-80 max-w-[85vw] overflow-y-auto p-4 transition-transform duration-200 lg:hidden ${open ? 'translate-x-0' : 'translate-x-full'}`}
-        style={{ background: 'var(--surface-container-low)', borderLeft: '1px solid var(--border-technical)' }}
+        style={{ background: 'var(--surface-container-low)', borderLeft: '1px solid var(--border-technical)', outline: 'none' }}
       >
         <div className="mb-3 flex items-center justify-between">
           <span className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>

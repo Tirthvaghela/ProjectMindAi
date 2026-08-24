@@ -146,20 +146,37 @@ function BareTopBar() {
   )
 }
 
+// Routes that are entirely gated behind an account (see routes/teams.py —
+// "every route here requires a signed-in account, unlike the rest of the
+// app") — for these specifically, a signed-out visitor is shown the same
+// bare, full-bleed entry chrome as /account itself, instead of the full app
+// shell wrapped around an inline "please sign in" message. The inline
+// message (Teams.jsx's own EmptyState) still renders exactly as before;
+// only the surrounding chrome changes, so this never touches routing,
+// authorization, or what data is fetched — a signed-out visitor already
+// received no team data before this, only the sidebar/topbar around the
+// message looked more "logged in" than the page actually was.
+const ACCOUNT_GATED_PREFIXES = ['/teams']
+
 /**
  * Two shells, one app.
  *
- * The pure landing screen (index route, no search run yet) and the sign-in
- * screen are both entry points, not "the app" — full-bleed, no sidebar,
- * normal document scroll. Every other route, including "/" the moment a
- * search has run, gets the persistent sidebar shell (see AppSidebar.jsx)
- * instead — that's "dashboard and features," per the design this was built
- * to.
+ * The pure landing screen (index route, no search run yet), the sign-in
+ * screen, and a signed-out visit to an account-gated route are all entry
+ * points, not "the app" — full-bleed, no sidebar, normal document scroll.
+ * Every other route, including "/" the moment a search has run, gets the
+ * persistent sidebar shell (see AppSidebar.jsx) instead — that's "dashboard
+ * and features," per the design this was built to.
  */
 export default function Layout() {
   const { pathname } = useLocation()
   const [searchParams] = useSearchParams()
-  const isBareChrome = (pathname === '/' && !searchParams.get('q')) || pathname === '/account'
+  const { user, loading: authLoading } = useAuth()
+  const isAccountGated = ACCOUNT_GATED_PREFIXES.some((prefix) => pathname.startsWith(prefix))
+  const isBareChrome =
+    (pathname === '/' && !searchParams.get('q')) ||
+    pathname === '/account' ||
+    (isAccountGated && !authLoading && !user)
 
   // Below `lg`, AppSidebar renders as an off-canvas drawer instead of the
   // fixed 256px column — a phone-width viewport can't spare that much

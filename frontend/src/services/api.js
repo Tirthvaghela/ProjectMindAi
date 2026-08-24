@@ -186,8 +186,6 @@ export const api = {
 
   filters: () => client.get('/filters').then(unwrap),
 
-  analytics: () => client.get('/analytics').then(unwrap),
-
   skillGap: (projectId, skills) =>
     client.post('/skill-gap', { project_id: projectId, skills }).then(unwrap),
 

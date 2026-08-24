@@ -152,5 +152,8 @@ def ensure_indexes() -> None:
 
     conversations().create_index([("conversation_id", ASCENDING)], unique=True, name="uq_conversation_id")
     conversations().create_index([("device_id", ASCENDING), ("updated_at", DESCENDING)], name="ix_device_recent")
+    # Signed-in callers own conversations by account, not device — see
+    # routes/assistant.py:_ownership_filter.
+    conversations().create_index([("user_id", ASCENDING), ("updated_at", DESCENDING)], name="ix_user_recent")
 
     log.info("MongoDB indexes ensured")
