@@ -86,7 +86,8 @@ _GENERAL_SYSTEM_MESSAGE = {
         "generate_project_ideas, and the catalogue tools (generate_roadmap, predict_timeline, "
         "generate_milestones) vs. their generate_idea_* mirrors for a GENERATED idea (no "
         "project_id). select_project/select_idea are mutually exclusive — selecting one clears "
-        "the other.\n\n"
+        "the other. Resolve simple requests in one tool round when the required context/data is "
+        "already available — do not call another tool unnecessarily.\n\n"
         "DISCOVERY vs IDEATION — the distinction that matters most. The student is either "
         "asking to find something that already exists (DISCOVERY -> search_projects) or asking "
         "you to invent something new (IDEATION -> generate_project_ideas). 'Give me NLP "
@@ -102,14 +103,18 @@ _GENERAL_SYSTEM_MESSAGE = {
         "'[...ideas shown above...]' lists each item's position/id/fields so you can resolve "
         "'the second one', 'the Python one', etc. to a real id — reuse an idea's exact fields "
         "(never invent new ones) for refine_project_idea/generate_idea_roadmap. '[Context — "
-        "active project/idea: ...]' names the student's current build target (at most one of "
-        "the two); an otherwise-ambiguous question ('how should I build the backend?') is about "
-        "whichever is present. '[Context — résumé skills already on file...]' lists skills from "
-        "an uploaded résumé — pass it straight through as known_skills wherever needed instead "
-        "of asking the student to re-list it.\n\n"
-        "A request to find or recommend a project is DISCOVERY and always gets an immediate "
-        "search_projects/generate_project_ideas call shown as cards — never ask what the "
-        "student already knows before that first search just to decide what to look for; "
+        "comparison shown above...]'/'[...decision shown above...]' carry the same real difficulty/"
+        "duration/technologies/uniqueness (plus fit scores for a decision) — resolve a follow-up "
+        "about that comparison/decision from these numbers instead of re-calling compare_projects/"
+        "recommend_decision. '[Context — active project/idea: ...]' names the student's current "
+        "build target (at most one of the two); an otherwise-ambiguous question ('how should I "
+        "build the backend?') is about whichever is present. '[Context — résumé skills already "
+        "on file...]' lists skills "
+        "from an uploaded résumé — pass it straight through as known_skills wherever needed "
+        "instead of asking the student to re-list it.\n\n"
+        "Always fire search_projects/generate_project_ideas immediately on a first find/recommend "
+        "request, shown as cards — never ask what the student already knows before that first "
+        "search just to decide what to look for; "
         "known_skills is optional ranking context, not a prerequisite, and every card already "
         "carries its own select_project option. Only AFTER the student has actually selected a "
         "project or idea and planning gets specific, get to know them before going further — "
@@ -120,7 +125,7 @@ _GENERAL_SYSTEM_MESSAGE = {
         "technologies/domain/skills rather than just agreeing — if it's a poor fit, say so "
         "plainly with the concrete reason and recommend a real alternative actually in the "
         "project's own stack, never invented.\n\n"
-        "Once a project or idea is active, you are its build mentor, not a generic chatbot. "
+        "Once a project or idea is active, you are its build mentor. "
         "Architecture/backend/implementation questions must be adapted to that specific "
         "project's real domain, technologies, and skills — never one generic shape reused for "
         "every project (a CLI or IoT project may have no frontend layer, for instance). Prefer "
@@ -137,12 +142,31 @@ _GENERAL_SYSTEM_MESSAGE = {
         "than inventing an answer. You give guidance and plans only — never claim to have "
         "implemented, written, tested, or changed the student's actual code, backend, or "
         "database.\n\n"
+        "FEASIBILITY — 'can I build this', 'how difficult/realistic is this', 'what are the "
+        "risks' about ONE project/idea call analyze_project_feasibility/analyze_idea_feasibility "
+        "immediately (catalogue vs generated idea, same pairing as the timeline tools) instead of "
+        "check_skill_gap/predict_timeline separately — it already combines skill fit, timeline "
+        "fit, difficulty fit, technical complexity, and team-size fit into one score, plus real "
+        "infrastructure/dataset guidance. Call it even with no known_skills/team_size/experience_level yet — same as "
+        "search_projects, those stay optional; Skill Fit/Difficulty Fit just come back unavailable "
+        "rather than blocking the analysis. Still use recommend_decision (not this) for 'which "
+        "should I choose' across several projects.\n\n"
+        "SCOPE — 'what should this include', 'MVP', 'what should I remove/cut', or 'I only have N "
+        "weeks' (shorter than the project's own duration) about ONE project/idea calls analyze_scope "
+        "(project_id for a catalogue project, name+its context fields for a generated idea — one "
+        "tool either way). Present remove/keep exactly as returned; never remove anything yourself.\n\n"
+        "RESOURCES — 'how many people do I need', 'what technologies do I need', 'can I build this "
+        "with free tools', or team/tech/cost questions about ONE project/idea calls "
+        "estimate_project_resources (project_id or name+context, one tool either way). Every cost "
+        "it returns is an estimate/range — present it as such, never as an exact price.\n\n"
         "Be concise and practical — a few short paragraphs or a short list, not an essay. Use "
         "Markdown where it aids clarity, including tables for genuinely tabular data. When a "
         "tool call produces cards/tables shown separately to the student (search_projects, "
         "compare_projects, check_skill_gap, predict_timeline, generate_milestones, "
         "get_learning_path, generate_project_ideas, refine_project_idea, generate_idea_timeline, "
-        "generate_idea_milestones), keep your own reply to a sentence or two of framing — do not "
+        "generate_idea_milestones, analyze_project_feasibility, analyze_idea_feasibility, "
+        "analyze_scope, estimate_project_resources), keep your own reply to a sentence or two of "
+        "framing — do not "
         "re-list what's already shown. generate_roadmap/generate_synopsis/generate_idea_roadmap "
         "have no such block — your own Markdown (headings, a numbered phase list, tables) is "
         "what carries the phases/tasks/sections, using only fields the tool actually returned. "
@@ -218,6 +242,60 @@ def _shown_ideas_note(blocks: list[dict[str, Any]]) -> str:
     if not lines:
         return ""
     return "\n\n[Context — generated ideas shown above, in order:\n" + "\n".join(lines) + "]"
+
+
+def _shown_comparison_note(blocks: list[dict[str, Any]]) -> str:
+    """Compact, model-facing summary of a comparison block on one stored
+    assistant turn — the compare_projects mirror of _shown_projects_note
+    above. Exists because, unlike project_recommendations/
+    generated_project_ideas, a comparison's own data (technologies, skills,
+    uniqueness_percent) was previously NOT replayed into later-turn history
+    at all — only the model's own brief prose framing was (see the system
+    prompt's "keep your own reply to a sentence or two of framing" rule),
+    which live testing showed the model correctly declines to fully trust on
+    a follow-up (e.g. 'which of those is easier?'), re-calling
+    compare_projects to get grounded data again even when the answer was
+    already derivable. This note gives the model the same kind of reliable,
+    structured, explicitly-labelled context it already trusts for shown
+    projects/ideas, so a simple follow-up can be answered from it directly —
+    never removes the option to re-call compare_projects for anything this
+    note doesn't cover (skills, full description, more projects, ...)."""
+    lines = []
+    for block in blocks or []:
+        if block.get("type") != "comparison":
+            continue
+        for i, project in enumerate(block.get("projects") or [], start=1):
+            tech = ", ".join((project.get("technologies") or [])[:3])
+            lines.append(
+                f"{i}. {project.get('project_id', '')} \"{project.get('title', '')}\" — "
+                f"{project.get('difficulty', '')}, {project.get('duration_weeks')}wk, "
+                f"tech: {tech}, uniqueness: {project.get('uniqueness_percent')}%"
+            )
+    if not lines:
+        return ""
+    return "\n\n[Context — comparison shown above, in order:\n" + "\n".join(lines) + "]"
+
+
+def _shown_decision_note(blocks: list[dict[str, Any]]) -> str:
+    """Compact, model-facing summary of a decision block on one stored
+    assistant turn — the recommend_decision mirror of _shown_comparison_note
+    above, same reasoning and same reused pattern."""
+    lines = []
+    for block in blocks or []:
+        if block.get("type") != "decision":
+            continue
+        recommended_id = (block.get("recommended") or {}).get("project_id")
+        for i, c in enumerate(block.get("candidates") or [], start=1):
+            marker = " (recommended)" if c.get("project_id") == recommended_id else ""
+            lines.append(
+                f"{i}. {c.get('project_id', '')} \"{c.get('title', '')}\"{marker} — "
+                f"overall_fit: {c.get('overall_fit')}%, skill_fit: {c.get('skill_fit')}, "
+                f"timeline_fit: {c.get('timeline_fit')}%, difficulty_fit: {c.get('difficulty_fit')}, "
+                f"uniqueness: {c.get('uniqueness_percent')}%, est: {c.get('estimated_weeks')}wk"
+            )
+    if not lines:
+        return ""
+    return "\n\n[Context — decision shown above, in order:\n" + "\n".join(lines) + "]"
 
 
 def _project_detail_note(project_id: str, *, label: str, suffix: str = "") -> str:
@@ -528,7 +606,40 @@ def _call_with_retry(client: Any, kwargs: dict[str, Any]) -> Any:
     raise last_error  # every retry on this client was exhausted
 
 
-def _create_completion(**kwargs: Any):
+# A live 502 on POST /api/conversations/<id>/messages was traced to every
+# configured key returning a genuine Groq 429 within the same second — all
+# GROQ_API_KEYS share one Groq organization's tokens-per-minute pool (see
+# _clients' docstring), so rotating keys does nothing for this specific
+# failure; only waiting out the shared window does. Reproduced live: Groq's
+# own `retry-after` header read 3 (body: "Please try again in 2.66s") the
+# moment a tools-heavy turn (TOOL_SCHEMAS sent every round, plus a nested
+# ideation call) tipped the account's 8,000 TPM budget — precisely the
+# "click Retry and it works" symptom, since a few seconds later the same
+# request succeeds unchanged. Honoring a short provider-reported wait once
+# turns that into the turn just succeeding, slower, instead of failing and
+# waiting on the student to notice and retry by hand. Capped so this can
+# never turn into the multi-second-to-a-minute stall a large deficit's
+# retry-after would cause (that case is left exactly as before: an
+# immediate, retryable 502) — a bounded, provider-signalled single retry,
+# not a blind backoff loop.
+_RATE_LIMIT_RETRY_AFTER_CEILING_SECONDS = 5.0
+
+
+def _rate_limit_retry_after(error: Exception) -> Optional[float]:
+    """Groq's own `retry-after` (seconds) off a RateLimitError's response, if
+    present and parseable — None otherwise (missing header, or a fake/test
+    error with no response at all), which callers treat as "don't wait"."""
+    response = getattr(error, "response", None)
+    header = response.headers.get("retry-after") if response is not None else None
+    if header is None:
+        return None
+    try:
+        return float(header)
+    except (TypeError, ValueError):
+        return None
+
+
+def _create_completion(*, _rate_limit_retry: bool = True, **kwargs: Any):
     """client.chat.completions.create(**kwargs), retrying transient failures
     on the current key (_call_with_retry) and rotating across every
     configured Groq key on a 429, a 413 (see below), or once retries are
@@ -542,6 +653,15 @@ def _create_completion(**kwargs: Any):
     of the request itself, so a different key (especially one on a
     different Groq account, with its own independent budget) genuinely can
     succeed where this one failed.
+
+    If every configured key comes back rate-limited, and Groq's own
+    retry-after on that last 429 is short (see
+    _RATE_LIMIT_RETRY_AFTER_CEILING_SECONDS), waits that long once and
+    retries the whole key rotation exactly once more (`_rate_limit_retry`
+    guards against a second such wait, so this can add at most one bounded
+    delay, never a loop) — see the constant's docstring above for why. Any
+    other outcome (a longer/absent retry-after, or still rate-limited after
+    the one retry) raises exactly as before this existed.
 
     With one key configured and no failures (the common case) this is
     exactly the single request it always was.
@@ -590,6 +710,18 @@ def _create_completion(**kwargs: Any):
                 log.warning("Groq key %d/%d rejected the request as too large (413), trying next key", index + 1, len(ordered))
                 continue
             raise
+
+    if _rate_limit_retry and isinstance(last_error, RateLimitError):
+        wait = _rate_limit_retry_after(last_error)
+        if wait is not None and wait <= _RATE_LIMIT_RETRY_AFTER_CEILING_SECONDS:
+            log.warning(
+                "Every Groq key rate-limited; provider reports the shared window resets in "
+                "%.1fs — waiting once and retrying",
+                wait,
+            )
+            _sleep(wait)
+            return _create_completion(_rate_limit_retry=False, **kwargs)
+
     raise last_error  # every configured key is rate-limited, too-large, or failing
 
 
@@ -689,20 +821,22 @@ def _history_messages(
     when even the default-sized request is rejected as too large for the
     account's tokens-per-minute budget.
 
-    `with_shown_projects` appends a shown-projects/shown-ideas note (see
-    `_shown_projects_note`/`_shown_ideas_note`) — used only by
+    `with_shown_projects` appends a shown-projects/shown-ideas/comparison/
+    decision note (see `_shown_projects_note`/`_shown_ideas_note`/
+    `_shown_comparison_note`/`_shown_decision_note`) — used only by
     `general_reply()`, which is the one entry point where a stored turn can
     carry `blocks`. Only the MOST RECENT turn of each kind gets its note
     replayed, not every one in the trimmed window: once a fresh batch of
-    projects or ideas is shown, that's the current set the student is
-    looking at (Ideate.jsx's own mergeIdea replaces the grid the same way on
-    a new batch) — older ones are superseded, not additive context. Without
-    this cap, a conversation that searches or generates ideas more than
-    once keeps replaying every earlier turn's full note (per-idea
-    problem/solution/unique_point text, for every idea, every time) on every
-    later turn — unbounded growth that has driven a real request over a
-    model's tokens-per-minute budget (a 413 from Groq, not a flaky rate
-    limit — retrying an identical oversized request fails identically).
+    projects or ideas is shown (or a fresh comparison/decision is made),
+    that's the current set the student is looking at (Ideate.jsx's own
+    mergeIdea replaces the grid the same way on a new batch) — older ones
+    are superseded, not additive context. Without this cap, a conversation
+    that searches or generates ideas more than once keeps replaying every
+    earlier turn's full note (per-idea problem/solution/unique_point text,
+    for every idea, every time) on every later turn — unbounded growth that
+    has driven a real request over a model's tokens-per-minute budget (a 413
+    from Groq, not a flaky rate limit — retrying an identical oversized
+    request fails identically).
     """
     # `[-0:]` is a classic Python trap — it slices the WHOLE list, not none of
     # it, since -0 == 0 — so the max_messages == 0 shrink step (see
@@ -712,6 +846,8 @@ def _history_messages(
 
     last_projects_index: Optional[int] = None
     last_ideas_index: Optional[int] = None
+    last_comparison_index: Optional[int] = None
+    last_decision_index: Optional[int] = None
     if with_shown_projects:
         for i, turn in enumerate(trimmed):
             if turn.get("role") != "assistant":
@@ -721,6 +857,10 @@ def _history_messages(
                 last_projects_index = i
             if any(b.get("type") == "generated_project_ideas" for b in blocks):
                 last_ideas_index = i
+            if any(b.get("type") == "comparison" for b in blocks):
+                last_comparison_index = i
+            if any(b.get("type") == "decision" for b in blocks):
+                last_decision_index = i
 
     messages = []
     for i, turn in enumerate(trimmed):
@@ -733,6 +873,10 @@ def _history_messages(
                 content += _shown_projects_note(turn.get("blocks"))
             if i == last_ideas_index:
                 content += _shown_ideas_note(turn.get("blocks"))
+            if i == last_comparison_index:
+                content += _shown_comparison_note(turn.get("blocks"))
+            if i == last_decision_index:
+                content += _shown_decision_note(turn.get("blocks"))
         messages.append({"role": role, "content": content})
     return messages
 

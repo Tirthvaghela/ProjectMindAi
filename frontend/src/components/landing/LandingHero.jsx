@@ -506,7 +506,7 @@ export default function LandingHero({ value, onChange, onSubmit }) {
                 autoFocus
                 placeholder="Describe the project you want to build…"
                 aria-label="Search or describe a project"
-                className="glass-panel t-body-lg w-full rounded py-5 pl-14 pr-32 outline-none"
+                className="glass-panel t-body-lg w-full rounded py-5 pl-14 pr-48 outline-none"
                 style={{ color: 'var(--primary)', borderRadius: 8, caretColor: 'var(--primary)' }}
               />
               <div className="absolute inset-y-0 right-3 flex items-center gap-1.5">
@@ -696,7 +696,7 @@ export default function LandingHero({ value, onChange, onSubmit }) {
             exactly what the assistant returns.
           </p>
         </div>
-        <div className="grid gap-6 xl:grid-cols-2">
+        <div className="grid items-start gap-6 xl:grid-cols-2">
           <PreviewChatMock />
           <PreviewCompareStrip />
         </div>
@@ -737,7 +737,7 @@ export default function LandingHero({ value, onChange, onSubmit }) {
             Two engines, one assistant.
           </h2>
         </div>
-        <div className="grid gap-10 lg:grid-cols-2">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div className="stagger-item">
             <h3 className="t-headline-md mb-3" style={{ color: 'var(--primary)' }}>
               Existing Project Discovery
@@ -853,7 +853,7 @@ export default function LandingHero({ value, onChange, onSubmit }) {
               catalogue it can point to and tools it actually calls.
             </p>
           </div>
-          <div className="grid gap-8 lg:grid-cols-2">
+          <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
             <div className="stagger-item">
               <p className="t-label-caps mb-4" style={{ color: 'var(--outline)', fontSize: 10.5 }}>
                 Generic AI

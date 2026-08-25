@@ -21,11 +21,12 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 
-from flask import Blueprint
+from flask import Blueprint, request
 
 import config
 from db import client as db
 from extensions import limiter
+from nlp import decision_center
 from nlp.ai_assistant import AssistantUnavailable, general_reply, reply
 from routes.helpers import ApiError, current_user, device_id, json_body, ok
 
@@ -205,6 +206,37 @@ def create_conversation():
 def get_conversation(conversation_id: str):
     doc = _owned_conversation(conversation_id)
     return ok(_serialize(doc, with_messages=True))
+
+
+@bp.get("/conversations/<conversation_id>/decision-center")
+def get_decision_center(conversation_id: str):
+    """The unified Decision/Action Center for whichever project or idea is
+    currently active in this conversation (nlp/decision_center.py). No LLM
+    call — every number it returns already comes from the same deterministic
+    analyzers the chat tools wrap, just assembled into one response instead
+    of several separate chat turns.
+
+    Query: team_size?, experience_level?, target_weeks? — everything else
+    (which project/idea, known skills) comes from the conversation's own
+    already-persisted context, never re-asked for.
+    """
+    doc = _owned_conversation(conversation_id)
+    project_id = doc.get("selected_project_id")
+    idea = doc.get("selected_idea")
+    if not project_id and not idea:
+        raise ApiError("No project or idea selected in this conversation yet.", status=400)
+
+    result = decision_center.build(
+        project_id=project_id,
+        idea=idea,
+        known_skills=doc.get("resume_skills"),
+        team_size=request.args.get("team_size") or None,
+        experience_level=request.args.get("experience_level") or None,
+        target_weeks=request.args.get("target_weeks") or None,
+    )
+    if result.get("error"):
+        raise ApiError(result["error"], status=404)
+    return ok(result)
 
 
 @bp.delete("/conversations/<conversation_id>")

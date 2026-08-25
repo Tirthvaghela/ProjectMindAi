@@ -534,6 +534,116 @@ def test_attach_resume_skills_rejects_an_all_blank_list(client):
     assert resp.status_code == 400
 
 
+# --- decision center ---------------------------------------------------------
+#
+# No _create_completion mocking anywhere in this section — GET .../decision-
+# center never calls Groq at all (see nlp/decision_center.py's own docstring),
+# so unlike every other section in this file these tests exercise the real
+# deterministic analyzers end to end, through the real HTTP route.
+
+
+@pytest.fixture(autouse=True)
+def _fake_similar_for_decision_center(monkeypatch):
+    """chat_tools.recommend_decision (used internally for a catalogue
+    project) computes uniqueness_percent via recommend.similar(), which
+    normally reads the real embedding index — stub it to a fixed, known peer
+    score so these tests don't depend on that index being built, same
+    pattern tests/test_evaluation_engine.py already established."""
+    from nlp import recommend
+    from nlp.similarity import ScoredProject
+
+    def fake(project_id, top_k=1):
+        return [ScoredProject(project_id="other", score=0.4, dense_score=0.4, sparse_score=0.0)]
+
+    monkeypatch.setattr(recommend, "similar", fake)
+
+
+def test_decision_center_404s_without_a_selected_project_or_idea(client):
+    conversation_id = _create_conversation(client)
+    resp = client.get(f"/api/conversations/{conversation_id}/decision-center", headers=_hdr(DEVICE_A))
+    assert resp.status_code == 400
+
+
+def test_decision_center_for_a_selected_catalogue_project(client, project):
+    conversation_id = _create_conversation(client)
+    client.post(f"/api/conversations/{conversation_id}/select-project", json={"project_id": project["project_id"]}, headers=_hdr(DEVICE_A))
+
+    resp = client.get(f"/api/conversations/{conversation_id}/decision-center", headers=_hdr(DEVICE_A))
+    assert resp.status_code == 200
+    data = resp.get_json()["data"]
+    assert data["kind"] == "project"
+    assert data["project_id"] == project["project_id"]
+    assert data["name"] == project["title"]
+    assert data["originality"]["source"] == "catalogue_uniqueness"
+    assert isinstance(data["recommended_next_step"], str) and data["recommended_next_step"]
+
+
+def test_decision_center_for_a_selected_generated_idea(client):
+    conversation_id = _create_conversation(client)
+    idea = {
+        "id": "idea-2",
+        "name": "Smart Campus Notes",
+        "domain": "Artificial Intelligence",
+        "difficulty": "Intermediate",
+        "duration_weeks": 8,
+        "technologies": ["Python", "FastAPI"],
+        "originality_score": 66,
+        "is_unique": True,
+    }
+    db.conversations().update_one({"conversation_id": conversation_id}, {"$set": {"selected_idea": idea}})
+
+    resp = client.get(f"/api/conversations/{conversation_id}/decision-center", headers=_hdr(DEVICE_A))
+    assert resp.status_code == 200
+    data = resp.get_json()["data"]
+    assert data["kind"] == "idea"
+    assert data["project_id"] is None
+    assert data["name"] == "Smart Campus Notes"
+    # Reused straight from the idea's own already-computed fields, never
+    # recomputed by this endpoint.
+    assert data["originality"]["score"] == 66
+    assert data["originality"]["source"] == "generated_idea_originality"
+
+
+def test_decision_center_reuses_resume_skills_already_on_file(client, project):
+    conversation_id = _create_conversation(client)
+    client.post(f"/api/conversations/{conversation_id}/select-project", json={"project_id": project["project_id"]}, headers=_hdr(DEVICE_A))
+    # One of this project's own real required skills (see PROJECT above) —
+    # so skill_gap has a genuine match to report, not just "known but unused".
+    client.post(f"/api/conversations/{conversation_id}/resume-skills", json={"skills": ["Supervised learning"]}, headers=_hdr(DEVICE_A))
+
+    resp = client.get(f"/api/conversations/{conversation_id}/decision-center", headers=_hdr(DEVICE_A))
+    data = resp.get_json()["data"]
+    assert data["known_skills_provided"] is True
+    assert data["skill_fit"] is not None
+    assert "Supervised learning" in data["skills_you_have"]
+
+
+def test_decision_center_accepts_team_size_and_target_weeks_query_params(client, project):
+    conversation_id = _create_conversation(client)
+    client.post(f"/api/conversations/{conversation_id}/select-project", json={"project_id": project["project_id"]}, headers=_hdr(DEVICE_A))
+
+    resp = client.get(
+        f"/api/conversations/{conversation_id}/decision-center?team_size=2&target_weeks=3",
+        headers=_hdr(DEVICE_A),
+    )
+    assert resp.status_code == 200
+    data = resp.get_json()["data"]
+    assert data["scope"]["reduced_scope"] is not None
+
+
+def test_decision_center_requires_conversation_ownership(client, project):
+    conversation_id = _create_conversation(client, device=DEVICE_A)
+    client.post(f"/api/conversations/{conversation_id}/select-project", json={"project_id": project["project_id"]}, headers=_hdr(DEVICE_A))
+
+    resp = client.get(f"/api/conversations/{conversation_id}/decision-center", headers=_hdr(DEVICE_B))
+    assert resp.status_code == 404
+
+
+def test_decision_center_404s_for_an_unknown_conversation(client):
+    resp = client.get("/api/conversations/does-not-exist/decision-center", headers=_hdr(DEVICE_A))
+    assert resp.status_code == 404
+
+
 # --- validation / error handling -------------------------------------------
 
 

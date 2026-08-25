@@ -103,6 +103,125 @@ def test_generate_ideas_keeps_low_score_idea_if_regeneration_still_fails(monkeyp
     assert ideas[0]["is_unique"] is False
 
 
+def test_generate_ideas_makes_exactly_one_call_when_nothing_fails(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_raw(prompt):
+        calls["n"] += 1
+        return [RAW_IDEA, {**RAW_IDEA, "name": "Second Idea"}, {**RAW_IDEA, "name": "Third Idea"}]
+
+    monkeypatch.setattr(ideation, "_generate_raw", fake_raw)
+    monkeypatch.setattr(ideation.recommend, "check_uniqueness", lambda *a, **k: ORIGINAL_UNIQUENESS_RESULT)
+
+    ideas = ideation.generate_ideas(count=3)
+
+    assert calls["n"] == 1  # no retry call at all — nothing was below threshold
+    assert len(ideas) == 3
+
+
+def test_generate_ideas_consolidates_multiple_failures_into_one_retry_call(monkeypatch):
+    # 3 generated, 2 of them (index 0 and 2) score too low — must cost
+    # exactly 2 total _generate_raw calls (1 batch + 1 consolidated retry
+    # covering BOTH failures), never 3 (1 batch + 2 individual retries).
+    calls = {"n": 0, "prompts": []}
+
+    def fake_raw(prompt):
+        calls["n"] += 1
+        calls["prompts"].append(prompt)
+        if calls["n"] == 1:
+            return [
+                {**RAW_IDEA, "name": "Idea A"},
+                {**RAW_IDEA, "name": "Idea B"},
+                {**RAW_IDEA, "name": "Idea C"},
+            ]
+        # The one consolidated retry — replacements for A and C, in order.
+        return [{**RAW_IDEA, "name": "Idea A Retry"}, {**RAW_IDEA, "name": "Idea C Retry"}]
+
+    def fake_uniqueness(name, *_a, **_k):
+        if name in ("Idea A", "Idea C"):
+            return DUPLICATE_UNIQUENESS_RESULT
+        return ORIGINAL_UNIQUENESS_RESULT
+
+    monkeypatch.setattr(ideation, "_generate_raw", fake_raw)
+    monkeypatch.setattr(ideation.recommend, "check_uniqueness", fake_uniqueness)
+
+    ideas = ideation.generate_ideas(count=3)
+
+    assert calls["n"] == 2
+    assert ideas[0]["name"] == "Idea A Retry"
+    assert ideas[1]["name"] == "Idea B"  # never touched — it passed the first time
+    assert ideas[2]["name"] == "Idea C Retry"
+    assert ideas[0]["originality_score"] == 82
+    assert ideas[2]["originality_score"] == 82
+    # Exactly one retry prompt, naming both failures — not two separate ones.
+    assert "Idea A" in calls["prompts"][1] and "Idea C" in calls["prompts"][1]
+
+
+def test_generate_ideas_consolidates_when_every_idea_fails(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_raw(prompt):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return [{**RAW_IDEA, "name": f"Idea {i}"} for i in range(3)]
+        return [{**RAW_IDEA, "name": f"Idea {i} Retry"} for i in range(3)]
+
+    monkeypatch.setattr(ideation, "_generate_raw", fake_raw)
+    monkeypatch.setattr(
+        ideation.recommend,
+        "check_uniqueness",
+        lambda name, *a, **k: ORIGINAL_UNIQUENESS_RESULT if name.endswith("Retry") else DUPLICATE_UNIQUENESS_RESULT,
+    )
+
+    ideas = ideation.generate_ideas(count=3)
+
+    assert calls["n"] == 2  # never 1 + 3
+    assert [i["name"] for i in ideas] == ["Idea 0 Retry", "Idea 1 Retry", "Idea 2 Retry"]
+    assert all(i["originality_score"] == 82 for i in ideas)
+
+
+def test_generate_ideas_keeps_originals_when_the_consolidated_retry_is_malformed(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_raw(prompt):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return [{**RAW_IDEA, "name": "Idea A"}, {**RAW_IDEA, "name": "Idea B"}]
+        return []  # _generate_raw's own malformed-JSON fallback
+
+    monkeypatch.setattr(ideation, "_generate_raw", fake_raw)
+    monkeypatch.setattr(ideation.recommend, "check_uniqueness", lambda *a, **k: DUPLICATE_UNIQUENESS_RESULT)
+
+    ideas = ideation.generate_ideas(count=2)
+
+    assert calls["n"] == 2
+    # Both originals kept, honestly labelled with their real (low) scores —
+    # never crashed, never silently dropped.
+    assert [i["name"] for i in ideas] == ["Idea A", "Idea B"]
+    assert all(i["originality_score"] == 30 for i in ideas)
+
+
+def test_generate_ideas_replaces_only_the_well_formed_items_in_a_partial_retry(monkeypatch):
+    # The consolidated retry can come back with SOME usable items and some
+    # garbage — each slot is handled independently rather than the whole
+    # retry being all-or-nothing.
+    calls = {"n": 0}
+
+    def fake_raw(prompt):
+        calls["n"] += 1
+        if calls["n"] == 1:
+            return [{**RAW_IDEA, "name": "Idea A"}, {**RAW_IDEA, "name": "Idea B"}]
+        return [{**RAW_IDEA, "name": "Idea A Retry"}, "not a dict"]
+
+    monkeypatch.setattr(ideation, "_generate_raw", fake_raw)
+    monkeypatch.setattr(ideation.recommend, "check_uniqueness", lambda *a, **k: DUPLICATE_UNIQUENESS_RESULT)
+
+    ideas = ideation.generate_ideas(count=2)
+
+    assert ideas[0]["name"] == "Idea A Retry"  # replaced
+    assert ideas[1]["name"] == "Idea B"  # kept — the retry's 2nd item wasn't a dict
+
+
 def test_generate_ideas_handles_empty_generation(monkeypatch):
     monkeypatch.setattr(ideation, "_generate_raw", lambda prompt: [])
 

@@ -114,6 +114,122 @@ def test_shown_ideas_note_leaves_short_fields_untouched():
     assert "…" not in note
 
 
+# --- _shown_comparison_note / _shown_decision_note ----------------------------
+#
+# Added to close a real, live-observed gap: unlike project_recommendations/
+# generated_project_ideas, a comparison/decision's own data was previously
+# never replayed into later-turn history at all (only the model's own brief
+# prose framing was) — live testing found the model correctly declining to
+# fully trust that prose on a follow-up ("which of those is easier?"),
+# re-calling compare_projects to get grounded data again even when the
+# comparison was already shown moments earlier. These two notes give the
+# model the same kind of reliable, explicitly-labelled context it already
+# trusts for shown projects/ideas.
+
+COMPARISON_BLOCK = {
+    "type": "comparison",
+    "projects": [
+        {"project_id": "pm-1", "title": "First", "difficulty": "Beginner", "duration_weeks": 6, "technologies": ["Python", "Flask"], "uniqueness_percent": 72},
+        {"project_id": "pm-2", "title": "Second", "difficulty": "Advanced", "duration_weeks": 12, "technologies": ["Python", "TensorFlow"], "uniqueness_percent": 40},
+    ],
+}
+
+DECISION_BLOCK = {
+    "type": "decision",
+    "recommended": {"project_id": "pm-1"},
+    "alternative": {"project_id": "pm-2"},
+    "candidates": [
+        {"project_id": "pm-1", "title": "First", "overall_fit": 82, "skill_fit": 90, "timeline_fit": 100, "difficulty_fit": 75, "uniqueness_percent": 72, "estimated_weeks": 6},
+        {"project_id": "pm-2", "title": "Second", "overall_fit": 55, "skill_fit": 40, "timeline_fit": 60, "difficulty_fit": None, "uniqueness_percent": 40, "estimated_weeks": 12},
+    ],
+}
+
+
+def test_shown_comparison_note_is_empty_without_a_comparison_block():
+    assert ai_assistant._shown_comparison_note([]) == ""
+    assert ai_assistant._shown_comparison_note([{"type": "decision", "candidates": []}]) == ""
+
+
+def test_shown_comparison_note_includes_the_real_fields_a_follow_up_needs():
+    note = ai_assistant._shown_comparison_note([COMPARISON_BLOCK])
+    assert '1. pm-1 "First"' in note
+    assert "Beginner" in note
+    assert "6wk" in note
+    assert "uniqueness: 72%" in note
+    assert '2. pm-2 "Second"' in note
+    assert "Advanced" in note
+    assert "uniqueness: 40%" in note
+    assert note.startswith("\n\n[Context")
+
+
+def test_shown_decision_note_is_empty_without_a_decision_block():
+    assert ai_assistant._shown_decision_note([]) == ""
+    assert ai_assistant._shown_decision_note([{"type": "comparison", "projects": []}]) == ""
+
+
+def test_shown_decision_note_marks_the_recommended_candidate_and_includes_fit_scores():
+    note = ai_assistant._shown_decision_note([DECISION_BLOCK])
+    assert '1. pm-1 "First" (recommended)' in note
+    assert "overall_fit: 82%" in note
+    assert "skill_fit: 90" in note
+    assert '2. pm-2 "Second"' in note
+    assert "(recommended)" not in note.split('2. pm-2 "Second"')[1].split("\n")[0]
+    assert note.startswith("\n\n[Context")
+
+
+def test_history_messages_only_threads_the_most_recent_comparison_note():
+    older = {**COMPARISON_BLOCK, "projects": [{"project_id": "pm-old", "title": "Old", "difficulty": "Beginner", "duration_weeks": 4, "technologies": [], "uniqueness_percent": 50}]}
+    newer = {**COMPARISON_BLOCK, "projects": [{"project_id": "pm-new", "title": "New", "difficulty": "Beginner", "duration_weeks": 4, "technologies": [], "uniqueness_percent": 50}]}
+    history = [
+        {"role": "assistant", "content": "First comparison.", "blocks": [older]},
+        {"role": "assistant", "content": "Second comparison.", "blocks": [newer]},
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=True)
+    all_content = " ".join(m["content"] for m in messages)
+    assert "pm-new" in all_content
+    assert "pm-old" not in all_content
+
+
+def test_history_messages_only_threads_the_most_recent_decision_note():
+    older = {**DECISION_BLOCK, "candidates": [{"project_id": "pm-old", "title": "Old", "overall_fit": 50, "skill_fit": None, "timeline_fit": 50, "difficulty_fit": None, "uniqueness_percent": 50, "estimated_weeks": 8}]}
+    newer = {**DECISION_BLOCK, "candidates": [{"project_id": "pm-new", "title": "New", "overall_fit": 50, "skill_fit": None, "timeline_fit": 50, "difficulty_fit": None, "uniqueness_percent": 50, "estimated_weeks": 8}]}
+    history = [
+        {"role": "assistant", "content": "First decision.", "blocks": [older]},
+        {"role": "assistant", "content": "Second decision.", "blocks": [newer]},
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=True)
+    all_content = " ".join(m["content"] for m in messages)
+    assert "pm-new" in all_content
+    assert "pm-old" not in all_content
+
+
+def test_history_messages_tracks_all_four_note_kinds_independently():
+    # A later comparison/decision turn must not suppress an earlier, still-
+    # relevant projects/ideas note (and vice versa) -- each kind is tracked
+    # by its own "most recent" index, mirroring the existing
+    # projects/ideas independence test above.
+    history = [
+        {"role": "assistant", "content": "Ideas.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA]}]},
+        {"role": "assistant", "content": "Projects.", "blocks": [{"type": "project_recommendations", "projects": [{"project_id": "pm-later", "title": "Later Project"}]}]},
+        {"role": "assistant", "content": "Comparison.", "blocks": [COMPARISON_BLOCK]},
+        {"role": "assistant", "content": "Decision.", "blocks": [DECISION_BLOCK]},
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=True)
+    all_content = " ".join(m["content"] for m in messages)
+    assert IDEA["name"] in all_content
+    assert "pm-later" in all_content
+    assert "pm-1" in all_content  # from the comparison note
+    assert "(recommended)" in all_content  # from the decision note
+
+
+def test_history_messages_without_shown_projects_never_adds_comparison_or_decision_notes():
+    history = [
+        {"role": "assistant", "content": "Here's a comparison.", "blocks": [COMPARISON_BLOCK]},
+    ]
+    messages = ai_assistant._history_messages(history, with_shown_projects=False)
+    assert messages == [{"role": "assistant", "content": "Here's a comparison."}]
+
+
 # --- _active_project_note / _active_idea_note --------------------------------
 
 
@@ -388,7 +504,7 @@ def test_general_system_message_defers_skill_gathering_until_after_selection():
     # project already "being discussed" and ask about skills before ever
     # searching.
     content = ai_assistant._GENERAL_SYSTEM_MESSAGE["content"]
-    assert "always gets an immediate search_projects/generate_project_ideas call" in content
+    assert "fire search_projects/generate_project_ideas immediately on a first find/recommend request" in content
     assert "never ask what the student already knows before that first search" in content
     assert "Only AFTER the student has actually selected a project or idea" in content
 
@@ -591,10 +707,10 @@ def _fake_request():
     return httpx.Request("POST", "https://api.groq.test/openai/v1/chat/completions")
 
 
-def _fake_response(status_code):
+def _fake_response(status_code, headers=None):
     import httpx
 
-    return httpx.Response(status_code, request=_fake_request())
+    return httpx.Response(status_code, headers=headers or {}, request=_fake_request())
 
 
 def _connection_error():
@@ -609,10 +725,11 @@ def _internal_server_error():
     return InternalServerError("upstream error", response=_fake_response(500), body=None)
 
 
-def _rate_limit_error():
+def _rate_limit_error(retry_after=None):
     from groq import RateLimitError
 
-    return RateLimitError("rate limited", response=_fake_response(429), body=None)
+    headers = {"retry-after": str(retry_after)} if retry_after is not None else None
+    return RateLimitError("rate limited", response=_fake_response(429, headers=headers), body=None)
 
 
 def _bad_request_error():
@@ -779,6 +896,84 @@ def test_create_completion_raises_when_every_key_is_exhausted(monkeypatch):
 
     with pytest.raises(RateLimitError):
         ai_assistant._create_completion(model="x", messages=[])
+
+
+def test_create_completion_waits_out_a_short_shared_rate_limit_then_succeeds(monkeypatch):
+    """RELIABILITY: the live-reproduced 502 — every key shares one Groq
+    organization's TPM pool, so once all of them 429 in the same window, a
+    SHORT provider-reported retry-after (Groq observed: 3s) is worth honoring
+    once, since the same request succeeds unchanged a few seconds later."""
+    import itertools
+
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    sleeps = []
+    monkeypatch.setattr(ai_assistant, "_sleep", lambda seconds: sleeps.append(seconds))
+    monkeypatch.setattr(ai_assistant, "_key_rotation", itertools.count())
+
+    # Both keys share the same second scripted item — key rotation picks a
+    # different starting key on the retry pass (_key_rotation advances on
+    # every call, see its own docstring), so whichever key answers first
+    # must succeed identically for this test to not depend on that order.
+    key_a = _FakeClient([_rate_limit_error(retry_after=3), _text_completion("Recovered after the shared window")])
+    key_b = _FakeClient([_rate_limit_error(retry_after=3), _text_completion("Recovered after the shared window")])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [key_a, key_b])
+
+    result = ai_assistant._create_completion(model="x", messages=[])
+
+    assert result.choices[0].message.content == "Recovered after the shared window"
+    assert sleeps == [3.0]
+    # One full pass (both keys 429) before the wait, then the retry succeeds
+    # on whichever key key-rotation lands on first — never a third attempt.
+    assert key_a.completions.calls + key_b.completions.calls == 3
+
+
+def test_create_completion_does_not_wait_when_retry_after_exceeds_the_ceiling(monkeypatch):
+    """A long retry-after (a real, larger TPM deficit) is NOT worth blocking
+    a request thread for — preserves the existing immediate, retryable 502
+    exactly as before this feature existed."""
+    import itertools
+    from groq import RateLimitError
+
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    sleeps = []
+    monkeypatch.setattr(ai_assistant, "_sleep", lambda seconds: sleeps.append(seconds))
+    monkeypatch.setattr(ai_assistant, "_key_rotation", itertools.count())
+
+    over_ceiling = ai_assistant._RATE_LIMIT_RETRY_AFTER_CEILING_SECONDS + 1
+    key_a = _FakeClient([_rate_limit_error(retry_after=over_ceiling)])
+    key_b = _FakeClient([_rate_limit_error(retry_after=over_ceiling)])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [key_a, key_b])
+
+    with pytest.raises(RateLimitError):
+        ai_assistant._create_completion(model="x", messages=[])
+
+    assert sleeps == []
+    assert key_a.completions.calls == 1
+    assert key_b.completions.calls == 1
+
+
+def test_create_completion_rate_limit_wait_never_retries_more_than_once(monkeypatch):
+    """RELIABILITY: bounded to exactly one extra pass — if every key is
+    STILL rate-limited after the wait, this must raise, never loop again,
+    even though the second round's 429s also carry a short retry-after."""
+    import itertools
+    from groq import RateLimitError
+
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    sleeps = []
+    monkeypatch.setattr(ai_assistant, "_sleep", lambda seconds: sleeps.append(seconds))
+    monkeypatch.setattr(ai_assistant, "_key_rotation", itertools.count())
+
+    key_a = _FakeClient([_rate_limit_error(retry_after=2), _rate_limit_error(retry_after=2)])
+    key_b = _FakeClient([_rate_limit_error(retry_after=2), _rate_limit_error(retry_after=2)])
+    monkeypatch.setattr(ai_assistant, "_clients", lambda: [key_a, key_b])
+
+    with pytest.raises(RateLimitError):
+        ai_assistant._create_completion(model="x", messages=[])
+
+    assert sleeps == [2.0]  # exactly one wait, not one per rotation pass
+    assert key_a.completions.calls == 2
+    assert key_b.completions.calls == 2
 
 
 # --- _complete() malformed-response reliability --------------------------------

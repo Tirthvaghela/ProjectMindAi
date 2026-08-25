@@ -229,3 +229,28 @@ def test_weights_sum_to_something_reasonable():
     assert 0 < config.RECOMMEND_RELEVANCE_WEIGHT <= 1
     assert 0 <= config.RECOMMEND_SKILL_WEIGHT <= 1
     assert 0 <= config.RECOMMEND_TIMELINE_WEIGHT <= 1
+
+
+# --- difficulty_fit -----------------------------------------------------------
+# Shared by chat_tools.recommend_decision and nlp/feasibility.py — one
+# implementation, exercised here independent of either caller.
+
+
+def test_difficulty_fit_is_unavailable_without_an_experience_level():
+    score, note = recommend.difficulty_fit("Beginner", None)
+    assert score is None
+    assert "not given" in note.lower()
+
+
+def test_difficulty_fit_is_perfect_on_an_exact_match():
+    score, note = recommend.difficulty_fit("Intermediate", "Intermediate")
+    assert score == 100
+    assert "matches" in note.lower()
+
+
+def test_difficulty_fit_degrades_with_a_larger_gap():
+    one_level = recommend.difficulty_fit("Advanced", "Intermediate")[0]
+    two_levels = recommend.difficulty_fit("Advanced", "Beginner")[0]
+    assert one_level == 75
+    assert two_levels == 50
+    assert two_levels < one_level

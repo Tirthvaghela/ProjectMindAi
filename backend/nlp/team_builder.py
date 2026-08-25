@@ -118,6 +118,13 @@ _CATEGORY_KEYWORDS: dict[str, list[str]] = {
 }
 
 
+def category_for(module: str) -> str:
+    """Public accessor for _MODULE_CATEGORY, so other callers (nlp/feasibility.py's
+    team-size/role estimates) read the exact same module -> category mapping
+    this file's own suggest_roles() uses, rather than a second table."""
+    return _MODULE_CATEGORY.get(module, "General")
+
+
 def _member_category_scores(skills: list[str]) -> dict[str, tuple[float, list[str]]]:
     """category -> (score, matching skill strings) for one member's skill list."""
     scores: dict[str, tuple[float, list[str]]] = {c: (0.0, []) for c in _CATEGORY_KEYWORDS}

@@ -241,6 +241,19 @@ export const api = {
   attachResumeSkills: (conversationId, skills) =>
     client.post(`/conversations/${conversationId}/resume-skills`, { skills }).then(unwrap),
 
+  // The unified Decision/Action Center for whichever project or idea is
+  // currently active in this conversation — no LLM call, see
+  // backend/nlp/decision_center.py. `params` mirrors the same optional
+  // team_size/experience_level/target_weeks every other analyzer already
+  // takes; known_skills always comes from the conversation's own resume
+  // context server-side, never re-asked for here.
+  decisionCenter: (conversationId, { teamSize, experienceLevel, targetWeeks } = {}) =>
+    client
+      .get(`/conversations/${conversationId}/decision-center`, {
+        params: { team_size: teamSize, experience_level: experienceLevel, target_weeks: targetWeeks },
+      })
+      .then(unwrap),
+
   resumeSuggest: ({ file, text, topK = 10 }) => {
     const params = { top_k: topK }
     if (file) {

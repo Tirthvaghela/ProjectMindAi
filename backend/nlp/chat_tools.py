@@ -14,7 +14,7 @@ from typing import Any, Optional
 
 from db import client as db
 from db.schema import DIFFICULTIES, DOMAINS
-from nlp import generator, ideation, learning_path, recommend, timeline
+from nlp import feasibility, generator, ideation, learning_path, recommend, timeline
 
 MAX_SEARCH_RESULTS = 8
 DEFAULT_SEARCH_RESULTS = 5
@@ -34,30 +34,20 @@ DIFFICULTY_FIT_WEIGHT = 0.25
 UNIQUENESS_WEIGHT_DEFAULT = 0.25
 UNIQUENESS_WEIGHT_PREFERRED = 0.6  # when the student explicitly asked for something unique
 
-# index gap between a student's stated experience level and a project's own
-# difficulty -> a 0-100 fit score. Uses the same DIFFICULTIES ordering
-# nlp/timeline.py's experience multiplier already uses, so the two signals
-# never disagree about which direction is "ahead" vs "behind" — but it is its
-# own small table, not a second copy of timeline's multiplier: that answers
-# "how much faster/slower", this answers "how well does the level match".
-_DIFFICULTY_FIT_BY_GAP = {0: 100, 1: 75}
-_DIFFICULTY_FIT_FLOOR = 50
-
 TOOL_SCHEMAS: list[dict[str, Any]] = [
     {
         "type": "function",
         "function": {
             "name": "search_projects",
             "description": (
-                "Search ProjectMind's EXISTING catalogue using hybrid semantic + keyword search — "
-                "for finding/recommending projects that already exist, or matching the student's "
-                "skills. For 'projects similar to X' about ONE project already shown, use "
-                "find_similar_projects instead (real embedding similarity, not a re-typed query). "
-                "Do NOT use this for NEW/innovative/original/fresh ideas or 'what can I build' — "
-                "that's generate_project_ideas' job. Never invent a project not returned here. "
-                "Pass known_skills/team_size/experience_level whenever already known — blends "
-                "skill/timeline fit into the ranking, and each result carries matching_factors "
-                "and skills_you_have/skills_to_learn."
+                "Search ProjectMind's EXISTING catalogue via hybrid semantic+keyword search — for "
+                "finding/recommending projects that exist, or matching skills. For 'similar to X' "
+                "about ONE shown project, use find_similar_projects instead (real embedding "
+                "similarity, not a re-typed query). NOT for NEW/innovative/original ideas or 'what "
+                "can I build' — that's generate_project_ideas. Never invent a project not returned "
+                "here. Pass known_skills/team_size/experience_level when known — blends skill/"
+                "timeline fit into ranking; results then carry matching_factors and "
+                "skills_you_have/skills_to_learn."
             ),
             "parameters": {
                 "type": "object",
@@ -67,40 +57,40 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
                         "description": "What the student is looking for, in natural language.",
                     },
                     "difficulty": {
-                        "type": "string",
-                        "enum": list(DIFFICULTIES),
-                        "description": "Restrict to one difficulty level, only if the student asked for one.",
+                        "type": ["string", "null"],
+                        "enum": [*DIFFICULTIES, None],
+                        "description": "Only if the student asked for one difficulty level.",
                     },
                     "domain": {
-                        "type": "string",
-                        "enum": list(DOMAINS),
-                        "description": "Restrict to one domain, only if the student named one.",
+                        "type": ["string", "null"],
+                        "enum": [*DOMAINS, None],
+                        "description": "Only if the student named one domain.",
                     },
                     "max_duration_weeks": {
                         # Accepts a numeral string too — Groq validates tool-call
                         # arguments strictly against this schema, and the model
                         # sometimes emits a quoted number ("12") rather than 12,
                         # which a plain "integer" type rejects outright (400).
-                        "type": ["integer", "string"],
+                        "type": ["integer", "string", "null"],
                         "description": "Only projects completable within this many weeks.",
                     },
                     "top_k": {
-                        "type": ["integer", "string"],
+                        "type": ["integer", "string", "null"],
                         "description": f"Number of results, default {DEFAULT_SEARCH_RESULTS}, max {MAX_SEARCH_RESULTS}.",
                     },
                     "known_skills": {
-                        "type": "array",
+                        "type": ["array", "null"],
                         "items": {"type": "string"},
-                        "description": "Skills the student says they already have, if any — enables skill-fit ranking.",
+                        "description": "Skills the student already has, if any — enables skill-fit ranking.",
                     },
                     "team_size": {
-                        "type": ["integer", "string"],
-                        "description": "Team size, if the student mentioned one — enables timeline-fit ranking.",
+                        "type": ["integer", "string", "null"],
+                        "description": "If mentioned — enables timeline-fit ranking.",
                     },
                     "experience_level": {
-                        "type": "string",
-                        "enum": list(DIFFICULTIES),
-                        "description": "The student's own experience level, if mentioned — affects the timeline estimate.",
+                        "type": ["string", "null"],
+                        "enum": [*DIFFICULTIES, None],
+                        "description": "Student's own level, if mentioned.",
                     },
                 },
                 "required": ["query"],
@@ -122,7 +112,7 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
                 "properties": {
                     "project_id": {"type": "string"},
                     "top_k": {
-                        "type": ["integer", "string"],
+                        "type": ["integer", "string", "null"],
                         "description": f"Number of results, default {DEFAULT_SEARCH_RESULTS}, max {MAX_SEARCH_RESULTS}.",
                     },
                 },
@@ -228,7 +218,7 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
                     "known_skills": {
                         "type": "array",
                         "items": {"type": "string"},
-                        "description": "Skills the student says they already have.",
+                        "description": "Skills the student already has.",
                     },
                 },
                 "required": ["project_id", "known_skills"],
@@ -241,10 +231,9 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "name": "match_resume_projects",
             "description": (
                 "Rank catalogue projects against the student's uploaded-résumé skills — for "
-                "'which project fits me best' once a '[Context — résumé skills...]' note is "
-                "present. Returns each match's fit plus skills the student has/is missing (same "
-                "logic as check_skill_gap). If no résumé note is present, tell them to upload "
-                "their résumé on the Résumé Match page instead of calling this."
+                "'which project fits me best' once a '[Context — résumé skills...]' note exists. "
+                "Same fit logic as check_skill_gap. If no résumé note is present, tell them to "
+                "upload one on the Résumé Match page instead of calling this."
             ),
             "parameters": {
                 "type": "object",
@@ -258,7 +247,7 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
                         ),
                     },
                     "top_k": {
-                        "type": ["integer", "string"],
+                        "type": ["integer", "string", "null"],
                         "description": f"Number of results, default {DEFAULT_SEARCH_RESULTS}, max {MAX_SEARCH_RESULTS}.",
                     },
                 },
@@ -279,8 +268,8 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
                 "type": "object",
                 "properties": {
                     "project_id": {"type": "string"},
-                    "team_size": {"type": ["integer", "string"], "description": "Defaults to 1 (solo) if not mentioned."},
-                    "experience_level": {"type": "string", "enum": list(DIFFICULTIES)},
+                    "team_size": {"type": ["integer", "string", "null"], "description": "Defaults to 1 if not mentioned."},
+                    "experience_level": {"type": ["string", "null"], "enum": [*DIFFICULTIES, None]},
                 },
                 "required": ["project_id"],
             },
@@ -321,23 +310,22 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "name": "select_idea",
             "description": (
                 "Mark one previously generated idea as the student's active build target — the "
-                "idea-context mirror of select_project, for a GENERATED idea instead of a "
-                "catalogue project. Call for 'let's build this one', 'I'll go with the second "
-                "idea'. Use the idea's exact current fields from context. Replaces any selected "
-                "catalogue project — only one build target is ever active."
+                "idea mirror of select_project, for a GENERATED idea. Call for 'let's build this "
+                "one', 'I'll go with the second idea'. Use the idea's exact current fields from "
+                "context. Replaces any selected catalogue project."
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "string", "description": "The idea's id from the shown-ideas context, e.g. 'idea-2'."},
+                    "id": {"type": ["string", "null"], "description": "The idea's id from the shown-ideas context, e.g. 'idea-2'."},
                     "name": {"type": "string"},
-                    "problem": {"type": "string"},
-                    "solution": {"type": "string"},
-                    "unique_point": {"type": "string"},
-                    "technologies": {"type": "array", "items": {"type": "string"}},
-                    "domain": {"type": "string", "enum": list(DOMAINS)},
-                    "difficulty": {"type": "string", "enum": list(DIFFICULTIES)},
-                    "duration_weeks": {"type": ["integer", "string"]},
+                    "problem": {"type": ["string", "null"]},
+                    "solution": {"type": ["string", "null"]},
+                    "unique_point": {"type": ["string", "null"]},
+                    "technologies": {"type": ["array", "null"], "items": {"type": "string"}},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "difficulty": {"type": ["string", "null"], "description": "The idea's own difficulty, from context."},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
                 },
                 "required": ["name"],
             },
@@ -348,14 +336,13 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
         "function": {
             "name": "recommend_decision",
             "description": (
-                "Help the student decide between project(s) already shown/searched/compared — "
-                "for 'which should I choose', 'which is easiest/most unique/fits my skills best', "
-                "'which can I finish in N weeks', or 'give me your recommendation'. Combines four "
-                "signals into one ranked result — Skill Fit, Timeline Fit, Difficulty Fit, "
-                "catalogue Uniqueness — never guess these yourself, always call this. For a "
-                "narrower question, speak to just that one factor from the result. Works with one "
+                "Help the student decide between project(s) shown/searched/compared — for 'which "
+                "should I choose', 'which is easiest/most unique/fits my skills', 'which fits N "
+                "weeks', or 'give me your recommendation'. Combines four signals — Skill/Timeline/"
+                "Difficulty Fit, catalogue Uniqueness — into one ranked result; never guess these "
+                "yourself. For a narrower question, speak to just that one factor. Works with one "
                 "project_id alone, or with no known_skills/team_size/experience_level yet — a "
-                "factor with no input just becomes unavailable, not guessed."
+                "missing factor is unavailable, not guessed."
             ),
             "parameters": {
                 "type": "object",
@@ -366,22 +353,137 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
                         "description": "1 to 4 project_ids to evaluate — from the projects shown, searched, or compared above.",
                     },
                     "known_skills": {
-                        "type": "array",
+                        "type": ["array", "null"],
                         "items": {"type": "string"},
-                        "description": "Skills the student has mentioned they have, if any.",
+                        "description": "Skills the student has, if any.",
                     },
-                    "team_size": {"type": ["integer", "string"], "description": "Defaults to 1 (solo) if not mentioned."},
-                    "experience_level": {"type": "string", "enum": list(DIFFICULTIES)},
+                    "team_size": {"type": ["integer", "string", "null"], "description": "Defaults to 1 if not mentioned."},
+                    "experience_level": {"type": ["string", "null"], "enum": [*DIFFICULTIES, None], "description": "Student's own level, if mentioned."},
                     "prefers_unique": {
-                        "type": "boolean",
+                        "type": ["boolean", "null"],
                         "description": "True if the student explicitly asked for something innovative/unique/original.",
                     },
                     "target_weeks": {
-                        "type": ["integer", "string"],
-                        "description": "The student's deadline in weeks, if they gave one — 'in 3 months' -> 12, 'in 6 weeks' -> 6. Omit if no deadline was mentioned.",
+                        "type": ["integer", "string", "null"],
+                        "description": "Deadline in weeks, if given — 'in 3 months' -> 12, 'in 6 weeks' -> 6.",
                     },
                 },
                 "required": ["project_ids"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_project_feasibility",
+            "description": (
+                "Realistically-can-I-build-this check for one catalogue project — skill/timeline/"
+                "difficulty fit, technical complexity, team-size fit, infra/dataset guidance, risks "
+                "and recommendations in one score. Use for 'can I build this', 'how difficult is "
+                "this', 'what are the risks'. Not recommend_decision (picking between projects) or "
+                "predict_timeline (a bare duration)."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "project_id": {"type": "string"},
+                    "known_skills": {
+                        "type": ["array", "null"],
+                        "items": {"type": "string"},
+                        "description": "Skills the student has, if any.",
+                    },
+                    "team_size": {
+                        "type": ["integer", "string", "null"],
+                        "description": "Defaults to 1 if not mentioned.",
+                    },
+                    "experience_level": {"type": ["string", "null"], "enum": [*DIFFICULTIES, None]},
+                    "target_weeks": {
+                        "type": ["integer", "string", "null"],
+                        "description": "Deadline in weeks, if given — 'in 3 months' -> 12.",
+                    },
+                },
+                "required": ["project_id"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_idea_feasibility",
+            "description": "Same as analyze_project_feasibility, for a GENERATED idea (no project_id).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {"type": "string"},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "difficulty": {"type": ["string", "null"], "enum": [*DIFFICULTIES, None]},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
+                    "technologies": {
+                        "type": ["array", "null"],
+                        "items": {"type": "string"},
+                        "description": "The idea's own technologies, from the shown-ideas/active-idea context.",
+                    },
+                    "known_skills": {"type": ["array", "null"], "items": {"type": "string"}},
+                    "team_size": {
+                        "type": ["integer", "string", "null"],
+                        "description": "Defaults to 1 if not mentioned.",
+                    },
+                    "experience_level": {"type": ["string", "null"], "enum": [*DIFFICULTIES, None]},
+                    "target_weeks": {
+                        "type": ["integer", "string", "null"],
+                        "description": "Deadline in weeks, if given — 'in 3 months' -> 12.",
+                    },
+                },
+                "required": ["name"],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "analyze_scope",
+            "description": (
+                "MVP/CORE/ADVANCED/FUTURE scope tiers, in/out-of-scope, dependencies and "
+                "constraints for ONE catalogue project (pass project_id) or ONE generated idea "
+                "(pass name, and domain/duration_weeks/technologies from its context instead). "
+                "Pass target_weeks (e.g. 'I only have 8 weeks') for a remove/keep scope-reduction "
+                "suggestion — never changes the project/idea itself."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "project_id": {"type": ["string", "null"], "description": "A catalogue project's id, if scoping one."},
+                    "name": {"type": ["string", "null"], "description": "A generated idea's name, if scoping one instead."},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
+                    "technologies": {"type": ["array", "null"], "items": {"type": "string"}},
+                    "target_weeks": {"type": ["integer", "string", "null"], "description": "Student's deadline in weeks, if given."},
+                },
+                "required": [],
+            },
+        },
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "estimate_project_resources",
+            "description": (
+                "Team size/roles, technology-stack breakdown, dataset/compute/storage/API needs, "
+                "and a free-tier-first cost estimate for ONE catalogue project (pass project_id) or "
+                "ONE generated idea (pass name, and domain/duration_weeks/technologies from its "
+                "context instead). Every cost is a range/estimate, never an exact price."
+            ),
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "project_id": {"type": ["string", "null"], "description": "A catalogue project's id, if estimating one."},
+                    "name": {"type": ["string", "null"], "description": "A generated idea's name, if estimating one instead."},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
+                    "technologies": {"type": ["array", "null"], "items": {"type": "string"}},
+                    "team_size": {"type": ["integer", "string", "null"], "description": "If mentioned, e.g. 'team of 3'."},
+                },
+                "required": [],
             },
         },
     },
@@ -412,21 +514,21 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "name": "generate_project_ideas",
             "description": (
                 "Invent NEW project concepts not in the catalogue — call (never search_projects) "
-                "for new/innovative/original/fresh/unique ideas, 'what can I build', or wanting "
-                "something different. Each idea is auto-checked for originality before returning, "
-                "so no need to call check_project_uniqueness right after."
+                "for new/innovative/original ideas, 'what can I build', or wanting something "
+                "different. Each idea is auto-checked for originality; no need to also call "
+                "check_project_uniqueness."
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
                     "topic": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "description": "Theme/topic for the ideas in the student's own words, e.g. 'AI', 'NLP', 'sustainability'. Empty if unconstrained.",
                     },
-                    "domain": {"type": "string", "enum": list(DOMAINS)},
-                    "difficulty": {"type": "string", "enum": list(DIFFICULTIES)},
+                    "domain": {"type": ["string", "null"], "enum": [*DOMAINS, None]},
+                    "difficulty": {"type": ["string", "null"], "enum": [*DIFFICULTIES, None]},
                     "count": {
-                        "type": ["integer", "string"],
+                        "type": ["integer", "string", "null"],
                         "description": f"Number of ideas, default {ideation.IDEA_COUNT_DEFAULT}, max {ideation.IDEA_COUNT_MAX}.",
                     },
                 },
@@ -440,21 +542,21 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "name": "refine_project_idea",
             "description": (
                 "Regenerate ONE previously generated idea against a follow-up instruction — "
-                "'make it more innovative', 'simplify it'. Use the idea's exact current fields "
-                "from context; re-validated for originality automatically."
+                "'make it more innovative', 'simplify it'. Use its exact current fields from "
+                "context; re-validated for originality automatically."
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "string", "description": "The idea's id from the shown-ideas context, e.g. 'idea-2'."},
+                    "id": {"type": ["string", "null"], "description": "The idea's id from the shown-ideas context, e.g. 'idea-2'."},
                     "name": {"type": "string"},
-                    "problem": {"type": "string"},
-                    "solution": {"type": "string"},
-                    "unique_point": {"type": "string"},
-                    "technologies": {"type": "array", "items": {"type": "string"}},
-                    "domain": {"type": "string", "enum": list(DOMAINS)},
-                    "difficulty": {"type": "string", "enum": list(DIFFICULTIES)},
-                    "duration_weeks": {"type": ["integer", "string"]},
+                    "problem": {"type": ["string", "null"]},
+                    "solution": {"type": ["string", "null"]},
+                    "unique_point": {"type": ["string", "null"]},
+                    "technologies": {"type": ["array", "null"], "items": {"type": "string"}},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "difficulty": {"type": ["string", "null"], "description": "The idea's own difficulty, from context."},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
                     "instruction": {"type": "string", "description": "What the student wants changed about this idea."},
                 },
                 "required": ["name", "instruction"],
@@ -467,18 +569,17 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "name": "generate_idea_roadmap",
             "description": (
                 "Phase-by-phase roadmap for a GENERATED idea (no project_id) — use instead of "
-                "generate_roadmap for a roadmap/implementation-plan request about a generated "
-                "idea. Always pass technologies from the idea's context so phase tasks aren't "
-                "left empty."
+                "generate_roadmap. Always pass technologies from the idea's context so phase "
+                "tasks aren't left empty."
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
                     "name": {"type": "string"},
-                    "domain": {"type": "string", "enum": list(DOMAINS)},
-                    "duration_weeks": {"type": ["integer", "string"]},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
                     "technologies": {
-                        "type": "array",
+                        "type": ["array", "null"],
                         "items": {"type": "string"},
                         "description": "The idea's own technologies, from the shown-ideas/active-idea context.",
                     },
@@ -493,17 +594,17 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "name": "generate_idea_timeline",
             "description": (
                 "Completion estimate for a GENERATED idea (no project_id) given team "
-                "size/experience — use instead of predict_timeline for a generated idea."
+                "size/experience — use instead of predict_timeline."
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
                     "name": {"type": "string"},
-                    "domain": {"type": "string", "enum": list(DOMAINS)},
-                    "difficulty": {"type": "string", "enum": list(DIFFICULTIES)},
-                    "duration_weeks": {"type": ["integer", "string"]},
-                    "team_size": {"type": ["integer", "string"], "description": "Defaults to 1 (solo) if not mentioned."},
-                    "experience_level": {"type": "string", "enum": list(DIFFICULTIES)},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "difficulty": {"type": ["string", "null"], "description": "The idea's own difficulty, from context."},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
+                    "team_size": {"type": ["integer", "string", "null"], "description": "Defaults to 1 if not mentioned."},
+                    "experience_level": {"type": ["string", "null"], "enum": [*DIFFICULTIES, None], "description": "Student's own level, if mentioned."},
                 },
                 "required": ["name"],
             },
@@ -515,14 +616,14 @@ TOOL_SCHEMAS: list[dict[str, Any]] = [
             "name": "generate_idea_milestones",
             "description": (
                 "Build milestones for a GENERATED idea (no project_id) — use instead of "
-                "generate_milestones for a generated idea."
+                "generate_milestones."
             ),
             "parameters": {
                 "type": "object",
                 "properties": {
                     "name": {"type": "string"},
-                    "domain": {"type": "string", "enum": list(DOMAINS)},
-                    "duration_weeks": {"type": ["integer", "string"]},
+                    "domain": {"type": ["string", "null"], "description": "The idea's own domain, from context."},
+                    "duration_weeks": {"type": ["integer", "string", "null"]},
                 },
                 "required": ["name"],
             },
@@ -769,38 +870,6 @@ def _uniqueness_percent(project_id: str) -> int:
     return round((1 - peers[0].score) * 100) if peers else 100
 
 
-def _difficulty_fit(project_difficulty: str, experience_level: Optional[str]) -> tuple[Optional[int], str]:
-    """How well a student's stated experience level matches a project's own
-    difficulty, as a 0-100 score — None (unavailable) when no
-    experience_level was given, since that is genuinely unknown and must not
-    be guessed (see module docstring / architecture rule on unavailable
-    signals)."""
-    if not experience_level:
-        return None, "Experience level not given."
-    try:
-        project_idx = DIFFICULTIES.index(project_difficulty)
-        student_idx = DIFFICULTIES.index(experience_level)
-    except ValueError:
-        return None, "Unrecognised difficulty level."
-
-    gap = abs(student_idx - project_idx)
-    score = _DIFFICULTY_FIT_BY_GAP.get(gap, _DIFFICULTY_FIT_FLOOR)
-
-    if gap == 0:
-        note = f"{experience_level} experience matches this project's {project_difficulty} difficulty."
-    elif student_idx > project_idx:
-        note = (
-            f"{experience_level} experience is ahead of this project's {project_difficulty} "
-            "difficulty — likely to feel easy."
-        )
-    else:
-        note = (
-            f"{experience_level} experience is behind this project's {project_difficulty} "
-            "difficulty — likely to feel challenging."
-        )
-    return score, note
-
-
 def compare_projects(project_ids: list[str]) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
     """Side-by-side real data for 2+ projects — no invented fields (no
     'complexity'/'best suited for'/etc., since those aren't in the dataset;
@@ -1001,7 +1070,7 @@ def recommend_decision(
         e.g. "finish in 3 months" -> 12) when given, otherwise against this
         project's own baseline duration_weeks as a sanity check. Always
         available — every catalogue project has a duration_weeks.
-      - difficulty_fit: _difficulty_fit() above, or None when no
+      - difficulty_fit: recommend.difficulty_fit(), or None when no
         experience_level was given.
       - uniqueness_percent: always available (a property of the catalogue
         itself, not the student).
@@ -1045,7 +1114,7 @@ def recommend_decision(
         gap = recommend.skill_gap(pid, skills) if skills else None
         estimate = timeline.predict(doc, team_size=size, experience_level=level)
         uniqueness_percent = _uniqueness_percent(pid)
-        difficulty_fit, difficulty_note = _difficulty_fit(doc.get("difficulty", ""), level)
+        difficulty_fit, difficulty_note = recommend.difficulty_fit(doc.get("difficulty", ""), level)
 
         if target is not None:
             # Against the student's own stated deadline — answers "can I
@@ -1158,6 +1227,104 @@ def recommend_decision(
         "candidates": candidates,
     }
     return for_model, block
+
+
+def analyze_project_feasibility(
+    project_id: str,
+    known_skills: Optional[list[str]] = None,
+    team_size: Optional[int] = None,
+    experience_level: Optional[str] = None,
+    target_weeks: Optional[int] = None,
+) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
+    """Wraps nlp/feasibility.py:analyze_feasibility() for one catalogue
+    project, looked up the same way every other project_id tool here does."""
+    doc = _lookup(project_id)
+    if doc is None:
+        return {"error": f"No project with id '{project_id}'."}, None
+    result = feasibility.analyze_feasibility(
+        doc,
+        known_skills=known_skills,
+        team_size=team_size,
+        experience_level=experience_level,
+        target_weeks=target_weeks,
+    )
+    return result, {"type": "feasibility", **result}
+
+
+def analyze_idea_feasibility(
+    name: str,
+    domain: Optional[str] = None,
+    difficulty: Optional[str] = None,
+    duration_weeks: Optional[int] = None,
+    technologies: Optional[list[str]] = None,
+    known_skills: Optional[list[str]] = None,
+    team_size: Optional[int] = None,
+    experience_level: Optional[str] = None,
+    target_weeks: Optional[int] = None,
+) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
+    """The idea-context mirror of analyze_project_feasibility — fed a
+    synthetic doc (generator.idea_doc(), same as every other generate_idea_*/
+    analyze_idea_* tool) instead of a Mongo lookup, since a generated idea has
+    no project_id."""
+    doc = generator.idea_doc(name, domain=domain, duration_weeks=duration_weeks, difficulty=difficulty, technologies=technologies)
+    result = feasibility.analyze_feasibility(
+        doc,
+        known_skills=known_skills,
+        team_size=team_size,
+        experience_level=experience_level,
+        target_weeks=target_weeks,
+    )
+    return result, {"type": "feasibility", **result}
+
+
+def analyze_scope(
+    project_id: Optional[str] = None,
+    name: Optional[str] = None,
+    domain: Optional[str] = None,
+    duration_weeks: Optional[int] = None,
+    technologies: Optional[list[str]] = None,
+    target_weeks: Optional[int] = None,
+) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
+    """Wraps nlp/feasibility.py:analyze_scope() for either a catalogue
+    project (project_id) or a generated idea (name + context fields) — one
+    dual-mode tool rather than a project/idea pair, to keep TOOL_SCHEMAS
+    lean (see the tool's own schema comment on why)."""
+    if project_id:
+        doc = _lookup(project_id)
+        if doc is None:
+            return {"error": f"No project with id '{project_id}'."}, None
+    elif name:
+        doc = generator.idea_doc(name, domain=domain, duration_weeks=duration_weeks, technologies=technologies)
+    else:
+        return {"error": "Need either project_id or name."}, None
+
+    result = feasibility.analyze_scope(doc, target_weeks=target_weeks)
+    return result, {"type": "scope", **result}
+
+
+def estimate_project_resources(
+    project_id: Optional[str] = None,
+    name: Optional[str] = None,
+    domain: Optional[str] = None,
+    duration_weeks: Optional[int] = None,
+    technologies: Optional[list[str]] = None,
+    team_size: Optional[int] = None,
+) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
+    """Wraps nlp/feasibility.py:estimate_resources() for either a catalogue
+    project (project_id) or a generated idea (name + context fields) — one
+    dual-mode tool, same lean pattern as analyze_scope, to keep TOOL_SCHEMAS
+    lean rather than a project/idea pair."""
+    if project_id:
+        doc = _lookup(project_id)
+        if doc is None:
+            return {"error": f"No project with id '{project_id}'."}, None
+    elif name:
+        doc = generator.idea_doc(name, domain=domain, duration_weeks=duration_weeks, technologies=technologies)
+    else:
+        return {"error": "Need either project_id or name."}, None
+
+    result = feasibility.estimate_resources(doc, team_size=team_size)
+    return result, {"type": "resources", **result}
 
 
 def check_project_uniqueness(idea: str) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
@@ -1344,13 +1511,51 @@ def call_tool(name: str, arguments: dict[str, Any]) -> tuple[dict[str, Any], Opt
         return select_idea(
             id=arguments.get("id"),
             name=str(arguments.get("name", "")),
-            problem=str(arguments.get("problem", "")),
-            solution=str(arguments.get("solution", "")),
-            unique_point=str(arguments.get("unique_point", "")),
+            problem=str(arguments.get("problem") or ""),
+            solution=str(arguments.get("solution") or ""),
+            unique_point=str(arguments.get("unique_point") or ""),
             technologies=list(arguments.get("technologies") or []),
             domain=arguments.get("domain"),
             difficulty=arguments.get("difficulty"),
             duration_weeks=arguments.get("duration_weeks"),
+        )
+    if name == "analyze_project_feasibility":
+        return analyze_project_feasibility(
+            project_id=str(arguments.get("project_id", "")),
+            known_skills=list(arguments.get("known_skills") or []),
+            team_size=arguments.get("team_size"),
+            experience_level=arguments.get("experience_level"),
+            target_weeks=arguments.get("target_weeks"),
+        )
+    if name == "analyze_idea_feasibility":
+        return analyze_idea_feasibility(
+            name=str(arguments.get("name", "")),
+            domain=arguments.get("domain"),
+            difficulty=arguments.get("difficulty"),
+            duration_weeks=arguments.get("duration_weeks"),
+            technologies=list(arguments.get("technologies") or []),
+            known_skills=list(arguments.get("known_skills") or []),
+            team_size=arguments.get("team_size"),
+            experience_level=arguments.get("experience_level"),
+            target_weeks=arguments.get("target_weeks"),
+        )
+    if name == "analyze_scope":
+        return analyze_scope(
+            project_id=arguments.get("project_id"),
+            name=arguments.get("name"),
+            domain=arguments.get("domain"),
+            duration_weeks=arguments.get("duration_weeks"),
+            technologies=list(arguments.get("technologies") or []),
+            target_weeks=arguments.get("target_weeks"),
+        )
+    if name == "estimate_project_resources":
+        return estimate_project_resources(
+            project_id=arguments.get("project_id"),
+            name=arguments.get("name"),
+            domain=arguments.get("domain"),
+            duration_weeks=arguments.get("duration_weeks"),
+            technologies=list(arguments.get("technologies") or []),
+            team_size=arguments.get("team_size"),
         )
     if name == "check_project_uniqueness":
         return check_project_uniqueness(idea=str(arguments.get("idea", "")))
@@ -1365,7 +1570,7 @@ def call_tool(name: str, arguments: dict[str, Any]) -> tuple[dict[str, Any], Opt
         )
     if name == "generate_project_ideas":
         return generate_project_ideas(
-            topic=str(arguments.get("topic", "")),
+            topic=str(arguments.get("topic") or ""),
             domain=arguments.get("domain"),
             difficulty=arguments.get("difficulty"),
             count=arguments.get("count"),
@@ -1375,9 +1580,9 @@ def call_tool(name: str, arguments: dict[str, Any]) -> tuple[dict[str, Any], Opt
             id=arguments.get("id"),
             name=str(arguments.get("name", "")),
             instruction=str(arguments.get("instruction", "")),
-            problem=str(arguments.get("problem", "")),
-            solution=str(arguments.get("solution", "")),
-            unique_point=str(arguments.get("unique_point", "")),
+            problem=str(arguments.get("problem") or ""),
+            solution=str(arguments.get("solution") or ""),
+            unique_point=str(arguments.get("unique_point") or ""),
             technologies=list(arguments.get("technologies") or []),
             domain=arguments.get("domain"),
             difficulty=arguments.get("difficulty"),

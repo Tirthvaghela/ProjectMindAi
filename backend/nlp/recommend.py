@@ -283,6 +283,50 @@ def skill_gap(project_id: str, known_skills: list[str]) -> dict[str, Any]:
     return skill_gap_for_doc(doc, known_skills)
 
 
+# index gap between a student's stated experience level and a project's own
+# difficulty -> a 0-100 fit score. Shared by chat_tools.recommend_decision and
+# nlp/feasibility.py's analyze_feasibility so both ever report the exact same
+# number for the same (project, experience_level) pair — not two
+# implementations of the same judgement. Uses the same DIFFICULTIES ordering
+# nlp/timeline.py's own experience multiplier uses, so the two signals never
+# disagree about which direction is "ahead" vs "behind" — but it is its own
+# small table, not a second copy of timeline's multiplier: that answers "how
+# much faster/slower", this answers "how well does the level match".
+_DIFFICULTY_FIT_BY_GAP = {0: 100, 1: 75}
+_DIFFICULTY_FIT_FLOOR = 50
+
+
+def difficulty_fit(project_difficulty: str, experience_level: Optional[str]) -> tuple[Optional[int], str]:
+    """How well a student's stated experience level matches a project's own
+    difficulty, as a 0-100 score — None (unavailable) when no
+    experience_level was given, since that is genuinely unknown and must not
+    be guessed."""
+    if not experience_level:
+        return None, "Experience level not given."
+    try:
+        project_idx = DIFFICULTIES.index(project_difficulty)
+        student_idx = DIFFICULTIES.index(experience_level)
+    except ValueError:
+        return None, "Unrecognised difficulty level."
+
+    gap = abs(student_idx - project_idx)
+    score = _DIFFICULTY_FIT_BY_GAP.get(gap, _DIFFICULTY_FIT_FLOOR)
+
+    if gap == 0:
+        note = f"{experience_level} experience matches this project's {project_difficulty} difficulty."
+    elif student_idx > project_idx:
+        note = (
+            f"{experience_level} experience is ahead of this project's {project_difficulty} "
+            "difficulty — likely to feel easy."
+        )
+    else:
+        note = (
+            f"{experience_level} experience is behind this project's {project_difficulty} "
+            "difficulty — likely to feel challenging."
+        )
+    return score, note
+
+
 def _timeline_fit_score(predicted_weeks: float, max_duration_weeks: int) -> float:
     """0-100: how well a predicted duration fits inside a stated deadline.
 

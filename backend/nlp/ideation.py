@@ -149,6 +149,29 @@ def _validate(idea: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _build_retry_prompt(topic: str, failing_ideas: list[dict[str, Any]]) -> str:
+    """One consolidated regeneration request for EVERY idea that landed below
+    MIN_ACCEPTABLE_ORIGINALITY — a single _generate_raw() call producing up
+    to len(failing_ideas) replacements, in the same order, rather than one
+    separate call per failing idea. Each numbered item names exactly what
+    its own predecessor was too close to, so a batch of several failures
+    doesn't just get generic new ideas that might cluster around the same
+    theme — this exists specifically to cut ideation's worst-case LLM call
+    count (previously 1 + N individual retries) down to at most 2 calls
+    total, regardless of how many ideas in the batch needed regenerating."""
+    count = len(failing_ideas)
+    lines = [f"Generate exactly {count} new project ideas, one per numbered item below, replacing each in order."]
+    for i, idea in enumerate(failing_ideas, start=1):
+        closest = idea["similar_projects"][0]["title"] if idea["similar_projects"] else "an existing project"
+        theme = topic or idea.get("domain") or "open"
+        lines.append(
+            f"{i}. Topic/theme: {theme}. Replaces \"{idea['name']}\", which was too similar to the "
+            f"existing catalogue project \"{closest}\" — make this one meaningfully different in its "
+            "core approach, not just reworded or renamed."
+        )
+    return "\n".join(lines)
+
+
 def generate_ideas(
     topic: str = "",
     domain: Optional[str] = None,
@@ -157,10 +180,15 @@ def generate_ideas(
     avoid: Optional[list[str]] = None,
 ) -> list[dict[str, Any]]:
     """Generate `count` new project concepts, each validated against the
-    existing catalogue via check_uniqueness. Any idea that lands below
-    MIN_ACCEPTABLE_ORIGINALITY gets exactly one targeted regeneration pass
-    naming what it was too close to; accepted either way afterward and
-    always labelled with its real score, never silently retried forever."""
+    existing catalogue via check_uniqueness. Every idea that lands below
+    MIN_ACCEPTABLE_ORIGINALITY is regenerated in exactly ONE consolidated
+    retry call covering all of them together (see _build_retry_prompt) —
+    never one call per failing idea. Accepted either way afterward and
+    always labelled with its real score, never silently retried forever.
+    A retry item that comes back malformed (or the whole retry call
+    failing/returning too few items) just leaves that slot's original,
+    already-validated result in place — the same safe fallback the single-
+    idea retry had, applied per item."""
     n = max(1, min(int(count) if count else IDEA_COUNT_DEFAULT, IDEA_COUNT_MAX))
     domain = domain if domain in DOMAINS else None
     difficulty = difficulty if difficulty in DIFFICULTIES else None
@@ -168,19 +196,17 @@ def generate_ideas(
     raw = _generate_raw(_build_prompt(topic, domain, difficulty, n, avoid))
     validated = [_validate(idea) for idea in raw[:n] if isinstance(idea, dict)]
 
-    for i, idea in enumerate(validated):
-        if idea["is_unique"] or idea["originality_score"] >= MIN_ACCEPTABLE_ORIGINALITY:
-            continue
-        closest = idea["similar_projects"][0]["title"] if idea["similar_projects"] else "an existing project"
-        retry_prompt = (
-            f"Generate 1 new project idea. Topic/theme: {topic or idea['domain'] or 'open'}. "
-            f"A previous attempt (\"{idea['name']}\") was too similar to the existing catalogue "
-            f"project \"{closest}\" — make this one meaningfully different in its core approach, "
-            "not just reworded or renamed."
-        )
+    failing = [
+        i
+        for i, idea in enumerate(validated)
+        if not idea["is_unique"] and idea["originality_score"] < MIN_ACCEPTABLE_ORIGINALITY
+    ]
+    if failing:
+        retry_prompt = _build_retry_prompt(topic, [validated[i] for i in failing])
         retried = _generate_raw(retry_prompt)
-        if retried and isinstance(retried[0], dict):
-            validated[i] = _validate(retried[0])
+        for slot, retried_idea in zip(failing, retried):
+            if isinstance(retried_idea, dict):
+                validated[slot] = _validate(retried_idea)
 
     for i, idea in enumerate(validated, start=1):
         idea["id"] = f"idea-{i}"

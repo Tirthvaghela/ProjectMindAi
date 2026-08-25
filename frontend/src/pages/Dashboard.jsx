@@ -530,6 +530,452 @@ function DecisionBlock({ block, selectedProjectId, onSelectProject }) {
   )
 }
 
+/** [Can I build this? / How difficult is this?] result
+ * (backend/nlp/feasibility.py:analyze_feasibility, via nlp/chat_tools.py:
+ * analyze_project_feasibility / analyze_idea_feasibility) — every number here
+ * is one of skill_gap/timeline.predict/difficulty_fit/domain-profile's own
+ * real output, never invented; this component only lays it out. Same
+ * ✓/⚠ strengths/risks vocabulary as DecisionCandidate above, so the two read
+ * as one family rather than two different visual languages. */
+function FeasibilityBlock({ block, onAction }) {
+  const availableFactors = block.factors?.filter((f) => f.score != null) ?? []
+  return (
+    <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 16 }}>
+        {block.feasibility_score}% feasible
+        <span className="t-body-md ml-2" style={{ color: 'var(--outline)', fontSize: 12 }}>
+          ({block.risk_level} risk)
+        </span>
+      </p>
+
+      {availableFactors.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 t-label-mono" style={{ color: 'var(--outline)', fontSize: 11.5 }}>
+          {availableFactors.map((f) => (
+            <span key={f.factor}>{f.factor}: {f.score}%</span>
+          ))}
+        </div>
+      )}
+
+      {(block.strengths?.length > 0 || block.risks?.length > 0) && (
+        <ul className="t-body-md mt-2 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+          {block.strengths?.map((s) => <li key={s}>✓ {s}</li>)}
+          {block.risks?.map((r) => <li key={r}>⚠ {r}</li>)}
+        </ul>
+      )}
+
+      {block.recommendations?.length > 0 && (
+        <div className="mt-2">
+          <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Recommendations</p>
+          <ul className="t-body-md mt-1 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            {block.recommendations.map((r) => <li key={r}>· {r}</li>)}
+          </ul>
+        </div>
+      )}
+
+      {(block.infrastructure?.note || block.dataset?.note) && (
+        <p className="t-label-mono mt-2" style={{ color: 'var(--outline)', fontSize: 11 }}>
+          {[block.infrastructure?.note, block.dataset?.note].filter(Boolean).join(' · ')} (estimate)
+        </p>
+      )}
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {block.project_id && (
+          <Link to={`/project/${block.project_id}`} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+            View Details
+          </Link>
+        )}
+        {onAction && (
+          <button
+            type="button"
+            onClick={() => onAction('How can I reduce the risk for this project?')}
+            className="btn-secondary t-label-caps px-3 py-1.5"
+            style={{ fontSize: 10.5 }}
+          >
+            Reduce Risk
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/** One MVP/CORE/ADVANCED/FUTURE tier inside a [What should this include? /
+ * MVP?] result — reuses the same `gm-chip` pill style Search.jsx's
+ * technology filters and UniquenessBlock's overlapping_concepts already use,
+ * rather than a new chip treatment. */
+function ScopeTierSection({ label, items }) {
+  if (!items?.length) return null
+  return (
+    <div className="mt-2">
+      <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>{label}</p>
+      <div className="mt-1 flex flex-wrap gap-1.5">
+        {items.map((item) => (
+          <span key={item} className="gm-chip px-2 py-1">{item}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** [What should this include? / MVP? / "I only have N weeks"] result
+ * (backend/nlp/feasibility.py:analyze_scope, via nlp/chat_tools.py:
+ * analyze_scope) — every tier is one of the project's own real domain
+ * modules or its own future_scope, never invented. `reduced_scope` is only
+ * ever a suggestion computed from target_weeks vs the project's own
+ * duration — Apply Scope Recommendation sends it through the same chat
+ * pipeline as every other block action, it never mutates the project. */
+function ScopeBlock({ block, onAction }) {
+  return (
+    <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <ScopeTierSection label="MVP" items={block.mvp} />
+      <ScopeTierSection label="Core" items={block.core} />
+      <ScopeTierSection label="Advanced" items={block.advanced} />
+      <ScopeTierSection label="Future" items={block.future} />
+
+      {block.dependencies?.length > 0 && (
+        <p className="t-body-md mt-2" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          Depends on: {block.dependencies.join(', ')}
+        </p>
+      )}
+
+      {block.technical_constraints?.length > 0 && (
+        <ul className="t-body-md mt-2 space-y-0.5" style={{ color: 'var(--outline)', fontSize: 11.5 }}>
+          {block.technical_constraints.map((c) => <li key={c}>· {c}</li>)}
+        </ul>
+      )}
+
+      {block.reduced_scope && (
+        <div className="mt-3 pt-2" style={{ borderTop: '1px solid var(--border-technical)' }}>
+          <p className="t-label-caps" style={{ color: 'var(--primary)', fontSize: 10 }}>
+            Suggested reduction for your timeline
+          </p>
+          <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            {block.reduced_scope.reason}
+          </p>
+          {block.reduced_scope.remove.length > 0 && (
+            <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+              <span style={{ color: 'var(--outline)' }}>Remove:</span> {block.reduced_scope.remove.join(', ')}
+            </p>
+          )}
+          <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            <span style={{ color: 'var(--outline)' }}>Keep:</span> {block.reduced_scope.keep.join(', ')}
+          </p>
+        </div>
+      )}
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {block.reduced_scope && onAction && (
+          <button
+            type="button"
+            onClick={() => onAction('Apply the suggested scope reduction — help me proceed with just the reduced scope.')}
+            className="btn-primary t-label-caps px-3 py-1.5"
+            style={{ fontSize: 10.5 }}
+          >
+            Apply Scope Recommendation
+          </button>
+        )}
+        {onAction && (
+          <button
+            type="button"
+            onClick={() => onAction(block.project_id ? 'Create a roadmap for this project.' : 'Create a roadmap for this idea.')}
+            className="btn-secondary t-label-caps px-3 py-1.5"
+            style={{ fontSize: 10.5 }}
+          >
+            Create Roadmap
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/** One technology-stack layer inside a [How many people/what technologies do
+ * I need?] result — same `gm-chip` treatment as ScopeTierSection, so the two
+ * blocks read as one family. */
+function ResourceTechSection({ label, items }) {
+  if (!items?.length) return null
+  return (
+    <div className="mt-2">
+      <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>{label}</p>
+      <div className="mt-1 flex flex-wrap gap-1.5">
+        {items.map((item) => (
+          <span key={item} className="gm-chip px-2 py-1">{item}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** [How many people do I need? / What technologies do I need? / Can I build
+ * this with free tools?] result (backend/nlp/feasibility.py:
+ * estimate_resources, via nlp/chat_tools.py:estimate_project_resources) —
+ * team size/roles from the project's own real domain modules, a technology
+ * breakdown of its own real technologies, and a cost section that is always
+ * a free-tier-first range, never an invented exact price (every cost line
+ * below is server-computed text, not model output). */
+function ResourceBlock({ block, onAction }) {
+  const team = block.team ?? {}
+  const tech = block.technology ?? {}
+  const resources = block.resources ?? {}
+  const cost = block.cost ?? {}
+  const services = [...(resources.apis ?? []), ...(resources.external_services ?? [])]
+
+  return (
+    <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 14 }}>
+        {team.recommended_size} {team.recommended_size === 1 ? 'person' : 'people'} recommended
+        {team.given_size != null && (
+          <span className="t-body-md ml-2" style={{ color: 'var(--outline)', fontSize: 12 }}>
+            (you said {team.given_size})
+          </span>
+        )}
+      </p>
+      {team.roles?.length > 0 && (
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          {team.roles.map((r) => (
+            <span key={r.role} className="gm-chip px-2 py-1">{r.role} · {r.category}</span>
+          ))}
+        </div>
+      )}
+      {team.required_skills?.length > 0 && (
+        <p className="t-body-md mt-1.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          Skills needed: {team.required_skills.join(', ')}
+        </p>
+      )}
+
+      <ResourceTechSection label="Frontend" items={tech.frontend} />
+      <ResourceTechSection label="Backend" items={tech.backend} />
+      <ResourceTechSection label="Database" items={tech.database} />
+      <ResourceTechSection label="AI / ML" items={tech.ai_ml} />
+      <ResourceTechSection label="Infrastructure" items={tech.infrastructure} />
+
+      <div className="mt-3 space-y-1 pt-2" style={{ borderTop: '1px solid var(--border-technical)' }}>
+        {resources.dataset?.note && (
+          <p className="t-body-md" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            <span style={{ color: 'var(--outline)' }}>Dataset:</span> {resources.dataset.note} (estimate)
+          </p>
+        )}
+        {resources.compute?.note && (
+          <p className="t-body-md" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            <span style={{ color: 'var(--outline)' }}>Compute:</span> {resources.compute.note} (estimate)
+          </p>
+        )}
+        {resources.storage?.note && (
+          <p className="t-body-md" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            <span style={{ color: 'var(--outline)' }}>Storage:</span> {resources.storage.note} (estimate)
+          </p>
+        )}
+        {services.length > 0 && (
+          <p className="t-body-md" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            <span style={{ color: 'var(--outline)' }}>APIs/services:</span> {services.join(', ')}
+          </p>
+        )}
+      </div>
+
+      <div className="mt-3 pt-2" style={{ borderTop: '1px solid var(--border-technical)' }}>
+        <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>
+          Estimated cost{cost.is_estimate ? ' (estimate)' : ''}
+        </p>
+        <ul className="t-body-md mt-1 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          {cost.development && <li>Development: {cost.development}</li>}
+          {cost.infrastructure && <li>Infrastructure: {cost.infrastructure}</li>}
+          {cost.api && <li>API: {cost.api}</li>}
+          {cost.hosting && <li>Hosting: {cost.hosting}</li>}
+        </ul>
+        {cost.free_alternatives?.length > 0 && (
+          <div className="mt-1.5">
+            <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Free / low-cost options</p>
+            <ul className="t-body-md mt-1 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+              {cost.free_alternatives.map((a) => <li key={a}>· {a}</li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {onAction && (
+          <button
+            type="button"
+            onClick={() => onAction(block.project_id ? 'Create a roadmap for this project.' : 'Create a roadmap for this idea.')}
+            className="btn-secondary t-label-caps px-3 py-1.5"
+            style={{ fontSize: 10.5 }}
+          >
+            Create Roadmap
+          </button>
+        )}
+        {onAction && (
+          <button
+            type="button"
+            onClick={() => onAction('Check my skill gap for this project.')}
+            className="btn-secondary t-label-caps px-3 py-1.5"
+            style={{ fontSize: 10.5 }}
+          >
+            Skill Gap
+          </button>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/** One fit/score stat inside the Decision Center — omitted entirely (not
+ * shown as 0%) when its value is unavailable, same "unavailable is not a
+ * real zero" rule every other block in this file already follows. */
+function ScoreStat({ label, value, suffix = '' }) {
+  if (value == null) return null
+  return (
+    <div>
+      <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9.5 }}>{label}</p>
+      <p className="t-label-mono" style={{ color: 'var(--on-surface)', fontSize: 13 }}>{value}%{suffix}</p>
+    </div>
+  )
+}
+
+/** The unified Project Decision / Action Center — combines outputs already
+ * computed by the existing analyzers (feasibility, scope, resources, and,
+ * for a catalogue project, the Decision Engine) into one view for whichever
+ * project/idea is currently active (backend/nlp/decision_center.py). No LLM
+ * call: every number here already exists, this component only lays it out.
+ * Every action sends a canned prompt through the existing chat pipeline
+ * (onAction === send), same mechanism PROJECT_ACTIONS/IDEA_BUILD_ACTIONS
+ * already use — no new endpoints behind any of them except the read itself. */
+function DecisionCenterBlock({ data, onAction }) {
+  if (!data || data.error) return null
+  const isIdea = data.kind === 'idea'
+  const rec = data.overall_recommendation ?? {}
+  const feasibility = data.feasibility ?? {}
+  const time = data.timeline ?? {}
+  const originality = data.originality ?? {}
+  const scope = data.scope ?? {}
+  const resources = data.resources ?? {}
+  const scopeTierCount = (scope.mvp?.length ?? 0) + (scope.core?.length ?? 0) + (scope.advanced?.length ?? 0)
+  const roadmapPrompt = isIdea ? `Create a roadmap for "${data.name}".` : 'Create a roadmap for this project.'
+  const scopePrompt = isIdea ? `What should the MVP be for "${data.name}"?` : 'What should the MVP be for this project?'
+  const resourcesPrompt = isIdea
+    ? `What resources do I need for "${data.name}"?`
+    : 'What resources do I need for this project?'
+  const comparePrompt = isIdea
+    ? `Compare "${data.name}" with the closest existing project.`
+    : 'Compare this project with similar alternatives.'
+
+  return (
+    <div className="glass-panel w-full max-w-full p-4" style={{ borderRadius: 10, border: '1px solid var(--primary)' }}>
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <span className="gm-chip px-2 py-1" style={{ fontSize: 9.5 }}>
+            {isIdea ? 'AI-Generated Idea' : 'Catalogue Project'}
+          </span>
+          <p className="t-label-mono mt-1.5" style={{ color: 'var(--primary)', fontSize: 15 }}>{data.name}</p>
+          <p className="t-label-mono" style={{ color: 'var(--outline)', fontSize: 11 }}>
+            {[data.difficulty, data.domain, data.duration_weeks ? `${data.duration_weeks} weeks` : null]
+              .filter(Boolean)
+              .join(' · ')}
+          </p>
+        </div>
+        {rec.score != null && (
+          <div className="text-right">
+            <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9.5 }}>{rec.label}</p>
+            <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 22 }}>{rec.score}%</p>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 pt-3" style={{ borderTop: '1px solid var(--border-technical)' }}>
+        <ScoreStat label="Skill Fit" value={data.skill_fit} />
+        <ScoreStat label="Timeline Fit" value={time.fit_score} />
+        <ScoreStat label="Difficulty Fit" value={data.difficulty_fit} />
+        <ScoreStat label="Feasibility" value={feasibility.score} suffix={feasibility.risk_level ? ` (${feasibility.risk_level})` : ''} />
+        <ScoreStat label={isIdea ? 'Originality' : 'Uniqueness'} value={originality.score} />
+      </div>
+
+      {time.estimated_weeks != null && (
+        <p className="t-body-md mt-2" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          Estimated {time.estimated_weeks}wk build
+        </p>
+      )}
+
+      {(data.strengths?.length > 0 || data.risks?.length > 0) && (
+        <ul className="t-body-md mt-2 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+          {data.strengths?.slice(0, 4).map((s) => <li key={s}>✓ {s}</li>)}
+          {data.risks?.slice(0, 4).map((r) => <li key={r}>⚠ {r}</li>)}
+        </ul>
+      )}
+
+      {data.skills_to_learn?.length > 0 && (
+        <p className="t-body-md mt-2" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          <span style={{ color: 'var(--outline)' }}>Skill gaps:</span> {data.skills_to_learn.join(', ')}
+        </p>
+      )}
+
+      {scopeTierCount > 0 && (
+        <p className="t-body-md mt-2" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          <span style={{ color: 'var(--outline)' }}>Scope:</span> {scope.mvp?.length ?? 0} MVP · {scope.core?.length ?? 0} core · {scope.advanced?.length ?? 0} advanced
+          {scope.reduced_scope ? ' · reduction suggested for your timeline' : ''}
+        </p>
+      )}
+
+      {resources.team_recommended_size != null && (
+        <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          <span style={{ color: 'var(--outline)' }}>Resources:</span> {resources.team_recommended_size}{' '}
+          {resources.team_recommended_size === 1 ? 'person' : 'people'} recommended
+          {resources.cost_is_estimate ? ' · free-tier friendly (estimate)' : ''}
+        </p>
+      )}
+
+      {data.recommended_next_step && (
+        <div className="mt-3 pt-2" style={{ borderTop: '1px solid var(--border-technical)' }}>
+          <p className="t-label-caps" style={{ color: 'var(--primary)', fontSize: 10 }}>Recommended next step</p>
+          <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+            {data.recommended_next_step}
+          </p>
+        </div>
+      )}
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {!isIdea && data.project_id ? (
+          <Link to={`/project/${data.project_id}`} className="btn-primary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+            Start This Project
+          </Link>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onAction(`Let's build "${data.name}".`)}
+            className="btn-primary t-label-caps px-3 py-1.5"
+            style={{ fontSize: 10.5 }}
+          >
+            Start This Project
+          </button>
+        )}
+        <button type="button" onClick={() => onAction(roadmapPrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+          Generate Roadmap
+        </button>
+        {!isIdea && (
+          <button
+            type="button"
+            onClick={() => onAction('Check my skill gap for this project.')}
+            className="btn-secondary t-label-caps px-3 py-1.5"
+            style={{ fontSize: 10.5 }}
+          >
+            Check Skill Gap
+          </button>
+        )}
+        <button type="button" onClick={() => onAction(scopePrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+          View Scope
+        </button>
+        <button type="button" onClick={() => onAction(resourcesPrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+          View Resources
+        </button>
+        <button type="button" onClick={() => onAction(comparePrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+          Compare
+        </button>
+        <Link to="/dashboard" className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+          Change Project
+        </Link>
+      </div>
+    </div>
+  )
+}
+
 /** Persistent "you're working on X" strip — the workspace context indicator.
  * Shown once a project is selected (via the select_project tool or the
  * [Select Project] button); links to the existing Project Detail page,
@@ -591,6 +1037,9 @@ function Bubble({ role, content, blocks, conversationId, selectedProjectId, onSe
   const milestones = blockOfType(blocks, 'milestones')
   const uniqueness = blockOfType(blocks, 'uniqueness')
   const decision = blockOfType(blocks, 'decision')
+  const feasibilityResult = blockOfType(blocks, 'feasibility')
+  const scopeResult = blockOfType(blocks, 'scope')
+  const resourcesResult = blockOfType(blocks, 'resources')
   const generatedIdeas = blockOfType(blocks, 'generated_project_ideas')
 
   return (
@@ -639,6 +1088,9 @@ function Bubble({ role, content, blocks, conversationId, selectedProjectId, onSe
       {decision && (
         <DecisionBlock block={decision} selectedProjectId={selectedProjectId} onSelectProject={onSelectProject} />
       )}
+      {feasibilityResult && <FeasibilityBlock block={feasibilityResult} onAction={onAction} />}
+      {scopeResult && <ScopeBlock block={scopeResult} onAction={onAction} />}
+      {resourcesResult && <ResourceBlock block={resourcesResult} onAction={onAction} />}
       {generatedIdeas && <GeneratedIdeasBlock block={generatedIdeas} onAction={onAction} />}
     </div>
   )
@@ -814,6 +1266,13 @@ export default function Dashboard() {
   // full fields already come back inline (no project_id to look up), so
   // there's no equivalent of the selectedProject fetch-by-id effect below.
   const [selectedIdea, setSelectedIdea] = useState(null)
+  // The unified Decision/Action Center for whichever of the two above is
+  // currently active (see DecisionCenterBlock) — fetched fresh whenever the
+  // selection changes, via the read-only GET that assembles it server-side
+  // (backend/nlp/decision_center.py). Stays null (silently hidden, same
+  // "just stays hidden if the lookup fails" rule as selectedProject below)
+  // whenever nothing is selected yet or the fetch fails.
+  const [decisionCenter, setDecisionCenter] = useState(null)
   const [authGateOpen, setAuthGateOpen] = useState(false)
   const [gatedText, setGatedText] = useState('')
   const bottomRef = useRef(null)
@@ -961,6 +1420,30 @@ export default function Dashboard() {
       cancelled = true
     }
   }, [selectedProjectId])
+
+  // Keyed on selectedIdea's own id/name rather than the object itself —
+  // `selectedIdea` gets a new object reference on every conversation
+  // load/turn even when its content is unchanged, which would otherwise
+  // refetch on every render instead of only on an actual selection change.
+  const selectedIdeaKey = selectedIdea?.id ?? selectedIdea?.name ?? null
+  useEffect(() => {
+    if (!conversationId || (!selectedProjectId && !selectedIdeaKey)) {
+      setDecisionCenter(null)
+      return
+    }
+    let cancelled = false
+    api
+      .decisionCenter(conversationId)
+      .then(({ data }) => {
+        if (!cancelled) setDecisionCenter(data)
+      })
+      .catch(() => {
+        if (!cancelled) setDecisionCenter(null)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [conversationId, selectedProjectId, selectedIdeaKey])
 
   // The actual send — no auth check here on purpose, so it can be called
   // again post-login with the exact text that was gated, instead of routing
@@ -1138,7 +1621,15 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
-            {!busy && selectedProjectId && (
+            {!busy && (selectedProjectId || selectedIdea) && decisionCenter && (
+              <DecisionCenterBlock data={decisionCenter} onAction={send} />
+            )}
+            {/* The plain action-chip rows are the fallback for the brief
+                window before the Decision Center's own richer actions have
+                loaded (or if that fetch fails) — once it's up, it fully
+                subsumes these (same underlying canned prompts, richer
+                context around them), so both are never shown at once. */}
+            {!busy && selectedProjectId && !decisionCenter && (
               <div className="flex flex-wrap gap-2">
                 {PROJECT_ACTIONS.map((action) => (
                   <button
@@ -1153,7 +1644,7 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
-            {!busy && !selectedProjectId && selectedIdea && (
+            {!busy && !selectedProjectId && selectedIdea && !decisionCenter && (
               <div className="flex flex-wrap gap-2">
                 {IDEA_BUILD_ACTIONS.map((action) => (
                   <button

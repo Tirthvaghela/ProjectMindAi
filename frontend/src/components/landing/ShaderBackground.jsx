@@ -72,8 +72,25 @@ export default function ShaderBackground({ className }) {
     }
     syncSize()
 
+    // This is purely decorative texture behind the hero copy — on a lost or
+    // unavailable context (low-power mode, driver crash, a browser with no
+    // WebGL), the right fallback is just "no shader," not the browser's own
+    // broken-context glyph left sitting on top of the hero. preventDefault()
+    // on the loss event stops that native indicator; hiding the canvas is
+    // the actual fallback, and the section's own dark gradient/backdrop
+    // already reads fine underneath with nothing here at all.
+    const handleContextLost = (event) => {
+      event.preventDefault()
+      if (frameId) cancelAnimationFrame(frameId)
+      canvas.style.display = 'none'
+    }
+    canvas.addEventListener('webglcontextlost', handleContextLost, false)
+
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl')
-    if (!gl) return
+    if (!gl) {
+      canvas.style.display = 'none'
+      return () => canvas.removeEventListener('webglcontextlost', handleContextLost)
+    }
 
     const program = gl.createProgram()
     gl.attachShader(program, compileShader(gl, gl.VERTEX_SHADER, VERTEX_SHADER))
@@ -112,6 +129,7 @@ export default function ShaderBackground({ className }) {
     return () => {
       if (frameId) cancelAnimationFrame(frameId)
       resizeObserver?.disconnect()
+      canvas.removeEventListener('webglcontextlost', handleContextLost)
       gl.getExtension('WEBGL_lose_context')?.loseContext()
     }
   }, [])
