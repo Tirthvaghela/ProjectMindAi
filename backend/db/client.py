@@ -76,6 +76,14 @@ def conversations() -> Collection:
     return get_db()[config.COLL_CONVERSATIONS]
 
 
+def profiles() -> Collection:
+    return get_db()[config.COLL_PROFILES]
+
+
+def roadmap_progress() -> Collection:
+    return get_db()[config.COLL_ROADMAP_PROGRESS]
+
+
 def ping() -> bool:
     """True if mongod is reachable. Used by /api/health."""
     try:
@@ -129,6 +137,14 @@ def ensure_indexes() -> None:
     # the past, so expired tokens clean themselves up without a cron job.
     sessions().create_index([("token", ASCENDING)], unique=True, name="uq_token")
     sessions().create_index([("expires_at", ASCENDING)], expireAfterSeconds=0, name="ttl_expires")
+
+    # One profile per account; every profile read/write is by user_id.
+    profiles().create_index([("user_id", ASCENDING)], unique=True, name="uq_profile_user")
+
+    # One progress document per (account, project); every read/write is by both.
+    roadmap_progress().create_index(
+        [("user_id", ASCENDING), ("project_id", ASCENDING)], unique=True, name="uq_progress_user_project"
+    )
 
     teams().create_index([("team_id", ASCENDING)], unique=True, name="uq_team_id")
     teams().create_index([("invite_code", ASCENDING)], unique=True, name="uq_invite_code")

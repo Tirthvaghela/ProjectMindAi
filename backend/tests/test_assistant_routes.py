@@ -434,6 +434,145 @@ def test_select_idea_tool_call_persists_selection_and_clears_the_project(client,
     assert doc["selected_idea"]["name"] == IDEA_ARGS["name"]
 
 
+# --- idea originality preservation ------------------------------------------
+#
+# A generated idea's originality_score/is_unique is already computed once by
+# nlp/ideation.py at generation time — select_idea's own tool parameters
+# never carried it forward (see nlp/ai_assistant.py:_preserve_idea_originality),
+# so Decision Center could never show Originality for a generated idea. These
+# exercise the fix through the real HTTP persistence layer: a select_idea
+# turn after a shown-ideas turn, then a genuinely separate GET to prove a
+# page reload sees the same preserved value, not just an in-memory result.
+
+IDEA_WITH_ORIGINALITY = {
+    "id": "idea-2",
+    "name": "Smart Campus Notes",
+    "problem": "Students lose track of scattered lecture notes.",
+    "solution": "A unifying, searchable notes hub with AI summaries.",
+    "originality_score": 82,
+    "is_unique": True,
+}
+
+
+def test_select_idea_tool_call_preserves_originality_from_an_earlier_shown_batch(client, monkeypatch):
+    conversation_id = _create_conversation(client)
+    now = datetime.now(timezone.utc)
+    idea_block = {"type": "generated_project_ideas", "ideas": [IDEA_WITH_ORIGINALITY]}
+    db.conversations().update_one(
+        {"conversation_id": conversation_id},
+        {"$push": {"messages": {"$each": [{"role": "assistant", "content": "Here's one.", "blocks": [idea_block], "created_at": now}]}}},
+    )
+
+    # problem/solution supplied here too, exactly like a real select_idea
+    # call would (the model has them from the shown-ideas context note) —
+    # this is select_idea's own existing field-computation behavior, which
+    # requirement #2 says must stay unchanged; only originality is new here.
+    select_idea_args = (
+        f'{{"id": "{IDEA_ARGS["id"]}", "name": "{IDEA_WITH_ORIGINALITY["name"]}", '
+        f'"problem": "{IDEA_WITH_ORIGINALITY["problem"]}", "solution": "{IDEA_WITH_ORIGINALITY["solution"]}"}}'
+    )
+    responses = iter(
+        [
+            _tool_call_completion("select_idea", select_idea_args),
+            _text_completion("Let's build the notes idea."),
+        ]
+    )
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: next(responses))
+    resp = client.post(
+        f"/api/conversations/{conversation_id}/messages",
+        json={"message": "let's build the notes idea instead"},
+        headers=_hdr(DEVICE_A),
+    )
+    assert resp.get_json()["data"]["selected_idea"]["originality_score"] == 82
+
+    doc = client.get(f"/api/conversations/{conversation_id}", headers=_hdr(DEVICE_A)).get_json()["data"]
+    assert doc["selected_idea"]["name"] == IDEA_WITH_ORIGINALITY["name"]
+    assert doc["selected_idea"]["originality_score"] == 82
+    assert doc["selected_idea"]["is_unique"] is True
+    # Every other field select_idea itself computed is still exactly right —
+    # preserving originality must not come at the cost of the rest of the idea.
+    assert doc["selected_idea"]["problem"] == IDEA_WITH_ORIGINALITY["problem"]
+
+
+def test_selected_idea_originality_survives_a_conversation_reload(client, monkeypatch):
+    """The reload path specifically: a fresh GET, in a fresh request, after
+    the selecting turn has already completed — not just reading back the
+    same in-memory response the POST returned."""
+    conversation_id = _create_conversation(client)
+    now = datetime.now(timezone.utc)
+    idea_block = {"type": "generated_project_ideas", "ideas": [IDEA_WITH_ORIGINALITY]}
+    db.conversations().update_one(
+        {"conversation_id": conversation_id},
+        {"$push": {"messages": {"$each": [{"role": "assistant", "content": "Here's one.", "blocks": [idea_block], "created_at": now}]}}},
+    )
+    responses = iter(
+        [
+            _tool_call_completion("select_idea", f'{{"id": "{IDEA_ARGS["id"]}", "name": "{IDEA_WITH_ORIGINALITY["name"]}"}}'),
+            _text_completion("Let's build the notes idea."),
+        ]
+    )
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: next(responses))
+    client.post(f"/api/conversations/{conversation_id}/messages", json={"message": "let's build it"}, headers=_hdr(DEVICE_A))
+
+    # A second, independent GET — simulates reopening the conversation later.
+    reloaded = client.get(f"/api/conversations/{conversation_id}", headers=_hdr(DEVICE_A)).get_json()["data"]
+    assert reloaded["selected_idea"]["originality_score"] == 82
+    assert reloaded["selected_idea"]["is_unique"] is True
+
+
+def test_select_idea_tool_call_without_a_shown_batch_has_no_originality(client, monkeypatch):
+    """No matching generated_project_ideas block anywhere in this
+    conversation — graceful absence, not a fabricated score."""
+    conversation_id = _create_conversation(client)
+    responses = iter(
+        [
+            _tool_call_completion("select_idea", '{"id": "idea-9", "name": "Hand Typed Idea"}'),
+            _text_completion("Let's build it."),
+        ]
+    )
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: next(responses))
+    client.post(f"/api/conversations/{conversation_id}/messages", json={"message": "let's build my own idea"}, headers=_hdr(DEVICE_A))
+
+    doc = client.get(f"/api/conversations/{conversation_id}", headers=_hdr(DEVICE_A)).get_json()["data"]
+    assert doc["selected_idea"]["name"] == "Hand Typed Idea"
+    assert doc["selected_idea"].get("originality_score") is None
+    assert doc["selected_idea"].get("is_unique") is None
+
+
+def test_decision_center_shows_originality_for_an_idea_selected_through_the_real_flow(client, monkeypatch):
+    """End-to-end across BOTH fixes: select_idea (this task) preserves the
+    score, then GET .../decision-center (already correct, untouched by this
+    task) surfaces it — same pipeline a real 'generate ideas -> build this
+    one' session goes through."""
+    conversation_id = _create_conversation(client)
+    now = datetime.now(timezone.utc)
+    idea_block = {"type": "generated_project_ideas", "ideas": [IDEA_WITH_ORIGINALITY]}
+    db.conversations().update_one(
+        {"conversation_id": conversation_id},
+        {"$push": {"messages": {"$each": [{"role": "assistant", "content": "Here's one.", "blocks": [idea_block], "created_at": now}]}}},
+    )
+    responses = iter(
+        [
+            _tool_call_completion("select_idea", f'{{"id": "{IDEA_ARGS["id"]}", "name": "{IDEA_WITH_ORIGINALITY["name"]}"}}'),
+            _text_completion("Let's build it."),
+        ]
+    )
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: next(responses))
+    client.post(f"/api/conversations/{conversation_id}/messages", json={"message": "let's build it"}, headers=_hdr(DEVICE_A))
+
+    from nlp import recommend
+    from nlp.similarity import ScoredProject
+
+    monkeypatch.setattr(recommend, "similar", lambda project_id, top_k=1: [ScoredProject(project_id="other", score=0.4, dense_score=0.4, sparse_score=0.0)])
+
+    resp = client.get(f"/api/conversations/{conversation_id}/decision-center", headers=_hdr(DEVICE_A))
+    assert resp.status_code == 200
+    data = resp.get_json()["data"]
+    assert data["originality"]["score"] == 82
+    assert data["originality"]["is_unique"] is True
+    assert data["originality"]["source"] == "generated_idea_originality"
+
+
 def test_selection_survives_a_reload_and_grounds_the_next_turn(client, monkeypatch, project):
     """The AI Mentor's core persistence promise: select once, and every later
     turn — including one from a freshly reloaded conversation — is grounded

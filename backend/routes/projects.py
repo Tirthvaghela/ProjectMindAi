@@ -32,7 +32,9 @@ def _mongo_query(filters: dict) -> dict:
             ]
         }
     if "max_duration_weeks" in filters:
-        query["duration_weeks"] = {"$lte": filters["max_duration_weeks"]}
+        # $gt 0 as well, so a zero duration ("unknown") isn't reported as fitting;
+        # a missing or null duration already fails a numeric comparison in Mongo.
+        query["duration_weeks"] = {"$gt": 0, "$lte": filters["max_duration_weeks"]}
     return query
 
 

@@ -11,11 +11,13 @@ const ResumeMatch = lazy(() => import('./pages/ResumeMatch'))
 const UniquenessCheck = lazy(() => import('./pages/UniquenessCheck'))
 const Ideate = lazy(() => import('./pages/Ideate'))
 const Account = lazy(() => import('./pages/Account'))
+const Profile = lazy(() => import('./pages/Profile'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Teams = lazy(() => import('./pages/Teams'))
 const TeamRoom = lazy(() => import('./pages/TeamRoom'))
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
 const IdeaDetail = lazy(() => import('./pages/IdeaDetail'))
+const Progress = lazy(() => import('./pages/Progress'))
 const Favorites = lazy(() => import('./pages/Favorites'))
 const History = lazy(() => import('./pages/History'))
 
@@ -26,10 +28,13 @@ export default function App() {
         <Routes>
           <Route element={<Layout />}>
             <Route index element={<Search />} />
+            <Route path="search" element={<Search />} />
             <Route path="resume-match" element={<ResumeMatch />} />
             <Route path="uniqueness" element={<UniquenessCheck />} />
             <Route path="ideate" element={<Ideate />} />
             <Route path="account" element={<Account />} />
+            <Route path="profile" element={<Profile />} />
+            <Route path="progress" element={<Progress />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="teams" element={<Teams />} />
             <Route path="teams/:id" element={<TeamRoom />} />

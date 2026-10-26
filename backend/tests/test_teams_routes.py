@@ -79,3 +79,46 @@ def test_create_team_rejects_a_non_object_idea(client):
 def test_create_team_requires_sign_in(client):
     res = client.post("/api/teams", json={"idea": IDEA, "name": "My Team"})
     assert res.status_code == 401
+
+
+# --- GET /api/teams/<id>/roles (Suggested roles) ---------------------------
+
+
+def test_roles_requires_sign_in(client):
+    assert client.get("/api/teams/any-team/roles").status_code == 401
+
+
+def test_roles_for_a_team_the_caller_is_not_in_is_404(client):
+    owner = _signup(client, "roles-owner@example.com")
+    team = client.post("/api/teams", json={"idea": IDEA, "name": "T"}, headers=_auth(owner)).get_json()["data"]
+    outsider = _signup(client, "roles-outsider@example.com")
+
+    res = client.get(f"/api/teams/{team['team_id']}/roles", headers=_auth(outsider))
+    assert res.status_code == 404
+
+
+def test_roles_with_no_skills_recorded_reports_it_instead_of_inventing_roles(client):
+    token = _signup(client, "roles-noskills@example.com")
+    team = client.post("/api/teams", json={"idea": IDEA, "name": "T"}, headers=_auth(token)).get_json()["data"]
+
+    res = client.get(f"/api/teams/{team['team_id']}/roles", headers=_auth(token))
+
+    assert res.status_code == 200
+    data = res.get_json()["data"]
+    assert data["assignments"] == []
+    assert [u["reason"] for u in data["unassigned_members"]] == ["no_skills"]
+    assert data["unfilled_roles"] == data["roles"]
+
+
+def test_roles_assigns_one_role_per_real_member_from_their_recorded_skills(client):
+    owner = _signup(client, "roles-a@example.com")
+    team = client.post("/api/teams", json={"idea": IDEA, "name": "T"}, headers=_auth(owner)).get_json()["data"]
+    client.post(f"/api/teams/{team['team_id']}/skills", json={"skills": ["Python", "TensorFlow"]}, headers=_auth(owner))
+
+    res = client.get(f"/api/teams/{team['team_id']}/roles", headers=_auth(owner))
+
+    data = res.get_json()["data"]
+    assert len(data["assignments"]) == 1  # a solo owner is never given every role
+    assert data["assignments"][0]["category"] == "Data / ML"
+    assert data["assignments"][0]["fallback"] is False
+    assert len(data["unfilled_roles"]) == len(data["roles"]) - 1

@@ -11,7 +11,7 @@ process. Relying on it reflecting the real catalogue is NOT safe here: the
 `mongo_test_db` fixture repoints config.MONGO_DB at a throwaway, per-session
 database before most tests run, so whichever test in the whole suite happens
 to trigger the retriever's first build may build it against an empty/unlike
-database rather than the real 500-project catalogue — exactly the pitfall
+database rather than the real catalogue — exactly the pitfall
 test_recommend.py's own module docstring calls out. Their success-path cases
 below monkeypatch `recommend.get_retriever`/`recommend.similar` directly,
 the same way test_recommend.py does, rather than depending on that build
@@ -407,3 +407,35 @@ def test_resume_suggest_accepts_plain_text_json(client):
 def test_resume_suggest_rejects_whitespace_only_text(client):
     resp = client.post("/api/resume-suggest", json={"text": "   "})
     assert resp.status_code == 400
+
+
+# --- POST /api/recommend: deadline validation + empty-state diagnostics -----
+
+
+@pytest.mark.parametrize("bad", ["soon", 0, -3, True])
+def test_recommend_rejects_an_unusable_max_duration_instead_of_silently_ignoring_it(client, bad):
+    resp = client.post("/api/recommend", json={"known_skills": ["Python"], "max_duration_weeks": bad})
+    assert resp.status_code == 400
+    assert "max_duration_weeks" in resp.get_json()["error"]
+
+
+def test_recommend_explains_an_empty_result_with_a_real_deadline_diagnostic(client, fake_retriever, monkeypatch):
+    monkeypatch.setattr(recommend, "search", lambda *a, **k: [])
+
+    resp = client.post(
+        "/api/recommend",
+        json={"known_skills": ["Python"], "max_duration_weeks": 1, "team_size": 1},
+    )
+
+    body = resp.get_json()
+    assert resp.status_code == 200
+    assert body["data"] == [] and body["count"] == 0
+    assert body["diagnostics"]["max_duration_weeks"] == 1
+    # PROJECT (6 weeks) and OTHER_PROJECT (5 weeks) are the whole catalogue here.
+    assert body["diagnostics"]["shortest_estimated_weeks"] == 5
+
+
+def test_recommend_has_no_diagnostics_when_results_exist_or_no_deadline_was_set(client, fake_retriever, monkeypatch):
+    monkeypatch.setattr(recommend, "search", lambda *a, **k: [])
+    resp = client.post("/api/recommend", json={"known_skills": ["Python"]})
+    assert resp.get_json()["diagnostics"] is None

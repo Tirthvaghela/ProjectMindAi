@@ -9,9 +9,11 @@ from __future__ import annotations
 from flask import Blueprint
 
 from extensions import limiter
+from nlp import recommend
 from routes.helpers import ApiError, current_user, json_body, ok
 from teams.service import (
     TeamError,
+    clear_role_decision,
     create_team,
     get_team,
     join_team,
@@ -20,6 +22,8 @@ from teams.service import (
     post_message,
     remove_member,
     set_member_skills,
+    set_role_decision,
+    team_formation,
     team_roles,
     update_team,
 )
@@ -157,6 +161,87 @@ def roles(team_id: str):
     except TeamError as error:
         raise ApiError(str(error), status=error.status) from None
 
+    return ok(result)
+
+
+@bp.put("/<team_id>/roles/mine")
+def set_my_role_decision(team_id: str):
+    """Body: {status: accepted|rejected|custom, role?}. The caller records their
+    OWN decision about their suggested role; there is no route for deciding for
+    someone else. Suggestions in GET /roles stay advice until this is called."""
+    user = current_user()
+    body = json_body()
+    status, role = body.get("status"), body.get("role")
+    if not isinstance(status, str) or (role is not None and not isinstance(role, str)):
+        raise ApiError("'status' and 'role' must be text.", status=400)
+    try:
+        decisions = set_role_decision(team_id, user["user_id"], status, role)
+    except TeamError as error:
+        raise ApiError(str(error), status=error.status) from None
+    return ok(decisions)
+
+
+@bp.delete("/<team_id>/roles/mine")
+def clear_my_role_decision(team_id: str):
+    user = current_user()
+    try:
+        decisions = clear_role_decision(team_id, user["user_id"])
+    except TeamError as error:
+        raise ApiError(str(error), status=error.status) from None
+    return ok(decisions)
+
+
+@bp.post("/formation")
+@limiter.limit("30 per minute")
+def formation():
+    """Recommend balanced teams for a catalogue project. READ-ONLY: it never
+    invites anyone, creates a team or changes membership.
+
+    Body: {project_id, team_id?, include_self? (default true), team_size? (1-8),
+           candidates?: [{name, skills: [str]}]}
+    Candidates are limited to the caller, the roster of a team the caller
+    belongs to, and people the caller types in; there is no way to name another
+    account. See nlp/team_formation.py for the selection logic.
+    """
+    user = current_user()
+    body = json_body()
+    project_id = body.get("project_id")
+    if not isinstance(project_id, str) or not project_id.strip() or len(project_id.strip()) > 64:
+        raise ApiError("'project_id' is required.", status=400)
+    doc = recommend.get_retriever().documents.get(project_id.strip())
+    if doc is None:
+        raise ApiError(f"No project with id '{project_id.strip()}'.", status=404)
+
+    team_id = body.get("team_id")
+    if team_id is not None and (not isinstance(team_id, str) or not team_id.strip() or len(team_id) > 64):
+        raise ApiError("'team_id' must be a team id.", status=400)
+    include_self = body.get("include_self", True)
+    if not isinstance(include_self, bool):
+        raise ApiError("'include_self' must be true or false.", status=400)
+    team_size = body.get("team_size")
+    if team_size is not None and (isinstance(team_size, bool) or not isinstance(team_size, int) or not 1 <= team_size <= 8):
+        raise ApiError("'team_size' must be a whole number from 1 to 8.", status=400)
+
+    raw = body.get("candidates", [])
+    if not isinstance(raw, list) or len(raw) > 12:
+        raise ApiError("'candidates' must be a list of at most 12 people.", status=400)
+    manual = []
+    for entry in raw:
+        if not isinstance(entry, dict):
+            raise ApiError("Each candidate must be an object with a 'name' and a 'skills' list.", status=400)
+        name, skills = entry.get("name"), entry.get("skills", [])
+        if not isinstance(name, str) or not name.strip() or len(name.strip()) > 60:
+            raise ApiError("Each candidate needs a name of 60 characters or fewer.", status=400)
+        if not isinstance(skills, list) or len(skills) > 30 or not all(isinstance(s, str) and len(s) <= 60 for s in skills):
+            raise ApiError("Candidate 'skills' must be a list of at most 30 short strings.", status=400)
+        manual.append({"name": name.strip(), "skills": [s.strip() for s in skills if s.strip()]})
+
+    try:
+        result = team_formation(
+            user, doc, team_id=team_id.strip() if team_id else None, include_self=include_self, manual=manual, team_size=team_size
+        )
+    except TeamError as error:
+        raise ApiError(str(error), status=error.status) from None
     return ok(result)
 
 

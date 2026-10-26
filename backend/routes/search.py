@@ -18,11 +18,13 @@ from nlp.team_builder import suggest_roles
 from nlp.timeline import predict as predict_timeline
 from routes.helpers import (
     ApiError,
+    current_user,
     device_id,
     get_int,
     json_body,
     ok,
     parse_filters,
+    validated_max_duration,
     top_k_from,
 )
 
@@ -46,6 +48,7 @@ def search():
     if len(query) > 500:
         raise ApiError("'query' must be 500 characters or fewer.", status=400)
 
+    validated_max_duration(body)  # an unusable deadline is a 400, never silently dropped
     filters = parse_filters(body)
     top_k = top_k_from(body)
     caller = device_id(required=False)
@@ -88,6 +91,7 @@ def search():
             "weight": config.PERSONALIZATION_WEIGHT if profile is not None else 0.0,
             "signals": signals,
         },
+        excluded_unknown_duration=_unknown_duration_exclusions(filters),
     )
 
 
@@ -118,6 +122,44 @@ def _record_history(caller: str, query: str, filters: dict, result_count: int) -
         db.history().delete_many({"_id": {"$in": [d["_id"] for d in old]}})
 
 
+def _unknown_duration_exclusions(filters: dict) -> int | None:
+    """How many projects a deadline filter left out only because their duration
+    is unknown — None when no deadline was applied, so the field only appears
+    when it means something."""
+    if not filters.get("max_duration_weeks"):
+        return None
+    return recommend.unknown_duration_count(filters)
+
+
+def _profile_context(explicit_skills: int, requested_level):
+    """(context for recommend, personalization report) for a use_profile request.
+
+    The report is always returned so the UI can say what happened; the context
+    is None unless a signed-in account has a profile with something usable.
+    """
+    from profiles import personalization, service
+
+    user = current_user(required=False)
+    if user is None:
+        return None, {"requested": True, "applied": False, "reason": "sign_in_required"}
+    profile = service.get_profile(user["user_id"])
+    context = personalization.build_context(profile)
+    if not context["usable"]:
+        reason = "no_profile" if profile["completion"]["status"] == "not_started" else "nothing_usable"
+        return None, {"requested": True, "applied": False, "reason": reason, "profile_status": profile["completion"]["status"]}
+    source = "request" if requested_level else ("profile_skill_levels" if context["experience_level"] else "none")
+    report = {
+        "requested": True,
+        "applied": True,
+        "reason": "applied",
+        "profile_status": profile["completion"]["status"],
+        **personalization.summary(context, explicit_skills, source),
+    }
+    if requested_level:
+        report["experience_level"] = requested_level
+    return context, report
+
+
 @bp.post("/recommend")
 @limiter.limit("30 per minute")
 def personalized_recommend():
@@ -129,10 +171,18 @@ def personalized_recommend():
     nlp/recommend.py:personalized_recommend for the scoring.
 
     Body: {query?, known_skills?, technologies?, domain?, difficulty?,
-           max_duration_weeks?, team_size?, experience_level?, top_k?}
+           max_duration_weeks?, team_size?, experience_level?, top_k?,
+           use_profile?}
     At least one of query/known_skills/domain/difficulty/technologies/
     max_duration_weeks must be given — otherwise there is nothing to rank
-    against.
+    against. (With use_profile, usable signals in the caller's saved profile
+    also count.)
+
+    `use_profile: true` folds the signed-in account's saved learner profile
+    into the ranking (profiles/personalization.py). It is opt-in so every
+    existing caller is unchanged; signed out, or with nothing usable saved, the
+    request is answered exactly as without it and `personalization` says why.
+    The profile is always the one the auth token resolves to.
     """
     body = json_body()
     query = (body.get("query") or "").strip()
@@ -144,8 +194,17 @@ def personalized_recommend():
         raise ApiError("'known_skills' must be a list of strings.", status=400)
     known_skills = [s.strip() for s in known_skills if s.strip()]
 
+    validated_max_duration(body)  # 400 on an unusable deadline instead of ignoring it
+
+    use_profile = body.get("use_profile", False)
+    if not isinstance(use_profile, bool):
+        raise ApiError("'use_profile' must be true or false.", status=400)
+    profile_context, personalization = None, None
+    if use_profile:
+        profile_context, personalization = _profile_context(len(known_skills), body.get("experience_level"))
+
     filters = parse_filters(body)
-    if not query and not known_skills and not filters:
+    if not query and not known_skills and not filters and not profile_context:
         raise ApiError(
             "Provide at least a 'query', 'known_skills', or a filter "
             "(domain/difficulty/technologies/max_duration_weeks).",
@@ -170,7 +229,14 @@ def personalized_recommend():
         team_size=team_size,
         experience_level=experience_level,
         top_k=top_k,
+        profile_context=profile_context,
     )
+
+    # Only when a deadline is set can "nothing fits" be explained with real
+    # numbers; otherwise an empty list just means nothing matched the query.
+    diagnostics = None
+    if not results and filters.get("max_duration_weeks"):
+        diagnostics = recommend.explain_empty(filters["max_duration_weeks"], team_size, experience_level)
 
     return ok(
         results,
@@ -180,6 +246,9 @@ def personalized_recommend():
         team_size=team_size,
         experience_level=experience_level,
         count=len(results),
+        diagnostics=diagnostics,
+        excluded_unknown_duration=_unknown_duration_exclusions(filters),
+        **({"personalization": personalization} if personalization is not None else {}),
     )
 
 
@@ -193,6 +262,33 @@ def similar(project_id: str):
         raise ApiError(f"No project with id '{project_id}'.", status=404)
 
     return ok([r.to_dict() for r in results], project_id=project_id, count=len(results))
+
+
+@bp.get("/skill-gap/me")
+@limiter.limit("60 per minute")
+def personal_skill_gap():
+    """The signed-in account's own saved profile against one catalogue project.
+
+    Query: ?project_id=<id>. The profile is always the one the auth token
+    resolves to - there is no user parameter. Deterministic, no LLM. See
+    nlp/personal_skill_gap.py for the classification and priority rules, which
+    every response restates under `rules`.
+    """
+    from nlp.personal_skill_gap import analyse
+    from profiles import service as profile_service
+
+    user = current_user()
+    project_id = request.args.get("project_id", "")
+    if not isinstance(project_id, str) or not project_id.strip():
+        raise ApiError("'project_id' is required.", status=400)
+    project_id = project_id.strip()
+    if len(project_id) > 64:
+        raise ApiError("'project_id' is too long.", status=400)
+
+    doc = recommend.get_retriever().documents.get(project_id)
+    if doc is None:
+        raise ApiError(f"No project with id '{project_id}'.", status=404)
+    return ok(analyse(doc, profile_service.get_profile(user["user_id"])))
 
 
 @bp.post("/skill-gap")

@@ -103,19 +103,23 @@ def test_returns_empty_with_no_query_skills_or_filters(monkeypatch):
 def test_builds_query_from_skills_and_technologies_when_query_is_empty(monkeypatch):
     seen = {}
 
-    def fake_search(query, filters=None, top_k=10, profile=None):
+    def fake_search(query, filters=None, top_k=10, profile=None, technology_match=True):
         seen["query"] = query
+        seen["technology_match"] = technology_match
         return []
 
     monkeypatch.setattr(recommend, "search", fake_search)
     recommend.personalized_recommend(known_skills=["Python", "Flask"])
     assert seen["query"] == "Python, Flask"
+    # Best fit scores skill readiness itself, so retrieval must not also blend
+    # in technology identity (no double counting; documented semantics intact).
+    assert seen["technology_match"] is False
 
 
 def test_explicit_query_is_used_as_is(monkeypatch):
     seen = {}
 
-    def fake_search(query, filters=None, top_k=10, profile=None):
+    def fake_search(query, filters=None, top_k=10, profile=None, technology_match=True):
         seen["query"] = query
         return []
 
@@ -127,7 +131,7 @@ def test_explicit_query_is_used_as_is(monkeypatch):
 def test_filters_are_forwarded_to_search(monkeypatch):
     seen = {}
 
-    def fake_search(query, filters=None, top_k=10, profile=None):
+    def fake_search(query, filters=None, top_k=10, profile=None, technology_match=True):
         seen["filters"] = filters
         return []
 
@@ -152,8 +156,9 @@ def test_skill_gap_is_attached_and_distinguishes_have_from_need(monkeypatch):
 
     [result] = recommend.personalized_recommend(query="web app", known_skills=["React"])
 
+    # Required = the project's skills plus the technologies it is built with.
     assert result["skill_gap"]["skills_you_have"] == ["React"]
-    assert result["skill_gap"]["skills_to_learn"] == ["APIs"]
+    assert result["skill_gap"]["skills_to_learn"] == ["APIs", "Node.js"]
     assert any("Skill match" in factor and "React" in factor for factor in result["matching_factors"])
 
 
@@ -183,16 +188,15 @@ def test_domain_and_technology_matches_are_reported(monkeypatch):
 # --- personalized_recommend: timeline signal + ranking -----------------------
 
 
-def test_timeline_fit_reorders_equal_relevance_candidates(monkeypatch):
-    # "a" (4 weeks) comfortably fits a 6-week deadline; "b" (16 weeks) badly
-    # overruns it. Equal relevance means timeline fit is the only thing that
-    # can separate them, so it must decide the ordering.
-    monkeypatch.setattr(recommend, "search", lambda *a, **k: [_scored("b", 0.5), _scored("a", 0.5)])
+def test_a_project_that_overruns_the_deadline_is_excluded_not_just_ranked_lower(monkeypatch):
+    # "a" (4 weeks) fits a 6-week deadline; "b" (16 weeks) cannot. A hard
+    # constraint excludes — it does not keep an incompatible project in the
+    # list just to fill the cards.
+    monkeypatch.setattr(recommend, "search", lambda *a, **k: [_scored("b", 0.9), _scored("a", 0.5)])
 
     results = recommend.personalized_recommend(query="a project", max_duration_weeks=6)
 
-    assert [r["project_id"] for r in results] == ["a", "b"]
-    assert results[0]["overall_score"] > results[1]["overall_score"]
+    assert [r["project_id"] for r in results] == ["a"]
 
 
 def test_overall_score_is_pure_relevance_with_no_other_signals(monkeypatch):
@@ -217,7 +221,7 @@ def test_recommendation_reason_is_backend_composed_not_empty(monkeypatch):
     monkeypatch.setattr(recommend, "search", lambda *a, **k: [_scored("c", 0.8)])
 
     [result] = recommend.personalized_recommend(
-        query="web app", known_skills=["React"], max_duration_weeks=6
+        query="web app", known_skills=["React"], max_duration_weeks=10
     )
 
     assert isinstance(result["recommendation_reason"], str) and result["recommendation_reason"]

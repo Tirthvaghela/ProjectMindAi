@@ -17,7 +17,7 @@
 ProjectMind AI is a web application that helps students find a final-year or
 semester project by describing what they want in plain English, instead of
 keyword-searching a list. A hybrid retrieval engine (dense sentence
-embeddings + BM25) ranks a catalogue of 500 project briefs by semantic
+embeddings + BM25) ranks a catalogue of project briefs by semantic
 relevance, then the rest of the app helps a student go from "found a project"
 to "know how to build it": readiness checks, a generated roadmap, team
 formation, a résumé matcher, and an optional AI mentor to ask follow-up
@@ -56,7 +56,7 @@ Example query:
 > "I want an AI-based healthcare project using Python."
 
 The system encodes the query as a sentence embedding, blends that with BM25
-keyword scoring, ranks it against 500 project descriptions, and returns the
+keyword scoring, ranks it against every project description in the catalogue, and returns the
 most relevant matches with technologies, difficulty, a duration estimate,
 required skills, a reference repository, and learning resources.
 
@@ -282,10 +282,10 @@ ProjectMindAi/
 │   ├── auth/                    email/password + bearer-token sessions
 │   ├── teams/                   team workspace service layer (project- or idea-backed)
 │   ├── db/                      MongoDB client, indexes, schema
-│   ├── dataset/projects_seed.json   500 seed projects across 14 domains
+│   ├── dataset/projects_seed.json   the project catalogue, 14 domains
 │   ├── data/                    embeddings.npy + ids.json (built, not committed)
 │   ├── scripts/                 seed_db, build_index, evaluate, validate_dataset, smoke_search
-│   └── tests/                   581 tests (pytest)
+│   └── tests/                   pytest suite
 │
 ├── ROADMAP.md                   product roadmap / vision (source of truth for planning)
 ├── DESIGN.md                    "Gallery Mono" design tokens
@@ -296,7 +296,9 @@ ProjectMindAi/
 
 # 🗂️ Dataset Structure
 
-500 project briefs across 14 domains (AI, Computer Vision, NLP, Deep
+The catalogue is 868 project briefs as of 2026-10-26 (`python -m scripts.catalogue_audit`
+prints the live count; the app's own "projects indexed" figures read it from the API)
+across 14 domains (AI, Computer Vision, NLP, Deep
 Learning, Machine Learning, Data Science, Web Development, Mobile
 Development, IoT, Robotics, Blockchain, Cybersecurity, Cloud & DevOps,
 AR/VR). Each record:
@@ -314,6 +316,12 @@ AR/VR). Each record:
 | `keywords` | Search tags (feeds the sparse/BM25 side) |
 | `github_url` | A *reference* repo for the core technology — these are briefs, not built projects, so this points at the upstream tool (e.g. YOLOv8 → `ultralytics`), labelled "Reference repo" in the UI |
 | `learning_resources` | Tutorial links |
+
+Records `pm-001` to `pm-500` are the original catalogue and all carry a verified
+`github_url` and `learning_resources`. Records `pm-501` to `pm-868` (batch 1,
+added through `scripts/import_catalogue.py`) were authored for this project and
+deliberately omit both fields rather than guess at links; the UI already hides
+the "Reference repo" button and resources list when they are absent.
 
 ---
 
@@ -470,7 +478,7 @@ Installing the CPU-only PyTorch wheel first avoids pulling the ~2.5 GB
 CUDA-bundled default. See [`backend/README_Backend.md`](backend/README_Backend.md) for why.
 
 ```powershell
-venv\Scripts\python -m scripts.seed_db        # load the 500 seed projects into MongoDB
+venv\Scripts\python -m scripts.seed_db        # load the seed projects into MongoDB
 venv\Scripts\python -m scripts.build_index    # compute embeddings (downloads the model, ~90 MB)
 venv\Scripts\python app.py                    # serve on http://127.0.0.1:5000
 ```
@@ -542,12 +550,12 @@ server — see [`backend/README_Backend.md`](backend/README_Backend.md#running-i
 
 ```powershell
 cd backend
-venv\Scripts\python -m pytest tests/ -v     # 581 tests
+venv\Scripts\python -m pytest tests/ -v     # pytest prints the live test count
 
 cd frontend
 npm run lint                                 # oxlint
 npm run build                                # production bundle
-npm run test                                 # 37 tests (Vitest + React Testing Library)
+npm run test                                 # Vitest + React Testing Library
 ```
 
 ---

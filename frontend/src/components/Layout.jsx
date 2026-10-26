@@ -4,6 +4,7 @@ import useAuth from '../hooks/useAuth.jsx'
 import api from '../services/api'
 import AppSidebar from './AppSidebar'
 import NotificationsBell from './NotificationsBell'
+import ProfilePrompt from './ProfilePrompt'
 import './landing/landing.css'
 
 /**
@@ -156,7 +157,7 @@ function BareTopBar() {
 // authorization, or what data is fetched — a signed-out visitor already
 // received no team data before this, only the sidebar/topbar around the
 // message looked more "logged in" than the page actually was.
-const ACCOUNT_GATED_PREFIXES = ['/teams']
+const ACCOUNT_GATED_PREFIXES = ['/teams', '/profile']
 
 /**
  * Two shells, one app.
@@ -216,6 +217,7 @@ export default function Layout() {
       <div className="relative z-10 flex h-full flex-1 flex-col overflow-hidden">
         <TopBar onMenuClick={() => setNavOpen(true)} />
         <div className="flex-1 overflow-y-auto">
+          <ProfilePrompt />
           <Outlet />
         </div>
       </div>

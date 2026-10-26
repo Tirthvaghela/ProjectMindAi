@@ -57,6 +57,10 @@ COLL_SESSIONS = "sessions"
 COLL_TEAMS = "teams"
 COLL_TEAM_MESSAGES = "team_messages"
 COLL_NOTIFICATIONS = "notifications"
+# One learner-profile document per account; the users collection is untouched.
+COLL_PROFILES = "user_profiles"
+# Per-account step status for a project roadmap; additive, nothing else reads it.
+COLL_ROADMAP_PROGRESS = "roadmap_progress"
 
 # --- Embedding model -------------------------------------------------------
 # all-MiniLM-L6-v2: 384 dims, ~80 MB, strong quality/speed trade-off on CPU.
@@ -111,6 +115,31 @@ MAX_TOP_K = _env_int("MAX_TOP_K", 50)
 # Set to 0.0 to disable personalisation globally.
 PERSONALIZATION_WEIGHT = _env_float("PERSONALIZATION_WEIGHT", 0.15)
 
+# Technology identity. When a query names technologies the catalogue knows
+# ("React Flask full stack", "mobile app with React Native"), this share of the
+# relevance score is the fraction of those technologies a project actually
+# lists. Neither retrieval signal can express that on its own: the dense model
+# barely separates framework names (its scores for the 28 projects that really
+# use React *and* Flask average 0.11 against a corpus mean of 0.05), and BM25
+# tokenises "React Native" into the same `react` it uses for React. Zero
+# disables it; queries that name no known technology are not affected at all.
+#
+# Chosen by measurement, not intuition. On 14 held-out stack queries that are
+# NOT in the labelled evaluation set, mean P@5 of "the result lists every
+# technology the query names" was:
+#
+#   weight   0.00   0.10   0.15   0.25   0.40
+#   P@5      0.61   0.76   0.81   0.89   0.94
+#
+# 0.25 is the smallest weight tested that reaches 0.85; 0.40 adds only 0.05 more
+# while letting technology identity outweigh the semantic signal. On the v2
+# labelled set (868 projects) it changes one query materially (React + Flask:
+# lenient nDCG@5 0.45 -> 0.83, strict 0.00 -> 0.83) and leaves the other 24
+# untouched. The fusion weights below were deliberately NOT changed. Evidence
+# is limited: the held-out queries were written by the same person who chose
+# the weight, and the proxy is catalogue metadata, not human relevance.
+TECHNOLOGY_WEIGHT = _env_float("TECHNOLOGY_WEIGHT", 0.25)
+
 # Recent searches are a weaker signal of taste than a deliberate save, so they
 # contribute proportionally less to the profile vector.
 PERSONALIZATION_QUERY_WEIGHT = _env_float("PERSONALIZATION_QUERY_WEIGHT", 0.4)
@@ -134,6 +163,23 @@ PERSONALIZATION_MAX_QUERIES = _env_int("PERSONALIZATION_MAX_QUERIES", 5)
 RECOMMEND_RELEVANCE_WEIGHT = _env_float("RECOMMEND_RELEVANCE_WEIGHT", 0.5)
 RECOMMEND_SKILL_WEIGHT = _env_float("RECOMMEND_SKILL_WEIGHT", 0.3)
 RECOMMEND_TIMELINE_WEIGHT = _env_float("RECOMMEND_TIMELINE_WEIGHT", 0.2)
+# How well a project's own difficulty matches the student's stated experience
+# (recommend.difficulty_fit: 100 exact, 75 one level apart, 50 two). Before
+# this signal existed the experience level only changed the timeline estimate,
+# so picking Beginner vs Advanced in "Best fit for you" returned identical
+# rankings. Like the other signals it is renormalised away when not supplied.
+RECOMMEND_DIFFICULTY_WEIGHT = _env_float("RECOMMEND_DIFFICULTY_WEIGHT", 0.3)
+# Declared project-domain interests from a saved learner profile. A deliberately
+# small, relative weight (same renormalised scheme as above) and only present
+# when the caller has a profile with interests and gave no explicit domain
+# filter, so un-personalised requests are unchanged. NOT tuned on an evaluation
+# set — there is no labelled personalisation data; see dataset/eval/README.md.
+RECOMMEND_INTEREST_WEIGHT = _env_float("RECOMMEND_INTEREST_WEIGHT", 0.1)
+# The weekly commitment the catalogue's durations are implicitly "per": an
+# assumption, not a measurement. profiles/personalization.py:pace_adjusted_weeks
+# scales estimates by this / the user's own hours for the soft duration
+# preference and notes only.
+REFERENCE_HOURS_PER_WEEK = _env_int("REFERENCE_HOURS_PER_WEEK", 10)
 
 # Two records above this cosine similarity are treated as the same project.
 # Strict on purpose: this drives dataset deduplication, where a false positive

@@ -142,5 +142,30 @@ def parse_filters(source: dict[str, Any]) -> dict[str, Any]:
     return {k: v for k, v in filters.items() if v not in (None, [], "")}
 
 
+def validated_max_duration(source: dict[str, Any]) -> Optional[int]:
+    """The deadline in whole weeks, None when none was given, or a 400.
+
+    Used by the endpoints where a deadline is a hard constraint (search,
+    recommend): a deadline that was typed but could not be understood must be
+    an error, not silently dropped (which returns an un-deadlined list) or
+    truncated (2.5 -> 2). parse_filters() stays lenient for the browse
+    endpoint, where an unusable value simply means "no filter".
+    """
+    raw = source.get("max_duration_weeks")
+    if raw is None or raw == "":
+        return None
+    if isinstance(raw, bool):
+        raise ApiError("'max_duration_weeks' must be a whole number of weeks.", status=400)
+    try:
+        weeks = int(raw)
+        if isinstance(raw, (int, float)) and weeks != raw:
+            raise ValueError("fractional")
+    except (TypeError, ValueError):
+        raise ApiError("'max_duration_weeks' must be a whole number of weeks.", status=400) from None
+    if weeks < 1:
+        raise ApiError("'max_duration_weeks' must be at least 1.", status=400)
+    return weeks
+
+
 def top_k_from(source: dict[str, Any]) -> int:
     return get_int(source, "top_k", config.DEFAULT_TOP_K, 1, config.MAX_TOP_K)

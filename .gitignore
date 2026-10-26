@@ -15,6 +15,8 @@ venv/
 # --- Generated artifacts ---
 backend/data/embeddings.npy
 backend/data/ids.json
+backend/data/backups/
+backend/dataset/backups/
 
 # --- Node / frontend ---
 node_modules/
@@ -41,3 +43,5 @@ temp/
 .idea/
 .DS_Store
 Thumbs.db
+# Private mapping from review rows to projects/strata; never send to reviewers
+backend/dataset/eval/review/PRIVATE_*

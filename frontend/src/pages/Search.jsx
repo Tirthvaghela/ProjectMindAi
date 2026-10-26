@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import api from '../services/api'
 import useAuth from '../hooks/useAuth.jsx'
@@ -286,6 +286,7 @@ export default function Search() {
   const [searchParams, setSearchParams] = useSearchParams()
   const urlQuery = searchParams.get('q') ?? ''
   const navigate = useNavigate()
+  const { pathname } = useLocation()
   const { user } = useAuth()
 
   const [input, setInput] = useState(urlQuery)
@@ -365,7 +366,10 @@ export default function Search() {
     navigate('/dashboard')
   }
 
-  const hasSearched = Boolean(urlQuery)
+  // `/search` is the in-app entry to the search page (sidebar link) and shows
+  // the search box even before a query has run; `/` with no query is still
+  // the marketing landing screen.
+  const hasSearched = Boolean(urlQuery) || pathname === '/search'
 
   const sortedData = useMemo(() => {
     if (!results?.data?.length) return []
@@ -422,7 +426,7 @@ export default function Search() {
             </aside>
 
             <section>
-              {(status === 'loading' || status === 'idle') && <SearchingState />}
+              {urlQuery && (status === 'loading' || status === 'idle') && <SearchingState />}
               {status === 'error' && <ErrorNotice message={error} onRetry={() => runSearch(urlQuery, filters, personalize)} />}
 
               {status === 'done' && results && (
@@ -451,6 +455,12 @@ export default function Search() {
                       {results.count > 0 && <SortControl value={sortBy} onChange={setSortBy} />}
                     </div>
                   </div>
+
+                  {results.excluded_unknown_duration > 0 && (
+                    <p className="t-body-md mb-4" style={{ color: 'var(--outline)', fontSize: 12 }}>
+                      {results.excluded_unknown_duration} project{results.excluded_unknown_duration === 1 ? '' : 's'} with no documented duration {results.excluded_unknown_duration === 1 ? 'was' : 'were'} left out, because {results.excluded_unknown_duration === 1 ? 'it' : 'they'} can’t be confirmed to fit your week limit.
+                    </p>
+                  )}
 
                   {results.count === 0 ? (
                     <NoResultsState />

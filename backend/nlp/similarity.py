@@ -22,13 +22,15 @@ surviving rows.
 from __future__ import annotations
 
 import logging
+import re
 from dataclasses import dataclass, field
 from typing import Any, Optional, Sequence
 
 import numpy as np
 
 import config
-from nlp import embeddings, preprocess
+from db.schema import known_duration
+from nlp import embeddings, preprocess, skills
 
 log = logging.getLogger(__name__)
 
@@ -46,6 +48,9 @@ class ScoredProject:
     # "profile exists and this project is unlike it" — so the field is optional
     # rather than defaulting to zero.
     personal_score: Optional[float] = None
+    # Share of the technologies the query named that this project lists, or
+    # None when the query named none (the signal was not applied).
+    technology_score: Optional[float] = None
 
     def to_dict(self) -> dict[str, Any]:
         from db.schema import public_view
@@ -61,7 +66,98 @@ class ScoredProject:
         }
         if self.personal_score is not None:
             payload["relevance"]["personal"] = round(float(self.personal_score), 4)
+        if self.technology_score is not None:
+            payload["relevance"]["technology"] = round(float(self.technology_score), 4)
         return payload
+
+
+def doc_matches(doc: dict[str, Any], filters: Optional[dict[str, Any]], ignore_duration: bool = False) -> bool:
+    """Whether one project satisfies every filter — the single definition used
+    by the retriever's mask and by anything that has to count what a filter
+    excluded.
+
+    A deadline (`max_duration_weeks`) is only satisfied by a *known* duration
+    within it: a project with no documented duration is never reported as
+    fitting, and a null/zero duration can no longer slip through as "0 weeks".
+    """
+    if not filters:
+        return True
+
+    domain = filters.get("domain")
+    if domain and doc.get("domain") != domain:
+        return False
+
+    difficulty = filters.get("difficulty")
+    if difficulty and doc.get("difficulty") != difficulty:
+        return False
+
+    # Compared as normalised technology names, so "sklearn" finds a project
+    # built with "scikit-learn" and "python" finds "Python" (nlp/skills.py).
+    wanted_tech = {skills.normalize_key(t) for t in (filters.get("technologies") or []) if t}
+    if wanted_tech:
+        doc_tech = {skills.normalize_key(t) for t in doc.get("technologies", []) if isinstance(t, str)}
+        # ANY rather than ALL: a student picking three technologies wants
+        # projects using any of them, not only projects using every one — the
+        # latter is almost always empty.
+        if not wanted_tech & doc_tech:
+            return False
+
+    max_weeks = filters.get("max_duration_weeks")
+    if max_weeks is not None and not ignore_duration:
+        weeks = known_duration(doc)
+        if weeks is None or weeks > max_weeks:
+            return False
+
+    return True
+
+
+# Technology names that are also ordinary English words or single letters. In a
+# lowercase query ("express delivery", "go to market", "sensor node", "banking
+# requests") they are almost never the technology, so they only count when the
+# user typed them capitalised ("Express", "Go", "Node", "Unity", "R"), the way a
+# proper name is written. The second group was found by scanning the catalogue's
+# own prose for technologies detected in projects that do not list them (e.g.
+# "requests" 13x, "node", "dice"), and the rest by reading the vocabulary for
+# words a student could type for another reason.
+_AMBIGUOUS_TECH_NAMES = {
+    "c", "r", "go", "express", "swift", "spark", "unity", "blender", "prophet",
+    "surprise", "gazebo", "hardhat", "expo", "dart", "leaflet",
+    "node", "requests", "dice", "river", "mesa", "stripe", "helm", "lighthouse",
+    "whisper", "locust", "airflow", "gymnasium", "retrofit", "evidently",
+    "foundry", "pillow", "jellyfish", "lifelines", "tesseract", "cryptography",
+}
+
+_QUERY_WORD_RE = re.compile(r"[A-Za-z0-9+#]+(?:[.\-][A-Za-z0-9+#]+)*")
+
+
+def query_technologies(query: str, vocabulary: dict[str, str]) -> set[str]:
+    """Normalised keys of the catalogue technologies a query names.
+
+    `vocabulary` maps nlp.skills.normalize_key -> display name for every
+    technology some project lists. The longest phrase wins, so "React Native"
+    is matched as that one technology and does not also count as "React";
+    spellings are resolved through the shared alias table ("sklearn" finds
+    scikit-learn). Ambiguous English-word names need their own capitalisation.
+    """
+    words = _QUERY_WORD_RE.findall(query or "")
+    found: set[str] = set()
+    used = [False] * len(words)
+    for size in (3, 2, 1):
+        for start in range(len(words) - size + 1):
+            if any(used[start : start + size]):
+                continue
+            phrase = " ".join(words[start : start + size])
+            key = skills.normalize_key(phrase)
+            if key not in vocabulary:
+                continue
+            if size == 1 and phrase.lower() in _AMBIGUOUS_TECH_NAMES and not (
+                phrase == phrase.capitalize() or phrase.isupper()
+            ):
+                continue
+            found.add(key)
+            for i in range(start, start + size):
+                used[i] = True
+    return found
 
 
 def _minmax(scores: np.ndarray) -> np.ndarray:
@@ -92,6 +188,18 @@ class HybridRetriever:
         self.ids = list(ids)
         self.documents = documents
         self.position = {pid: i for i, pid in enumerate(self.ids)}
+        # Technology identity index: each project's normalised technology keys,
+        # and the catalogue-wide vocabulary queries are matched against.
+        self._tech_keys: list[set[str]] = []
+        self.technology_vocabulary: dict[str, str] = {}
+        for pid in self.ids:
+            keys = set()
+            for tech in self.documents[pid].get("technologies", []):
+                if isinstance(tech, str) and tech.strip():
+                    key = skills.normalize_key(tech)
+                    keys.add(key)
+                    self.technology_vocabulary.setdefault(key, skills.display_name(tech))
+            self._tech_keys.append(keys)
         self._bm25 = None
         self._corpus_tokens: list[list[str]] = []
         self._build_sparse_index()
@@ -120,36 +228,8 @@ class HybridRetriever:
         if not filters:
             return mask
 
-        domain = filters.get("domain")
-        difficulty = filters.get("difficulty")
-        technologies = filters.get("technologies") or []
-        max_weeks = filters.get("max_duration_weeks")
-
-        # Case-insensitive so "python" from a URL query matches "Python".
-        wanted_tech = {t.lower() for t in technologies if t}
-
         for i, pid in enumerate(self.ids):
-            doc = self.documents[pid]
-
-            if domain and doc.get("domain") != domain:
-                mask[i] = False
-                continue
-
-            if difficulty and doc.get("difficulty") != difficulty:
-                mask[i] = False
-                continue
-
-            if wanted_tech:
-                doc_tech = {t.lower() for t in doc.get("technologies", [])}
-                # ANY rather than ALL: a student picking three technologies
-                # wants projects using any of them, not only projects using
-                # every one — the latter is almost always empty.
-                if not wanted_tech & doc_tech:
-                    mask[i] = False
-                    continue
-
-            if max_weeks is not None and doc.get("duration_weeks", 0) > max_weeks:
-                mask[i] = False
+            mask[i] = doc_matches(self.documents[pid], filters)
 
         return mask
 
@@ -161,6 +241,7 @@ class HybridRetriever:
         filters: Optional[dict[str, Any]] = None,
         top_k: int = config.DEFAULT_TOP_K,
         profile: Optional[np.ndarray] = None,
+        technology_match: bool = True,
     ) -> list[ScoredProject]:
         """Rank the corpus against a query.
 
@@ -195,6 +276,18 @@ class HybridRetriever:
             + config.SPARSE_WEIGHT * _minmax(sparse_raw)
         )
 
+        # Technology identity. Only when the query names technologies the
+        # catalogue knows; a convex blend like personalisation below, so the
+        # score stays in [0, 1] and queries with no technology are untouched.
+        technology_raw = None
+        if technology_match and config.TECHNOLOGY_WEIGHT > 0:
+            named = query_technologies(query, self.technology_vocabulary)
+            if named:
+                technology_raw = np.array(
+                    [len(named & self._tech_keys[i]) / len(named) for i in candidates], dtype=np.float32
+                )
+                relevance = (1.0 - config.TECHNOLOGY_WEIGHT) * relevance + config.TECHNOLOGY_WEIGHT * technology_raw
+
         # Personalisation half. Blended as a convex combination rather than
         # added on top, so the fused score stays in the same [0, 1] range the
         # UI renders as a match percentage, and so affinity can never do more
@@ -213,11 +306,16 @@ class HybridRetriever:
         top_local = top_local[np.argsort(-fused[top_local])]
 
         query_terms = set(query_tokens)
+        # Shown to the student, so map lemmas back to readable words.
+        readable = preprocess.token_display_map(query)
         results: list[ScoredProject] = []
         for local in top_local:
             corpus_index = int(candidates[local])
             pid = self.ids[corpus_index]
-            matched = sorted(query_terms & set(self._corpus_tokens[corpus_index]))
+            matched = sorted(
+                (readable.get(t, t) for t in query_terms & set(self._corpus_tokens[corpus_index])),
+                key=str.lower,
+            )
             results.append(
                 ScoredProject(
                     project_id=pid,
@@ -228,6 +326,9 @@ class HybridRetriever:
                     document=self.documents[pid],
                     personal_score=(
                         float(personal_raw[local]) if personal_raw is not None else None
+                    ),
+                    technology_score=(
+                        float(technology_raw[local]) if technology_raw is not None else None
                     ),
                 )
             )

@@ -4,10 +4,13 @@ import useAuth from '../hooks/useAuth.jsx'
 import api from '../services/api'
 
 const MODULES = [
+  { icon: 'search', label: 'Search', to: '/search' },
   { icon: 'auto_awesome', label: 'New Idea', to: '/ideate' },
   { icon: 'badge', label: 'Résumé Match', to: '/resume-match' },
   { icon: 'fingerprint', label: 'Idea Check', to: '/uniqueness' },
   { icon: 'groups', label: 'Teams', to: '/teams' },
+  { icon: 'person', label: 'Profile', to: '/profile' },
+  { icon: 'trending_up', label: 'Progress', to: '/progress' },
   { icon: 'bookmark', label: 'Favourites', to: '/favorites' },
 ]
 

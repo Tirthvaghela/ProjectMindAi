@@ -54,8 +54,11 @@ def create_app() -> Flask:
     from routes.assistant import bp as assistant_bp
     from routes.auth import bp as auth_bp
     from routes.ideas import bp as ideas_bp
+    from routes.insights import bp as insights_bp
     from routes.notifications import bp as notifications_bp
+    from routes.profile import bp as profile_bp
     from routes.projects import bp as projects_bp
+    from routes.roadmap import bp as roadmap_bp
     from routes.search import bp as search_bp
     from routes.teams import bp as teams_bp
     from routes.user import bp as user_bp
@@ -70,6 +73,9 @@ def create_app() -> Flask:
     app.register_blueprint(auth_bp)
     app.register_blueprint(teams_bp)
     app.register_blueprint(notifications_bp)
+    app.register_blueprint(profile_bp)
+    app.register_blueprint(roadmap_bp)
+    app.register_blueprint(insights_bp)
 
     _register_error_handlers(app)
     _register_health(app)

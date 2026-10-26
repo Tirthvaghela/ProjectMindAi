@@ -7,7 +7,8 @@ import api from '../services/api'
 import MarkdownLite from '../components/MarkdownLite'
 import { Spinner, ErrorNotice, EmptyState } from '../components/Feedback'
 import Panel from '../components/Panel'
-import { AssignmentCard } from '../components/TeamBuilder'
+import { AssignmentCard, UnassignedMembers } from '../components/TeamBuilder'
+import RoleFitPanel from '../components/RoleFitPanel'
 import { formatClockTime, formatDate } from '../utils/time'
 
 /**
@@ -473,7 +474,7 @@ export default function TeamRoom() {
             )}
           </Panel>
 
-          <Panel icon="assignment_ind" title="Suggested roles" description="Who should work on what, for this exact roster." compact>
+          <Panel icon="assignment_ind" title="Suggested roles" description="Advice on who fits which role — based on saved profiles and team skills." compact>
             {rolesStatus === 'idle' && (
               <button type="button" onClick={suggestRoles} className="btn-secondary t-label-caps w-full px-3 py-2" style={{ fontSize: 10.5 }}>
                 Suggest roles
@@ -483,14 +484,23 @@ export default function TeamRoom() {
             {rolesStatus === 'error' && <ErrorNotice message={rolesError} onRetry={suggestRoles} />}
             {rolesStatus === 'done' && rolesResult && (
               <div className="space-y-2">
-                {rolesResult.assignments.map((a, i) => (
-                  <AssignmentCard key={`${a.member}-${a.assigned_role}`} assignment={a} index={i} />
-                ))}
-                {rolesResult.unfilled_roles?.length > 0 && (
-                  <p className="t-body-md p-3" style={{ background: 'var(--surface-container-low)', color: 'var(--on-surface-variant)', fontSize: 11.5, borderRadius: 8 }}>
-                    Still open: {rolesResult.unfilled_roles.join(', ')}.
-                  </p>
-                )}
+                <RoleFitPanel result={rolesResult} userId={user.user_id} teamId={id} />
+                <details className="mt-3">
+                  <summary className="t-label-caps cursor-pointer" style={{ color: 'var(--outline)', fontSize: 10 }}>
+                    Project module split
+                  </summary>
+                  <div className="mt-2 space-y-2">
+                    {rolesResult.assignments.map((a, i) => (
+                      <AssignmentCard key={`${a.member}-${a.assigned_role}`} assignment={a} index={i} />
+                    ))}
+                    <UnassignedMembers members={rolesResult.unassigned_members} />
+                    {rolesResult.unfilled_roles?.length > 0 && (
+                      <p className="t-body-md p-3" style={{ background: 'var(--surface-container-low)', color: 'var(--on-surface-variant)', fontSize: 11.5, borderRadius: 8 }}>
+                        Still open: {rolesResult.unfilled_roles.join(', ')}.
+                      </p>
+                    )}
+                  </div>
+                </details>
                 <button
                   type="button"
                   onClick={suggestRoles}

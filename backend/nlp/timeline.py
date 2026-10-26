@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from db.schema import DIFFICULTIES
+from db.schema import DIFFICULTIES, known_duration
 from nlp.generator import phase_plan
 
 # Each extra team member contributes this fraction of an ideal additional
@@ -76,8 +76,28 @@ def _team_multiplier(team_size: int) -> tuple[float, str]:
     )
 
 
+def min_weeks_multiplier(team_size: int = 1, experience_level: Optional[str] = None) -> float:
+    """Smallest factor predict() can scale a baseline duration by for this
+    team size / experience level, over every possible project difficulty —
+    lets a caller pre-filter the catalogue by baseline `duration_weeks` with a
+    bound that can never wrongly drop a project the exact prediction would
+    keep."""
+    team_multiplier, _ = _team_multiplier(team_size)
+    student_idx = _level_index(experience_level) if experience_level else None
+    if student_idx is None:
+        return team_multiplier
+    experience = min(
+        _EXPERIENCE_MULTIPLIERS[max(-2, min(2, student_idx - project_idx))]
+        for project_idx in range(len(DIFFICULTIES))
+    )
+    return team_multiplier * experience
+
+
 def predict(doc: dict[str, Any], team_size: int = 1, experience_level: Optional[str] = None) -> dict[str, Any]:
-    base_weeks = doc.get("duration_weeks") or 1
+    # An unknown/malformed stored duration falls back to a 1-week baseline for
+    # the *displayed* estimate only; deadline checks never rely on it (they
+    # exclude unknown durations first — see nlp/recommend.py).
+    base_weeks = known_duration(doc) or 1
     project_difficulty = doc.get("difficulty", "")
 
     exp_multiplier, exp_note = _experience_multiplier(project_difficulty, experience_level)

@@ -1,5 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import api from '../services/api'
+import useAuth from '../hooks/useAuth.jsx'
+import useProfile from '../hooks/useProfile'
 import ProjectCard from './ProjectCard'
 
 /**
@@ -17,8 +20,30 @@ import ProjectCard from './ProjectCard'
  * query relevance" with "ranked by how ready you are to build it" would
  * make neither result set trustworthy.
  */
+// Mirrors the backend's notion of a usable profile (profiles/personalization.py):
+// something the recommender can act on, not merely an onboarding dismissal.
+function profileHasSignals(profile) {
+  if (!profile) return false
+  const a = profile.availability || {}
+  return Boolean(profile.skills.length || profile.interests.length || profile.experience.length || a.hours_per_week || a.max_project_weeks)
+}
+
+const REASON_TEXT = {
+  sign_in_required: 'Sign in to use your saved profile.',
+  no_profile: 'You have no saved profile yet, so these are not personalised.',
+  nothing_usable: 'Your profile has nothing the recommender can use yet.',
+}
+
 export default function RecommendedForYou({ isFavorite, onToggleFavorite }) {
   const [open, setOpen] = useState(false)
+  const { user } = useAuth()
+  const { profile } = useProfile()
+  const profileUsable = Boolean(user) && profileHasSignals(profile)
+  // On by default whenever there is a profile to use; the user can switch it
+  // off to see the plain, skills-only ranking.
+  const [useProfileSignals, setUseProfileSignals] = useState(true)
+  const applyProfile = profileUsable && useProfileSignals
+  const [personalization, setPersonalization] = useState(null)
   const [difficulties, setDifficulties] = useState([])
   const [skillsInput, setSkillsInput] = useState('')
   const [experienceLevel, setExperienceLevel] = useState('')
@@ -27,6 +52,25 @@ export default function RecommendedForYou({ isFavorite, onToggleFavorite }) {
   const [status, setStatus] = useState('idle') // idle | loading | done | error
   const [error, setError] = useState(null)
   const [results, setResults] = useState([])
+  const [diagnostics, setDiagnostics] = useState(null)
+  const [excludedUnknown, setExcludedUnknown] = useState(0)
+  // The exact inputs the displayed results were computed from — compared with
+  // the live form to tell when the cards on screen are for an older request.
+  const [lastRun, setLastRun] = useState(null)
+  // Only the newest request may write results: an older, slower response must
+  // not overwrite a newer one.
+  const requestId = useRef(0)
+
+  const parsedSkills = skillsInput.split(',').map((s) => s.trim()).filter(Boolean)
+  const currentRun = JSON.stringify({
+    skills: parsedSkills,
+    experience: experienceLevel,
+    team: String(teamSize).trim(),
+    weeks: String(maxWeeks).trim(),
+    // A saved profile change must mark on-screen results as out of date too.
+    profile: applyProfile ? profile?.updated_at ?? 'none' : 'off',
+  })
+  const stale = status === 'done' && lastRun?.signature !== currentRun
 
   useEffect(() => {
     if (!open || difficulties.length) return
@@ -38,30 +82,67 @@ export default function RecommendedForYou({ isFavorite, onToggleFavorite }) {
       })
   }, [open, difficulties.length])
 
+  const fail = (message) => {
+    setStatus('error')
+    setError(message)
+  }
+
   const run = async (event) => {
     event.preventDefault()
-    const known_skills = skillsInput.split(',').map((s) => s.trim()).filter(Boolean)
-    if (!known_skills.length) {
-      setStatus('error')
-      setError('Add at least one skill, separated by commas.')
-      return
+    // A disabled submit button already blocks a second click and Enter, but
+    // the handler is the real guard.
+    if (status === 'loading') return
+
+    const known_skills = parsedSkills
+    if (!known_skills.length && !applyProfile) return fail('Add at least one skill, separated by commas.')
+
+    const team = Number(teamSize)
+    if (!Number.isInteger(team) || team < 1 || team > 20) return fail('Team size must be a whole number from 1 to 20.')
+
+    const weeksText = String(maxWeeks).trim()
+    const weeks = weeksText === '' ? undefined : Number(weeksText)
+    if (weeks !== undefined && (!Number.isInteger(weeks) || weeks < 1 || weeks > 52)) {
+      return fail('Max weeks must be a whole number from 1 to 52, or left empty for no limit.')
     }
+
+    const id = ++requestId.current
     setStatus('loading')
     setError(null)
     try {
-      const { data } = await api.recommend({
+      const response = await api.recommend({
         known_skills,
         experience_level: experienceLevel || undefined,
-        team_size: Number(teamSize) || 1,
-        max_duration_weeks: maxWeeks ? Number(maxWeeks) : undefined,
+        team_size: team,
+        max_duration_weeks: weeks,
         top_k: 6,
+        ...(applyProfile ? { use_profile: true } : {}),
       })
-      setResults(data)
+      if (id !== requestId.current) return
+      setResults(response.data)
+      setDiagnostics(response.diagnostics ?? null)
+      setExcludedUnknown(response.excluded_unknown_duration ?? 0)
+      setPersonalization(response.personalization ?? null)
+      setLastRun({ signature: currentRun, experience: experienceLevel, team, weeks })
       setStatus('done')
     } catch (err) {
+      if (id !== requestId.current) return
+      setResults([])
       setError(err.message)
       setStatus('error')
     }
+  }
+
+  const emptyMessage = () => {
+    const parts = []
+    if (lastRun?.weeks) {
+      parts.push(`Nothing fits within ${lastRun.weeks} week${lastRun.weeks === 1 ? '' : 's'} for a team of ${lastRun.team}${lastRun.experience ? ` at ${lastRun.experience} level` : ''}.`)
+      if (diagnostics?.shortest_estimated_weeks != null) {
+        parts.push(`The shortest project in the catalogue is estimated at about ${diagnostics.shortest_estimated_weeks} weeks for that setup — raise the limit or add teammates.`)
+      }
+    } else {
+      parts.push(personalization?.applied ? 'No projects matched your profile and inputs.' : 'No projects matched those skills.')
+    }
+    return parts.join(' ')
   }
 
   return (
@@ -92,7 +173,7 @@ export default function RecommendedForYou({ isFavorite, onToggleFavorite }) {
           <form onSubmit={run} className="grid gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
             <div>
               <label className="t-label-caps mb-1.5 block" style={{ color: 'var(--outline)', fontSize: 10 }} htmlFor="recommend-skills">
-                Your skills
+                {applyProfile ? 'Extra skills for this search (optional)' : 'Your skills'}
               </label>
               <input
                 id="recommend-skills"
@@ -106,6 +187,31 @@ export default function RecommendedForYou({ isFavorite, onToggleFavorite }) {
               {status === 'loading' ? 'Ranking…' : 'Find my best fit'}
             </button>
           </form>
+
+          {user && (
+            <div className="mt-3" style={{ borderTop: '1px solid var(--border-technical)', paddingTop: 12 }}>
+              {profileUsable ? (
+                <label className="flex items-start gap-2" style={{ color: 'var(--on-surface)', fontSize: 13 }}>
+                  <input
+                    type="checkbox"
+                    checked={useProfileSignals}
+                    onChange={(e) => setUseProfileSignals(e.target.checked)}
+                    className="mt-1"
+                  />
+                  <span>
+                    Use my saved profile
+                    <span className="block" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+                      Your skills, interests and time limits are added to this search. <Link to="/profile" className="underline">Update profile</Link>
+                    </span>
+                  </span>
+                </label>
+              ) : (
+                <p className="t-body-md" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+                  Want picks tailored to you? <Link to="/profile?setup=1" className="underline" style={{ color: 'var(--primary)' }}>Add your skills and interests</Link> — optional.
+                </p>
+              )}
+            </div>
+          )}
 
           <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
             <div>
@@ -150,33 +256,70 @@ export default function RecommendedForYou({ isFavorite, onToggleFavorite }) {
                 value={maxWeeks}
                 onChange={(e) => setMaxWeeks(e.target.value)}
                 placeholder="Any"
+                aria-describedby="recommend-weeks-hint"
                 className="gm-input w-full px-2 py-2 text-sm"
               />
+              <p id="recommend-weeks-hint" className="t-body-md mt-1" style={{ color: 'var(--outline)', fontSize: 11 }}>
+                Compared with the estimate for your team size and experience.
+              </p>
             </div>
           </div>
 
+          {status === 'loading' && (
+            <p className="t-body-md mt-4" role="status" style={{ color: 'var(--outline)', fontSize: 13 }}>
+              Ranking the catalogue for your inputs…
+            </p>
+          )}
+
           {status === 'error' && error && (
-            <p className="t-body-md mt-3" style={{ color: '#ffb4ab', fontSize: 13 }}>{error}</p>
+            <p className="t-body-md mt-3" role="alert" style={{ color: '#ffb4ab', fontSize: 13 }}>{error}</p>
           )}
 
           {status === 'done' && (
-            results.length === 0 ? (
-              <p className="t-body-md mt-4" style={{ color: 'var(--outline)', fontSize: 13 }}>
-                No close matches for that combination — try fewer constraints.
+            <>
+              <p className="t-label-mono mt-4" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+                Results for {lastRun?.experience || 'any experience level'} · team of {lastRun?.team}
+                {lastRun?.weeks ? ` · up to ${lastRun.weeks} weeks` : ' · no week limit'}
               </p>
-            ) : (
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                {results.map((project, index) => (
-                  <ProjectCard
-                    key={project.project_id}
-                    project={project}
-                    index={index}
-                    isFavorite={isFavorite(project.project_id)}
-                    onToggleFavorite={onToggleFavorite}
-                  />
-                ))}
-              </div>
-            )
+              {personalization?.applied ? (
+                <p className="t-body-md mt-2" role="status" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+                  Personalised with your profile: {personalization.skills_from_profile} skill{personalization.skills_from_profile === 1 ? '' : 's'}
+                  {personalization.interests.length ? `, ${personalization.interests.length} interest${personalization.interests.length === 1 ? '' : 's'}` : ''}
+                  {personalization.preferred_weeks ? `, preferred length ${personalization.preferred_weeks} weeks` : ''}
+                  {personalization.experience_level_source === 'profile_skill_levels' ? `. Experience level (${personalization.experience_level}) is estimated from your own skill ratings — pick one above to override` : ''}.
+                  {' '}<Link to="/profile" className="underline">Edit profile</Link>
+                </p>
+              ) : (
+                personalization && (
+                  <p className="t-body-md mt-2" style={{ color: 'var(--outline)', fontSize: 12.5 }}>{REASON_TEXT[personalization.reason] ?? 'Your profile was not used.'}</p>
+                )
+              )}
+              {excludedUnknown > 0 && (
+                <p className="t-body-md mt-2" style={{ color: 'var(--outline)', fontSize: 12 }}>
+                  {excludedUnknown} project{excludedUnknown === 1 ? '' : 's'} with no documented duration {excludedUnknown === 1 ? 'was' : 'were'} left out, because {excludedUnknown === 1 ? 'it' : 'they'} can’t be confirmed to fit your week limit.
+                </p>
+              )}
+              {stale && (
+                <p className="t-body-md mt-2" role="status" style={{ color: '#ffb4ab', fontSize: 12.5 }}>
+                  You changed the inputs — these results are for the previous request. Press “Find my best fit” to update them.
+                </p>
+              )}
+              {results.length === 0 ? (
+                <p className="t-body-md mt-3" style={{ color: 'var(--outline)', fontSize: 13 }}>{emptyMessage()}</p>
+              ) : (
+                <div className="mt-4 grid gap-4 sm:grid-cols-2" style={{ opacity: stale ? 0.45 : 1 }} aria-busy={stale}>
+                  {results.map((project, index) => (
+                    <ProjectCard
+                      key={project.project_id}
+                      project={project}
+                      index={index}
+                      isFavorite={isFavorite(project.project_id)}
+                      onToggleFavorite={onToggleFavorite}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       )}

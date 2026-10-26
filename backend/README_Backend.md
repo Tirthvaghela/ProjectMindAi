@@ -75,6 +75,10 @@ pick here over gunicorn (Unix-only) for a project developed on Windows.
 | `python -m scripts.evaluate` | Retrieval metrics against labelled queries |
 | `python -m scripts.evaluate --sweep` | Ablation over dense/sparse weights |
 | `python -m scripts.smoke_search` | Eyeball ranked results for sample queries |
+| `python -m scripts.import_catalogue --batch batch_001` | **Dry run** of a catalogue expansion: validate candidates in `dataset/candidates/<batch>/`, reject exact and semantic duplicates, assign ids, write a reviewable plan to `dataset/reports/` |
+| `python -m scripts.import_catalogue --batch batch_001 --apply` | Apply the reviewed plan: append to the seed file and insert-only into MongoDB (existing documents are never modified), backing up first; idempotent |
+| `python -m scripts.import_catalogue --rollback batch_001 [--apply]` | Undo a batch by its manifest (dry run unless `--apply`) |
+| `python -m scripts.catalogue_audit` | Read-only audit of a catalogue file: id stability, duplicates, missing metadata, distributions (`--file`, `--semantic`, `--json`, `--strict`) |
 
 ## Tests
 
@@ -82,7 +86,7 @@ pick here over gunicorn (Unix-only) for a project developed on Windows.
 venv\Scripts\python -m pytest tests/ -v
 ```
 
-581 tests. Most are pure-function unit tests needing no fixture at all —
+The suite (pytest prints its size). Most are pure-function unit tests needing no fixture at all —
 `db/schema.py`, `nlp/preprocess.py`, `nlp/generator.py`, `nlp/team_builder.py`,
 `nlp/timeline.py`, `nlp/learning_path.py`, `nlp/resume.py` (including
 `test_resume_parsing.py`'s real, hand-built PDF/DOCX fixtures for the actual
@@ -213,6 +217,9 @@ exact tokens. Real measured example — query `"YOLOv8"` over 500 projects:
 Semantically those are close; the exact token is what separates them. Measured
 over 25 labelled queries at 500 projects (nDCG@5): embeddings alone 0.866,
 BM25 alone 0.737, **hybrid 0.892**.
+*(Historical: v1 labels, original 500 projects, reproduced by
+`evaluate --dataset v1 --max-project 500 --technology-weight 0`. For the current
+868-project catalogue see `dataset/eval/README.md` — the two are not comparable.)*
 
 Note the balance shifted when the corpus grew. At 50 projects the optimum was
 an even 50/50 split; at 500 it is 80/20 in favour of dense. Hybrid still beats
@@ -240,6 +247,40 @@ was applied under `personalization`.
 routinely returns nothing, because the requested difficulty may not appear in
 an unfiltered top 10. `HybridRetriever._mask()` builds a boolean mask over the
 corpus first and only ranks survivors.
+
+## "Best fit for you" semantics
+
+`POST /api/recommend` (`nlp/recommend.py:personalized_recommend`). These rules
+are pinned by `tests/test_recommend_constraints.py` and
+`tests/test_deadline_and_scale.py`; change them deliberately, with tests.
+
+- **Hard constraints exclude**: `domain`, `difficulty`, `technologies` and
+  `max_duration_weeks`. **Preferences rank**: relevance, skill readiness and
+  `experience_level`.
+- **Experience level is a ranking preference, not a filter.** It scores
+  `difficulty_fit`: 100 for an exact match, 75 one level apart, 50 two apart,
+  weighted by `RECOMMEND_DIFFICULTY_WEIGHT` (default 0.3) alongside the
+  relevance (0.5), skill (0.3) and timeline (0.2) weights. Signals that are not
+  supplied are dropped and the rest renormalised. A below-level project is
+  explained as such, never presented as an exact match.
+- **Max weeks is compared with the *estimated* duration** for the chosen team
+  size and experience (`nlp/timeline.py`), not the solo baseline. A project with
+  no known duration (missing, null, zero, negative, non-numeric) is **never**
+  reported as fitting a deadline; the response carries
+  `excluded_unknown_duration` (a count) when a deadline was applied. `/api/search`
+  follows the same rule. An unusable deadline (`"soon"`, `0`, `2.5`, `true`) is
+  a 400, not silently ignored or truncated.
+- **Team size only changes the estimate.** The catalogue has no team-size
+  field, so there is no per-project team compatibility check.
+- **Skill readiness uses the shared alias table** (`nlp/skills.py`), added on
+  top of the older token matching: whole names only, so `sklearn` = `scikit-learn`
+  and `node` = `Node.js`, but `Java` never matches `JavaScript`. Ambiguous
+  abbreviations (`ts`, `np`, `torch`, `py`, `next`, `.net`) are deliberately not
+  aliases. Keyword explanations show the words the user typed / canonical
+  names ("pandas"), not lemmas ("panda"); matching still uses lemmas.
+- **Deterministic**: equal scores are ordered by `project_id`.
+- **Known gap**: skill readiness (project skills + technologies, alias-aware)
+  and keyword matching (BM25 lemmas) are separate signals and can disagree.
 
 ## Storage layout
 

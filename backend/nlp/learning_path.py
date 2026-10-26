@@ -181,6 +181,20 @@ _UNRECOGNISED_REASON = "Supporting tool/technology for this project."
 _GO_LANGUAGE_PATTERN = re.compile(r"\bgo\b")
 
 
+def learning_tier(skill: str) -> tuple[int, str]:
+    """(tier index, reason) for one skill in the learning sequence below -
+    exactly the classification sequence_technologies() applies, exposed so other
+    modules (nlp/learning_roadmap.py) order by the same tiers instead of keeping
+    a second copy. An unrecognised term gets the last tier."""
+    key = (skill or "").strip().lower()
+    if _GO_LANGUAGE_PATTERN.search(key):
+        return 0, _SEQUENCE_TIERS[0][0]
+    for index, (tier_reason, keywords) in enumerate(_SEQUENCE_TIERS):
+        if any(keyword in key for keyword in keywords):
+            return index, tier_reason
+    return len(_SEQUENCE_TIERS), _UNRECOGNISED_REASON
+
+
 def sequence_technologies(technologies: list[str]) -> list[dict[str, str]]:
     """Order a technology/skill list into a sensible learn-this-before-that
     sequence — language, then domain foundations, then the core framework,
@@ -198,14 +212,7 @@ def sequence_technologies(technologies: list[str]) -> list[dict[str, str]]:
             continue
         seen.add(key)
 
-        if _GO_LANGUAGE_PATTERN.search(key):
-            tier_index, reason = 0, _SEQUENCE_TIERS[0][0]
-        else:
-            tier_index, reason = len(_SEQUENCE_TIERS), _UNRECOGNISED_REASON
-            for index, (tier_reason, keywords) in enumerate(_SEQUENCE_TIERS):
-                if any(keyword in key for keyword in keywords):
-                    tier_index, reason = index, tier_reason
-                    break
+        tier_index, reason = learning_tier(clean)
         tiered.append((tier_index, clean, reason))
 
     # Stable sort: within a tier, and among unrecognised terms, the caller's

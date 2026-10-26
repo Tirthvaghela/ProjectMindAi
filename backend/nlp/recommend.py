@@ -12,10 +12,10 @@ from typing import Any, Optional
 
 import config
 from db import client as db
-from db.schema import DIFFICULTIES
-from nlp import embeddings, generator, preprocess, timeline
+from db.schema import DIFFICULTIES, known_duration
+from nlp import embeddings, generator, preprocess, skills as skill_names, timeline
 from nlp.resume import detect_skills
-from nlp.similarity import HybridRetriever, ScoredProject
+from nlp.similarity import HybridRetriever, ScoredProject, doc_matches
 
 log = logging.getLogger(__name__)
 
@@ -194,8 +194,11 @@ def search(
     filters: Optional[dict[str, Any]] = None,
     top_k: int = config.DEFAULT_TOP_K,
     profile: Optional[Any] = None,
+    technology_match: bool = True,
 ) -> list[ScoredProject]:
-    return get_retriever().search(query, filters=filters, top_k=top_k, profile=profile)
+    return get_retriever().search(
+        query, filters=filters, top_k=top_k, profile=profile, technology_match=technology_match
+    )
 
 
 def similar(project_id: str, top_k: int = 5) -> list[ScoredProject]:
@@ -248,9 +251,18 @@ def skill_gap_for_doc(doc: dict[str, Any], known_skills: list[str]) -> dict[str,
     known_tokens: set[str] = set()
     for skill in known_skills:
         known_tokens |= preprocess.keyword_set(skill) - GENERIC_SKILL_TOKENS
+    # Whole-name matches through the shared alias table (nlp/skills.py):
+    # "sklearn" == "scikit-learn", "node" == "Node.js". Added on top of the
+    # token matching below, never instead of it, so no previously matched
+    # phrase stops matching.
+    known_names = skill_names.canonical_keys(known_skills)
 
     have, need = [], []
     for skill in required:
+        if skill_names.canonical_name(skill) is not None and skill_names.normalize_key(skill) in known_names:
+            have.append(skill)
+            continue
+
         # Subtract generic tokens before comparing. Without this, "React
         # development" credits "Smart contract development" on the shared word
         # "development" alone — measured: that pairing reported 25% readiness
@@ -370,6 +382,83 @@ def _recommendation_reason(
     return sentence
 
 
+def _profile_clauses(
+    doc: dict[str, Any],
+    have: list[dict[str, Any]],
+    in_interest: Optional[bool],
+    soft_fit: Optional[float],
+    soft_weeks: Optional[int],
+    pace_weeks: Optional[float],
+    estimate: dict[str, Any],
+) -> str:
+    """Sentences naming the *profile* details behind a recommendation. Each is
+    read off a value computed above and says "your profile"/"you listed", so
+    self-reported levels are never presented as verified."""
+    text = ""
+    if in_interest:
+        text += f" It is in {doc.get('domain')}, one of the domains you said you are interested in."
+    rated = [f"{h['name']} ({h['level']})" for h in have if h["level"]][:3]
+    if rated:
+        text += f" You listed {', '.join(rated)} in your profile."
+    if soft_fit is not None and soft_weeks:
+        weeks = pace_weeks if pace_weeks is not None else estimate["predicted_weeks"]
+        if soft_fit >= 100:
+            text += f" Roughly {weeks:g} weeks at your pace, within the {soft_weeks} weeks you prefer."
+        elif soft_fit < 60:
+            text += f" Roughly {weeks:g} weeks at your pace, longer than the {soft_weeks} weeks you prefer."
+    return text
+
+
+def _skill_fit(doc: dict[str, Any], known_skills: list[str]) -> dict[str, Any]:
+    """skill_gap_for_doc() over the project's required skills *and* the
+    technologies it is built with — a student who lists "Python, React" is
+    naming technologies, which a project's skill phrases ("Supervised
+    learning", "REST API development") rarely contain, so matching skills
+    alone gave tech-named skills no credit at all. Same whole-token matching
+    as skill_gap_for_doc, so unrelated partial words still don't match."""
+    required = [s for s in doc.get("skills", []) if isinstance(s, str)]
+    seen = {skill_names.normalize_key(s) for s in required}
+    for tech in doc.get("technologies", []):
+        if isinstance(tech, str) and skill_names.normalize_key(tech) not in seen:
+            required.append(tech)
+            seen.add(skill_names.normalize_key(tech))
+    return skill_gap_for_doc({**doc, "skills": required}, known_skills)
+
+
+def unknown_duration_count(filters: Optional[dict[str, Any]]) -> int:
+    """How many catalogue projects pass every *other* filter but have no
+    documented duration — i.e. how many a deadline had to leave out because
+    their fit cannot be confirmed. Shown to the user so an exclusion is
+    explained rather than silent."""
+    others = {k: v for k, v in (filters or {}).items() if k != "max_duration_weeks"}
+    return sum(
+        1
+        for doc in get_retriever().documents.values()
+        if known_duration(doc) is None and doc_matches(doc, others)
+    )
+
+
+def explain_empty(
+    max_duration_weeks: Optional[int], team_size: int = 1, experience_level: Optional[str] = None
+) -> dict[str, Any]:
+    """Why a recommendation came back empty, from real catalogue numbers: the
+    shortest estimated duration of any project for this team/experience, so
+    the caller can say how far the deadline is from anything achievable."""
+    level = experience_level if experience_level in DIFFICULTIES else None
+    shortest = None
+    for doc in get_retriever().documents.values():
+        if known_duration(doc) is None:
+            continue
+        weeks = timeline.predict(doc, team_size=max(1, team_size), experience_level=level)["predicted_weeks"]
+        shortest = weeks if shortest is None else min(shortest, weeks)
+    return {
+        "max_duration_weeks": max_duration_weeks,
+        "team_size": max(1, team_size),
+        "experience_level": level,
+        "shortest_estimated_weeks": shortest,
+    }
+
+
 def personalized_recommend(
     query: str = "",
     known_skills: Optional[list[str]] = None,
@@ -380,6 +469,7 @@ def personalized_recommend(
     team_size: int = 1,
     experience_level: Optional[str] = None,
     top_k: int = config.DEFAULT_TOP_K,
+    profile_context: Optional[dict[str, Any]] = None,
 ) -> list[dict[str, Any]]:
     """Multi-factor, personalized recommendation over the whole catalogue.
 
@@ -392,6 +482,17 @@ def personalized_recommend(
     of those three existing functions, combined by a transparent, documented
     weighted average (config.RECOMMEND_*_WEIGHT).
 
+    Constraints versus preferences. Hard constraints exclude: `domain`,
+    `difficulty`, `technologies` (the same retriever filters /api/search uses)
+    and `max_duration_weeks`, which is compared against the *estimated*
+    duration for this team size and experience level (timeline.predict), not
+    the solo baseline — otherwise team size could never affect eligibility.
+    A project with no documented duration is excluded under a deadline rather
+    than assumed to fit. Preferences rank: relevance, skill fit, and
+    `experience_level` (difficulty_fit — an Advanced student is *offered*
+    Beginner projects only if they out-score the rest, and the explanation
+    says the project is below their level).
+
     `known_skills`/`technologies`/`domain` feed the query text when the
     caller has no natural-language `query` of their own (the same trick
     /api/resume-suggest already uses: detected skills become the query), so
@@ -401,9 +502,26 @@ def personalized_recommend(
     known_skills = [s.strip() for s in (known_skills or []) if isinstance(s, str) and s.strip()]
     technologies = [t.strip() for t in (technologies or []) if isinstance(t, str) and t.strip()]
 
+    # A saved learner profile (profiles/personalization.py:build_context) is
+    # folded into the inputs this function already takes, not scored on a side
+    # path: its skills merge alias-aware with any the caller typed (so none
+    # counts twice), its inferred level applies only when the caller gave none,
+    # and its duration preference is soft — an explicit `max_duration_weeks`
+    # always wins and remains the only hard deadline. With no (usable) profile
+    # every line below is skipped and behaviour is exactly what it was.
+    ctx = profile_context if profile_context and profile_context.get("usable") else None
+    if ctx:
+        from profiles import personalization
+
+        known_skills = personalization.merge_skills(known_skills, ctx["skills"])
+        if experience_level not in DIFFICULTIES:
+            experience_level = ctx["experience_level"]
+    interest_domains = set(ctx["interests"]) if ctx and not domain else set()
+    soft_weeks = ctx["preferred_weeks"] if ctx and not max_duration_weeks else None
+
     effective_query = (query or "").strip()
     if not effective_query:
-        parts = known_skills + technologies + ([domain] if domain else [])
+        parts = known_skills + technologies + ([domain] if domain else sorted(interest_domains))
         effective_query = ", ".join(parts)
     if not effective_query:
         return []
@@ -415,45 +533,80 @@ def personalized_recommend(
         filters["difficulty"] = difficulty
     if technologies:
         filters["technologies"] = technologies
-    if max_duration_weeks:
-        filters["max_duration_weeks"] = max_duration_weeks
-
-    top_k = max(1, min(top_k, config.MAX_TOP_K))
-    # A wider candidate pool than the final top_k, so skill/timeline fit can
-    # re-order results beyond whatever plain relevance alone would surface —
-    # otherwise a project ranked #12 on relevance but a perfect skill match
-    # would never get the chance to out-rank #3.
-    candidate_k = max(1, min(top_k * 4, config.MAX_TOP_K))
-
-    candidates = search(effective_query, filters=filters or None, top_k=candidate_k)
-    if not candidates:
-        return []
 
     size = max(1, min(team_size or 1, 20))
     level = experience_level if experience_level in DIFFICULTIES else None
-    tech_wanted = {t.lower() for t in technologies}
+
+    if max_duration_weeks:
+        # Cheap, never-too-strict pre-filter on the baseline duration so the
+        # candidate pool is made of projects that can still qualify; the exact
+        # estimate is applied per project below. predict() rounds to the
+        # nearest half week, hence the 0.25 allowance.
+        floor = timeline.min_weeks_multiplier(size, level)
+        filters["max_duration_weeks"] = int((max_duration_weeks + 0.25) / floor)
+
+    top_k = max(1, min(top_k, config.MAX_TOP_K))
+    # A wider candidate pool than the final top_k, so skill/difficulty fit can
+    # re-order results beyond whatever plain relevance alone would surface —
+    # otherwise a project ranked #12 on relevance but a perfect skill match
+    # would never get the chance to out-rank #3.
+    candidate_k = max(1, min(top_k * 8, config.MAX_TOP_K))
+
+    # Best fit builds its query from the user's own skill list and scores skill
+    # readiness (which already credits technologies) separately, so the
+    # technology-identity blend is left off here: no double counting, and the
+    # panel's documented semantics stay exactly as tested.
+    candidates = search(effective_query, filters=filters or None, top_k=candidate_k, technology_match=False)
+    if not candidates:
+        return []
+    tech_wanted = {skill_names.normalize_key(t) for t in technologies}
 
     recommendations: list[dict[str, Any]] = []
     for result in candidates:
         doc = result.document
 
-        skill_info = skill_gap(result.project_id, known_skills) if known_skills else None
+        if max_duration_weeks and known_duration(doc) is None:
+            continue
         estimate = timeline.predict(doc, team_size=size, experience_level=level)
+        if max_duration_weeks and estimate["predicted_weeks"] > max_duration_weeks:
+            continue
+
+        skill_info = _skill_fit(doc, known_skills) if known_skills else None
+        difficulty_score, difficulty_note = difficulty_fit(doc.get("difficulty", ""), level)
         timeline_fit = (
             _timeline_fit_score(estimate["predicted_weeks"], max_duration_weeks)
             if max_duration_weeks
             else None
         )
 
+        # Soft, profile-only duration preference: never excludes, and the pace
+        # scaling is an assumed reference commitment (see config), so it only
+        # nudges the timeline signal and the wording.
+        pace_weeks = soft_fit = None
+        if ctx:
+            if ctx["hours_per_week"]:
+                pace_weeks = personalization.pace_adjusted_weeks(estimate["predicted_weeks"], ctx["hours_per_week"])
+            if soft_weeks:
+                soft_fit = _timeline_fit_score(
+                    pace_weeks if pace_weeks is not None else estimate["predicted_weeks"], soft_weeks
+                )
+        in_interest = doc.get("domain") in interest_domains if interest_domains else None
+
         matching_factors: list[str] = []
+        if in_interest:
+            matching_factors.append(f"Matches your interest: {doc.get('domain')}")
+        if soft_fit is not None and soft_fit >= 100:
+            matching_factors.append(f"Fits your preferred project length (~{(pace_weeks or estimate['predicted_weeks']):g} weeks at your pace)")
         if domain and doc.get("domain") == domain:
             matching_factors.append(f"Domain match: {domain}")
         if difficulty and doc.get("difficulty") == difficulty:
             matching_factors.append(f"Difficulty match: {difficulty}")
         if tech_wanted:
-            matched_tech = [t for t in doc.get("technologies", []) if t.lower() in tech_wanted]
+            matched_tech = [t for t in doc.get("technologies", []) if skill_names.normalize_key(t) in tech_wanted]
             if matched_tech:
                 matching_factors.append(f"Technology match: {', '.join(matched_tech)}")
+        if difficulty_score == 100:
+            matching_factors.append(difficulty_note)
         if result.matched_terms:
             matching_factors.append(f"Keyword match: {', '.join(result.matched_terms[:4])}")
         if skill_info and skill_info["skills_you_have"]:
@@ -474,22 +627,48 @@ def personalized_recommend(
         if skill_info is not None:
             score_total += (skill_info["readiness_percent"] / 100) * config.RECOMMEND_SKILL_WEIGHT
             weight_total += config.RECOMMEND_SKILL_WEIGHT
-        if timeline_fit is not None:
-            score_total += (timeline_fit / 100) * config.RECOMMEND_TIMELINE_WEIGHT
+        blend_timeline_fit = timeline_fit if timeline_fit is not None else soft_fit
+        if blend_timeline_fit is not None:
+            score_total += (blend_timeline_fit / 100) * config.RECOMMEND_TIMELINE_WEIGHT
             weight_total += config.RECOMMEND_TIMELINE_WEIGHT
+        if in_interest is not None:
+            score_total += (100 if in_interest else 0) / 100 * config.RECOMMEND_INTEREST_WEIGHT
+            weight_total += config.RECOMMEND_INTEREST_WEIGHT
+        if difficulty_score is not None:
+            score_total += (difficulty_score / 100) * config.RECOMMEND_DIFFICULTY_WEIGHT
+            weight_total += config.RECOMMEND_DIFFICULTY_WEIGHT
         overall_score = round((score_total / weight_total) * 100, 1) if weight_total else 0.0
 
         payload = result.to_dict()
         payload["overall_score"] = overall_score
         payload["matching_factors"] = matching_factors
         payload["skill_gap"] = skill_info
+        payload["difficulty_fit"] = difficulty_score
+        payload["difficulty_note"] = difficulty_note if difficulty_score is not None else None
         payload["timeline"] = {k: v for k, v in estimate.items() if k != "phases"}
         payload["recommendation_reason"] = _recommendation_reason(
             result, skill_info, timeline_fit, max_duration_weeks
         )
+        if difficulty_score is not None and difficulty_score < 100:
+            payload["recommendation_reason"] += f" {difficulty_note}"
+        if ctx:
+            levels = ctx["skill_levels"]
+            have = [
+                {"name": name, "level": levels.get(skill_names.normalize_key(name))}
+                for name in (skill_info["skills_you_have"] if skill_info else [])
+            ]
+            payload["profile_match"] = {
+                "skills_you_have": have,
+                "skills_to_learn": skill_info["skills_to_learn"] if skill_info else [],
+                "domain_interest": in_interest,
+                "pace_weeks": pace_weeks,
+            }
+            payload["recommendation_reason"] += _profile_clauses(doc, have, in_interest, soft_fit, soft_weeks, pace_weeks, estimate)
         recommendations.append(payload)
 
-    recommendations.sort(key=lambda r: r["overall_score"], reverse=True)
+    # Ties broken by project_id so the same catalogue + input always yields the
+    # same order, independent of how the retriever happened to enumerate them.
+    recommendations.sort(key=lambda r: (-r["overall_score"], r["project_id"]))
     return recommendations[:top_k]
 
 

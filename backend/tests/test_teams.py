@@ -450,12 +450,8 @@ def test_team_roles_uses_the_teams_real_project_and_roster(project):
 
     result = team_roles(team["team_id"], OWNER["user_id"])
     assert result["project_id"] == project["project_id"]
-    # A member can hold more than one role now that every module always
-    # gets an owner (nlp/team_builder.py) — keep each member's first
-    # (best-fit, pass-1) assignment rather than a later leftover one.
-    by_name = {}
-    for a in result["assignments"]:
-        by_name.setdefault(a["member"], a)
+    by_name = {a["member"]: a for a in result["assignments"]}
+    assert len(by_name) == len(result["assignments"])  # one role per member
     assert by_name[OWNER["name"]]["category"] == "Data / ML"
     assert by_name[JOINER["name"]]["category"] == "Frontend / UI"
 
@@ -576,3 +572,27 @@ def test_list_my_teams_mixes_project_and_idea_backed_teams(mongo_test_db):
     assert teams[project_team["team_id"]]["project_title"] == "Mixed Project"
     assert teams[idea_team["team_id"]]["project_title"] == IDEA["name"]
     assert teams[idea_team["team_id"]]["project_id"] is None
+
+
+def test_team_roles_never_gives_one_member_several_roles_or_a_fallback_role(project):
+    team = create_team("My Team", OWNER, project_id=project["project_id"])
+    join_team(team["invite_code"], JOINER)  # JOINER records no skills
+    set_member_skills(team["team_id"], OWNER["user_id"], ["Python", "TensorFlow"])
+
+    result = team_roles(team["team_id"], OWNER["user_id"])
+
+    assert [a["member"] for a in result["assignments"]] == [OWNER["name"]]
+    assert all(a["fallback"] is False for a in result["assignments"])
+    assert [u["member"] for u in result["unassigned_members"]] == [JOINER["name"]]
+    assert result["unassigned_members"][0]["reason"] == "no_skills"
+
+
+def test_team_roles_keeps_two_members_with_the_same_display_name_separate(project):
+    twin = {"user_id": "u-twin", "name": OWNER["name"], "email": "twin@example.com"}
+    team = create_team("My Team", OWNER, project_id=project["project_id"])
+    join_team(team["invite_code"], twin)
+    set_member_skills(team["team_id"], OWNER["user_id"], ["Python"])
+    set_member_skills(team["team_id"], twin["user_id"], ["React", "CSS"])
+
+    result = team_roles(team["team_id"], OWNER["user_id"])
+    assert {a["category"] for a in result["assignments"]} == {"Data / ML", "Frontend / UI"}

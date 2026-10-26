@@ -60,13 +60,6 @@ export function AssignmentCard({ assignment, index }) {
         → <span style={{ color: 'var(--on-surface)' }}>{assignment.assigned_role}</span>
       </p>
 
-      {assignment.fallback ? (
-        <p className="t-body-md mt-2" style={{ color: '#ffb4ab', fontSize: 12 }}>
-          No open role matched their strongest area{assignment.strongest_category ? ` (${assignment.strongest_category})` : ''}
-          {' '}— filling this role to keep every seat covered.
-        </p>
-      ) : null}
-
       {assignment.matched_skills?.length > 0 && (
         <div className="mt-2 flex flex-wrap gap-1">
           {assignment.matched_skills.map((skill) => (
@@ -81,6 +74,33 @@ export function AssignmentCard({ assignment, index }) {
         </div>
       )}
     </motion.div>
+  )
+}
+
+/**
+ * Members the engine could not honestly match to any open role, each with
+ * the reason — shown instead of handing them an unrelated role.
+ */
+export function UnassignedMembers({ members }) {
+  if (!members?.length) return null
+  return (
+    <div className="space-y-2">
+      {members.map((m) => (
+        <div
+          key={m.member}
+          className="p-3"
+          style={{ background: 'var(--surface-container-low)', border: '1px solid var(--border-technical)', borderRadius: 8 }}
+        >
+          <p className="t-label-mono" style={{ color: 'var(--on-surface)', fontSize: 12 }}>
+            {m.member} — no role suggested
+          </p>
+          <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+            {m.message}
+            {m.strongest_category ? ` Strongest area: ${m.strongest_category}.` : ''}
+          </p>
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -182,6 +202,8 @@ export default function TeamBuilder({ onBuild }) {
           {result.assignments.map((assignment, i) => (
             <AssignmentCard key={assignment.member + i} assignment={assignment} index={i} />
           ))}
+
+          <UnassignedMembers members={result.unassigned_members} />
 
           {result.unfilled_roles?.length > 0 && (
             <p className="t-body-md p-3" style={{ background: 'var(--surface-container-low)', color: 'var(--on-surface-variant)', fontSize: 12.5, borderRadius: 8 }}>

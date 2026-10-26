@@ -191,6 +191,36 @@ def tokens_for_bm25(text: str) -> list[str]:
     return tokens
 
 
+def token_display_map(text: str) -> dict[str, str]:
+    """lemma -> a readable form for it, taken from the words actually typed.
+
+    tokens_for_bm25() lemmatises ("pandas" -> "panda") and expands
+    abbreviations inside words ("node.js" -> "node.javascript"), which is fine
+    for matching but wrong to show a student. This tokenises each typed word
+    with the same pipeline and remembers that word as the display form of the
+    lemma it produced, preferring the canonical spelling of known
+    technologies ("js" -> "JavaScript", "node.js" -> "Node.js"). A word that
+    expands to several tokens ("ml" -> machine, learning) shows those tokens
+    as they are. Matching is untouched; only what is displayed changes.
+    """
+    from nlp import skills
+
+    if not text:
+        return {}
+    cleaned = _PUNCT_RE.sub(" ", _URL_RE.sub(" ", text.lower()))
+
+    display: dict[str, str] = {}
+    for word in _TOKEN_RE.findall(cleaned):
+        word = word.strip(".-")
+        lemmas = tokens_for_bm25(word)
+        if len(lemmas) == 1:
+            display.setdefault(lemmas[0], skills.display_name(word))
+        else:
+            for lemma in lemmas:
+                display.setdefault(lemma, lemma)
+    return display
+
+
 def keyword_set(text: str) -> set[str]:
     """Unique lemmatised tokens — used to explain why a project matched."""
     return set(tokens_for_bm25(text))

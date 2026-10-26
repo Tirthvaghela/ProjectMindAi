@@ -14,7 +14,7 @@ from typing import Any, Optional
 
 from db import client as db
 from db.schema import DIFFICULTIES, DOMAINS
-from nlp import feasibility, generator, ideation, learning_path, recommend, timeline
+from nlp import feasibility, generator, ideation, learning_path, personal_tools, recommend, timeline
 
 MAX_SEARCH_RESULTS = 8
 DEFAULT_SEARCH_RESULTS = 5
@@ -1456,11 +1456,24 @@ def generate_idea_milestones(
     return result, {"type": "milestones", **result}
 
 
-def call_tool(name: str, arguments: dict[str, Any]) -> tuple[dict[str, Any], Optional[dict[str, Any]]]:
+def tool_schemas(user: Optional[dict[str, Any]] = None) -> list[dict[str, Any]]:
+    """The tools to offer this turn. Signed-out callers get exactly TOOL_SCHEMAS;
+    a signed-in caller additionally gets the read-only personal tools
+    (nlp/personal_tools.py), which only work for the account passed to call_tool."""
+    return [*TOOL_SCHEMAS, *personal_tools.PERSONAL_TOOL_SCHEMAS] if user else TOOL_SCHEMAS
+
+
+def call_tool(
+    name: str, arguments: dict[str, Any], user: Optional[dict[str, Any]] = None
+) -> tuple[dict[str, Any], Any]:
     """Dispatch one model-requested tool call. Always returns (result, block) —
     `result` is what's fed back to the model; `block` (or None) is what the
     caller (nlp/ai_assistant.py:general_reply) surfaces to the frontend as
-    structured, persisted UI alongside the model's own text."""
+    structured, persisted UI alongside the model's own text. `block` may also be
+    a list of blocks. `user` is the server-resolved account (never model input);
+    personal tools refuse to run without it."""
+    if personal_tools.is_personal_tool(name):
+        return personal_tools.call_personal_tool(name, arguments, user)
     if name == "search_projects":
         return search_projects(
             query=str(arguments.get("query", "")),

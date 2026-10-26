@@ -427,6 +427,165 @@ def test_general_reply_threads_the_named_reference_note_into_the_user_message(mo
     assert "never ask the student to redescribe it" in last_user_message
 
 
+# --- _preserve_idea_originality ------------------------------------------------
+#
+# select_idea's own tool schema has no originality_score/is_unique parameters
+# (see nlp/chat_tools.select_idea) — a generated idea's already-computed
+# uniqueness result used to be silently dropped the moment it became the
+# selected idea, which is why Decision Center could never show Originality
+# for a generated idea. This looks the value up by name instead of asking
+# the model to repeat it, mirroring _named_reference_note's own reversed,
+# most-recent-wins history scan above.
+
+IDEA_WITH_ORIGINALITY = {**IDEA, "originality_score": 82, "is_unique": True, "similar_projects": []}
+
+
+def test_preserve_idea_originality_finds_a_match_in_this_turns_own_blocks():
+    # The common "generate then build" flow: generate_project_ideas and
+    # select_idea both happen in the SAME turn, so the shown idea is only in
+    # blocks_by_type so far, not yet in `history` (which is prior turns).
+    blocks_by_type = {"generated_project_ideas": {"type": "generated_project_ideas", "ideas": [IDEA_WITH_ORIGINALITY]}}
+    bare_idea = {"id": "idea-2", "name": IDEA["name"]}
+
+    enriched = ai_assistant._preserve_idea_originality(bare_idea, blocks_by_type, history=None)
+
+    assert enriched["originality_score"] == 82
+    assert enriched["is_unique"] is True
+    # The other, unrelated fields select_idea already computed are untouched.
+    assert enriched["id"] == "idea-2"
+
+
+def test_preserve_idea_originality_falls_back_to_history_when_not_shown_this_turn():
+    history = [
+        {"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA_WITH_ORIGINALITY]}]},
+    ]
+    bare_idea = {"id": "idea-2", "name": IDEA["name"]}
+
+    enriched = ai_assistant._preserve_idea_originality(bare_idea, {}, history)
+
+    assert enriched["originality_score"] == 82
+    assert enriched["is_unique"] is True
+
+
+def test_preserve_idea_originality_prefers_the_most_recent_matching_block():
+    older = {**IDEA_WITH_ORIGINALITY, "originality_score": 20, "is_unique": False}
+    newer = {**IDEA_WITH_ORIGINALITY, "originality_score": 91, "is_unique": True}
+    history = [
+        {"role": "assistant", "content": "Here.", "blocks": [{"type": "generated_project_ideas", "ideas": [older]}]},
+        {"role": "assistant", "content": "Here again.", "blocks": [{"type": "generated_project_ideas", "ideas": [newer]}]},
+    ]
+    bare_idea = {"id": "idea-2", "name": IDEA["name"]}
+
+    enriched = ai_assistant._preserve_idea_originality(bare_idea, {}, history)
+
+    assert enriched["originality_score"] == 91
+    assert enriched["is_unique"] is True
+
+
+def test_preserve_idea_originality_leaves_a_value_already_present_untouched():
+    # A future caller that already supplies originality directly must not be
+    # silently overwritten by a stale, differently-scored match from history.
+    blocks_by_type = {"generated_project_ideas": {"type": "generated_project_ideas", "ideas": [{**IDEA, "name": IDEA["name"], "originality_score": 10, "is_unique": False}]}}
+    idea_with_its_own_score = {**IDEA, "originality_score": 77, "is_unique": True}
+
+    enriched = ai_assistant._preserve_idea_originality(idea_with_its_own_score, blocks_by_type, history=None)
+
+    assert enriched is idea_with_its_own_score
+    assert enriched["originality_score"] == 77
+
+
+def test_preserve_idea_originality_leaves_an_unmatched_idea_exactly_as_given():
+    """Handles an older conversation / a hand-typed idea with no matching
+    generate_project_ideas call gracefully — no fabricated score, no crash."""
+    bare_idea = {"id": "idea-1", "name": "Never Shown As A Generated Idea"}
+
+    enriched = ai_assistant._preserve_idea_originality(bare_idea, {}, history=None)
+
+    assert enriched == bare_idea
+    assert "originality_score" not in enriched
+    assert "is_unique" not in enriched
+
+
+def test_preserve_idea_originality_handles_a_nameless_idea_without_crashing():
+    bare_idea = {"id": "idea-1", "name": ""}
+    enriched = ai_assistant._preserve_idea_originality(bare_idea, {}, history=None)
+    assert enriched == bare_idea
+
+
+def test_general_reply_select_idea_preserves_originality_from_the_same_turns_generation(monkeypatch):
+    """End-to-end: generate ideas, then select one, in the same turn — the
+    real 'Build This' flow right after a fresh batch of ideas."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+
+    def fake_generate(**_kwargs):
+        return [{**IDEA_WITH_ORIGINALITY}]
+
+    monkeypatch.setattr(chat_tools.ideation, "generate_ideas", fake_generate)
+    responses = iter(
+        [
+            _tool_call_completion("generate_project_ideas", '{"topic": "campus"}'),
+            _tool_call_completion("select_idea", f'{{"id": "{IDEA["id"]}", "name": "{IDEA["name"]}"}}'),
+            _text_completion("Let's build it."),
+        ]
+    )
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: next(responses))
+
+    _content, _blocks, _pid, selected_idea = ai_assistant.general_reply(
+        "generate an idea about campus life, then let's build the first one"
+    )
+
+    assert selected_idea["originality_score"] == 82
+    assert selected_idea["is_unique"] is True
+
+
+def test_general_reply_select_idea_preserves_originality_from_an_earlier_turn(monkeypatch):
+    """The idea was generated and shown on a PRIOR turn (already in
+    `history`, not this turn's own tool calls) — the scan must still find
+    it via the same reversed-history lookup _named_reference_note uses."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    responses = iter(
+        [
+            _tool_call_completion("select_idea", f'{{"id": "{IDEA["id"]}", "name": "{IDEA["name"]}"}}'),
+            _text_completion("Let's build it."),
+        ]
+    )
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: next(responses))
+
+    history = [
+        {"role": "user", "content": "Generate ideas about campus life."},
+        {"role": "assistant", "content": "Here's one.", "blocks": [{"type": "generated_project_ideas", "ideas": [IDEA_WITH_ORIGINALITY]}]},
+    ]
+    _content, blocks, _pid, selected_idea = ai_assistant.general_reply(
+        "let's build the notes idea instead", history
+    )
+
+    assert selected_idea["originality_score"] == 82
+    assert selected_idea["is_unique"] is True
+    # The idea_selected block itself (unused by the frontend, but part of
+    # the persisted turn) stays consistent with the returned selected_idea.
+    selected_block = next(b for b in blocks if b["type"] == "idea_selected")
+    assert selected_block["idea"]["originality_score"] == 82
+
+
+def test_general_reply_select_idea_without_a_prior_generation_has_no_originality(monkeypatch):
+    """No matching generate_project_ideas call anywhere — graceful, not a
+    fabricated 0% or a crash (Decision Center already treats an absent
+    originality_score as 'unavailable', never a real zero)."""
+    monkeypatch.setattr(ai_assistant.config, "AI_ASSISTANT_ENABLED", True)
+    responses = iter(
+        [
+            _tool_call_completion("select_idea", '{"id": "idea-9", "name": "Hand Typed Idea"}'),
+            _text_completion("Let's build it."),
+        ]
+    )
+    monkeypatch.setattr(ai_assistant, "_create_completion", lambda **_: next(responses))
+
+    _content, _blocks, _pid, selected_idea = ai_assistant.general_reply("let's build my own idea")
+
+    assert selected_idea.get("originality_score") is None
+    assert selected_idea.get("is_unique") is None
+
+
 # --- _resume_context_note -----------------------------------------------------
 
 

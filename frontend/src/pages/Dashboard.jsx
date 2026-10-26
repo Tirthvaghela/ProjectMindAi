@@ -89,6 +89,37 @@ function blockOfType(blocks, type) {
   return blocks?.find((b) => b.type === type) ?? null
 }
 
+/** "Which project/idea is this actually about" — a small connective label
+ * for the follow-up result blocks (Feasibility, Scope, Resources, Timeline,
+ * Milestones) that each already carry their own `project_id`/`title`
+ * (backend/nlp/feasibility.py, timeline.py, generator.py all include them
+ * in every result already, unused by the frontend until now). Reuses the
+ * exact same badge wording DecisionCenterBlock's own eyebrow uses, so a
+ * Scope/Resources/Feasibility result reads as one more stage of the SAME
+ * plan Decision Center is the hub for — not an unrelated card — and stays
+ * correct even scrolled back through history after the active
+ * project/idea has since changed. Omitted entirely when a block predates
+ * these fields (title missing) rather than showing a blank label. */
+function BlockContextLabel({ projectId, title }) {
+  if (!title) return null
+  return (
+    <div className="mb-2 flex items-center gap-1.5">
+      {/* shrink-0 + whitespace-nowrap: without an explicit no-wrap, a flex
+          item's automatic min-width is only its longest WORD, not the whole
+          phrase — measured live at 390px, "Catalogue Project" wrapped to
+          "Catalogue" / "Project" on two lines while fighting the truncating
+          title span next to it for space. This keeps the badge on one line
+          and lets the title alone absorb the shrink via its own truncate. */}
+      <span className="gm-chip shrink-0 whitespace-nowrap px-1.5 py-0.5" style={{ fontSize: 8.5 }}>
+        {projectId ? 'Catalogue Project' : 'AI-Generated Idea'}
+      </span>
+      <span className="t-label-mono truncate" style={{ color: 'var(--outline)', fontSize: 10.5 }}>
+        {title}
+      </span>
+    </div>
+  )
+}
+
 /** The [Select Project] action — a <button> nested in MiniProjectCard's
  * <Link>, so it needs the same preventDefault/stopPropagation pattern
  * ProjectCard.jsx's StarButton uses to avoid also triggering navigation. */
@@ -275,6 +306,7 @@ function SkillGapBlock({ block }) {
 function TimelineBlock({ block }) {
   return (
     <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <BlockContextLabel projectId={block.project_id} title={block.title} />
       <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 14 }}>
         {block.predicted_weeks} weeks
         <span className="t-body-md ml-2" style={{ color: 'var(--outline)', fontSize: 12 }}>
@@ -334,6 +366,7 @@ function LearningPathBlock({ block }) {
 function MilestonesBlock({ block }) {
   return (
     <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <BlockContextLabel projectId={block.project_id} title={block.title} />
       <p className="t-label-mono mb-2" style={{ color: 'var(--outline)', fontSize: 11 }}>
         {block.milestones?.length} checkpoints across {block.total_weeks} week{block.total_weeks === 1 ? '' : 's'}
       </p>
@@ -541,6 +574,7 @@ function FeasibilityBlock({ block, onAction }) {
   const availableFactors = block.factors?.filter((f) => f.score != null) ?? []
   return (
     <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <BlockContextLabel projectId={block.project_id} title={block.title} />
       <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 16 }}>
         {block.feasibility_score}% feasible
         <span className="t-body-md ml-2" style={{ color: 'var(--outline)', fontSize: 12 }}>
@@ -627,6 +661,7 @@ function ScopeTierSection({ label, items }) {
 function ScopeBlock({ block, onAction }) {
   return (
     <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <BlockContextLabel projectId={block.project_id} title={block.title} />
       <ScopeTierSection label="MVP" items={block.mvp} />
       <ScopeTierSection label="Core" items={block.core} />
       <ScopeTierSection label="Advanced" items={block.advanced} />
@@ -722,6 +757,7 @@ function ResourceBlock({ block, onAction }) {
 
   return (
     <div className="glass-panel w-full max-w-full p-3" style={{ borderRadius: 8 }}>
+      <BlockContextLabel projectId={block.project_id} title={block.title} />
       <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 14 }}>
         {team.recommended_size} {team.recommended_size === 1 ? 'person' : 'people'} recommended
         {team.given_size != null && (
@@ -820,13 +856,55 @@ function ResourceBlock({ block, onAction }) {
 
 /** One fit/score stat inside the Decision Center — omitted entirely (not
  * shown as 0%) when its value is unavailable, same "unavailable is not a
- * real zero" rule every other block in this file already follows. */
+ * real zero" rule every other block in this file already follows. Rendered
+ * as a small bordered tile (not bare wrapped text) so the Project Fit row
+ * reads as one grid of peer stats, clearly secondary to the single large
+ * recommendation score above it. */
 function ScoreStat({ label, value, suffix = '' }) {
   if (value == null) return null
   return (
-    <div>
-      <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9.5 }}>{label}</p>
-      <p className="t-label-mono" style={{ color: 'var(--on-surface)', fontSize: 13 }}>{value}%{suffix}</p>
+    <div className="min-w-0 px-2.5 py-1.5" style={{ background: 'var(--surface-container-low)', border: '1px solid var(--border-technical)', borderRadius: 6 }}>
+      <p className="t-label-caps truncate" style={{ color: 'var(--outline)', fontSize: 9 }}>{label}</p>
+      <p className="t-label-mono truncate" style={{ color: 'var(--on-surface)', fontSize: 14 }}>{value}%{suffix}</p>
+    </div>
+  )
+}
+
+/** Recommendation-state → visual tone, built entirely from colors already
+ * established elsewhere in this codebase: var(--primary) is the same
+ * "emphasis" white every filled button/active chip already uses, and
+ * #ffb4ab is the exact red every error/warning notice in this app already
+ * uses (Feedback.jsx's ErrorNotice, every form's inline error text — see
+ * ComposerError above). No new colors. `label` is one of the three fixed
+ * strings decision_center.py's _RECOMMENDATION_BANDS produces. */
+function recommendationTone(label) {
+  if (label === 'Recommended') {
+    return { fg: 'var(--primary)', border: 'var(--primary)', dot: 'var(--primary)' }
+  }
+  if (label === 'High risk — reconsider or reduce scope') {
+    return { fg: '#ffb4ab', border: 'rgba(255,180,171,0.4)', dot: '#ffb4ab' }
+  }
+  return { fg: 'var(--on-surface)', border: 'var(--border-technical)', dot: 'var(--outline)' }
+}
+
+/** Shown only while the read-only GET assembling the Decision Center is in
+ * flight — distinct from "nothing selected" (nothing renders at all) and
+ * "the fetch failed" (falls back to the plain action chips), so a slow
+ * response reads as "working on it" rather than a blank gap or a stuck
+ * layout. Same spinner technique as Feedback.jsx's Spinner, scaled down to
+ * fit inline in a card instead of a full-page state. */
+function DecisionCenterLoading() {
+  return (
+    <div className="glass-panel w-full max-w-full p-4" style={{ borderRadius: 10 }}>
+      <div className="flex items-center gap-2.5">
+        <span
+          className="h-3.5 w-3.5 shrink-0 animate-spin rounded-full border-2"
+          style={{ borderColor: 'var(--border-technical)', borderTopColor: 'var(--primary)' }}
+        />
+        <p className="t-label-mono" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+          Preparing your decision summary…
+        </p>
+      </div>
     </div>
   )
 }
@@ -835,7 +913,10 @@ function ScoreStat({ label, value, suffix = '' }) {
  * computed by the existing analyzers (feasibility, scope, resources, and,
  * for a catalogue project, the Decision Engine) into one view for whichever
  * project/idea is currently active (backend/nlp/decision_center.py). No LLM
- * call: every number here already exists, this component only lays it out.
+ * call: every number here already exists, this component only lays it out,
+ * ordered RECOMMENDATION → WHY → PROJECT FIT → RISKS → SCOPE → RESOURCES →
+ * NEXT ACTION so it reads as the final stage of Discover → Evaluate →
+ * Feasibility → Scope → Resources → Decide, not a flat dump of numbers.
  * Every action sends a canned prompt through the existing chat pipeline
  * (onAction === send), same mechanism PROJECT_ACTIONS/IDEA_BUILD_ACTIONS
  * already use — no new endpoints behind any of them except the read itself. */
@@ -849,6 +930,7 @@ function DecisionCenterBlock({ data, onAction }) {
   const scope = data.scope ?? {}
   const resources = data.resources ?? {}
   const scopeTierCount = (scope.mvp?.length ?? 0) + (scope.core?.length ?? 0) + (scope.advanced?.length ?? 0)
+  const tone = recommendationTone(rec.label)
   const roadmapPrompt = isIdea ? `Create a roadmap for "${data.name}".` : 'Create a roadmap for this project.'
   const scopePrompt = isIdea ? `What should the MVP be for "${data.name}"?` : 'What should the MVP be for this project?'
   const resourcesPrompt = isIdea
@@ -857,15 +939,47 @@ function DecisionCenterBlock({ data, onAction }) {
   const comparePrompt = isIdea
     ? `Compare "${data.name}" with the closest existing project.`
     : 'Compare this project with similar alternatives.'
+  const skillGapPrompt = 'Check my skill gap for this project.'
+
+  // WHY — the same numbers shown in the Project Fit row below, read back as
+  // one sentence so the score at the top always comes with an immediate
+  // reason attached, instead of making the reader cross-reference stats
+  // further down the card themselves.
+  const whyParts = []
+  if (data.skill_fit != null) whyParts.push(`${data.skill_fit}% skill fit`)
+  if (feasibility.risk_level) whyParts.push(`${feasibility.risk_level.toLowerCase()} risk`)
+  if (originality.score != null) whyParts.push(`${originality.score}% ${isIdea ? 'originality' : 'uniqueness'}`)
+  const whyLine = whyParts.length > 0 ? `Based on ${whyParts.join(', ')}.` : null
+
+  // The one existing action most worth surfacing next to the Next Step
+  // text — derived from the same known_skills_provided/reduced_scope
+  // signals decision_center.py's own recommended_next_step already used to
+  // write that sentence (never a second copy of that reasoning). Left
+  // unset (falls through to the always-visible Generate Roadmap primary
+  // button) rather than ever showing a second, disconnected suggestion.
+  let nextStepAction = null
+  if (data.recommended_next_step) {
+    if (!isIdea && !data.known_skills_provided) {
+      nextStepAction = { label: 'Check Skill Gap', prompt: skillGapPrompt }
+    } else if (scope.reduced_scope) {
+      nextStepAction = { label: 'View Scope', prompt: scopePrompt }
+    }
+  }
 
   return (
-    <div className="glass-panel w-full max-w-full p-4" style={{ borderRadius: 10, border: '1px solid var(--primary)' }}>
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <span className="gm-chip px-2 py-1" style={{ fontSize: 9.5 }}>
-            {isIdea ? 'AI-Generated Idea' : 'Catalogue Project'}
-          </span>
-          <p className="t-label-mono mt-1.5" style={{ color: 'var(--primary)', fontSize: 15 }}>{data.name}</p>
+    <div className="glass-panel w-full max-w-full p-4" style={{ borderRadius: 10, border: `1px solid ${tone.border}` }}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="gm-chip px-2 py-1" style={{ fontSize: 9.5 }}>
+          {isIdea ? 'AI-Generated Idea' : 'Catalogue Project'}
+        </span>
+        <span className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9 }}>Decision Center</span>
+      </div>
+
+      {/* RECOMMENDATION — the single strongest visual element on this card;
+          everything below only explains or acts on this one number. */}
+      <div className="mt-3 flex flex-wrap items-end justify-between gap-4 pb-3" style={{ borderBottom: '1px solid var(--border-technical)' }}>
+        <div className="min-w-0">
+          <p className="t-label-mono truncate" style={{ color: 'var(--primary)', fontSize: 17 }}>{data.name}</p>
           <p className="t-label-mono" style={{ color: 'var(--outline)', fontSize: 11 }}>
             {[data.difficulty, data.domain, data.duration_weeks ? `${data.duration_weeks} weeks` : null]
               .filter(Boolean)
@@ -874,31 +988,65 @@ function DecisionCenterBlock({ data, onAction }) {
         </div>
         {rec.score != null && (
           <div className="text-right">
-            <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 9.5 }}>{rec.label}</p>
-            <p className="t-label-mono" style={{ color: 'var(--primary)', fontSize: 22 }}>{rec.score}%</p>
+            {rec.label && (
+              <div className="flex items-center justify-end gap-1.5">
+                <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: '50%', background: tone.dot, display: 'inline-block' }} />
+                <p className="t-label-caps" style={{ color: tone.fg, fontSize: 11 }}>{rec.label}</p>
+              </div>
+            )}
+            <p className="t-label-mono" style={{ color: tone.fg, fontSize: 32, lineHeight: 1.15 }}>{rec.score}%</p>
           </div>
         )}
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 pt-3" style={{ borderTop: '1px solid var(--border-technical)' }}>
-        <ScoreStat label="Skill Fit" value={data.skill_fit} />
-        <ScoreStat label="Timeline Fit" value={time.fit_score} />
-        <ScoreStat label="Difficulty Fit" value={data.difficulty_fit} />
-        <ScoreStat label="Feasibility" value={feasibility.score} suffix={feasibility.risk_level ? ` (${feasibility.risk_level})` : ''} />
-        <ScoreStat label={isIdea ? 'Originality' : 'Uniqueness'} value={originality.score} />
-      </div>
-
-      {time.estimated_weeks != null && (
-        <p className="t-body-md mt-2" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
-          Estimated {time.estimated_weeks}wk build
+      {/* WHY */}
+      {whyLine && (
+        <p className="t-body-md mt-2.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+          {whyLine}
         </p>
       )}
 
+      {/* PROJECT FIT */}
+      {(data.skill_fit != null || time.fit_score != null || data.difficulty_fit != null || feasibility.score != null || originality.score != null) && (
+        <div className="mt-3">
+          <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Project Fit</p>
+          <div className="mt-1.5 grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-5">
+            <ScoreStat label="Skill Fit" value={data.skill_fit} />
+            <ScoreStat label="Timeline Fit" value={time.fit_score} />
+            <ScoreStat label="Difficulty Fit" value={data.difficulty_fit} />
+            <ScoreStat label="Feasibility" value={feasibility.score} suffix={feasibility.risk_level ? ` (${feasibility.risk_level})` : ''} />
+            <ScoreStat label={isIdea ? 'Originality' : 'Uniqueness'} value={originality.score} />
+          </div>
+          {time.estimated_weeks != null && (
+            <p className="t-body-md mt-1.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+              Estimated {time.estimated_weeks}wk build
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* RISKS (and STRENGTHS) — grouped into their own labeled sections
+          rather than one merged bullet list, so a risk never reads like a
+          strength at a glance. */}
       {(data.strengths?.length > 0 || data.risks?.length > 0) && (
-        <ul className="t-body-md mt-2 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
-          {data.strengths?.slice(0, 4).map((s) => <li key={s}>✓ {s}</li>)}
-          {data.risks?.slice(0, 4).map((r) => <li key={r}>⚠ {r}</li>)}
-        </ul>
+        <div className="mt-3 grid gap-x-4 gap-y-2 sm:grid-cols-2">
+          {data.strengths?.length > 0 && (
+            <div>
+              <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Strengths</p>
+              <ul className="t-body-md mt-1 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+                {data.strengths.slice(0, 4).map((s) => <li key={s}>✓ {s}</li>)}
+              </ul>
+            </div>
+          )}
+          {data.risks?.length > 0 && (
+            <div>
+              <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Risks</p>
+              <ul className="t-body-md mt-1 space-y-0.5" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
+                {data.risks.slice(0, 4).map((r) => <li key={r}>⚠ {r}</li>)}
+              </ul>
+            </div>
+          )}
+        </div>
       )}
 
       {data.skills_to_learn?.length > 0 && (
@@ -907,30 +1055,62 @@ function DecisionCenterBlock({ data, onAction }) {
         </p>
       )}
 
-      {scopeTierCount > 0 && (
-        <p className="t-body-md mt-2" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
-          <span style={{ color: 'var(--outline)' }}>Scope:</span> {scope.mvp?.length ?? 0} MVP · {scope.core?.length ?? 0} core · {scope.advanced?.length ?? 0} advanced
-          {scope.reduced_scope ? ' · reduction suggested for your timeline' : ''}
-        </p>
-      )}
-
-      {resources.team_recommended_size != null && (
-        <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
-          <span style={{ color: 'var(--outline)' }}>Resources:</span> {resources.team_recommended_size}{' '}
-          {resources.team_recommended_size === 1 ? 'person' : 'people'} recommended
-          {resources.cost_is_estimate ? ' · free-tier friendly (estimate)' : ''}
-        </p>
-      )}
-
-      {data.recommended_next_step && (
-        <div className="mt-3 pt-2" style={{ borderTop: '1px solid var(--border-technical)' }}>
-          <p className="t-label-caps" style={{ color: 'var(--primary)', fontSize: 10 }}>Recommended next step</p>
-          <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12.5 }}>
-            {data.recommended_next_step}
-          </p>
+      {/* SCOPE / RESOURCES — one-line summaries only; View Scope/View
+          Resources below open the full breakdown from their own dedicated
+          blocks, this never repeats that detail. */}
+      {(scopeTierCount > 0 || resources.team_recommended_size != null) && (
+        <div className="mt-3 grid gap-x-4 gap-y-2 pt-3 sm:grid-cols-2" style={{ borderTop: '1px solid var(--border-technical)' }}>
+          {scopeTierCount > 0 && (
+            <div>
+              <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Scope</p>
+              <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+                {scope.mvp?.length ?? 0} MVP · {scope.core?.length ?? 0} core · {scope.advanced?.length ?? 0} advanced
+                {scope.reduced_scope ? ' · reduction suggested for your timeline' : ''}
+              </p>
+            </div>
+          )}
+          {resources.team_recommended_size != null && (
+            <div>
+              <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Resources</p>
+              <p className="t-body-md mt-1" style={{ color: 'var(--on-surface-variant)', fontSize: 12 }}>
+                {resources.team_recommended_size} {resources.team_recommended_size === 1 ? 'person' : 'people'} recommended
+                {resources.cost_is_estimate ? ' · free-tier friendly (estimate)' : ''}
+              </p>
+            </div>
+          )}
         </div>
       )}
 
+      {/* NEXT ACTION — the most prominent callout on the card after the
+          recommendation itself, paired with whichever single existing
+          action is most relevant right now (never duplicated below). */}
+      {data.recommended_next_step && (
+        <div className="mt-3 p-3" style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid var(--primary)', borderRadius: 8 }}>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="t-label-caps" style={{ color: 'var(--primary)', fontSize: 10 }}>Next Step</p>
+              <p className="t-body-md mt-1" style={{ color: 'var(--on-surface)', fontSize: 13 }}>
+                {data.recommended_next_step}
+              </p>
+            </div>
+            {nextStepAction && (
+              <button
+                type="button"
+                onClick={() => onAction(nextStepAction.prompt)}
+                className="btn-primary t-label-caps shrink-0 px-3 py-1.5"
+                style={{ fontSize: 10.5 }}
+              >
+                {nextStepAction.label}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ACTIONS — Start This Project and Generate Roadmap are the primary
+          pair; everything else is secondary. Whichever of Check Skill
+          Gap/View Scope is already shown as the Next Step's own button
+          above is not repeated in the secondary row. */}
       <div className="mt-3 flex flex-wrap gap-2">
         {!isIdea && data.project_id ? (
           <Link to={`/project/${data.project_id}`} className="btn-primary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
@@ -946,22 +1126,26 @@ function DecisionCenterBlock({ data, onAction }) {
             Start This Project
           </button>
         )}
-        <button type="button" onClick={() => onAction(roadmapPrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+        <button type="button" onClick={() => onAction(roadmapPrompt)} className="btn-primary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
           Generate Roadmap
         </button>
-        {!isIdea && (
+      </div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {!isIdea && nextStepAction?.label !== 'Check Skill Gap' && (
           <button
             type="button"
-            onClick={() => onAction('Check my skill gap for this project.')}
+            onClick={() => onAction(skillGapPrompt)}
             className="btn-secondary t-label-caps px-3 py-1.5"
             style={{ fontSize: 10.5 }}
           >
             Check Skill Gap
           </button>
         )}
-        <button type="button" onClick={() => onAction(scopePrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
-          View Scope
-        </button>
+        {nextStepAction?.label !== 'View Scope' && (
+          <button type="button" onClick={() => onAction(scopePrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
+            View Scope
+          </button>
+        )}
         <button type="button" onClick={() => onAction(resourcesPrompt)} className="btn-secondary t-label-caps px-3 py-1.5" style={{ fontSize: 10.5 }}>
           View Resources
         </button>
@@ -1027,6 +1211,44 @@ function ActiveIdeaBanner({ idea }) {
   )
 }
 
+/**
+ * "What this answer used" - rendered from the server's own `grounding` block
+ * (backend/nlp/personal_tools.py), which lists the saved ProjectMind data the
+ * assistant actually retrieved this turn (profile, skill gap, roadmap progress,
+ * team data) and a few fixed follow-up questions. It is built from tool calls,
+ * never from the model's text, so it cannot claim a source that was not read.
+ */
+function GroundingBlock({ block, onAction }) {
+  if (!block?.sources?.length) return null
+  return (
+    <div className="w-full max-w-[85%]" aria-label="Data used for this answer">
+      <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>Used from ProjectMind</p>
+      <ul className="mt-1 flex flex-wrap gap-1.5">
+        {block.sources.map((s) => (
+          <li key={`${s.kind}-${s.label}`} className="gm-chip px-2 py-0.5" style={{ fontSize: 11 }}>
+            {s.label}
+          </li>
+        ))}
+      </ul>
+      {onAction && block.follow_ups?.length > 0 && (
+        <div className="mt-2 flex flex-wrap gap-1.5" aria-label="Suggested follow-up questions">
+          {block.follow_ups.map((text) => (
+            <button
+              key={text}
+              type="button"
+              onClick={() => onAction(text)}
+              className="btn-secondary t-label-caps px-3 py-1.5"
+              style={{ fontSize: 10.5 }}
+            >
+              {text}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function Bubble({ role, content, blocks, conversationId, selectedProjectId, onSelectProject, onAction }) {
   const isUser = role === 'user'
   const recommended = projectsFromBlocks(blocks)
@@ -1041,6 +1263,7 @@ function Bubble({ role, content, blocks, conversationId, selectedProjectId, onSe
   const scopeResult = blockOfType(blocks, 'scope')
   const resourcesResult = blockOfType(blocks, 'resources')
   const generatedIdeas = blockOfType(blocks, 'generated_project_ideas')
+  const grounding = blockOfType(blocks, 'grounding')
 
   return (
     <div className={`flex flex-col gap-2 ${isUser ? 'items-end' : 'items-start'}`}>
@@ -1059,6 +1282,7 @@ function Bubble({ role, content, blocks, conversationId, selectedProjectId, onSe
           {!isUser && <CopyButton text={content} />}
         </div>
       )}
+      {!isUser && grounding && <GroundingBlock block={grounding} onAction={onAction} />}
       {recommended.length > 0 && (
         <div className="flex w-full max-w-full gap-3 overflow-x-auto pb-1">
           {recommended.map((p) => (
@@ -1193,23 +1417,37 @@ function Composer({ input, setInput, send, busy, voiceSupported, listening, star
 }
 
 /** Error + retry, shown wherever the Composer is — both the empty-state
- * hero flow and the pinned active-thread footer can surface a failed send. */
+ * hero flow and the pinned active-thread footer can surface a failed send.
+ *
+ * `failedMessage` is shown here, not just held for Retry to resend — the
+ * chat bubble it would have become was rolled back (see performSend, so
+ * Retry doesn't duplicate it once resent), and a bare "something went
+ * wrong" banner with no trace of what was typed reads exactly like the
+ * message vanished. Showing the text here, next to Retry, makes clear it's
+ * still right here, not lost. */
 function ComposerError({ error, failedMessage, onRetry }) {
   if (!error) return null
   return (
-    <div className="mb-2 flex items-center justify-center gap-3">
-      <p className="t-label-mono" style={{ color: '#ffb4ab', fontSize: 11 }}>
-        {error}
-      </p>
+    <div className="mb-2 flex flex-col items-center gap-1 px-4">
+      <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+        <p className="t-label-mono" style={{ color: '#ffb4ab', fontSize: 11 }}>
+          {error}
+        </p>
+        {failedMessage && (
+          <button
+            type="button"
+            onClick={onRetry}
+            className="t-label-mono transition hover:opacity-70"
+            style={{ color: 'var(--primary)', fontSize: 11, textDecoration: 'underline' }}
+          >
+            Retry
+          </button>
+        )}
+      </div>
       {failedMessage && (
-        <button
-          type="button"
-          onClick={onRetry}
-          className="t-label-mono transition hover:opacity-70"
-          style={{ color: 'var(--primary)', fontSize: 11, textDecoration: 'underline' }}
-        >
-          Retry
-        </button>
+        <p className="t-label-mono w-full max-w-md truncate text-center" style={{ color: 'var(--outline)', fontSize: 10.5 }}>
+          Not sent yet: "{failedMessage}"
+        </p>
       )}
     </div>
   )
@@ -1269,13 +1507,19 @@ export default function Dashboard() {
   // The unified Decision/Action Center for whichever of the two above is
   // currently active (see DecisionCenterBlock) — fetched fresh whenever the
   // selection changes, via the read-only GET that assembles it server-side
-  // (backend/nlp/decision_center.py). Stays null (silently hidden, same
-  // "just stays hidden if the lookup fails" rule as selectedProject below)
-  // whenever nothing is selected yet or the fetch fails.
+  // (backend/nlp/decision_center.py). `decisionCenter` stays null whenever
+  // nothing is selected yet, the fetch is still in flight, or it failed —
+  // `decisionCenterLoading`/`decisionCenterError` disambiguate those so the
+  // render below can show a loading state, then either the real block or
+  // (on failure, same as before) the plain action-chip fallback, instead of
+  // one flat "null means hidden" state that reads as a blank gap while the
+  // request is still in flight.
   const [decisionCenter, setDecisionCenter] = useState(null)
+  const [decisionCenterLoading, setDecisionCenterLoading] = useState(false)
+  const [decisionCenterError, setDecisionCenterError] = useState(false)
   const [authGateOpen, setAuthGateOpen] = useState(false)
   const [gatedText, setGatedText] = useState('')
-  const bottomRef = useRef(null)
+  const scrollAreaRef = useRef(null)
   const composerRef = useRef(null)
   // Which conversation's messages are currently reflected in `messages` —
   // distinct from `conversationId` (the URL) so this component can tell "we
@@ -1392,8 +1636,37 @@ export default function Dashboard() {
   }, [conversationId, authLoading, user])
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-  }, [messages, busy])
+    // decisionCenter is included because it loads asynchronously, after
+    // `messages` has already settled: without it, this effect only ever
+    // scrolls to where the bottom was *before* the Decision Center card
+    // finished expanding, silently leaving its lower actions (View Scope,
+    // Compare, Change Project) below the fold with no scroll cue.
+    //
+    // Scrolls the container directly to its own scrollHeight, not
+    // `scrollIntoView` on a marker element — measured live: with a tall
+    // Decision Center card, `scrollIntoView({block: 'nearest'})` stopped
+    // ~20px short of the true bottom (just enough for the last action row —
+    // View Scope/Compare/Change Project — to sit under the pinned
+    // ActiveProjectBanner), and `block: 'end'` was worse, landing even
+    // further short — `scrollIntoView`'s alignment re-targets against a
+    // marker element whose own position keeps shifting as this same effect
+    // re-renders content, and interrupts its own in-flight smooth-scroll
+    // animation on every dependency change. Scrolling the container to its
+    // own current `scrollHeight` has no such target-drift problem: every
+    // call unambiguously means "all the way down," so re-firing mid-
+    // animation just continues toward the same endpoint instead of a moved
+    // one.
+    const el = scrollAreaRef.current
+    if (!el) return
+    // jsdom (this app's test environment) doesn't implement scrollTo — a
+    // plain scrollTop assignment is a safe, equivalent (if non-smooth)
+    // fallback there, and real browsers all support scrollTo.
+    if (typeof el.scrollTo === 'function') {
+      el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
+    } else {
+      el.scrollTop = el.scrollHeight
+    }
+  }, [messages, busy, decisionCenter])
 
   // The workspace banner needs a display-ready project (title, difficulty,
   // domain), not just the id the conversation stores — reuses the existing
@@ -1429,16 +1702,35 @@ export default function Dashboard() {
   useEffect(() => {
     if (!conversationId || (!selectedProjectId && !selectedIdeaKey)) {
       setDecisionCenter(null)
+      setDecisionCenterLoading(false)
+      setDecisionCenterError(false)
       return
     }
     let cancelled = false
+    setDecisionCenterLoading(true)
+    setDecisionCenterError(false)
     api
       .decisionCenter(conversationId)
       .then(({ data }) => {
-        if (!cancelled) setDecisionCenter(data)
+        if (cancelled) return
+        // A well-formed error payload (e.g. the selection was cleared
+        // server-side between the turn and this fetch) is not "nothing
+        // selected" — routing it through the same error branch as a failed
+        // request avoids DecisionCenterBlock's own `data.error` guard
+        // silently rendering nothing while decisionCenter is still truthy.
+        if (data?.error) {
+          setDecisionCenter(null)
+          setDecisionCenterError(true)
+        } else {
+          setDecisionCenter(data)
+        }
+        setDecisionCenterLoading(false)
       })
       .catch(() => {
-        if (!cancelled) setDecisionCenter(null)
+        if (cancelled) return
+        setDecisionCenter(null)
+        setDecisionCenterError(true)
+        setDecisionCenterLoading(false)
       })
     return () => {
       cancelled = true
@@ -1492,15 +1784,30 @@ export default function Dashboard() {
         setMessages((m) => [...m, { role: 'assistant', content, blocks }])
       }
     } catch (err) {
-      if (err.serverCode === 'LLM_RATE_LIMITED' && !autoRetriedRef.current) {
-        retrying = true
-        autoRetriedRef.current = true
-        setError('The AI assistant is handling a lot of requests right now — retrying automatically…')
-        retryTimerRef.current = window.setTimeout(() => performSend(message, true), 4000)
+      if (err.serverCode === 'LLM_RATE_LIMITED') {
+        // Rate-limit gets its own wording, on purpose — the backend's own
+        // message ("...try again shortly") is accurate but doesn't say the
+        // one thing a student actually needs to hear: nothing was lost, this
+        // is a shared, temporary provider limit, not a broken request. No
+        // countdown here — the backend's bounded retry-after handling
+        // (nlp/ai_assistant.py:_create_completion) never surfaces a duration
+        // to this response, so a timer here would be invented, not real.
+        if (!autoRetriedRef.current) {
+          retrying = true
+          autoRetriedRef.current = true
+          setError('AI is temporarily busy. Your request was not lost — retrying automatically…')
+          retryTimerRef.current = window.setTimeout(() => performSend(message, true), 4000)
+        } else {
+          setError('AI is still busy. Your request was not lost — try again in a moment.')
+          setFailedMessage(message)
+          // Roll back the optimistic user message so Retry doesn't duplicate
+          // it — the message text itself is preserved and shown by
+          // ComposerError below, so this never reads as "it disappeared."
+          setMessages((m) => m.slice(0, -1))
+        }
       } else {
         setError(err.message)
         setFailedMessage(message)
-        // Roll back the optimistic user message so Retry doesn't duplicate it.
         setMessages((m) => m.slice(0, -1))
       }
     } finally {
@@ -1574,7 +1881,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-1 flex-col overflow-y-auto px-4 py-6">
+      <div ref={scrollAreaRef} className="flex flex-1 flex-col overflow-y-auto px-4 py-6">
         {loadingThread ? (
           <div className="flex flex-1 items-center justify-center">
             <Spinner label="Loading conversation…" />
@@ -1621,15 +1928,47 @@ export default function Dashboard() {
                 ))}
               </div>
             )}
-            {!busy && (selectedProjectId || selectedIdea) && decisionCenter && (
+            {/* Deliberately NOT gated on `!busy` (unlike the message list
+                above it) — this whole area is the persistent "which project/
+                idea am I working on, what's next" hub, not part of the
+                turn-by-turn reply stream. Hiding it every time any unrelated
+                follow-up question was in flight made the one anchor meant to
+                give this workflow continuity flicker away and back on almost
+                every turn — exactly the "disconnected blocks" feeling this
+                task exists to fix. `send()` itself already no-ops while
+                `busy` (see its own guard), so nothing here risks a double
+                submit by staying visible. */}
+            {(selectedProjectId || selectedIdea) && decisionCenter && (
               <DecisionCenterBlock data={decisionCenter} onAction={send} />
             )}
-            {/* The plain action-chip rows are the fallback for the brief
-                window before the Decision Center's own richer actions have
-                loaded (or if that fetch fails) — once it's up, it fully
-                subsumes these (same underlying canned prompts, richer
-                context around them), so both are never shown at once. */}
-            {!busy && selectedProjectId && !decisionCenter && (
+            {/* While the read-only Decision Center fetch is in flight, show
+                its own loading card instead of the plain chip fallback below
+                — the two would otherwise flash one after another for every
+                selection. */}
+            {(selectedProjectId || selectedIdea) && !decisionCenter && decisionCenterLoading && (
+              <DecisionCenterLoading />
+            )}
+            {/* Quiet, non-alarming note when the summary genuinely failed to
+                load (as opposed to just not having run yet) — the chip
+                fallback right below still works either way, this just says
+                why the richer card isn't there instead of leaving it
+                unexplained. */}
+            {(selectedProjectId || selectedIdea) && !decisionCenter && !decisionCenterLoading && decisionCenterError && (
+              <p className="t-label-mono" style={{ color: 'var(--outline)', fontSize: 11 }}>
+                Couldn't load the full decision summary — quick actions still work below.
+              </p>
+            )}
+            {/* The plain action-chip rows are the fallback once the Decision
+                Center fetch has settled without data — either it hasn't run
+                yet for this selection, or it failed (decisionCenterError) —
+                same underlying canned prompts, just without the richer
+                context around them. Never shown while decisionCenter itself
+                is loaded, or while its fetch is still in flight. Create
+                Roadmap is styled as the primary action here (filled), same
+                Primary/Secondary distinction Decision Center's own action
+                rows already use, so the hierarchy reads the same whichever
+                of the two is on screen. */}
+            {selectedProjectId && !decisionCenter && !decisionCenterLoading && (
               <div className="flex flex-wrap gap-2">
                 {PROJECT_ACTIONS.map((action) => (
                   <button
@@ -1637,14 +1976,18 @@ export default function Dashboard() {
                     type="button"
                     onClick={() => send(action.prompt)}
                     className="t-label-caps px-3 py-1.5 transition hover:opacity-80"
-                    style={{ border: '1px solid var(--primary)', color: 'var(--primary)', fontSize: 10.5, borderRadius: 999 }}
+                    style={
+                      action.label === 'Create Roadmap'
+                        ? { background: 'var(--primary)', color: 'var(--on-primary)', fontSize: 10.5, borderRadius: 999 }
+                        : { border: '1px solid var(--primary)', color: 'var(--primary)', fontSize: 10.5, borderRadius: 999 }
+                    }
                   >
                     {action.label}
                   </button>
                 ))}
               </div>
             )}
-            {!busy && !selectedProjectId && selectedIdea && !decisionCenter && (
+            {!selectedProjectId && selectedIdea && !decisionCenter && !decisionCenterLoading && (
               <div className="flex flex-wrap gap-2">
                 {IDEA_BUILD_ACTIONS.map((action) => (
                   <button
@@ -1652,14 +1995,17 @@ export default function Dashboard() {
                     type="button"
                     onClick={() => send(action.prompt)}
                     className="t-label-caps px-3 py-1.5 transition hover:opacity-80"
-                    style={{ border: '1px solid var(--primary)', color: 'var(--primary)', fontSize: 10.5, borderRadius: 999 }}
+                    style={
+                      action.label === 'Create Roadmap'
+                        ? { background: 'var(--primary)', color: 'var(--on-primary)', fontSize: 10.5, borderRadius: 999 }
+                        : { border: '1px solid var(--primary)', color: 'var(--primary)', fontSize: 10.5, borderRadius: 999 }
+                    }
                   >
                     {action.label}
                   </button>
                 ))}
               </div>
             )}
-            <div ref={bottomRef} />
           </div>
         )}
       </div>

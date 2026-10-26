@@ -106,6 +106,17 @@ def validate(doc: dict[str, Any]) -> list[str]:
     return problems
 
 
+def known_duration(doc: dict[str, Any]) -> float | None:
+    """The documented duration in weeks, or None when it is missing, null, zero,
+    negative or not a number. A deadline can only be confirmed against a real
+    duration, so every deadline check (search, recommend) goes through this
+    instead of treating "unknown" as 0 weeks."""
+    weeks = doc.get("duration_weeks")
+    if isinstance(weeks, bool) or not isinstance(weeks, (int, float)) or weeks <= 0:
+        return None
+    return weeks
+
+
 def embedding_text(doc: dict[str, Any]) -> str:
     """Build the string that gets embedded for a project.
 

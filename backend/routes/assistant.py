@@ -271,6 +271,9 @@ def send_conversation_message(conversation_id: str):
             selected_project_id=doc.get("selected_project_id"),
             selected_idea=doc.get("selected_idea"),
             resume_skills=doc.get("resume_skills"),
+            # Resolved from the session token, never from the body or the model:
+            # signed-in turns get the read-only personal tools, others do not.
+            user=current_user(required=False),
         )
     except Exception as error:  # noqa: BLE001
         _raise_for_llm_failure(error)

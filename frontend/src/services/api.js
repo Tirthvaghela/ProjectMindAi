@@ -296,6 +296,36 @@ export const api = {
   // resolves to server-side, never one supplied here (see routes/auth.py).
   updateProfile: (payload) => client.patch('/auth/me', payload).then(unwrap),
 
+  // Learner profile (skills, interests, goals, roles, availability). Distinct
+  // from updateProfile above, which edits the *account* (name/email/password).
+  // Always the signed-in account's own — there is no user id parameter (see
+  // routes/profile.py). saveLearnerProfile sends only the sections given.
+  learnerProfileOptions: () => client.get('/profile/options').then(unwrap),
+  learnerProfile: () => client.get('/profile').then(unwrap),
+  saveLearnerProfile: (payload) => client.put('/profile', payload).then(unwrap),
+  deleteLearnerProfile: () => client.delete('/profile').then(unwrap),
+
+  // The signed-in account's own saved profile against one catalogue project
+  // (backend/routes/search.py:personal_skill_gap). No user parameter exists.
+  personalSkillGap: (projectId) => client.get('/skill-gap/me', { params: { project_id: projectId } }).then(unwrap),
+
+  // Personalised learning roadmap + the caller's own step progress
+  // (backend/routes/roadmap.py). No user parameter exists on any of these.
+  personalRoadmap: (projectId) => client.get('/roadmap/me', { params: { project_id: projectId } }).then(unwrap),
+  setRoadmapStep: (projectId, stepId, status) =>
+    client.put('/roadmap/me/progress', { project_id: projectId, step_id: stepId, status }).then(unwrap),
+  // Destructive, so the server refuses without an explicit confirm flag.
+  resetRoadmap: (projectId) =>
+    client.delete('/roadmap/me/progress', { data: { project_id: projectId, confirm: true } }).then(unwrap),
+
+  // Skill progress & profile insights (backend/routes/insights.py): read-only,
+  // current-state, the caller's own data only. Takes no parameters.
+  myInsights: () => client.get('/insights/me').then(unwrap),
+
+  // Team-formation advice (backend/routes/teams.py:formation). Read-only: it
+  // never invites anyone, creates a team or changes membership.
+  formTeams: (payload) => client.post('/teams/formation', payload).then(unwrap),
+
   createTeam: (projectId, name) =>
     client.post('/teams', { project_id: projectId, name }).then(unwrap),
 
@@ -326,6 +356,12 @@ export const api = {
   // Role suggestions for this team's real, persisted roster — the
   // POST /api/team-builder flavour reads a typed-in member list instead.
   teamRoles: (teamId) => client.get(`/teams/${teamId}/roles`).then(unwrap),
+
+  // The caller's OWN decision about their suggested role (accepted / rejected /
+  // custom) - suggestions stay advice until this is called, and there is no
+  // call that decides for someone else (backend/routes/teams.py).
+  setMyRoleDecision: (teamId, payload) => client.put(`/teams/${teamId}/roles/mine`, payload).then(unwrap),
+  clearMyRoleDecision: (teamId) => client.delete(`/teams/${teamId}/roles/mine`).then(unwrap),
 
   teamMessages: (teamId) => client.get(`/teams/${teamId}/messages`).then(unwrap),
 

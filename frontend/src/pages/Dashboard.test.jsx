@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, fireEvent } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '../test/testUtils.jsx'
 import Dashboard from './Dashboard'
@@ -135,6 +135,11 @@ describe('Dashboard — feasibility block', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'View Details' })).toHaveAttribute('href', '/project/p1')
     expect(screen.getByRole('button', { name: 'Reduce Risk' })).toBeInTheDocument()
+    // Block relationship: this result names the project it's for, the same
+    // "Catalogue Project" wording Decision Center's own badge uses, so a
+    // Feasibility check reads as one more stage of the same plan.
+    expect(screen.getByText('Catalogue Project')).toBeInTheDocument()
+    expect(screen.getByText(FEASIBILITY_BLOCK.title)).toBeInTheDocument()
   })
 
   it('the Reduce Risk action sends a follow-up through the existing chat pipeline', async () => {
@@ -204,6 +209,31 @@ describe('Dashboard — scope block', () => {
     expect(screen.getByText(/dropping Visualization Layer keeps the core system achievable/)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Apply Scope Recommendation' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Create Roadmap' })).toBeInTheDocument()
+    expect(screen.getByText('Catalogue Project')).toBeInTheDocument()
+    expect(screen.getByText(SCOPE_BLOCK.title)).toBeInTheDocument()
+  })
+
+  it('labels an idea-mode scope result as an AI-Generated Idea, not a catalogue project', async () => {
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage).mockResolvedValue({
+      data: {
+        reply: "Here's the scope breakdown.",
+        blocks: [{ ...SCOPE_BLOCK, project_id: null, title: 'CampusWaste Tracker' }],
+        selected_project_id: null,
+        selected_idea: null,
+      },
+    })
+
+    const user = userEvent.setup()
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'What should this idea include?')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+
+    expect(await screen.findByText('AI-Generated Idea')).toBeInTheDocument()
+    expect(screen.getByText('CampusWaste Tracker')).toBeInTheDocument()
+    expect(screen.queryByText('Catalogue Project')).not.toBeInTheDocument()
   })
 
   it('hides Apply Scope Recommendation when there is no reduction to apply', async () => {
@@ -318,6 +348,8 @@ describe('Dashboard — resources block', () => {
     // header must all be marked as estimates, never presented as fact.
     expect(screen.getAllByText(/\(estimate\)/).length).toBeGreaterThanOrEqual(3)
     expect(screen.getByText(/Free GPU compute/)).toBeInTheDocument()
+    expect(screen.getByText('Catalogue Project')).toBeInTheDocument()
+    expect(screen.getByText(PROJECT_RESOURCES_BLOCK.title)).toBeInTheDocument()
   })
 
   it('project resources: Create Roadmap targets "this project"', async () => {
@@ -356,6 +388,10 @@ describe('Dashboard — resources block', () => {
     await user.type(screen.getByLabelText('Message ProjectMind'), 'What resources does this idea need?')
     await user.click(screen.getByRole('button', { name: 'Send' }))
     await screen.findByText('2 people recommended')
+
+    expect(screen.getByText('AI-Generated Idea')).toBeInTheDocument()
+    expect(screen.getByText('CampusWaste')).toBeInTheDocument()
+    expect(screen.queryByText('Catalogue Project')).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'Create Roadmap' }))
     expect(api.sendConversationMessage).toHaveBeenLastCalledWith('c1', 'Create a roadmap for this idea.')
@@ -645,6 +681,162 @@ describe('Dashboard — decision center', () => {
     expect(await screen.findByText('Catalogue Project')).toBeInTheDocument()
     expect(api.decisionCenter).toHaveBeenCalledWith('c1')
   })
+
+  it('stays visible while a follow-up message is in flight, instead of flickering away', async () => {
+    // WORKFLOW CONTINUITY: Decision Center is the persistent "what's next"
+    // hub, not part of the reply stream — it must not disappear every time
+    // an unrelated follow-up question is sent, or the workflow feels like it
+    // keeps resetting instead of continuing.
+    signIn()
+    const user = userEvent.setup()
+    await selectProjectAndOpenDecisionCenter(user, PROJECT_DECISION)
+    await screen.findByText('Catalogue Project')
+
+    let resolveFollowUp
+    vi.mocked(api.sendConversationMessage).mockReturnValue(
+      new Promise((resolve) => {
+        resolveFollowUp = resolve
+      }),
+    )
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'What tech stack should I use?')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+
+    // Still mid-flight (the promise above hasn't resolved yet) — the hub
+    // and its primary action must still be on screen.
+    expect(screen.getByText('Catalogue Project')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Generate Roadmap' })).toBeInTheDocument()
+
+    resolveFollowUp({ data: { reply: 'Use Flask and React.', blocks: null, selected_project_id: 'p1', selected_idea: null } })
+    expect(await screen.findByText('Use Flask and React.')).toBeInTheDocument()
+    expect(screen.getByText('Catalogue Project')).toBeInTheDocument()
+  })
+
+  it('survives a failed follow-up send — the hub and its actions stay usable, not hidden', async () => {
+    // ERROR STATES: one failed turn must never take the whole workflow down
+    // with it — the already-loaded Decision Center and its actions are the
+    // clearest "continue with existing actions" recovery path available.
+    signIn()
+    const user = userEvent.setup()
+    await selectProjectAndOpenDecisionCenter(user, PROJECT_DECISION)
+    await screen.findByText('Catalogue Project')
+
+    vi.mocked(api.sendConversationMessage).mockRejectedValue(new Error('The AI assistant could not respond right now — try again.'))
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'What tech stack should I use?')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+
+    expect(await screen.findByText('The AI assistant could not respond right now — try again.')).toBeInTheDocument()
+    // The hub is still there, still fully actionable.
+    expect(screen.getByText('Catalogue Project')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Generate Roadmap' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Start This Project' })).toBeInTheDocument()
+  })
+
+  it('groups strengths and risks into their own labeled sections', async () => {
+    signIn()
+    const user = userEvent.setup()
+    await selectProjectAndOpenDecisionCenter(user, PROJECT_DECISION)
+
+    expect(await screen.findByText('Strengths')).toBeInTheDocument()
+    expect(screen.getByText('Risks')).toBeInTheDocument()
+  })
+
+  it('shows a loading card while the decision summary fetch is in flight, then the full block', async () => {
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage).mockResolvedValue({
+      data: { reply: "Let's build it.", blocks: null, selected_project_id: 'p1', selected_idea: null },
+    })
+    vi.mocked(api.getProject).mockResolvedValue({ data: { project_id: 'p1', title: 'Face Recognition Attendance', difficulty: 'Advanced', domain: 'Computer Vision' } })
+    let resolveDecision
+    vi.mocked(api.decisionCenter).mockReturnValue(new Promise((resolve) => { resolveDecision = resolve }))
+
+    const user = userEvent.setup()
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    await user.type(screen.getByLabelText('Message ProjectMind'), "Let's build this.")
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+    await screen.findByText("Let's build it.")
+
+    expect(await screen.findByText('Preparing your decision summary…')).toBeInTheDocument()
+    expect(screen.queryByText('Catalogue Project')).not.toBeInTheDocument()
+
+    resolveDecision({ data: PROJECT_DECISION })
+    expect(await screen.findByText('Catalogue Project')).toBeInTheDocument()
+    expect(screen.queryByText('Preparing your decision summary…')).not.toBeInTheDocument()
+  })
+
+  it('falls back to the action chips with a quiet note when the decision summary fetch fails', async () => {
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage).mockResolvedValue({
+      data: { reply: "Let's build it.", blocks: null, selected_project_id: 'p1', selected_idea: null },
+    })
+    vi.mocked(api.getProject).mockResolvedValue({ data: { project_id: 'p1', title: 'Face Recognition Attendance', difficulty: 'Advanced', domain: 'Computer Vision' } })
+    vi.mocked(api.decisionCenter).mockRejectedValue(new Error('network error'))
+
+    const user = userEvent.setup()
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    await user.type(screen.getByLabelText('Message ProjectMind'), "Let's build this.")
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+    await screen.findByText("Let's build it.")
+
+    expect(await screen.findByText(/Couldn't load the full decision summary/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Check Skill Gap' })).toBeInTheDocument()
+    expect(screen.queryByText('Catalogue Project')).not.toBeInTheDocument()
+  })
+
+  it('falls back gracefully instead of a blank gap when the backend returns an error payload', async () => {
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage).mockResolvedValue({
+      data: { reply: "Let's build it.", blocks: null, selected_project_id: 'p1', selected_idea: null },
+    })
+    vi.mocked(api.getProject).mockResolvedValue({ data: { project_id: 'p1', title: 'Face Recognition Attendance', difficulty: 'Advanced', domain: 'Computer Vision' } })
+    vi.mocked(api.decisionCenter).mockResolvedValue({ data: { error: 'No project or idea to build a decision for.' } })
+
+    const user = userEvent.setup()
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    await user.type(screen.getByLabelText('Message ProjectMind'), "Let's build this.")
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+    await screen.findByText("Let's build it.")
+
+    expect(await screen.findByText(/Couldn't load the full decision summary/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Check Skill Gap' })).toBeInTheDocument()
+  })
+
+  it('surfaces Check Skill Gap once, inside the Next Step callout, when skills are not yet known', async () => {
+    signIn()
+    const user = userEvent.setup()
+    const noSkills = {
+      ...PROJECT_DECISION,
+      known_skills_provided: false,
+      recommended_next_step: 'Check your skill gap — your fit scores are more accurate once we know what you already have.',
+    }
+    await selectProjectAndOpenDecisionCenter(user, noSkills)
+    await screen.findByText('Catalogue Project')
+
+    expect(screen.getAllByRole('button', { name: 'Check Skill Gap' })).toHaveLength(1)
+    await user.click(screen.getByRole('button', { name: 'Check Skill Gap' }))
+    expect(api.sendConversationMessage).toHaveBeenLastCalledWith('c1', 'Check my skill gap for this project.')
+  })
+
+  it('surfaces View Scope once, inside the Next Step callout, when a scope reduction is suggested', async () => {
+    signIn()
+    const user = userEvent.setup()
+    const reduced = {
+      ...PROJECT_DECISION,
+      scope: { ...PROJECT_DECISION.scope, reduced_scope: { reason: 'Your timeline is tight.', remove: ['Visualization'], keep: ['Model Training'] } },
+      recommended_next_step: 'Review the suggested scope reduction for your timeline before starting.',
+    }
+    await selectProjectAndOpenDecisionCenter(user, reduced)
+    await screen.findByText('Catalogue Project')
+
+    expect(screen.getAllByRole('button', { name: 'View Scope' })).toHaveLength(1)
+    await user.click(screen.getByRole('button', { name: 'View Scope' }))
+    expect(api.sendConversationMessage).toHaveBeenLastCalledWith('c1', 'What should the MVP be for this project?')
+  })
 })
 
 describe('Dashboard — error state', () => {
@@ -664,8 +856,198 @@ describe('Dashboard — error state', () => {
 
     expect(await screen.findByText('The AI assistant could not respond right now — try again.')).toBeInTheDocument()
 
-    // The failed optimistic user message is rolled back rather than left
-    // stuck on screen with no way to tell it never actually sent.
+    // The failed optimistic chat bubble is rolled back (Retry would
+    // otherwise duplicate it once resent) — but the message text itself
+    // must stay visible somewhere, so it never reads as having vanished.
     await waitFor(() => expect(screen.queryByText('Hello')).not.toBeInTheDocument())
+    expect(screen.getByText(/Not sent yet:.*Hello/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument()
+  })
+
+  it('shows a recovery message (not a blank screen) on a rate-limit failure, with prior context intact', async () => {
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage)
+      .mockResolvedValueOnce({
+        data: { reply: 'Here are a few ideas.', blocks: null, selected_project_id: null, selected_idea: null },
+      })
+      .mockRejectedValueOnce(Object.assign(new Error('The AI assistant is receiving too many requests right now — try again shortly.'), { serverCode: 'LLM_RATE_LIMITED' }))
+
+    const user = userEvent.setup()
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'Give me project ideas')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+    await screen.findByText('Here are a few ideas.')
+
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'Tell me more')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+
+    // A visible, specific recovery message — never a blank/frozen screen —
+    // and the prior turn stays exactly where it was.
+    expect(await screen.findByText(/retrying automatically/)).toBeInTheDocument()
+    expect(screen.getByText('Here are a few ideas.')).toBeInTheDocument()
+    // RATE-LIMIT UX: not the generic backend wording, and explicitly
+    // reassures the request wasn't lost — no invented countdown either.
+    expect(screen.getByText('AI is temporarily busy. Your request was not lost — retrying automatically…')).toBeInTheDocument()
+    expect(screen.queryByText(/\d+\s*(s|sec|second)/i)).not.toBeInTheDocument()
+    // REQUEST PRESERVATION: while the automatic retry is still pending, the
+    // message hasn't been rolled back yet — it reads as a normal chat
+    // bubble, not as lost or as a separate "failed" state.
+    expect(screen.getByText('Tell me more')).toBeInTheDocument()
+  })
+})
+
+describe('Dashboard — rate limit / retry reliability', () => {
+  // This file doesn't configure clearMocks/restoreMocks (see Dashboard —
+  // decision center's own note on the same quirk), so api.sendConversationMessage's
+  // call history accumulates across every test in this file. Assertions here
+  // compare against a call count captured at the *start* of each test rather
+  // than an absolute number, so they hold regardless of test order.
+  function callCount() {
+    return vi.mocked(api.sendConversationMessage).mock.calls.length
+  }
+
+  function rateLimitedError() {
+    return Object.assign(
+      new Error('The AI assistant is receiving too many requests right now — try again shortly.'),
+      { serverCode: 'LLM_RATE_LIMITED' },
+    )
+  }
+
+  it('after the automatic retry also fails, shows the exhausted-specific message with a manual Retry and the preserved message', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    try {
+      signIn()
+      vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+      vi.mocked(api.sendConversationMessage)
+        .mockRejectedValueOnce(rateLimitedError())
+        .mockRejectedValueOnce(rateLimitedError())
+
+      const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+      renderWithProviders(<Dashboard />, { route: '/dashboard' })
+      await screen.findByText('Welcome back, Alex.')
+      const before = callCount()
+      await user.type(screen.getByLabelText('Message ProjectMind'), 'Generate 5 AI project ideas')
+      await user.click(screen.getByRole('button', { name: 'Send' }))
+
+      expect(await screen.findByText(/retrying automatically/)).toBeInTheDocument()
+      expect(callCount() - before).toBe(1)
+
+      await vi.advanceTimersByTimeAsync(4000)
+
+      expect(await screen.findByText('AI is still busy. Your request was not lost — try again in a moment.')).toBeInTheDocument()
+      expect(callCount() - before).toBe(2)
+      // Bounded — the automatic retry fires exactly once, never a loop.
+      await vi.advanceTimersByTimeAsync(10000)
+      expect(callCount() - before).toBe(2)
+
+      expect(screen.getByRole('button', { name: 'Retry' })).toBeInTheDocument()
+      expect(screen.getByText(/Not sent yet:.*Generate 5 AI project ideas/)).toBeInTheDocument()
+    } finally {
+      vi.useRealTimers()
+    }
+  })
+
+  it('clicking Retry resends exactly once, through the same send() pipeline, for the exact failed message', async () => {
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage)
+      .mockRejectedValueOnce(Object.assign(new Error('The AI assistant could not respond right now — try again.'), {}))
+      .mockResolvedValueOnce({
+        data: { reply: 'Here are your ideas.', blocks: null, selected_project_id: null, selected_idea: null },
+      })
+
+    const user = userEvent.setup()
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    const before = callCount()
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'Generate 5 AI project ideas')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+    await screen.findByRole('button', { name: 'Retry' })
+    expect(callCount() - before).toBe(1)
+
+    await user.click(screen.getByRole('button', { name: 'Retry' }))
+
+    expect(await screen.findByText('Here are your ideas.')).toBeInTheDocument()
+    expect(callCount() - before).toBe(2)
+    expect(vi.mocked(api.sendConversationMessage)).toHaveBeenLastCalledWith('c1', 'Generate 5 AI project ideas')
+    // Exactly one bubble for the message — Retry never duplicates it.
+    expect(screen.getAllByText('Generate 5 AI project ideas')).toHaveLength(1)
+  })
+
+  it('rapid repeated Enter presses while a request is pending send only one request', async () => {
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage).mockReturnValue(new Promise(() => {}))
+
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    const before = callCount()
+
+    const input = screen.getByLabelText('Message ProjectMind')
+    fireEvent.change(input, { target: { value: 'Generate 5 AI project ideas' } })
+    for (let i = 0; i < 5; i++) {
+      fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' })
+    }
+
+    await waitFor(() => expect(callCount() - before).toBeGreaterThan(0))
+    expect(callCount() - before).toBe(1)
+  })
+
+  it('a failed request never removes a previously loaded block — Scope survives a failed Resources request', async () => {
+    const SCOPE_BLOCK = {
+      type: 'scope', project_id: 'p1', title: 'Face Recognition Attendance',
+      mvp: ['Image Acquisition'], core: ['Detection Pipeline'], advanced: [], future: [],
+      dependencies: [], technical_constraints: [], reduced_scope: null,
+    }
+    signIn()
+    vi.mocked(api.createConversation).mockResolvedValue({ data: { conversation_id: 'c1' } })
+    vi.mocked(api.sendConversationMessage)
+      .mockResolvedValueOnce({
+        data: { reply: "Here's the scope breakdown.", blocks: [SCOPE_BLOCK], selected_project_id: null, selected_idea: null },
+      })
+      .mockRejectedValueOnce(Object.assign(new Error('The AI assistant could not respond right now — try again.'), {}))
+
+    const user = userEvent.setup()
+    renderWithProviders(<Dashboard />, { route: '/dashboard' })
+    await screen.findByText('Welcome back, Alex.')
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'What should this include?')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+    await screen.findByText('Image Acquisition')
+
+    await user.type(screen.getByLabelText('Message ProjectMind'), 'What resources do I need?')
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+
+    expect(await screen.findByText('The AI assistant could not respond right now — try again.')).toBeInTheDocument()
+    // PARTIAL SUCCESS: the earlier Scope result is still fully on screen.
+    expect(screen.getByText('Image Acquisition')).toBeInTheDocument()
+    expect(screen.getByText('Detection Pipeline')).toBeInTheDocument()
+  })
+
+  it('reloading the conversation after a failed request shows only what actually persisted', async () => {
+    // Failed turns are never written server-side (routes/assistant.py only
+    // persists after general_reply() succeeds) — a reload must reflect
+    // exactly that, with no trace of the failed attempt reappearing.
+    signIn()
+    vi.mocked(api.getConversation).mockResolvedValue({
+      data: {
+        messages: [
+          { role: 'user', content: 'Give me project ideas', blocks: null, created_at: new Date().toISOString() },
+          { role: 'assistant', content: 'Here are a few ideas.', blocks: null, created_at: new Date().toISOString() },
+        ],
+        selected_project_id: null,
+        selected_idea: null,
+      },
+    })
+
+    const before = callCount()
+    renderWithProviders(<Dashboard />, { route: '/dashboard?c=c1' })
+
+    expect(await screen.findByText('Here are a few ideas.')).toBeInTheDocument()
+    expect(screen.queryByText(/Not sent yet/)).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Retry' })).not.toBeInTheDocument()
+    // Nothing auto-resent on load — reload never sends anything by itself.
+    expect(callCount()).toBe(before)
   })
 })

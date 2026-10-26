@@ -20,7 +20,9 @@ from pymongo.errors import DuplicateKeyError
 
 from db import client as db
 from nlp.generator import idea_doc
-from nlp.team_builder import suggest_roles
+from nlp import skills as skill_names
+from nlp.team_builder import role_fit, suggest_roles
+from profiles import service as profile_service
 from notify import notify
 
 _MAX_SKILLS = 30
@@ -294,7 +296,10 @@ def remove_member(team_id: str, acting_user_id: str, target_user_id: str) -> dic
     if target is None:
         raise TeamError("That user is not a member of this team.")
 
-    db.teams().update_one({"team_id": team_id}, {"$pull": {"members": {"user_id": target_user_id}}})
+    db.teams().update_one(
+        {"team_id": team_id},
+        {"$pull": {"members": {"user_id": target_user_id}}, "$unset": {f"role_decisions.{target_user_id}": ""}},
+    )
     remaining = [m for m in team["members"] if m["user_id"] != target_user_id]
 
     for member in remaining:
@@ -391,8 +396,193 @@ def team_roles(team_id: str, user_id: str) -> dict[str, Any]:
     if context is None:
         raise TeamError("This team's project no longer exists — role suggestions need a real project to split into.")
 
-    members = [{"name": m.get("name") or m["user_id"], "skills": m.get("skills") or []} for m in team["members"]]
-    return suggest_roles(context, members)
+    members = [
+        {"id": m["user_id"], "name": m.get("name") or m["user_id"], "skills": m.get("skills") or []}
+        for m in team["members"]
+    ]
+    # The module-level assignment is unchanged. `role_fit` adds job-role
+    # suggestions with explanations and team coverage, grounded in teammates'
+    # saved profiles where they have one (see _role_fit_members), and
+    # `decisions` carries what each member has accepted or chosen.
+    result = suggest_roles(context, members)
+    result["role_fit"] = role_fit(context, _role_fit_members(team, user_id))
+    result["decisions"] = _decisions(team)
+    return result
+
+
+def _role_fit_members(team: dict[str, Any], viewer_id: str) -> list[dict[str, Any]]:
+    """Roster -> role_fit input: saved profile first, then the legacy
+    per-team skills, merged alias-aware so a skill present in both counts once.
+
+    Profiles are looked up ONLY for this team's own members (ids read from the
+    team document the caller was just authorised against), and only the fields
+    the engine needs are carried forward - never goals, education, hours or
+    experience descriptions.
+
+    Consent is rechecked on every call: a teammate's profile is used only if
+    they have opted in (`share_with_teams`). Otherwise they are matched on the
+    skills they typed for this team alone, and marked `info_unavailable` - which
+    looks the same whether they withheld their profile or simply have none, so
+    the response does not reveal which. The viewer's OWN profile is always
+    used for their own entry (it is their data, shown to them).
+    """
+    profiles = profile_service.get_profiles([m["user_id"] for m in team["members"]])
+    out = []
+    for m in team["members"]:
+        mine = m["user_id"] == viewer_id
+        profile = profiles.get(m["user_id"])
+        if not mine and not profile_service.shares_with_teams(profile):
+            profile = None
+        entry = _member_input(m["user_id"], m.get("name") or m["user_id"], profile, m.get("skills") or [])
+        if mine:
+            entry["profile_shared"] = profile_service.shares_with_teams(profiles.get(m["user_id"]))
+        elif profile is None:
+            entry["info_unavailable"] = True
+        out.append(entry)
+    return out
+
+
+def _member_input(
+    member_id: Optional[str], name: str, profile: Optional[dict[str, Any]], manual_skills: list[str], *, has_account: bool = True
+) -> dict[str, Any]:
+    """One person -> the shape nlp/team_builder.role_fit and
+    nlp/team_formation take: saved profile skills (with their self-reported
+    levels) first, then past-project technologies and any typed skills without a
+    level, de-duplicated alias-aware. Only role-relevant fields are carried."""
+    from_profile: list[dict[str, Any]] = []
+    if profile:
+        from_profile = [{"name": s["name"], "level": s["level"]} for s in profile["skills"]]
+        seen = {skill_names.normalize_key(s["name"]) for s in from_profile}
+        for entry in profile["experience"]:
+            for tech in entry.get("technologies", []):
+                key = skill_names.normalize_key(tech)
+                if key and key not in seen:
+                    seen.add(key)
+                    from_profile.append({"name": tech, "level": None})
+    seen = {skill_names.normalize_key(s["name"]) for s in from_profile}
+    manual = []
+    for raw in manual_skills:
+        key = skill_names.normalize_key(raw)
+        if key and key not in seen:
+            seen.add(key)
+            manual.append({"name": skill_names.display_name(raw), "level": None})
+    if from_profile and manual:
+        source = "profile+manual"
+    elif from_profile:
+        source = "profile"
+    elif manual:
+        source = "manual"
+    else:
+        source = "none"
+    return {
+        "id": member_id,
+        "name": name,
+        "source": source,
+        "skills": [*from_profile, *manual],
+        "preferred_roles": profile["preferred_roles"] if profile else [],
+        "interests": profile["interests"] if profile else [],
+        "profile_status": (profile["completion"]["status"] if profile else "not_started") if has_account else None,
+    }
+
+
+MAX_POOL = 15
+
+
+def team_formation(
+    user: dict[str, Any],
+    doc: dict[str, Any],
+    *,
+    team_id: Optional[str] = None,
+    include_self: bool = True,
+    manual: Optional[list[dict[str, Any]]] = None,
+    team_size: Optional[int] = None,
+) -> dict[str, Any]:
+    """Recommend teams for `doc` from an AUTHORISED candidate pool. Read-only.
+
+    There is no user directory and no invitation record in this app (people
+    join through an owner-held invite code), so the only people who can be
+    considered are: the caller; the roster of a team the caller already belongs
+    to (the same people, and the same role-relevant fields, Feature 3 already
+    shows them); and candidates the caller types in themselves, who have no
+    account and no profile. Nothing is invited, joined or stored.
+    """
+    from nlp.team_formation import form_teams
+
+    pool: list[dict[str, Any]] = []
+    if team_id:
+        team = _member_team_or_none(team_id, user["user_id"])
+        if team is None:
+            raise TeamError("No team found, or you are not a member.")
+        pool.extend(_role_fit_members(team, user["user_id"]))
+    in_pool = {c["id"] for c in pool}
+    if include_self and user["user_id"] not in in_pool:
+        profile = profile_service.get_profiles([user["user_id"]]).get(user["user_id"])
+        pool.append(_member_input(user["user_id"], user.get("name") or "You", profile, []))
+    for entry in manual or []:
+        pool.append(_member_input(None, entry["name"], None, entry["skills"], has_account=False))
+    if not pool:
+        raise TeamError("Choose at least one candidate: include yourself, pick one of your teams, or add people.", status=400)
+    if len(pool) > MAX_POOL:
+        raise TeamError(f"At most {MAX_POOL} candidates can be compared at once.", status=400)
+
+    # Two people can share a display name; the engine keys on it, so make labels unique.
+    seen: dict[str, int] = {}
+    for c in pool:
+        base = c["name"].strip() or "Candidate"
+        seen[base.casefold()] = seen.get(base.casefold(), 0) + 1
+        c["name"] = base if seen[base.casefold()] == 1 else f"{base} ({seen[base.casefold()]})"
+    return form_teams(doc, pool, team_size)
+
+
+def _decisions(team: dict[str, Any]) -> list[dict[str, Any]]:
+    """Each current member's recorded role decision (accepted / rejected /
+    custom), if any. Decisions of people who have left are ignored."""
+    stored = team.get("role_decisions") or {}
+    rows = []
+    for m in team["members"]:
+        d = stored.get(m["user_id"])
+        if d:
+            rows.append({"user_id": m["user_id"], "name": m.get("name") or m["user_id"], "status": d["status"], "role": d.get("role")})
+    return rows
+
+
+ROLE_DECISION_STATUSES = ("accepted", "rejected", "custom")
+
+
+def set_role_decision(team_id: str, user_id: str, status: str, role: Optional[str]) -> list[dict[str, Any]]:
+    """Record the caller's OWN decision about their suggested role.
+
+    `accepted`/`custom` confirm `role` (one of the known team roles); `rejected`
+    records that the suggestion was declined (role optional). A suggestion is
+    only ever advice - this is the one place it becomes a confirmed assignment,
+    and only the member it is about can do that, never a teammate or the owner.
+    """
+    team = _member_team_or_none(team_id, user_id)
+    if team is None:
+        raise TeamError("No team found, or you are not a member.")
+    if status not in ROLE_DECISION_STATUSES:
+        raise TeamError(f"'status' must be one of {', '.join(ROLE_DECISION_STATUSES)}.", status=400)
+    if status in ("accepted", "custom") and role not in profile_service.TEAM_ROLES:
+        raise TeamError("Choose one of the listed team roles.", status=400)
+    if role is not None and role not in profile_service.TEAM_ROLES:
+        raise TeamError("Choose one of the listed team roles.", status=400)
+
+    decision = {"status": status, "role": role, "decided_at": datetime.now(timezone.utc)}
+    db.teams().update_one(
+        {"team_id": team_id, "members.user_id": user_id},
+        {"$set": {f"role_decisions.{user_id}": decision}},
+    )
+    team.setdefault("role_decisions", {})[user_id] = decision
+    return _decisions(team)
+
+
+def clear_role_decision(team_id: str, user_id: str) -> list[dict[str, Any]]:
+    team = _member_team_or_none(team_id, user_id)
+    if team is None:
+        raise TeamError("No team found, or you are not a member.")
+    db.teams().update_one({"team_id": team_id}, {"$unset": {f"role_decisions.{user_id}": ""}})
+    (team.get("role_decisions") or {}).pop(user_id, None)
+    return _decisions(team)
 
 
 def _member_team_or_none(team_id: str, user_id: str) -> dict[str, Any] | None:
@@ -426,7 +616,7 @@ def _public_team(team: dict[str, Any], context: dict[str, Any] | None, caller_us
     the idea's own workspace, since `project` here is idea_doc()'s
     generic project-shaped view of it, not the original idea fields.
     """
-    payload = {k: v for k, v in team.items() if k != "_id"}
+    payload = {k: v for k, v in team.items() if k not in ("_id", "role_decisions")}  # decisions are served by GET /roles
     if team.get("owner_user_id") != caller_user_id:
         payload.pop("invite_code", None)
     payload["created_at"] = payload["created_at"].isoformat()

@@ -2,6 +2,7 @@ import { Fragment, lazy, Suspense, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ShaderBackground from './ShaderBackground'
 import useVoiceSearch from '../../hooks/useVoiceSearch'
+import useCatalogueSize from '../../hooks/useCatalogueSize'
 import './landing.css'
 
 // `three` is a real chunk of weight for a decorative flourish — lazy-loaded
@@ -25,10 +26,13 @@ const EXAMPLES = [
 
 const WHAT_FLOW = ['Discover', 'Create', 'Evaluate', 'Compare', 'Select', 'Plan', 'Build']
 
-const STATS = [
-  { value: '500+', label: 'Projects indexed' },
+// The project count is live (useCatalogueSize); the nDCG figure is a historical
+// measurement and is labelled with the catalogue it was measured on — it is
+// not a claim about the current, larger catalogue (see backend/dataset/eval/README.md).
+const statsFor = (count) => [
+  { value: count === null ? '—' : count.toLocaleString('en-US'), label: 'Projects indexed' },
   { value: '384', label: 'Embedding dimensions' },
-  { value: '0.892', label: 'nDCG@5, measured' },
+  { value: '0.892', label: 'nDCG@5, original 500-project benchmark' },
   { value: 'Hybrid', label: 'Semantic + keyword retrieval' },
 ]
 
@@ -433,6 +437,7 @@ function PreviewCompareStrip() {
 }
 
 export default function LandingHero({ value, onChange, onSubmit }) {
+  const catalogueSize = useCatalogueSize()
   const rootRef = useRef(null)
   useIntersectionReveal(rootRef)
 
@@ -477,7 +482,7 @@ export default function LandingHero({ value, onChange, onSubmit }) {
             className="t-label-caps mb-6 rounded-full px-3 py-1"
             style={{ border: '1px solid var(--border-technical)', background: 'var(--surface-glass)', color: 'var(--on-surface-variant)' }}
           >
-            Hybrid semantic + keyword search · 500 projects indexed
+            Hybrid semantic + keyword search{catalogueSize === null ? '' : ` · ${catalogueSize.toLocaleString('en-US')} projects indexed`}
           </span>
 
           <h1 className="t-headline-xl mb-5 text-center" style={{ color: 'var(--primary)' }}>
@@ -614,7 +619,7 @@ export default function LandingHero({ value, onChange, onSubmit }) {
       {/* ---------- trust metrics ---------- */}
       <section className="py-12" style={{ background: 'var(--surface-container-low)' }}>
         <div className="container-wide grid grid-cols-2 gap-x-6 gap-y-8 lg:grid-cols-4">
-          {STATS.map((stat) => (
+          {statsFor(catalogueSize).map((stat) => (
             <div key={stat.label} className="stagger-item text-center lg:text-left">
               <p className="t-headline-lg" style={{ color: 'var(--primary)', fontFamily: "'JetBrains Mono', monospace" }}>
                 {stat.value}
@@ -790,9 +795,9 @@ export default function LandingHero({ value, onChange, onSubmit }) {
                 never quietly returns nothing.
               </p>
               <div className="flex flex-col gap-4">
-                <StatRow icon="database">500 projects indexed</StatRow>
+                <StatRow icon="database">{catalogueSize === null ? 'Project catalogue indexed' : `${catalogueSize.toLocaleString('en-US')} projects indexed`}</StatRow>
                 <StatRow icon="memory">384-dimension embedding space</StatRow>
-                <StatRow icon="bolt">0.892 nDCG@5, measured — not guessed</StatRow>
+                <StatRow icon="bolt">0.892 nDCG@5 on the original 500-project benchmark</StatRow>
               </div>
             </div>
 

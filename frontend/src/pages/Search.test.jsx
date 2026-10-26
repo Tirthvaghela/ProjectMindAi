@@ -58,6 +58,35 @@ describe('Search — results', () => {
     expect(api.search).toHaveBeenCalledWith(expect.objectContaining({ query: 'nlp project' }))
   })
 
+  it('explains projects left out of a deadline search because their duration is unknown', async () => {
+    vi.mocked(api.search).mockResolvedValue({
+      data: [PROJECT],
+      query: 'nlp project',
+      count: 1,
+      personalization: { applied: false },
+      excluded_unknown_duration: 1,
+    })
+
+    renderWithProviders(<Search />, { route: SEARCHED_ROUTE })
+
+    expect(await screen.findByText(/1 project with no documented duration was left out/)).toBeInTheDocument()
+  })
+
+  it('shows no unknown-duration note when the response has none', async () => {
+    vi.mocked(api.search).mockResolvedValue({
+      data: [PROJECT],
+      query: 'nlp project',
+      count: 1,
+      personalization: { applied: false },
+      excluded_unknown_duration: null,
+    })
+
+    renderWithProviders(<Search />, { route: SEARCHED_ROUTE })
+
+    await screen.findByText('Campus Study Buddy Matcher')
+    expect(screen.queryByText(/no documented duration/)).not.toBeInTheDocument()
+  })
+
   it('shows the searching state before results arrive', async () => {
     let resolveSearch
     vi.mocked(api.search).mockReturnValue(

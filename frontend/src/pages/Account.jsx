@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import useAuth from '../hooks/useAuth.jsx'
 import api from '../services/api'
+import useCatalogueSize from '../hooks/useCatalogueSize'
 
 // What an account actually unlocks in this app (see nlp/chat_tools.py,
 // routes/teams.py) — real capabilities, not marketing filler, matching the
@@ -22,8 +23,8 @@ const SYSTEM_FLOW = ['User Request', 'AI Reasoning', 'Hybrid Retrieval', 'Valida
 // Reused directly from the landing page's own STATS/trust-metrics band
 // (LandingHero.jsx) — same {value, label} shape as STATS there, no new
 // numbers invented for this screen.
-const SYSTEM_METRICS = [
-  { value: '500+', label: 'Projects indexed' },
+const systemMetricsFor = (count) => [
+  { value: count === null ? '—' : count.toLocaleString('en-US'), label: 'Projects indexed' },
   { value: '384-D', label: 'Embedding dimensions' },
   { value: 'Hybrid', label: 'Semantic + keyword search' },
   { value: 'AI', label: 'Project planning' },
@@ -184,13 +185,14 @@ function SystemFlowDiagram() {
  * bordered data block with a separator per row rather than a bullet list,
  * so it reads as a system spec sheet instead of marketing copy. */
 function SystemMetrics() {
+  const catalogueSize = useCatalogueSize()
   return (
     <div className="mt-10 max-w-sm">
       <p className="t-label-caps" style={{ color: 'var(--outline)', fontSize: 10 }}>
         ProjectMind system
       </p>
       <div className="glass-panel mt-3" style={{ borderRadius: 8 }}>
-        {SYSTEM_METRICS.map((m, i) => (
+        {systemMetricsFor(catalogueSize).map((m, i) => (
           <div
             key={m.label}
             className="flex items-center justify-between px-4 py-2.5"

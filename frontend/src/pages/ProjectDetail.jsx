@@ -6,7 +6,10 @@ import useFavorites from '../hooks/useFavorites'
 import ProjectCard from '../components/ProjectCard'
 import ProjectPlanner from '../components/ProjectPlanner'
 import SkillGapPanel from '../components/SkillGapPanel'
+import PersonalSkillGap from '../components/PersonalSkillGap'
+import LearningRoadmap from '../components/LearningRoadmap'
 import TeamBuilder from '../components/TeamBuilder'
+import TeamFormation from '../components/TeamFormation'
 import StartTeamWorkspace from '../components/StartTeamWorkspace'
 import ProjectChat from '../components/ProjectChat'
 import FeedbackForm from '../components/FeedbackForm'
@@ -157,7 +160,9 @@ export default function ProjectDetail() {
         )}
       </motion.header>
 
-      <div id="skill-gap">
+      <div id="skill-gap" className="space-y-6">
+        <PersonalSkillGap projectId={project.project_id} />
+        <LearningRoadmap projectId={project.project_id} />
         <SkillGapPanel onCheck={(skills) => api.skillGap(project.project_id, skills)} />
       </div>
 
@@ -173,11 +178,14 @@ export default function ProjectDetail() {
       </div>
 
       <div id="team" className="space-y-6">
+        <TeamFormation projectId={project.project_id} />
         <TeamBuilder onBuild={(members) => api.teamBuilder(project.project_id, members)} />
-        <StartTeamWorkspace
-          placeholderName={`${project.title} team`}
-          onCreate={(name) => api.createTeam(project.project_id, name)}
-        />
+        <div id="start-team">
+          <StartTeamWorkspace
+            placeholderName={`${project.title} team`}
+            onCreate={(name) => api.createTeam(project.project_id, name)}
+          />
+        </div>
       </div>
 
       <div id="mentor">

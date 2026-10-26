@@ -105,12 +105,12 @@ def test_idea_team_builder_assigns_a_role_per_member(client):
     )
     assert resp.status_code == 200
     data = resp.get_json()["data"]
-    # A solo builder is still a fixed team of one — no third person is
-    # coming, so Alex ends up owning every module rather than the response
-    # reporting the rest as unfilled (see nlp/team_builder.py).
-    assert len(data["assignments"]) == len(data["roles"])
-    assert data["unfilled_roles"] == []
-    assert all(a["member"] == "Alex" for a in data["assignments"])
+    # One person gets one role; the rest of the modules are reported open
+    # instead of being handed to Alex to "keep every seat covered".
+    assert len(data["assignments"]) == 1
+    assert data["assignments"][0]["member"] == "Alex"
+    assert len(data["unfilled_roles"]) == len(data["roles"]) - 1
+    assert data["unassigned_members"] == []
 
 
 def test_idea_team_builder_rejects_empty_members(client):
