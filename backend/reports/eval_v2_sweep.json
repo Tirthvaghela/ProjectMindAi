@@ -1,0 +1,2007 @@
+{
+  "metadata": {
+    "generated_at": "2026-10-30T09:52:21+00:00",
+    "command": "python -m scripts.evaluate --dataset v2 --sweep-json reports/eval_v2_sweep.json",
+    "catalogue": {
+      "project_count": 868,
+      "id_range": [
+        "pm-001",
+        "pm-868"
+      ],
+      "sha256": "37178c5d77d2a4792828b67f7b931990d870f1762cb74fd3b7e2754f6cf20188"
+    },
+    "index_projects": 868,
+    "dataset": {
+      "version": "v2",
+      "path": "C:\\Users\\Tirth\\OneDrive\\Desktop\\ProjectMindAi\\backend\\dataset\\eval\\eval_queries_v2.json",
+      "sha256": "0d40e9f6351a6b2952365a7828e880f310691fed4d9315f489ac0f05c05fa8e1",
+      "queries": 25,
+      "labels": "graded 0/1/2 with an uncertainty flag; single AI annotator, no independent review"
+    },
+    "metric_cutoff_k": 5,
+    "mrr_cutoff": 10,
+    "relevance_rule": "lenient point estimate: a project is relevant when its grade is >= 1, uncertain labels at face value",
+    "aggregation": "per-query score, then macro average over all queries; a query with no relevant projects scores 0 and stays in the denominator",
+    "duplicate_results": "a repeated project id is counted once, at its first position",
+    "weight_configurations": [
+      {
+        "dense": 0.0,
+        "sparse": 1.0
+      },
+      {
+        "dense": 0.2,
+        "sparse": 0.8
+      },
+      {
+        "dense": 0.35,
+        "sparse": 0.65
+      },
+      {
+        "dense": 0.5,
+        "sparse": 0.5
+      },
+      {
+        "dense": 0.65,
+        "sparse": 0.35
+      },
+      {
+        "dense": 0.8,
+        "sparse": 0.2
+      },
+      {
+        "dense": 1.0,
+        "sparse": 0.0
+      }
+    ],
+    "retrieval": {
+      "call": "HybridRetriever.search(query, top_k=10)",
+      "filters": null,
+      "personalisation_profile": null,
+      "technology_match": true,
+      "technology_weight_in_sweep": 0.25,
+      "note": "same HybridRetriever class, index and database the application uses; the sweep changes only DENSE_WEIGHT and SPARSE_WEIGHT"
+    },
+    "configuration": {
+      "dense_weight": 0.8,
+      "sparse_weight": 0.2,
+      "technology_weight": 0.25,
+      "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+    },
+    "environment": {
+      "python": "3.12.4",
+      "platform": "Windows-11-10.0.26300-SP0",
+      "numpy": "2.4.2",
+      "sentence-transformers": "3.4.1",
+      "rank-bm25": "0.2.2",
+      "source": {
+        "commit": "a1af51ebb40add75898282cb308bbcd22322adc1",
+        "backend_has_uncommitted_changes": true
+      }
+    }
+  },
+  "ceiling": {
+    "definition": "mean score of a perfect ranking (all relevant projects first) under the same labels and cutoff; an upper bound, not a target",
+    "mean_relevant_per_query": 19.96,
+    "min_relevant_per_query": 4,
+    "max_relevant_per_query": 59,
+    "precision_at_k": 0.992,
+    "recall_at_k": 0.38847157357772766,
+    "f1_at_k": 0.5188122158569479,
+    "mrr": 1.0,
+    "ndcg_at_k": 1.0
+  },
+  "production": {
+    "dense_weight": 0.8,
+    "sparse_weight": 0.2,
+    "label": "hybrid",
+    "precision_at_k": 0.9200000000000002,
+    "recall_at_k": 0.3561889898714151,
+    "f1_at_k": 0.47807749097284225,
+    "mrr": 1.0,
+    "ndcg_at_k": 0.9454952089438408,
+    "stderr": {
+      "f1_at_k": 0.04259625029053999,
+      "ndcg_at_k": 0.01930393399768953
+    },
+    "bands": {
+      "lenient/low": {
+        "f1_at_k": 0.48296924479087333,
+        "ndcg_at_k": 0.9103414574377069
+      },
+      "lenient/high": {
+        "f1_at_k": 0.4703829665430237,
+        "ndcg_at_k": 0.9537553113996643
+      }
+    },
+    "strict": {
+      "precision_at_k": 0.64,
+      "recall_at_k": 0.5502665062589875,
+      "f1_at_k": 0.47860727417559185,
+      "mrr": 0.96,
+      "ndcg_at_k": 0.8487709796345081
+    },
+    "graded_ndcg_at_k": 0.9002852886286487,
+    "judged_at_k": 1.0,
+    "queries_without_relevant": 0,
+    "per_query": [
+      {
+        "query": "AI healthcare project",
+        "precision": 0.6,
+        "recall": 0.13636363636363635,
+        "f1": 0.22222222222222218,
+        "mrr": 1.0,
+        "ndcg": 0.6992148198508501
+      },
+      {
+        "query": "I want a computer vision project using Python",
+        "precision": 1.0,
+        "recall": 0.08620689655172414,
+        "f1": 0.15873015873015872,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "cybersecurity final year project",
+        "precision": 1.0,
+        "recall": 0.10204081632653061,
+        "f1": 0.1851851851851852,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "machine learning for agriculture",
+        "precision": 1.0,
+        "recall": 0.3333333333333333,
+        "f1": 0.5,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "React Flask full stack web application",
+        "precision": 0.8,
+        "recall": 0.06779661016949153,
+        "f1": 0.125,
+        "mrr": 1.0,
+        "ndcg": 0.830419897363192
+      },
+      {
+        "query": "IoT smart home automation",
+        "precision": 1.0,
+        "recall": 0.2777777777777778,
+        "f1": 0.4347826086956522,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "blockchain voting system",
+        "precision": 0.6,
+        "recall": 0.75,
+        "f1": 0.6666666666666665,
+        "mrr": 1.0,
+        "ndcg": 0.8318724637288826
+      },
+      {
+        "query": "beginner NLP project",
+        "precision": 0.8,
+        "recall": 0.2857142857142857,
+        "f1": 0.4210526315789473,
+        "mrr": 1.0,
+        "ndcg": 0.8687949224876582
+      },
+      {
+        "query": "deep learning image classification",
+        "precision": 1.0,
+        "recall": 0.10869565217391304,
+        "f1": 0.19607843137254902,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "smart attendance system",
+        "precision": 1.0,
+        "recall": 0.8333333333333334,
+        "f1": 0.9090909090909091,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "YOLOv8 object detection",
+        "precision": 1.0,
+        "recall": 0.38461538461538464,
+        "f1": 0.5555555555555556,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "chatbot that answers questions from documents",
+        "precision": 1.0,
+        "recall": 0.5,
+        "f1": 0.6666666666666666,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "recommendation system with collaborative filtering",
+        "precision": 1.0,
+        "recall": 0.7142857142857143,
+        "f1": 0.8333333333333333,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "fraud detection in banking transactions",
+        "precision": 0.8,
+        "recall": 0.4444444444444444,
+        "f1": 0.5714285714285714,
+        "mrr": 1.0,
+        "ndcg": 0.8539316501572937
+      },
+      {
+        "query": "predict student marks and performance",
+        "precision": 1.0,
+        "recall": 0.5555555555555556,
+        "f1": 0.7142857142857143,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "audio and music processing project",
+        "precision": 1.0,
+        "recall": 0.18518518518518517,
+        "f1": 0.3125,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "time series forecasting stock market",
+        "precision": 1.0,
+        "recall": 0.4166666666666667,
+        "f1": 0.5882352941176471,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "mobile app development with React Native",
+        "precision": 1.0,
+        "recall": 0.2631578947368421,
+        "f1": 0.4166666666666667,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "docker kubernetes devops pipeline",
+        "precision": 1.0,
+        "recall": 0.19230769230769232,
+        "f1": 0.32258064516129037,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "augmented reality mobile application",
+        "precision": 1.0,
+        "recall": 0.25,
+        "f1": 0.4,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "robot that avoids obstacles",
+        "precision": 1.0,
+        "recall": 0.35714285714285715,
+        "f1": 0.5263157894736842,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "encrypt files securely",
+        "precision": 1.0,
+        "recall": 0.45454545454545453,
+        "f1": 0.625,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "resume screening for recruitment",
+        "precision": 1.0,
+        "recall": 0.5555555555555556,
+        "f1": 0.7142857142857143,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "detect fake news and misinformation",
+        "precision": 0.6,
+        "recall": 0.25,
+        "f1": 0.35294117647058826,
+        "mrr": 1.0,
+        "ndcg": 0.6992148198508501
+      },
+      {
+        "query": "voice controlled assistant with speech recognition",
+        "precision": 0.8,
+        "recall": 0.4,
+        "f1": 0.5333333333333333,
+        "mrr": 1.0,
+        "ndcg": 0.8539316501572937
+      }
+    ],
+    "note": "the configured weighting, measured by its own run with the application's configuration"
+  },
+  "sweep": [
+    {
+      "dense_weight": 0.0,
+      "sparse_weight": 1.0,
+      "label": "sparse only (BM25)",
+      "precision_at_k": 0.7680000000000001,
+      "recall_at_k": 0.29589173157415677,
+      "f1_at_k": 0.39124467363538096,
+      "mrr": 0.9166666666666667,
+      "ndcg_at_k": 0.8005687126753291,
+      "stderr": {
+        "f1_at_k": 0.04670124252037323,
+        "ndcg_at_k": 0.05676906869141819
+      },
+      "bands": {
+        "lenient/low": {
+          "f1_at_k": 0.3755927235301686,
+          "ndcg_at_k": 0.7219184835894557
+        },
+        "lenient/high": {
+          "f1_at_k": 0.38317408082949406,
+          "ndcg_at_k": 0.8086081289409224
+        }
+      },
+      "strict": {
+        "precision_at_k": 0.5519999999999999,
+        "recall_at_k": 0.4141568381493193,
+        "f1_at_k": 0.376981343872316,
+        "mrr": 0.8466666666666667,
+        "ndcg_at_k": 0.7077581365100586
+      },
+      "graded_ndcg_at_k": 0.75960809150452,
+      "judged_at_k": 1.0,
+      "queries_without_relevant": 0,
+      "per_query": [
+        {
+          "query": "AI healthcare project",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "mrr": 0.16666666666666666,
+          "ndcg": 0.0
+        },
+        {
+          "query": "I want a computer vision project using Python",
+          "precision": 1.0,
+          "recall": 0.08620689655172414,
+          "f1": 0.15873015873015872,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "cybersecurity final year project",
+          "precision": 1.0,
+          "recall": 0.10204081632653061,
+          "f1": 0.1851851851851852,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "machine learning for agriculture",
+          "precision": 0.4,
+          "recall": 0.13333333333333333,
+          "f1": 0.2,
+          "mrr": 1.0,
+          "ndcg": 0.5531464700081437
+        },
+        {
+          "query": "React Flask full stack web application",
+          "precision": 0.8,
+          "recall": 0.06779661016949153,
+          "f1": 0.125,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "IoT smart home automation",
+          "precision": 1.0,
+          "recall": 0.2777777777777778,
+          "f1": 0.4347826086956522,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "blockchain voting system",
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "mrr": 0.5,
+          "ndcg": 0.7606395682357036
+        },
+        {
+          "query": "beginner NLP project",
+          "precision": 0.4,
+          "recall": 0.14285714285714285,
+          "f1": 0.21052631578947364,
+          "mrr": 1.0,
+          "ndcg": 0.5087403079104241
+        },
+        {
+          "query": "deep learning image classification",
+          "precision": 1.0,
+          "recall": 0.10869565217391304,
+          "f1": 0.19607843137254902,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "smart attendance system",
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "YOLOv8 object detection",
+          "precision": 1.0,
+          "recall": 0.38461538461538464,
+          "f1": 0.5555555555555556,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "chatbot that answers questions from documents",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "recommendation system with collaborative filtering",
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "fraud detection in banking transactions",
+          "precision": 0.6,
+          "recall": 0.3333333333333333,
+          "f1": 0.42857142857142855,
+          "mrr": 1.0,
+          "ndcg": 0.7227265726449519
+        },
+        {
+          "query": "predict student marks and performance",
+          "precision": 0.2,
+          "recall": 0.1111111111111111,
+          "f1": 0.14285714285714285,
+          "mrr": 0.25,
+          "ndcg": 0.14606834984270645
+        },
+        {
+          "query": "audio and music processing project",
+          "precision": 1.0,
+          "recall": 0.18518518518518517,
+          "f1": 0.3125,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "time series forecasting stock market",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "mobile app development with React Native",
+          "precision": 1.0,
+          "recall": 0.2631578947368421,
+          "f1": 0.4166666666666667,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "docker kubernetes devops pipeline",
+          "precision": 1.0,
+          "recall": 0.19230769230769232,
+          "f1": 0.32258064516129037,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "augmented reality mobile application",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "robot that avoids obstacles",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "encrypt files securely",
+          "precision": 0.8,
+          "recall": 0.36363636363636365,
+          "f1": 0.5000000000000001,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "resume screening for recruitment",
+          "precision": 0.6,
+          "recall": 0.3333333333333333,
+          "f1": 0.42857142857142855,
+          "mrr": 1.0,
+          "ndcg": 0.7227265726449519
+        },
+        {
+          "query": "detect fake news and misinformation",
+          "precision": 0.2,
+          "recall": 0.08333333333333333,
+          "f1": 0.11764705882352941,
+          "mrr": 1.0,
+          "ndcg": 0.3391602052736161
+        },
+        {
+          "query": "voice controlled assistant with speech recognition",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.830419897363192
+        }
+      ],
+      "is_production": false
+    },
+    {
+      "dense_weight": 0.2,
+      "sparse_weight": 0.8,
+      "label": "hybrid",
+      "precision_at_k": 0.8080000000000002,
+      "recall_at_k": 0.310840981947136,
+      "f1_at_k": 0.41212536801839733,
+      "mrr": 0.94,
+      "ndcg_at_k": 0.8394709238672405,
+      "stderr": {
+        "f1_at_k": 0.0461596122640132,
+        "ndcg_at_k": 0.054642420949296236
+      },
+      "bands": {
+        "lenient/low": {
+          "f1_at_k": 0.39676942092977635,
+          "ndcg_at_k": 0.7610059248722192
+        },
+        "lenient/high": {
+          "f1_at_k": 0.40280477521251046,
+          "ndcg_at_k": 0.8402972700262064
+        }
+      },
+      "strict": {
+        "precision_at_k": 0.584,
+        "recall_at_k": 0.4638711238636051,
+        "f1_at_k": 0.41183848672945894,
+        "mrr": 0.8923809523809524,
+        "ndcg_at_k": 0.7563953881359621
+      },
+      "graded_ndcg_at_k": 0.8021952251998221,
+      "judged_at_k": 1.0,
+      "queries_without_relevant": 0,
+      "per_query": [
+        {
+          "query": "AI healthcare project",
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "mrr": 0.16666666666666666,
+          "ndcg": 0.0
+        },
+        {
+          "query": "I want a computer vision project using Python",
+          "precision": 1.0,
+          "recall": 0.08620689655172414,
+          "f1": 0.15873015873015872,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "cybersecurity final year project",
+          "precision": 1.0,
+          "recall": 0.10204081632653061,
+          "f1": 0.1851851851851852,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "machine learning for agriculture",
+          "precision": 0.4,
+          "recall": 0.13333333333333333,
+          "f1": 0.2,
+          "mrr": 1.0,
+          "ndcg": 0.5531464700081437
+        },
+        {
+          "query": "React Flask full stack web application",
+          "precision": 1.0,
+          "recall": 0.0847457627118644,
+          "f1": 0.15625,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "IoT smart home automation",
+          "precision": 1.0,
+          "recall": 0.2777777777777778,
+          "f1": 0.4347826086956522,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "blockchain voting system",
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "mrr": 1.0,
+          "ndcg": 0.9558295932317544
+        },
+        {
+          "query": "beginner NLP project",
+          "precision": 0.6,
+          "recall": 0.21428571428571427,
+          "f1": 0.3157894736842105,
+          "mrr": 1.0,
+          "ndcg": 0.639945385422766
+        },
+        {
+          "query": "deep learning image classification",
+          "precision": 1.0,
+          "recall": 0.10869565217391304,
+          "f1": 0.19607843137254902,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "smart attendance system",
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "YOLOv8 object detection",
+          "precision": 1.0,
+          "recall": 0.38461538461538464,
+          "f1": 0.5555555555555556,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "chatbot that answers questions from documents",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "recommendation system with collaborative filtering",
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "fraud detection in banking transactions",
+          "precision": 0.6,
+          "recall": 0.3333333333333333,
+          "f1": 0.42857142857142855,
+          "mrr": 1.0,
+          "ndcg": 0.7227265726449519
+        },
+        {
+          "query": "predict student marks and performance",
+          "precision": 0.2,
+          "recall": 0.1111111111111111,
+          "f1": 0.14285714285714285,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.16958010263680806
+        },
+        {
+          "query": "audio and music processing project",
+          "precision": 1.0,
+          "recall": 0.18518518518518517,
+          "f1": 0.3125,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "time series forecasting stock market",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "mobile app development with React Native",
+          "precision": 1.0,
+          "recall": 0.2631578947368421,
+          "f1": 0.4166666666666667,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "docker kubernetes devops pipeline",
+          "precision": 1.0,
+          "recall": 0.19230769230769232,
+          "f1": 0.32258064516129037,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "augmented reality mobile application",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "robot that avoids obstacles",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "encrypt files securely",
+          "precision": 1.0,
+          "recall": 0.45454545454545453,
+          "f1": 0.625,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "resume screening for recruitment",
+          "precision": 0.8,
+          "recall": 0.4444444444444444,
+          "f1": 0.5714285714285714,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "detect fake news and misinformation",
+          "precision": 0.4,
+          "recall": 0.16666666666666666,
+          "f1": 0.23529411764705882,
+          "mrr": 1.0,
+          "ndcg": 0.48522855511632257
+        },
+        {
+          "query": "voice controlled assistant with speech recognition",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        }
+      ],
+      "is_production": false
+    },
+    {
+      "dense_weight": 0.35,
+      "sparse_weight": 0.65,
+      "label": "hybrid",
+      "precision_at_k": 0.8480000000000001,
+      "recall_at_k": 0.32643430011672536,
+      "f1_at_k": 0.43472610597439837,
+      "mrr": 0.9733333333333333,
+      "ndcg_at_k": 0.8767542072715677,
+      "stderr": {
+        "f1_at_k": 0.04226670881240857,
+        "ndcg_at_k": 0.03819457257606038
+      },
+      "bands": {
+        "lenient/low": {
+          "f1_at_k": 0.42951300116261193,
+          "ndcg_at_k": 0.8093801453707482
+        },
+        "lenient/high": {
+          "f1_at_k": 0.4266555131685115,
+          "ndcg_at_k": 0.8834232874242417
+        }
+      },
+      "strict": {
+        "precision_at_k": 0.616,
+        "recall_at_k": 0.4906965206890018,
+        "f1_at_k": 0.4385768208590974,
+        "mrr": 0.9033333333333333,
+        "ndcg_at_k": 0.787452214178007
+      },
+      "graded_ndcg_at_k": 0.8362884017645622,
+      "judged_at_k": 1.0,
+      "queries_without_relevant": 0,
+      "per_query": [
+        {
+          "query": "AI healthcare project",
+          "precision": 0.4,
+          "recall": 0.09090909090909091,
+          "f1": 0.14814814814814814,
+          "mrr": 0.3333333333333333,
+          "ndcg": 0.30078518014914984
+        },
+        {
+          "query": "I want a computer vision project using Python",
+          "precision": 1.0,
+          "recall": 0.08620689655172414,
+          "f1": 0.15873015873015872,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "cybersecurity final year project",
+          "precision": 1.0,
+          "recall": 0.10204081632653061,
+          "f1": 0.1851851851851852,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "machine learning for agriculture",
+          "precision": 0.8,
+          "recall": 0.26666666666666666,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "React Flask full stack web application",
+          "precision": 0.8,
+          "recall": 0.06779661016949153,
+          "f1": 0.125,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "IoT smart home automation",
+          "precision": 1.0,
+          "recall": 0.2777777777777778,
+          "f1": 0.4347826086956522,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "blockchain voting system",
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "mrr": 1.0,
+          "ndcg": 0.9558295932317544
+        },
+        {
+          "query": "beginner NLP project",
+          "precision": 0.8,
+          "recall": 0.2857142857142857,
+          "f1": 0.4210526315789473,
+          "mrr": 1.0,
+          "ndcg": 0.7860137352654724
+        },
+        {
+          "query": "deep learning image classification",
+          "precision": 1.0,
+          "recall": 0.10869565217391304,
+          "f1": 0.19607843137254902,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "smart attendance system",
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "YOLOv8 object detection",
+          "precision": 1.0,
+          "recall": 0.38461538461538464,
+          "f1": 0.5555555555555556,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "chatbot that answers questions from documents",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "recommendation system with collaborative filtering",
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "fraud detection in banking transactions",
+          "precision": 0.6,
+          "recall": 0.3333333333333333,
+          "f1": 0.42857142857142855,
+          "mrr": 1.0,
+          "ndcg": 0.7227265726449519
+        },
+        {
+          "query": "predict student marks and performance",
+          "precision": 0.4,
+          "recall": 0.2222222222222222,
+          "f1": 0.2857142857142857,
+          "mrr": 1.0,
+          "ndcg": 0.48522855511632257
+        },
+        {
+          "query": "audio and music processing project",
+          "precision": 1.0,
+          "recall": 0.18518518518518517,
+          "f1": 0.3125,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "time series forecasting stock market",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "mobile app development with React Native",
+          "precision": 1.0,
+          "recall": 0.2631578947368421,
+          "f1": 0.4166666666666667,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "docker kubernetes devops pipeline",
+          "precision": 1.0,
+          "recall": 0.19230769230769232,
+          "f1": 0.32258064516129037,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "augmented reality mobile application",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "robot that avoids obstacles",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "encrypt files securely",
+          "precision": 1.0,
+          "recall": 0.45454545454545453,
+          "f1": 0.625,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "resume screening for recruitment",
+          "precision": 0.8,
+          "recall": 0.4444444444444444,
+          "f1": 0.5714285714285714,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "detect fake news and misinformation",
+          "precision": 0.4,
+          "recall": 0.16666666666666666,
+          "f1": 0.23529411764705882,
+          "mrr": 1.0,
+          "ndcg": 0.48522855511632257
+        },
+        {
+          "query": "voice controlled assistant with speech recognition",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        }
+      ],
+      "is_production": false
+    },
+    {
+      "dense_weight": 0.5,
+      "sparse_weight": 0.5,
+      "label": "hybrid",
+      "precision_at_k": 0.8640000000000001,
+      "recall_at_k": 0.3253635930460183,
+      "f1_at_k": 0.43851446576275827,
+      "mrr": 1.0,
+      "ndcg_at_k": 0.9051979480768327,
+      "stderr": {
+        "f1_at_k": 0.03792487560607893,
+        "ndcg_at_k": 0.026320920064408816
+      },
+      "bands": {
+        "lenient/low": {
+          "f1_at_k": 0.43710991144187517,
+          "ndcg_at_k": 0.8498552933819794
+        },
+        "lenient/high": {
+          "f1_at_k": 0.43133276184576014,
+          "ndcg_at_k": 0.9125175804208919
+        }
+      },
+      "strict": {
+        "precision_at_k": 0.632,
+        "recall_at_k": 0.5094338944263757,
+        "f1_at_k": 0.4552459649195458,
+        "mrr": 0.96,
+        "ndcg_at_k": 0.8328148979765584
+      },
+      "graded_ndcg_at_k": 0.871237797156846,
+      "judged_at_k": 1.0,
+      "queries_without_relevant": 0,
+      "per_query": [
+        {
+          "query": "AI healthcare project",
+          "precision": 0.6,
+          "recall": 0.13636363636363635,
+          "f1": 0.22222222222222218,
+          "mrr": 1.0,
+          "ndcg": 0.6164336326286644
+        },
+        {
+          "query": "I want a computer vision project using Python",
+          "precision": 1.0,
+          "recall": 0.08620689655172414,
+          "f1": 0.15873015873015872,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "cybersecurity final year project",
+          "precision": 1.0,
+          "recall": 0.10204081632653061,
+          "f1": 0.1851851851851852,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "machine learning for agriculture",
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "React Flask full stack web application",
+          "precision": 0.8,
+          "recall": 0.06779661016949153,
+          "f1": 0.125,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "IoT smart home automation",
+          "precision": 1.0,
+          "recall": 0.2777777777777778,
+          "f1": 0.4347826086956522,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "blockchain voting system",
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1": 0.6666666666666665,
+          "mrr": 1.0,
+          "ndcg": 0.8318724637288826
+        },
+        {
+          "query": "beginner NLP project",
+          "precision": 0.8,
+          "recall": 0.2857142857142857,
+          "f1": 0.4210526315789473,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "deep learning image classification",
+          "precision": 1.0,
+          "recall": 0.10869565217391304,
+          "f1": 0.19607843137254902,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "smart attendance system",
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "YOLOv8 object detection",
+          "precision": 1.0,
+          "recall": 0.38461538461538464,
+          "f1": 0.5555555555555556,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "chatbot that answers questions from documents",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "recommendation system with collaborative filtering",
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "fraud detection in banking transactions",
+          "precision": 0.6,
+          "recall": 0.3333333333333333,
+          "f1": 0.42857142857142855,
+          "mrr": 1.0,
+          "ndcg": 0.7227265726449519
+        },
+        {
+          "query": "predict student marks and performance",
+          "precision": 0.6,
+          "recall": 0.3333333333333333,
+          "f1": 0.42857142857142855,
+          "mrr": 1.0,
+          "ndcg": 0.7227265726449519
+        },
+        {
+          "query": "audio and music processing project",
+          "precision": 1.0,
+          "recall": 0.18518518518518517,
+          "f1": 0.3125,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "time series forecasting stock market",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "mobile app development with React Native",
+          "precision": 1.0,
+          "recall": 0.2631578947368421,
+          "f1": 0.4166666666666667,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "docker kubernetes devops pipeline",
+          "precision": 1.0,
+          "recall": 0.19230769230769232,
+          "f1": 0.32258064516129037,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "augmented reality mobile application",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "robot that avoids obstacles",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "encrypt files securely",
+          "precision": 1.0,
+          "recall": 0.45454545454545453,
+          "f1": 0.625,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "resume screening for recruitment",
+          "precision": 0.8,
+          "recall": 0.4444444444444444,
+          "f1": 0.5714285714285714,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "detect fake news and misinformation",
+          "precision": 0.4,
+          "recall": 0.16666666666666666,
+          "f1": 0.23529411764705882,
+          "mrr": 1.0,
+          "ndcg": 0.5531464700081437
+        },
+        {
+          "query": "voice controlled assistant with speech recognition",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        }
+      ],
+      "is_production": false
+    },
+    {
+      "dense_weight": 0.65,
+      "sparse_weight": 0.35,
+      "label": "hybrid",
+      "precision_at_k": 0.8960000000000001,
+      "recall_at_k": 0.34044295812538344,
+      "f1_at_k": 0.45885944586006033,
+      "mrr": 1.0,
+      "ndcg_at_k": 0.9300965388609093,
+      "stderr": {
+        "f1_at_k": 0.038773038543353185,
+        "ndcg_at_k": 0.021111094551044013
+      },
+      "bands": {
+        "lenient/low": {
+          "f1_at_k": 0.4611667117022992,
+          "ndcg_at_k": 0.8857888058721797
+        },
+        "lenient/high": {
+          "f1_at_k": 0.4516777419430623,
+          "ndcg_at_k": 0.9368216403117541
+        }
+      },
+      "strict": {
+        "precision_at_k": 0.648,
+        "recall_at_k": 0.5392823792748606,
+        "f1_at_k": 0.4771381468117276,
+        "mrr": 0.96,
+        "ndcg_at_k": 0.8456700693642955
+      },
+      "graded_ndcg_at_k": 0.8906821049867866,
+      "judged_at_k": 1.0,
+      "queries_without_relevant": 0,
+      "per_query": [
+        {
+          "query": "AI healthcare project",
+          "precision": 0.6,
+          "recall": 0.13636363636363635,
+          "f1": 0.22222222222222218,
+          "mrr": 1.0,
+          "ndcg": 0.6992148198508501
+        },
+        {
+          "query": "I want a computer vision project using Python",
+          "precision": 1.0,
+          "recall": 0.08620689655172414,
+          "f1": 0.15873015873015872,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "cybersecurity final year project",
+          "precision": 1.0,
+          "recall": 0.10204081632653061,
+          "f1": 0.1851851851851852,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "machine learning for agriculture",
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "React Flask full stack web application",
+          "precision": 0.8,
+          "recall": 0.06779661016949153,
+          "f1": 0.125,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "IoT smart home automation",
+          "precision": 1.0,
+          "recall": 0.2777777777777778,
+          "f1": 0.4347826086956522,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "blockchain voting system",
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1": 0.6666666666666665,
+          "mrr": 1.0,
+          "ndcg": 0.8318724637288826
+        },
+        {
+          "query": "beginner NLP project",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "deep learning image classification",
+          "precision": 1.0,
+          "recall": 0.10869565217391304,
+          "f1": 0.19607843137254902,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "smart attendance system",
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "YOLOv8 object detection",
+          "precision": 1.0,
+          "recall": 0.38461538461538464,
+          "f1": 0.5555555555555556,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "chatbot that answers questions from documents",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "recommendation system with collaborative filtering",
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "fraud detection in banking transactions",
+          "precision": 0.6,
+          "recall": 0.3333333333333333,
+          "f1": 0.42857142857142855,
+          "mrr": 1.0,
+          "ndcg": 0.7227265726449519
+        },
+        {
+          "query": "predict student marks and performance",
+          "precision": 0.8,
+          "recall": 0.4444444444444444,
+          "f1": 0.5714285714285714,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "audio and music processing project",
+          "precision": 1.0,
+          "recall": 0.18518518518518517,
+          "f1": 0.3125,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "time series forecasting stock market",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "mobile app development with React Native",
+          "precision": 1.0,
+          "recall": 0.2631578947368421,
+          "f1": 0.4166666666666667,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "docker kubernetes devops pipeline",
+          "precision": 1.0,
+          "recall": 0.19230769230769232,
+          "f1": 0.32258064516129037,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "augmented reality mobile application",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "robot that avoids obstacles",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "encrypt files securely",
+          "precision": 1.0,
+          "recall": 0.45454545454545453,
+          "f1": 0.625,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "resume screening for recruitment",
+          "precision": 1.0,
+          "recall": 0.5555555555555556,
+          "f1": 0.7142857142857143,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "detect fake news and misinformation",
+          "precision": 0.6,
+          "recall": 0.25,
+          "f1": 0.35294117647058826,
+          "mrr": 1.0,
+          "ndcg": 0.6843515475204855
+        },
+        {
+          "query": "voice controlled assistant with speech recognition",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        }
+      ],
+      "is_production": false
+    },
+    {
+      "dense_weight": 0.8,
+      "sparse_weight": 0.2,
+      "label": "hybrid",
+      "precision_at_k": 0.9200000000000002,
+      "recall_at_k": 0.3561889898714151,
+      "f1_at_k": 0.47807749097284225,
+      "mrr": 1.0,
+      "ndcg_at_k": 0.9454952089438408,
+      "stderr": {
+        "f1_at_k": 0.04259625029053999,
+        "ndcg_at_k": 0.01930393399768953
+      },
+      "bands": {
+        "lenient/low": {
+          "f1_at_k": 0.48296924479087333,
+          "ndcg_at_k": 0.9103414574377069
+        },
+        "lenient/high": {
+          "f1_at_k": 0.4703829665430237,
+          "ndcg_at_k": 0.9537553113996643
+        }
+      },
+      "strict": {
+        "precision_at_k": 0.64,
+        "recall_at_k": 0.5502665062589875,
+        "f1_at_k": 0.47860727417559185,
+        "mrr": 0.96,
+        "ndcg_at_k": 0.8487709796345081
+      },
+      "graded_ndcg_at_k": 0.9002852886286487,
+      "judged_at_k": 1.0,
+      "queries_without_relevant": 0,
+      "per_query": [
+        {
+          "query": "AI healthcare project",
+          "precision": 0.6,
+          "recall": 0.13636363636363635,
+          "f1": 0.22222222222222218,
+          "mrr": 1.0,
+          "ndcg": 0.6992148198508501
+        },
+        {
+          "query": "I want a computer vision project using Python",
+          "precision": 1.0,
+          "recall": 0.08620689655172414,
+          "f1": 0.15873015873015872,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "cybersecurity final year project",
+          "precision": 1.0,
+          "recall": 0.10204081632653061,
+          "f1": 0.1851851851851852,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "machine learning for agriculture",
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "React Flask full stack web application",
+          "precision": 0.8,
+          "recall": 0.06779661016949153,
+          "f1": 0.125,
+          "mrr": 1.0,
+          "ndcg": 0.830419897363192
+        },
+        {
+          "query": "IoT smart home automation",
+          "precision": 1.0,
+          "recall": 0.2777777777777778,
+          "f1": 0.4347826086956522,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "blockchain voting system",
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1": 0.6666666666666665,
+          "mrr": 1.0,
+          "ndcg": 0.8318724637288826
+        },
+        {
+          "query": "beginner NLP project",
+          "precision": 0.8,
+          "recall": 0.2857142857142857,
+          "f1": 0.4210526315789473,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "deep learning image classification",
+          "precision": 1.0,
+          "recall": 0.10869565217391304,
+          "f1": 0.19607843137254902,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "smart attendance system",
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "YOLOv8 object detection",
+          "precision": 1.0,
+          "recall": 0.38461538461538464,
+          "f1": 0.5555555555555556,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "chatbot that answers questions from documents",
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "recommendation system with collaborative filtering",
+          "precision": 1.0,
+          "recall": 0.7142857142857143,
+          "f1": 0.8333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "fraud detection in banking transactions",
+          "precision": 0.8,
+          "recall": 0.4444444444444444,
+          "f1": 0.5714285714285714,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "predict student marks and performance",
+          "precision": 1.0,
+          "recall": 0.5555555555555556,
+          "f1": 0.7142857142857143,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "audio and music processing project",
+          "precision": 1.0,
+          "recall": 0.18518518518518517,
+          "f1": 0.3125,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "time series forecasting stock market",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "mobile app development with React Native",
+          "precision": 1.0,
+          "recall": 0.2631578947368421,
+          "f1": 0.4166666666666667,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "docker kubernetes devops pipeline",
+          "precision": 1.0,
+          "recall": 0.19230769230769232,
+          "f1": 0.32258064516129037,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "augmented reality mobile application",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "robot that avoids obstacles",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "encrypt files securely",
+          "precision": 1.0,
+          "recall": 0.45454545454545453,
+          "f1": 0.625,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "resume screening for recruitment",
+          "precision": 1.0,
+          "recall": 0.5555555555555556,
+          "f1": 0.7142857142857143,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "detect fake news and misinformation",
+          "precision": 0.6,
+          "recall": 0.25,
+          "f1": 0.35294117647058826,
+          "mrr": 1.0,
+          "ndcg": 0.6992148198508501
+        },
+        {
+          "query": "voice controlled assistant with speech recognition",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        }
+      ],
+      "is_production": true
+    },
+    {
+      "dense_weight": 1.0,
+      "sparse_weight": 0.0,
+      "label": "dense only (embeddings)",
+      "precision_at_k": 0.9440000000000001,
+      "recall_at_k": 0.3624920201744455,
+      "f1_at_k": 0.4880818482713171,
+      "mrr": 1.0,
+      "ndcg_at_k": 0.9609985727663917,
+      "stderr": {
+        "f1_at_k": 0.04074849741111741,
+        "ndcg_at_k": 0.014414883281874711
+      },
+      "bands": {
+        "lenient/low": {
+          "f1_at_k": 0.5123577229793516,
+          "ndcg_at_k": 0.9363412274612452
+        },
+        "lenient/high": {
+          "f1_at_k": 0.4883873238414986,
+          "ndcg_at_k": 0.9762831248066175
+        }
+      },
+      "strict": {
+        "precision_at_k": 0.6480000000000001,
+        "recall_at_k": 0.5809966649891463,
+        "f1_at_k": 0.49108760543853175,
+        "mrr": 0.96,
+        "ndcg_at_k": 0.86382832175657
+      },
+      "graded_ndcg_at_k": 0.9129671420880909,
+      "judged_at_k": 1.0,
+      "queries_without_relevant": 0,
+      "per_query": [
+        {
+          "query": "AI healthcare project",
+          "precision": 1.0,
+          "recall": 0.22727272727272727,
+          "f1": 0.37037037037037035,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "I want a computer vision project using Python",
+          "precision": 1.0,
+          "recall": 0.08620689655172414,
+          "f1": 0.15873015873015872,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "cybersecurity final year project",
+          "precision": 1.0,
+          "recall": 0.10204081632653061,
+          "f1": 0.1851851851851852,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "machine learning for agriculture",
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1": 0.5,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "React Flask full stack web application",
+          "precision": 0.8,
+          "recall": 0.06779661016949153,
+          "f1": 0.125,
+          "mrr": 1.0,
+          "ndcg": 0.7860137352654724
+        },
+        {
+          "query": "IoT smart home automation",
+          "precision": 1.0,
+          "recall": 0.2777777777777778,
+          "f1": 0.4347826086956522,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "blockchain voting system",
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1": 0.6666666666666665,
+          "mrr": 1.0,
+          "ndcg": 0.8318724637288826
+        },
+        {
+          "query": "beginner NLP project",
+          "precision": 0.8,
+          "recall": 0.2857142857142857,
+          "f1": 0.4210526315789473,
+          "mrr": 1.0,
+          "ndcg": 0.830419897363192
+        },
+        {
+          "query": "deep learning image classification",
+          "precision": 1.0,
+          "recall": 0.10869565217391304,
+          "f1": 0.19607843137254902,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "smart attendance system",
+          "precision": 1.0,
+          "recall": 0.8333333333333334,
+          "f1": 0.9090909090909091,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "YOLOv8 object detection",
+          "precision": 1.0,
+          "recall": 0.38461538461538464,
+          "f1": 0.5555555555555556,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "chatbot that answers questions from documents",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        },
+        {
+          "query": "recommendation system with collaborative filtering",
+          "precision": 1.0,
+          "recall": 0.7142857142857143,
+          "f1": 0.8333333333333333,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "fraud detection in banking transactions",
+          "precision": 0.8,
+          "recall": 0.4444444444444444,
+          "f1": 0.5714285714285714,
+          "mrr": 1.0,
+          "ndcg": 0.8687949224876582
+        },
+        {
+          "query": "predict student marks and performance",
+          "precision": 1.0,
+          "recall": 0.5555555555555556,
+          "f1": 0.7142857142857143,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "audio and music processing project",
+          "precision": 1.0,
+          "recall": 0.18518518518518517,
+          "f1": 0.3125,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "time series forecasting stock market",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "mobile app development with React Native",
+          "precision": 1.0,
+          "recall": 0.2631578947368421,
+          "f1": 0.4166666666666667,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "docker kubernetes devops pipeline",
+          "precision": 1.0,
+          "recall": 0.19230769230769232,
+          "f1": 0.32258064516129037,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "augmented reality mobile application",
+          "precision": 1.0,
+          "recall": 0.25,
+          "f1": 0.4,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "robot that avoids obstacles",
+          "precision": 1.0,
+          "recall": 0.35714285714285715,
+          "f1": 0.5263157894736842,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "encrypt files securely",
+          "precision": 1.0,
+          "recall": 0.45454545454545453,
+          "f1": 0.625,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "resume screening for recruitment",
+          "precision": 1.0,
+          "recall": 0.5555555555555556,
+          "f1": 0.7142857142857143,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "detect fake news and misinformation",
+          "precision": 1.0,
+          "recall": 0.4166666666666667,
+          "f1": 0.5882352941176471,
+          "mrr": 1.0,
+          "ndcg": 1.0
+        },
+        {
+          "query": "voice controlled assistant with speech recognition",
+          "precision": 0.8,
+          "recall": 0.4,
+          "f1": 0.5333333333333333,
+          "mrr": 1.0,
+          "ndcg": 0.8539316501572937
+        }
+      ],
+      "is_production": false
+    }
+  ],
+  "summary": {
+    "best_f1_at_k": {
+      "value": 0.4880818482713171,
+      "dense_weights": [
+        1.0
+      ],
+      "tied": false
+    },
+    "best_ndcg_at_k": {
+      "value": 0.9609985727663917,
+      "dense_weights": [
+        1.0
+      ],
+      "tied": false
+    }
+  }
+}

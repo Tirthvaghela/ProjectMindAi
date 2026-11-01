@@ -1,0 +1,543 @@
+[
+  {
+    "title": "Particle Filter Localisation Simulator",
+    "description": "Shows a simulated robot estimating its position on a known map with a particle filter, letting learners change sensor noise and particle count and watch the estimate converge or fail.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "ROS"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Probabilistic localisation",
+      "Sensor models",
+      "Resampling",
+      "Parameter studies"
+    ],
+    "keywords": [
+      "particle filter",
+      "localisation",
+      "monte carlo",
+      "probabilistic robotics"
+    ]
+  },
+  {
+    "title": "PID Controller Tuning Lab for a Balancing Beam",
+    "description": "Builds a ball-on-beam rig or simulation and lets learners tune proportional, integral and derivative terms, comparing step responses and overshoot for each tuning.",
+    "domain": "Robotics",
+    "technologies": [
+      "Arduino",
+      "Python",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "PID control",
+      "Step response",
+      "Tuning methods",
+      "Plotting"
+    ],
+    "keywords": [
+      "pid",
+      "control",
+      "tuning",
+      "ball and beam"
+    ]
+  },
+  {
+    "title": "A-Star Path Planner Comparison with Costmaps",
+    "description": "Plans robot routes over occupancy grids with different heuristics and inflated obstacle costs, and compares path length, safety margin and planning time.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Grid planning",
+      "Costmaps",
+      "Heuristics",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "path planning",
+      "costmap",
+      "a star",
+      "navigation"
+    ]
+  },
+  {
+    "title": "Rapidly-Exploring Random Tree Planner for a Robot Arm",
+    "description": "Plans collision-free motions for a multi-joint arm in a cluttered workspace with a randomised tree planner, then smooths the path and tests how often it succeeds.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "NumPy",
+      "PyBullet"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Sampling-based planning",
+      "Configuration space",
+      "Collision checking",
+      "Path smoothing"
+    ],
+    "keywords": [
+      "rrt",
+      "motion planning",
+      "robot arm",
+      "collision"
+    ]
+  },
+  {
+    "title": "Kalman Filter Sensor Fusion for a Mobile Robot",
+    "description": "Fuses wheel odometry with an inertial sensor using a Kalman filter and shows how the fused estimate beats either source alone as drift accumulates.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "ROS"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "State estimation",
+      "Kalman filtering",
+      "Noise modelling",
+      "Error analysis"
+    ],
+    "keywords": [
+      "kalman filter",
+      "sensor fusion",
+      "odometry",
+      "imu"
+    ]
+  },
+  {
+    "title": "Ultrasonic Obstacle Mapping with a Servo Scanner",
+    "description": "Sweeps an ultrasonic sensor on a servo to build a simple polar map of obstacles and displays it live, noting how sensor beam width blurs object edges.",
+    "domain": "Robotics",
+    "technologies": [
+      "Arduino",
+      "Python",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Sensor scanning",
+      "Polar to Cartesian conversion",
+      "Measurement limits"
+    ],
+    "keywords": [
+      "ultrasonic",
+      "scanning",
+      "mapping",
+      "servo"
+    ]
+  },
+  {
+    "title": "Visual Servoing for Aligning a Gripper to a Target",
+    "description": "Moves an arm so its camera view of a marker matches a target image, using image feedback directly in the control loop instead of a precomputed position.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "ROS",
+      "Gazebo"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Visual feedback control",
+      "Camera geometry",
+      "Stability",
+      "Simulation"
+    ],
+    "keywords": [
+      "visual servoing",
+      "control",
+      "camera",
+      "manipulation"
+    ]
+  },
+  {
+    "title": "Robot Task Planner with Behaviour Trees",
+    "description": "Structures a robot's tasks such as fetch, retry and recover as a behaviour tree, and shows how the tree handles a failed grasp or a blocked corridor.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "py_trees",
+      "Gazebo"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Behaviour trees",
+      "Failure recovery",
+      "Modular design",
+      "Simulation"
+    ],
+    "keywords": [
+      "behaviour tree",
+      "task planning",
+      "recovery",
+      "ros"
+    ]
+  },
+  {
+    "title": "Differential Drive Odometry Calibration Tool",
+    "description": "Estimates wheel radius and wheelbase errors by driving test patterns and comparing the robot's belief with measured end positions, then applies the corrections.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Odometry",
+      "Calibration",
+      "Error modelling",
+      "Experimental method"
+    ],
+    "keywords": [
+      "odometry",
+      "calibration",
+      "wheelbase",
+      "differential drive"
+    ]
+  },
+  {
+    "title": "Robot Fleet Charging Scheduler",
+    "description": "Decides when each robot in a small fleet should return to charge so tasks are still finished on time, comparing simple rules with an optimised schedule in simulation.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "OR-Tools",
+      "SimPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Scheduling under constraints",
+      "Battery models",
+      "Simulation",
+      "Policy comparison"
+    ],
+    "keywords": [
+      "fleet",
+      "charging",
+      "scheduling",
+      "battery"
+    ]
+  },
+  {
+    "title": "Soft Gripper Force Sensing Experiment",
+    "description": "Builds a compliant gripper with flex sensors and measures how grip force relates to sensor readings across objects of different stiffness and shape.",
+    "domain": "Robotics",
+    "technologies": [
+      "Arduino",
+      "Python",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Sensor characterisation",
+      "Calibration curves",
+      "Gripper design",
+      "Experiment analysis"
+    ],
+    "keywords": [
+      "gripper",
+      "force sensing",
+      "calibration",
+      "soft robotics"
+    ]
+  },
+  {
+    "title": "Occupancy Grid Mapping from Range Sensors",
+    "description": "Builds a map of a simulated room from range readings with probabilistic occupancy updates and compares how sensor noise and robot speed affect map quality.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "ROS",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Occupancy grids",
+      "Bayesian updates",
+      "Sensor models",
+      "Map evaluation"
+    ],
+    "keywords": [
+      "occupancy grid",
+      "mapping",
+      "bayes",
+      "range sensor"
+    ]
+  },
+  {
+    "title": "Robot Arm Inverse Kinematics Visualiser",
+    "description": "Computes joint angles for a two- and three-link arm to reach a target, shows the multiple solutions and where the arm reaches singular positions.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Kinematics",
+      "Trigonometry",
+      "Singularities",
+      "Interactive plots"
+    ],
+    "keywords": [
+      "inverse kinematics",
+      "robot arm",
+      "joints",
+      "visualisation"
+    ]
+  },
+  {
+    "title": "Wall-Following Maze Robot with Wheel Encoders",
+    "description": "Navigates a maze by following walls, uses wheel encoders to measure distances and records the walls it has seen to avoid repeating dead ends.",
+    "domain": "Robotics",
+    "technologies": [
+      "Arduino",
+      "C++"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Wall following",
+      "Encoder counting",
+      "Simple mapping",
+      "Control"
+    ],
+    "keywords": [
+      "wall following",
+      "encoders",
+      "maze",
+      "arduino"
+    ]
+  },
+  {
+    "title": "Human-Aware Navigation with Personal Space Costs",
+    "description": "Adds costs around people in a simulated corridor so the robot passes at a comfortable distance and speed, and evaluates how much extra path length this requires.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "Gazebo",
+      "NumPy"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Social navigation",
+      "Cost functions",
+      "Simulation of people",
+      "Evaluation"
+    ],
+    "keywords": [
+      "social navigation",
+      "personal space",
+      "costmap",
+      "hri"
+    ]
+  },
+  {
+    "title": "Sim-to-Real Gap Study for a Wheeled Robot",
+    "description": "Trains a controller in simulation, runs it on a physical robot and measures how performance drops, then tests whether adding noise and randomisation during training narrows the gap.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "PyBullet",
+      "ROS",
+      "Stable-Baselines3"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Domain randomisation",
+      "Reinforcement learning",
+      "Evaluation on hardware",
+      "Error analysis"
+    ],
+    "keywords": [
+      "sim to real",
+      "domain randomisation",
+      "reinforcement learning",
+      "transfer"
+    ]
+  },
+  {
+    "title": "Servo Smooth Motion Profiler",
+    "description": "Generates trapezoidal and S-curve motion profiles for a servo and compares jerk, vibration and travel time with an abrupt move to the same target.",
+    "domain": "Robotics",
+    "technologies": [
+      "Arduino",
+      "Python",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Motion profiles",
+      "Jerk",
+      "Servo control",
+      "Plotting"
+    ],
+    "keywords": [
+      "motion profile",
+      "servo",
+      "jerk",
+      "trajectory"
+    ]
+  },
+  {
+    "title": "Pick and Place Cycle Time Optimiser",
+    "description": "Reorders pick and place sequences and tunes speeds to shorten the cycle time of a small robot arm, checking each change against collision and drop-rate limits.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "OR-Tools",
+      "Gazebo"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Sequence optimisation",
+      "Constraint checking",
+      "Simulation",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "pick and place",
+      "cycle time",
+      "optimisation",
+      "arm"
+    ]
+  },
+  {
+    "title": "Autonomous Rover Energy Budget Planner",
+    "description": "Plans routes for a solar-powered rover by trading distance, slope and sunlight against battery state, and compares plans against a shortest-path baseline.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "ROS"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Energy modelling",
+      "Cost-aware planning",
+      "Terrain data"
+    ],
+    "keywords": [
+      "rover",
+      "energy",
+      "planning",
+      "terrain"
+    ]
+  },
+  {
+    "title": "Robotic Camera Slider for Time-Lapse Photography",
+    "description": "Moves a camera along a rail at precisely timed steps for time-lapse sequences, with easing curves and a user interface to set duration and distance.",
+    "domain": "Robotics",
+    "technologies": [
+      "Arduino",
+      "Python",
+      "Raspberry Pi"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Stepper motor control",
+      "Timing",
+      "User interface",
+      "Motion easing"
+    ],
+    "keywords": [
+      "camera slider",
+      "stepper",
+      "timelapse",
+      "motion control"
+    ]
+  },
+  {
+    "title": "Multi-Robot Task Allocation by Auction",
+    "description": "Assigns tasks to several simulated robots through bidding rounds and compares the result and communication cost with a central optimiser as tasks and failures increase.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Auction algorithms",
+      "Task allocation",
+      "Communication costs",
+      "Failure handling"
+    ],
+    "keywords": [
+      "task allocation",
+      "auction",
+      "multi robot",
+      "coordination"
+    ]
+  },
+  {
+    "title": "Robot Safety Zone Monitor with Speed and Separation Limits",
+    "description": "Slows or stops a robot arm when a person enters defined zones, based on distance and relative speed, and tests that the stop happens within a calculated safe distance.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "ROS",
+      "OpenCV",
+      "Gazebo"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Safety standards concepts",
+      "Distance monitoring",
+      "Stopping distance",
+      "Validation"
+    ],
+    "keywords": [
+      "safety",
+      "human robot collaboration",
+      "speed and separation",
+      "monitoring"
+    ]
+  }
+]

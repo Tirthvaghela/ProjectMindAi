@@ -1,0 +1,686 @@
+[
+  {
+    "title": "Nurse Shift Roster Optimiser with Fairness Constraints",
+    "description": "Builds weekly nurse rosters that satisfy minimum cover, rest-period and skill-mix rules, then scores each solution on how evenly night shifts and weekend duty are shared so no one is quietly overloaded.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "OR-Tools",
+      "Streamlit",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Constraint programming",
+      "Objective function design",
+      "Fairness metrics",
+      "Scheduling models"
+    ],
+    "keywords": [
+      "scheduling",
+      "constraint programming",
+      "fairness",
+      "roster"
+    ]
+  },
+  {
+    "title": "Loan Eligibility Rule Engine with Forward Chaining",
+    "description": "Encodes a bank's published eligibility rules as an explicit rule base and chains through them so an applicant sees exactly which rule fired and which missing fact would change the outcome.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "Streamlit",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Rule-based systems",
+      "Forward chaining",
+      "Knowledge representation"
+    ],
+    "keywords": [
+      "expert system",
+      "rules",
+      "eligibility",
+      "explainability"
+    ]
+  },
+  {
+    "title": "Bayesian Network Car Fault Diagnosis Advisor",
+    "description": "Models the causal links between symptoms, such as a rough idle or a warning light, and underlying faults, then updates fault probabilities as the owner answers follow-up questions about the car.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "pgmpy",
+      "Streamlit",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Bayesian networks",
+      "Probabilistic inference",
+      "Knowledge elicitation",
+      "Interactive questioning"
+    ],
+    "keywords": [
+      "bayesian network",
+      "diagnosis",
+      "inference",
+      "uncertainty"
+    ]
+  },
+  {
+    "title": "Monte Carlo Tree Search Player for Othello",
+    "description": "Implements an Othello engine that uses Monte Carlo tree search with tuned rollout policies, and measures how win rate against a minimax baseline changes with the simulation budget per move.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Monte Carlo tree search",
+      "Game tree search",
+      "Experiment design",
+      "Policy tuning"
+    ],
+    "keywords": [
+      "mcts",
+      "othello",
+      "game ai",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Automated Negotiation Agent for Bargaining Simulations",
+    "description": "Builds software agents that negotiate over multi-issue offers with hidden preferences, comparing concession strategies and opponent-modelling tactics across thousands of simulated bargaining rounds.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Multi-agent systems",
+      "Utility theory",
+      "Opponent modelling",
+      "Simulation analysis"
+    ],
+    "keywords": [
+      "negotiation",
+      "multi-agent",
+      "utility",
+      "strategy"
+    ]
+  },
+  {
+    "title": "Fuzzy Logic Greenhouse Irrigation Advisor",
+    "description": "Replaces hard on-off watering thresholds with fuzzy rules over temperature, humidity and soil dryness so the advised watering duration changes smoothly instead of jumping at cut-off values.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "scikit-fuzzy",
+      "Streamlit",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Fuzzy inference",
+      "Membership function design",
+      "Rule tuning",
+      "Control basics"
+    ],
+    "keywords": [
+      "fuzzy logic",
+      "irrigation",
+      "control",
+      "membership functions"
+    ]
+  },
+  {
+    "title": "Shipping Container Loading Planner with 3D Bin Packing",
+    "description": "Plans how mixed-size cartons fit into a container while respecting weight balance and unloading order, comparing greedy placement with a metaheuristic and reporting volume utilisation.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "OR-Tools"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Combinatorial optimisation",
+      "Heuristic search",
+      "3D geometry",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "bin packing",
+      "logistics",
+      "optimisation",
+      "heuristics"
+    ]
+  },
+  {
+    "title": "Multi-Armed Bandit Recommender for Cold-Start Content",
+    "description": "Chooses which new article or video to show when there is no click history yet, balancing exploration and exploitation with bandit algorithms and replaying logged traffic to estimate regret offline.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Multi-armed bandits",
+      "Exploration versus exploitation",
+      "Offline policy evaluation",
+      "Simulation"
+    ],
+    "keywords": [
+      "bandits",
+      "recommendation",
+      "cold start",
+      "regret"
+    ]
+  },
+  {
+    "title": "Household Task Planner Using PDDL",
+    "description": "Describes a home environment and chores in PDDL and uses an automated planner to sequence actions such as fetching, washing and storing, then explains why a goal is unreachable when constraints conflict.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "Fast Downward",
+      "PDDL",
+      "Graphviz"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Automated planning",
+      "Domain modelling",
+      "State-space search",
+      "Plan validation"
+    ],
+    "keywords": [
+      "pddl",
+      "planning",
+      "domain model",
+      "state space"
+    ]
+  },
+  {
+    "title": "Counterfactual Explanation Generator for Tabular Models",
+    "description": "Given a rejected prediction, searches for the smallest realistic change to the inputs that would flip the decision, constraining edits to features a person could actually alter.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "DiCE"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Counterfactual explanations",
+      "Constrained optimisation",
+      "Model interpretability",
+      "Feature actionability"
+    ],
+    "keywords": [
+      "counterfactual",
+      "explainability",
+      "recourse",
+      "tabular"
+    ]
+  },
+  {
+    "title": "Active Learning Annotation Assistant",
+    "description": "Reduces labelling effort by repeatedly asking a human to label only the examples a model is most uncertain about, and plots accuracy against labels spent for several query strategies.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Streamlit",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Active learning",
+      "Uncertainty sampling",
+      "Learning curves",
+      "Annotation interface design"
+    ],
+    "keywords": [
+      "active learning",
+      "labelling",
+      "uncertainty sampling",
+      "annotation"
+    ]
+  },
+  {
+    "title": "Case-Based Reasoning Helpdesk Assistant",
+    "description": "Retrieves the most similar solved support cases for a new IT problem, adapts the earlier fix to the new context and stores confirmed outcomes so the case library improves over time.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "SQLite",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Case-based reasoning",
+      "Similarity measures",
+      "Case retrieval",
+      "Knowledge maintenance"
+    ],
+    "keywords": [
+      "case based reasoning",
+      "helpdesk",
+      "retrieval",
+      "knowledge base"
+    ]
+  },
+  {
+    "title": "Knowledge Tracing for Programming Exercises",
+    "description": "Estimates what a student has mastered from their sequence of exercise attempts and recommends the next problem, comparing Bayesian knowledge tracing with a sequence model on held-out students.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Pandas",
+      "scikit-learn"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Knowledge tracing",
+      "Sequence modelling",
+      "Educational data",
+      "Model comparison"
+    ],
+    "keywords": [
+      "knowledge tracing",
+      "education",
+      "student modelling",
+      "sequence"
+    ]
+  },
+  {
+    "title": "Chord Progression Harmoniser from a Melody",
+    "description": "Suggests chords for a short melody using music-theory rules about key, cadences and voice leading, and lets the user compare rule-based output with a simple probabilistic model.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "music21",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Rule-based generation",
+      "Music theory basics",
+      "Constraint checking"
+    ],
+    "keywords": [
+      "music theory",
+      "harmony",
+      "rules",
+      "melody"
+    ]
+  },
+  {
+    "title": "Equilibrium Strategy for Kuhn Poker with Counterfactual Regret Minimisation",
+    "description": "Solves a small poker variant with counterfactual regret minimisation, shows the strategy converging towards equilibrium, and tests it against exploitative opponents.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Game theory",
+      "Regret minimisation",
+      "Equilibrium analysis",
+      "Algorithm convergence"
+    ],
+    "keywords": [
+      "game theory",
+      "poker",
+      "cfr",
+      "equilibrium"
+    ]
+  },
+  {
+    "title": "Agent-Based Evacuation Simulation of a Campus Building",
+    "description": "Simulates how people leave a building during an alarm, with crowd congestion at doors and stairwells, and tests how exit signage or an extra door changes total evacuation time.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "Mesa",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Agent-based modelling",
+      "Crowd dynamics",
+      "Scenario analysis",
+      "Simulation validation"
+    ],
+    "keywords": [
+      "agent based model",
+      "evacuation",
+      "crowd",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Prerequisite Graph Analyser for Degree Programmes",
+    "description": "Reads a course catalogue into a directed graph, detects circular prerequisites, finds the longest dependency chain and highlights courses that block the most downstream options.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NetworkX",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Graph algorithms",
+      "Topological ordering",
+      "Data modelling",
+      "Visualisation"
+    ],
+    "keywords": [
+      "graph",
+      "prerequisites",
+      "topological sort",
+      "curriculum"
+    ]
+  },
+  {
+    "title": "Sokoban Solver with Deadlock Detection",
+    "description": "Solves box-pushing puzzles with heuristic search, adds deadlock detection to prune hopeless states early, and reports how much pruning reduces the number of states explored.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Heuristic search",
+      "State-space pruning",
+      "Admissible heuristics",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "sokoban",
+      "search",
+      "deadlock",
+      "heuristics"
+    ]
+  },
+  {
+    "title": "Two-by-Two Cube Solver with IDA-star",
+    "description": "Solves the pocket cube optimally using iterative-deepening A-star with a pattern-database heuristic, and compares memory use and solve time with plain breadth-first search.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Iterative deepening",
+      "Pattern databases",
+      "Heuristic design",
+      "Complexity analysis"
+    ],
+    "keywords": [
+      "rubik",
+      "ida star",
+      "pattern database",
+      "search"
+    ]
+  },
+  {
+    "title": "Argumentation Framework Solver for Debate Maps",
+    "description": "Represents arguments and the attacks between them as a graph and computes which sets of arguments can be defended together under several formal semantics, visualising the result.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NetworkX",
+      "Graphviz"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Abstract argumentation",
+      "Graph semantics",
+      "Algorithm implementation",
+      "Visualisation"
+    ],
+    "keywords": [
+      "argumentation",
+      "graph",
+      "semantics",
+      "reasoning"
+    ]
+  },
+  {
+    "title": "Ambulance Station Placement with Facility Location Optimisation",
+    "description": "Chooses where to place a limited number of ambulance stations so that the worst-case response time across a city grid is as low as possible, comparing exact and heuristic solvers.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "OR-Tools",
+      "GeoPandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Facility location",
+      "Integer programming",
+      "Spatial analysis",
+      "Heuristic comparison"
+    ],
+    "keywords": [
+      "facility location",
+      "emergency",
+      "optimisation",
+      "spatial"
+    ]
+  },
+  {
+    "title": "Text Adventure Engine with Finite State Dialogue",
+    "description": "Builds a small adventure game where rooms, items and non-player dialogue are defined in data files and driven by a finite state machine, so a new story needs no code changes.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "pytest"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "State machines",
+      "Data-driven design",
+      "Parsing commands",
+      "Unit testing"
+    ],
+    "keywords": [
+      "text adventure",
+      "state machine",
+      "game engine",
+      "parser"
+    ]
+  },
+  {
+    "title": "Hangman Solver Using Letter Frequencies and Language Models",
+    "description": "Plays hangman by choosing the most informative next letter from a word list, then compares plain frequency counting with a model that conditions on the letters already revealed.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Probability estimation",
+      "Information gain",
+      "Evaluation by simulation"
+    ],
+    "keywords": [
+      "hangman",
+      "letter frequency",
+      "probability",
+      "word game"
+    ]
+  },
+  {
+    "title": "Interactive Decision Tree Teaching Tool",
+    "description": "Lets learners build a decision tree one split at a time on a small dataset, shows entropy and information gain at every choice, and compares their tree with the algorithm's.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Streamlit",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Decision trees",
+      "Entropy and information gain",
+      "Interactive visualisation"
+    ],
+    "keywords": [
+      "decision tree",
+      "entropy",
+      "teaching tool",
+      "visualisation"
+    ]
+  },
+  {
+    "title": "Q-Learning Controller for a Multi-Lift Building",
+    "description": "Trains lift controllers with reinforcement learning to reduce average passenger waiting time in a simulated building, and compares the learned policy with a nearest-car rule under rush-hour traffic.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "Gymnasium",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Reinforcement learning",
+      "Environment design",
+      "Reward shaping",
+      "Baseline comparison"
+    ],
+    "keywords": [
+      "reinforcement learning",
+      "elevator",
+      "q learning",
+      "control"
+    ]
+  },
+  {
+    "title": "Self-Play Agent for Dots and Boxes",
+    "description": "Trains an agent to play dots and boxes through self-play and shows how its handling of chains and sacrifices improves compared with a greedy opponent.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "NumPy"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Self-play training",
+      "Policy and value networks",
+      "Game analysis",
+      "Evaluation"
+    ],
+    "keywords": [
+      "self play",
+      "dots and boxes",
+      "reinforcement learning",
+      "games"
+    ]
+  },
+  {
+    "title": "Event Seating Planner with Social Constraints",
+    "description": "Assigns guests to tables so that listed pairs sit together and conflicting pairs are kept apart, using a constraint solver and showing which wishes had to be compromised.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "OR-Tools",
+      "Streamlit",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Constraint satisfaction",
+      "Soft constraints",
+      "Interactive input",
+      "Result explanation"
+    ],
+    "keywords": [
+      "seating",
+      "constraint satisfaction",
+      "events",
+      "optimisation"
+    ]
+  },
+  {
+    "title": "Genetic Algorithm Exam Invigilation Duty Allocator",
+    "description": "Allocates invigilation duties to staff across exam sessions while respecting availability, workload caps and room rules, evolving schedules with a genetic algorithm and reporting constraint violations.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "DEAP",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Genetic algorithms",
+      "Fitness function design",
+      "Constraint handling",
+      "Scheduling"
+    ],
+    "keywords": [
+      "genetic algorithm",
+      "scheduling",
+      "invigilation",
+      "optimisation"
+    ]
+  }
+]

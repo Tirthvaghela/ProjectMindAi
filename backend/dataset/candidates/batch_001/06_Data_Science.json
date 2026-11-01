@@ -1,0 +1,640 @@
+[
+  {
+    "title": "Bus Route Overcrowding Analysis from Ticketing Data",
+    "description": "Uses boarding records to find which routes and time bands exceed seat capacity, and quantifies how much extra service would be needed to bring them under a target load.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Capacity analysis",
+      "Aggregation",
+      "Scenario modelling",
+      "Dashboard design"
+    ],
+    "keywords": [
+      "transit",
+      "overcrowding",
+      "capacity",
+      "ticketing"
+    ]
+  },
+  {
+    "title": "Fuel Price Pass-Through Analysis",
+    "description": "Estimates how quickly and fully changes in crude oil prices reach pump prices using lagged regression, and tests whether prices rise faster than they fall.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "statsmodels",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Distributed lag models",
+      "Asymmetry tests",
+      "Time-series data",
+      "Interpretation"
+    ],
+    "keywords": [
+      "economics",
+      "lagged regression",
+      "fuel prices",
+      "pass through"
+    ]
+  },
+  {
+    "title": "School Dropout Funnel Analysis by Region",
+    "description": "Tracks cohorts of students from enrolment to completion across regions, locates where in the school system the largest losses occur and charts the gaps between regions.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Seaborn",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Cohort analysis",
+      "Funnel visualisation",
+      "Regional comparison",
+      "Public data handling"
+    ],
+    "keywords": [
+      "education",
+      "dropout",
+      "cohort",
+      "funnel"
+    ]
+  },
+  {
+    "title": "Retail Basket Co-Purchase Network Explorer",
+    "description": "Builds a network of products that are bought together, detects communities of related items and lets a merchandiser explore which groups should sit on the same shelf.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "NetworkX",
+      "Pandas",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Network analysis",
+      "Community detection",
+      "Association measures",
+      "Interactive exploration"
+    ],
+    "keywords": [
+      "co-purchase",
+      "network",
+      "communities",
+      "retail"
+    ]
+  },
+  {
+    "title": "Simpson's Paradox Teaching Dashboard",
+    "description": "Demonstrates how an overall trend can reverse inside every subgroup using real tables, letting learners toggle groupings to see the reversal appear and disappear.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Aggregation pitfalls",
+      "Grouped statistics",
+      "Interactive visual explanation"
+    ],
+    "keywords": [
+      "simpsons paradox",
+      "statistics",
+      "aggregation",
+      "teaching"
+    ]
+  },
+  {
+    "title": "Survey Weighting and Margin of Error Calculator",
+    "description": "Applies post-stratification weights to a skewed survey sample and reports how weighting changes estimates and their margins of error, with the method explained step by step.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "statsmodels",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Survey weighting",
+      "Confidence intervals",
+      "Sampling bias",
+      "Reporting"
+    ],
+    "keywords": [
+      "survey",
+      "weighting",
+      "margin of error",
+      "sampling"
+    ]
+  },
+  {
+    "title": "Public Library Usage Trends Dashboard",
+    "description": "Summarises borrowing, visits and programme attendance across branches and years, highlighting seasonal patterns and branches whose use is declining.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Time-series aggregation",
+      "Seasonality",
+      "Dashboard layout"
+    ],
+    "keywords": [
+      "library",
+      "usage trends",
+      "seasonality",
+      "dashboard"
+    ]
+  },
+  {
+    "title": "Bike Lane Safety Analysis from Crash Records",
+    "description": "Combines crash records with infrastructure data to compare injury rates on streets with and without protected lanes, adjusting for traffic volume before drawing any conclusion.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "GeoPandas",
+      "statsmodels",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Geospatial joins",
+      "Rate normalisation",
+      "Confounding",
+      "Cautious inference"
+    ],
+    "keywords": [
+      "road safety",
+      "geospatial",
+      "rates",
+      "confounding"
+    ]
+  },
+  {
+    "title": "Wage Gap Decomposition Study",
+    "description": "Splits an observed pay difference between groups into the part explained by job, experience and education and the unexplained remainder, and discusses what the method can and cannot show.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "statsmodels",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Oaxaca-Blinder decomposition",
+      "Regression",
+      "Interpretation limits",
+      "Reporting"
+    ],
+    "keywords": [
+      "wage gap",
+      "decomposition",
+      "regression",
+      "equity"
+    ]
+  },
+  {
+    "title": "Water Quality Compliance Tracker",
+    "description": "Compares periodic water sample results with legal limits, flags exceedances by location and parameter, and charts how long each site has been compliant.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Threshold checks",
+      "Time-series flags",
+      "Reporting",
+      "Data cleaning"
+    ],
+    "keywords": [
+      "water quality",
+      "compliance",
+      "thresholds",
+      "monitoring"
+    ]
+  },
+  {
+    "title": "Sleep and Study Habit Survey Analysis",
+    "description": "Analyses a class survey on sleep and study time with correlation, grouped comparisons and clear charts, and practises stating limitations honestly.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Seaborn",
+      "SciPy"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Descriptive statistics",
+      "Correlation versus causation",
+      "Hypothesis tests",
+      "Visualisation"
+    ],
+    "keywords": [
+      "survey",
+      "correlation",
+      "hypothesis test",
+      "student habits"
+    ]
+  },
+  {
+    "title": "Electricity Bill Anomaly Finder for Households",
+    "description": "Flags months when a household bill deviates from its own seasonal pattern and suggests probable reasons from weather and appliance changes recorded by the user.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Seasonal baselines",
+      "Anomaly thresholds",
+      "Visualisation"
+    ],
+    "keywords": [
+      "electricity",
+      "anomaly",
+      "seasonality",
+      "household"
+    ]
+  },
+  {
+    "title": "Housing Rent Gradient Around Transit Stations",
+    "description": "Measures how rents change with distance to rail stations using hedonic regression and spatial controls, and maps where the premium is largest.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "GeoPandas",
+      "statsmodels",
+      "Plotly"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Hedonic pricing",
+      "Spatial analysis",
+      "Regression diagnostics",
+      "Mapping"
+    ],
+    "keywords": [
+      "rent",
+      "transit",
+      "hedonic",
+      "spatial"
+    ]
+  },
+  {
+    "title": "Exam Question Difficulty and Discrimination Analysis",
+    "description": "Computes item difficulty and discrimination indices from exam results and flags questions that are too easy, too hard or that top students answer worse than weaker ones.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "NumPy",
+      "Seaborn"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Item analysis",
+      "Discrimination index",
+      "Assessment quality",
+      "Reporting"
+    ],
+    "keywords": [
+      "item analysis",
+      "assessment",
+      "difficulty",
+      "discrimination"
+    ]
+  },
+  {
+    "title": "Bootstrap Confidence Interval Explorer",
+    "description": "Lets users resample a small dataset to see how the sampling distribution of a statistic emerges, and compares bootstrap intervals with textbook formulas.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Bootstrapping",
+      "Sampling distributions",
+      "Confidence intervals"
+    ],
+    "keywords": [
+      "bootstrap",
+      "resampling",
+      "confidence interval",
+      "statistics"
+    ]
+  },
+  {
+    "title": "Mobile Plan Cost Optimiser from Usage History",
+    "description": "Recommends the cheapest mobile plan for a user's own call, data and message history by costing every plan against past months, including overage charges.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Streamlit",
+      "Plotly"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Cost modelling",
+      "Data aggregation",
+      "Scenario comparison"
+    ],
+    "keywords": [
+      "tariff",
+      "cost optimisation",
+      "usage",
+      "comparison"
+    ]
+  },
+  {
+    "title": "Event Attendance Forecasting for Campus Fests",
+    "description": "Predicts attendance for campus events from past editions, weekday, weather and promotion channels, and reports forecast error separately for large and small events.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "scikit-learn",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Feature engineering",
+      "Small-data modelling",
+      "Error segmentation"
+    ],
+    "keywords": [
+      "attendance",
+      "events",
+      "forecasting",
+      "campus"
+    ]
+  },
+  {
+    "title": "Agricultural Commodity Price Seasonality Study",
+    "description": "Decomposes market price series for crops into trend, seasonal and irregular parts and identifies the months when farmers historically received the best and worst prices.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "statsmodels",
+      "Pandas",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Time-series decomposition",
+      "Seasonality",
+      "Market data",
+      "Visual reporting"
+    ],
+    "keywords": [
+      "commodity prices",
+      "seasonality",
+      "decomposition",
+      "agriculture"
+    ]
+  },
+  {
+    "title": "Open Government Contract Spending Explorer",
+    "description": "Cleans public procurement records, groups spending by supplier and category and highlights concentration, such as a few suppliers receiving most of a department's budget.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Data cleaning",
+      "Concentration measures",
+      "Transparency analysis",
+      "Dashboards"
+    ],
+    "keywords": [
+      "procurement",
+      "spending",
+      "open data",
+      "concentration"
+    ]
+  },
+  {
+    "title": "Weather Station Data Quality Checker",
+    "description": "Screens weather station records for impossible values, stuck sensors and gaps, and produces a quality report with the share of readings usable for analysis.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Matplotlib",
+      "pytest"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Data validation",
+      "Rule-based quality checks",
+      "Reporting"
+    ],
+    "keywords": [
+      "data quality",
+      "weather",
+      "validation",
+      "sensors"
+    ]
+  },
+  {
+    "title": "Customer Complaint Resolution Time Analysis",
+    "description": "Analyses time to resolve complaints by category and team, identifies slow stages in the process and tests whether a new triage rule changed resolution times.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "SciPy",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Process analysis",
+      "Before and after comparison",
+      "Non-parametric tests"
+    ],
+    "keywords": [
+      "complaints",
+      "resolution time",
+      "process",
+      "tests"
+    ]
+  },
+  {
+    "title": "Digital Payment Adoption Study Across Districts",
+    "description": "Maps the spread of digital payment usage across districts over several years and relates it to infrastructure and literacy indicators, with attention to correlation limits.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "GeoPandas",
+      "Pandas",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Choropleth mapping",
+      "Multi-source data joins",
+      "Correlation analysis"
+    ],
+    "keywords": [
+      "digital payments",
+      "adoption",
+      "districts",
+      "mapping"
+    ]
+  },
+  {
+    "title": "Lifetime Fitness Activity Trend Analyser",
+    "description": "Analyses exported step and workout logs to show weekly trends, longest streaks and the days of the week a person is most and least active.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Time-series aggregation",
+      "Calendar features",
+      "Personal analytics"
+    ],
+    "keywords": [
+      "fitness",
+      "trends",
+      "streaks",
+      "personal data"
+    ]
+  },
+  {
+    "title": "Language Learning Progress Analytics",
+    "description": "Analyses a learner's review history from a flashcard app to estimate retention curves, spot the cards that keep failing and recommend when to review them.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "SciPy",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Forgetting curves",
+      "Curve fitting",
+      "Spaced repetition data"
+    ],
+    "keywords": [
+      "retention",
+      "forgetting curve",
+      "flashcards",
+      "spaced repetition"
+    ]
+  },
+  {
+    "title": "Counterfactual Sales Impact of a Store Redesign",
+    "description": "Estimates what sales would have been without a store layout change by constructing a synthetic control from similar stores, and reports uncertainty honestly.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "statsmodels",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Synthetic control",
+      "Causal estimation",
+      "Pre-trend checks",
+      "Communication"
+    ],
+    "keywords": [
+      "synthetic control",
+      "causal",
+      "retail",
+      "evaluation"
+    ]
+  },
+  {
+    "title": "Metro Ridership Recovery Tracker",
+    "description": "Compares ridership after a disruption with a pre-disruption baseline by station and weekday, showing how quickly each part of the network recovered.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Baseline construction",
+      "Index numbers",
+      "Comparative dashboards"
+    ],
+    "keywords": [
+      "ridership",
+      "recovery",
+      "baseline",
+      "transit"
+    ]
+  }
+]

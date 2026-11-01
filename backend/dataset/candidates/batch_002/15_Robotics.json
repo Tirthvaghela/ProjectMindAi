@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Behaviour Tree Controller for a Simulated Delivery Robot",
+    "description": "Structures the decisions of a delivery robot as a behaviour tree with recovery branches, compares it with a hand-coded state machine for readability and testability, and measures mission success in a simulated office.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "py_trees",
+      "ROS 2",
+      "Gazebo"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Behaviour trees",
+      "Mission logic",
+      "Recovery behaviours",
+      "Comparison"
+    ],
+    "keywords": [
+      "behaviour trees",
+      "delivery robot",
+      "ros2",
+      "mission logic"
+    ]
+  },
+  {
+    "title": "Remote-Controlled Robot with Latency-Aware Safety Stop",
+    "description": "Drives a robot over Wi-Fi from a browser, measures command delay under congestion and stops the robot automatically when the link degrades, tested by throttling the network during runs.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "Raspberry Pi",
+      "WebSocket",
+      "OpenCV"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Teleoperation",
+      "Latency",
+      "Fail-safe design",
+      "Network testing"
+    ],
+    "keywords": [
+      "teleoperation",
+      "latency",
+      "safety stop",
+      "wifi"
+    ]
+  }
+]

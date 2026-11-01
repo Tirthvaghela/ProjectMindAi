@@ -1,0 +1,22 @@
+# q24 detect fake news and misinformation
+1d781e 2
+686361 2
+3b9a6c 1
+56913a 1
+5d0243 1
+83f44d 1
+a06365 1
+ca2e50 1
+e28874 1
+37d52d 1u
+59b125 1u
+99dd4c 1u
+120a29 0
+147a78 0
+51ca58 0
+626ca0 0
+652ffa 0
+67b285 0
+715287 0
+d71aa7 0
+fe0c74 0

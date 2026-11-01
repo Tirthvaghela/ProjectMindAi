@@ -1,0 +1,19 @@
+# q10 smart attendance system
+933f23 2
+b5a801 2
+e7ffff 2
+19fce6 1
+1a20a3 1
+c2176f 1
+0106e5 0
+23cc49 0
+3093a6 0
+37c9d8 0
+3a2de8 0
+458f13 0
+5ed26c 0
+63947a 0
+7f1e62 0
+ab1f52 0
+dd98b4 0
+f4c07b 0

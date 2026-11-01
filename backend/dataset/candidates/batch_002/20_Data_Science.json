@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Crop Yield Anomaly Explorer from Weather and Satellite Indices",
+    "description": "Joins district yield records with rainfall and vegetation index time series, flags seasons that deviate from what weather alone predicts and discusses what else could explain each deviation.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "GeoPandas",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Data joining",
+      "Residual analysis",
+      "Remote sensing indices",
+      "Careful interpretation"
+    ],
+    "keywords": [
+      "crop yield",
+      "anomalies",
+      "satellite",
+      "agriculture"
+    ]
+  },
+  {
+    "title": "Library Loan Patterns and Collection Planning Analysis",
+    "description": "Analyses anonymised borrowing records to show which genres peak in exam weeks, which titles are never borrowed and what weeding or purchasing choices the numbers could support.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Seaborn",
+      "Jupyter"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Descriptive analysis",
+      "Seasonality",
+      "Anonymisation",
+      "Decision support"
+    ],
+    "keywords": [
+      "library",
+      "loans",
+      "seasonality",
+      "collection"
+    ]
+  },
+  {
+    "title": "Music Listening Habits Report from Exported Streaming History",
+    "description": "Reads a personal listening history export, charts how taste changes across months and times of day and lets the user explore the data locally without uploading it anywhere.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Personal data",
+      "Time features",
+      "Interactive charts",
+      "Local processing"
+    ],
+    "keywords": [
+      "music",
+      "listening history",
+      "personal data",
+      "dashboard"
+    ]
+  },
+  {
+    "title": "Match Event Data Analysis for Football Passing Networks",
+    "description": "Builds passing networks from open event data, measures which players link the team together and compares network measures with simple match outcomes while noting how small the samples are.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "NetworkX",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Network measures",
+      "Sports data",
+      "Small samples",
+      "Visual communication"
+    ],
+    "keywords": [
+      "football",
+      "passing networks",
+      "networkx",
+      "sports analytics"
+    ]
+  }
+]

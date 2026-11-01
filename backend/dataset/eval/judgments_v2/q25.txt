@@ -1,0 +1,17 @@
+# q25 voice controlled assistant with speech recognition
+3575b6 2
+d6af00 2
+f16326 2
+132ab2 1
+1f01f6 1
+30cc14 1
+61218b 1
+b1ec67 1
+fe6f07 1
+35474b 1u
+046964 0
+de7be6 0
+435c18 0u
+53516b 0u
+cff7be 0u
+ef7810 0u

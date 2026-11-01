@@ -1,0 +1,200 @@
+[
+  {
+    "title": "Proof-of-Work Simulator with Adjustable Difficulty",
+    "description": "Simulates mining on a toy blockchain, plots how block time varies with difficulty and network hash power and shows how difficulty adjustment keeps block intervals steady.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Python",
+      "Matplotlib",
+      "Flask"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Mining",
+      "Difficulty adjustment",
+      "Statistical variation",
+      "Simulation"
+    ],
+    "keywords": [
+      "proof of work",
+      "mining",
+      "difficulty",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Multi-Signature Wallet Contract with Spending Limits",
+    "description": "Implements a wallet requiring several approvers for large transfers, lets small daily spends through, and tests approval, revocation and replay cases with a documented test plan.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "TypeScript",
+      "OpenZeppelin"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Access control",
+      "Approval flows",
+      "Contract testing",
+      "Replay protection"
+    ],
+    "keywords": [
+      "multisig",
+      "wallet",
+      "solidity",
+      "testing"
+    ]
+  },
+  {
+    "title": "Decentralised Voting Prototype with Eligibility Proofs",
+    "description": "Lets registered voters cast a ballot once without revealing their choice to others, using a commitment scheme and eligibility proof, and documents attacks the prototype does not defend against.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Circom",
+      "Hardhat",
+      "TypeScript"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Commitments",
+      "Zero-knowledge basics",
+      "Voting threat models",
+      "Smart contracts"
+    ],
+    "keywords": [
+      "voting",
+      "zero knowledge",
+      "commitment",
+      "threat model"
+    ]
+  },
+  {
+    "title": "Supply Chain Provenance Ledger on Hyperledger Fabric",
+    "description": "Records custody changes of goods between organisations on a permissioned ledger with endorsement rules, and compares what the ledger guarantees with what a shared database could do.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Go",
+      "Hyperledger Fabric",
+      "Docker",
+      "Node.js"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Permissioned ledgers",
+      "Endorsement policies",
+      "Chaincode",
+      "Design trade-offs"
+    ],
+    "keywords": [
+      "hyperledger fabric",
+      "provenance",
+      "chaincode",
+      "permissioned"
+    ]
+  },
+  {
+    "title": "Token Vesting Schedule Contract with Fuzz Testing",
+    "description": "Releases tokens to team members on a schedule with cliff periods and revocation, and uses fuzz and invariant testing to show the total released never exceeds the total granted.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Foundry",
+      "OpenZeppelin"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Time-based logic",
+      "Invariants",
+      "Fuzz testing",
+      "Token standards"
+    ],
+    "keywords": [
+      "vesting",
+      "fuzzing",
+      "invariants",
+      "tokens"
+    ]
+  },
+  {
+    "title": "Peer-to-Peer Gossip Network Simulator",
+    "description": "Simulates how transactions spread across a network of nodes using gossip, measures propagation time and redundancy for different fan-out settings and node failure rates. Includes plots of how reach grows per round.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Python",
+      "NetworkX",
+      "Matplotlib",
+      "SimPy"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Gossip protocols",
+      "Network topology",
+      "Propagation delay",
+      "Simulation"
+    ],
+    "keywords": [
+      "gossip",
+      "p2p",
+      "propagation",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Verifiable Certificate Registry on an Ethereum Test Network",
+    "description": "Lets an institution issue tamper-evident certificates by recording hashes on a test network, and gives employers a page that verifies a document without contacting the institution.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "React",
+      "ethers.js",
+      "IPFS"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Hash anchoring",
+      "Verification pages",
+      "Test networks",
+      "Privacy limits"
+    ],
+    "keywords": [
+      "certificates",
+      "verification",
+      "ethereum",
+      "hash anchoring"
+    ]
+  },
+  {
+    "title": "Rust Light Client that Verifies Block Headers",
+    "description": "Implements a minimal client that checks header chains and Merkle inclusion proofs without downloading full blocks, and measures bandwidth saved against a full node. Includes tests with deliberately corrupted headers and proofs.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Rust",
+      "Tokio",
+      "SHA-256",
+      "Bitcoin test network"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Light clients",
+      "Header verification",
+      "Inclusion proofs",
+      "Bandwidth analysis"
+    ],
+    "keywords": [
+      "light client",
+      "headers",
+      "rust",
+      "inclusion proof"
+    ]
+  }
+]

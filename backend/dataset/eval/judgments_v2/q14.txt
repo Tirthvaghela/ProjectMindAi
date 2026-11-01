@@ -1,0 +1,19 @@
+# q14 fraud detection in banking transactions
+1692a0 2
+a16dc5 2
+2cc21e 1
+30a11b 1
+34ebf1 1
+81d523 1
+ada5de 1
+d883b3 1
+3131a7 1u
+078464 0
+12c968 0
+2c723e 0
+704765 0
+adb45a 0
+b46534 0
+e30790 0
+e4555a 0
+ede114 0

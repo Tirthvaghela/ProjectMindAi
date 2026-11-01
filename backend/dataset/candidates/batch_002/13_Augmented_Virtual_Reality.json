@@ -1,0 +1,177 @@
+[
+  {
+    "title": "Marker-Based Augmented Reality Poster for a Science Fair",
+    "description": "Overlays 3D models and short explanations on printed posters when viewed through a phone, and tests how lighting, distance and print quality affect how reliably the marker is recognised.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "JavaScript",
+      "AR.js",
+      "Three.js",
+      "A-Frame"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Marker tracking",
+      "3D overlays",
+      "Usability",
+      "Reliability testing"
+    ],
+    "keywords": [
+      "augmented reality",
+      "marker",
+      "poster",
+      "a-frame"
+    ]
+  },
+  {
+    "title": "Virtual Museum Room in the Browser with WebXR",
+    "description": "Builds a walk-through gallery with objects that can be inspected closely, runs in a headset or a normal browser and measures frame rate on different devices. Includes a fallback mode for visitors without a headset.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "JavaScript",
+      "WebXR",
+      "Three.js",
+      "Blender"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "WebXR",
+      "Scene optimisation",
+      "Interaction design",
+      "Performance"
+    ],
+    "keywords": [
+      "webxr",
+      "museum",
+      "three.js",
+      "vr"
+    ]
+  },
+  {
+    "title": "Anatomy Explorer in Augmented Reality with Quiz Mode",
+    "description": "Lets students peel back layers of a 3D body model on a table, answers label questions and tracks which structures they confuse most, with models checked for accuracy by a tutor.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "C#",
+      "ARCore",
+      "Blender"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "3D content",
+      "Interaction",
+      "Quiz design",
+      "Learning analytics"
+    ],
+    "keywords": [
+      "anatomy",
+      "ar",
+      "education",
+      "quiz"
+    ]
+  },
+  {
+    "title": "Photogrammetry Pipeline for Scanning Small Objects",
+    "description": "Turns phone photos of a small object into a textured 3D model, compares capture strategies for model quality and prepares the result for real-time viewing at a low polygon count.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Meshroom",
+      "Blender",
+      "Python",
+      "Three.js"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Photogrammetry",
+      "Mesh decimation",
+      "Texture baking",
+      "Capture technique"
+    ],
+    "keywords": [
+      "photogrammetry",
+      "3d scanning",
+      "mesh",
+      "optimisation"
+    ]
+  },
+  {
+    "title": "Shared Mixed-Reality Whiteboard for Remote Classrooms",
+    "description": "Lets two people see and edit the same virtual drawings in their own rooms, synchronises positions through a shared anchor and measures delay under different network conditions.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "Netcode",
+      "C#",
+      "WebRTC"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Shared anchors",
+      "Synchronisation",
+      "Latency",
+      "Collaboration"
+    ],
+    "keywords": [
+      "mixed reality",
+      "shared anchors",
+      "latency",
+      "collaboration"
+    ]
+  },
+  {
+    "title": "Low-Vision Reading Aid with Adjustable Text Overlay",
+    "description": "Magnifies and re-colours printed text seen through the camera with adjustable contrast and spacing, tested with volunteers who report which settings help them read faster.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Kotlin",
+      "CameraX",
+      "OpenCV",
+      "ML Kit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Accessibility",
+      "Image enhancement",
+      "User testing",
+      "Settings design"
+    ],
+    "keywords": [
+      "low vision",
+      "reading aid",
+      "contrast",
+      "camera"
+    ]
+  },
+  {
+    "title": "Virtual Chemistry Lab with Safe Reaction Rules",
+    "description": "Lets students mix virtual reagents and see rule-based outcomes with warnings about real hazards, built with a small, checked rule set and tested by a teacher for accuracy.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "C#",
+      "JSON",
+      "XR Interaction Toolkit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 7,
+    "skills": [
+      "Rule engines",
+      "Simulation limits",
+      "Educational design",
+      "Safety messaging"
+    ],
+    "keywords": [
+      "chemistry",
+      "vr lab",
+      "rules",
+      "education"
+    ]
+  }
+]

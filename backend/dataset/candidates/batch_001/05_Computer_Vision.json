@@ -1,0 +1,648 @@
+[
+  {
+    "title": "Receipt Parser for Totals and Line Items from Photos",
+    "description": "Reads photographed shop receipts, straightens and cleans the image, then extracts store, date, line items and total, flagging results where the items do not add up to the printed total.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "Tesseract",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Image preprocessing",
+      "OCR",
+      "Layout heuristics",
+      "Validation by arithmetic"
+    ],
+    "keywords": [
+      "receipt",
+      "ocr",
+      "document",
+      "extraction"
+    ]
+  },
+  {
+    "title": "Chart Image to Data Table Extraction",
+    "description": "Recovers approximate numeric values from bar and line chart images by detecting axes, ticks and marks, and reports how close the reconstructed table is to the original data.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Axis detection",
+      "Calibration",
+      "Mark detection",
+      "Reconstruction error"
+    ],
+    "keywords": [
+      "chart extraction",
+      "plots",
+      "axis detection",
+      "digitisation"
+    ]
+  },
+  {
+    "title": "Leaf Area Measurement from Phone Photos",
+    "description": "Estimates the area of leaves photographed on a sheet with a reference square by thresholding and counting pixels, then tracks growth over several days.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Thresholding",
+      "Scale calibration",
+      "Contour analysis",
+      "Time-series plotting"
+    ],
+    "keywords": [
+      "leaf area",
+      "phenotyping",
+      "thresholding",
+      "measurement"
+    ]
+  },
+  {
+    "title": "Dominant Colour Palette Extractor for Designers",
+    "description": "Extracts a small, visually distinct colour palette from an image using clustering, and exports it with hex codes and contrast ratios for accessible text choices.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "scikit-learn",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Colour spaces",
+      "K-means clustering",
+      "Contrast calculation"
+    ],
+    "keywords": [
+      "colour palette",
+      "clustering",
+      "design",
+      "accessibility"
+    ]
+  },
+  {
+    "title": "Traffic Sign Recognition with a Compact CNN",
+    "description": "Classifies road signs from cropped images with a compact convolutional network and tests how accuracy drops under blur, glare and partial occlusion.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "OpenCV"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "CNN design",
+      "Robustness testing",
+      "Class imbalance",
+      "Augmentation"
+    ],
+    "keywords": [
+      "traffic signs",
+      "cnn",
+      "robustness",
+      "classification"
+    ]
+  },
+  {
+    "title": "Keyframe-Based Video Summariser",
+    "description": "Condenses a long video into a handful of representative frames by detecting scene changes and removing near-identical shots, and builds a contact-sheet summary.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "scikit-learn"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Frame differencing",
+      "Scene detection",
+      "Clustering",
+      "Summary evaluation"
+    ],
+    "keywords": [
+      "video summarisation",
+      "keyframes",
+      "scene detection",
+      "clustering"
+    ]
+  },
+  {
+    "title": "Motion Detection Camera with Region Masks",
+    "description": "Records clips only when movement occurs inside user-drawn regions of a camera view, ignoring trees swaying or screens flickering in masked-out areas.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Flask"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Background subtraction",
+      "Region masks",
+      "Event recording",
+      "Threshold tuning"
+    ],
+    "keywords": [
+      "motion detection",
+      "background subtraction",
+      "camera",
+      "masks"
+    ]
+  },
+  {
+    "title": "Badminton Court Line Detection and Shot Placement Map",
+    "description": "Detects the court lines in match video, maps shuttle landing points into court coordinates with a homography, and charts where each player's shots land.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Homography",
+      "Line detection",
+      "Coordinate mapping",
+      "Sports analytics"
+    ],
+    "keywords": [
+      "court detection",
+      "homography",
+      "badminton",
+      "sports"
+    ]
+  },
+  {
+    "title": "Seed Counting and Size Distribution from Images",
+    "description": "Counts seeds spread on a tray and measures their sizes using watershed splitting for touching seeds, producing a size histogram a grower can use for grading.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "scikit-image",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Segmentation",
+      "Watershed transform",
+      "Measurement",
+      "Histogram analysis"
+    ],
+    "keywords": [
+      "seed counting",
+      "watershed",
+      "segmentation",
+      "grading"
+    ]
+  },
+  {
+    "title": "Tree Canopy Segmentation from Drone Images",
+    "description": "Segments tree canopy from orthomosaic drone tiles and estimates canopy cover per plot, comparing a classical vegetation index approach with a trained segmentation network.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "rasterio",
+      "OpenCV"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Semantic segmentation",
+      "Vegetation indices",
+      "Geospatial rasters",
+      "Method comparison"
+    ],
+    "keywords": [
+      "canopy",
+      "drone",
+      "segmentation",
+      "vegetation index"
+    ]
+  },
+  {
+    "title": "Solder Joint Inspection on Circuit Boards",
+    "description": "Classifies solder joints on board photographs as acceptable, bridged or missing, locating each joint first and explaining the decision with highlighted regions.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "OpenCV",
+      "torchvision"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Object localisation",
+      "Small defect classification",
+      "Imbalanced data",
+      "Explainability"
+    ],
+    "keywords": [
+      "pcb",
+      "solder",
+      "defect inspection",
+      "classification"
+    ]
+  },
+  {
+    "title": "Near-Duplicate Photo Finder for Large Libraries",
+    "description": "Finds photos that are near copies, such as resized or recompressed versions, with perceptual hashing and groups them so a user can keep the best of each cluster.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "imagehash",
+      "OpenCV",
+      "Pillow"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Perceptual hashing",
+      "Hamming distance",
+      "Indexing",
+      "Clustering"
+    ],
+    "keywords": [
+      "duplicates",
+      "perceptual hash",
+      "photo library",
+      "similarity"
+    ]
+  },
+  {
+    "title": "Sudoku Grid Reader from a Photograph",
+    "description": "Locates a printed sudoku puzzle in a photo, corrects the perspective, recognises each digit and passes the grid to a solver, reporting cells it could not read confidently.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "TensorFlow",
+      "NumPy"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Perspective transform",
+      "Digit recognition",
+      "Grid segmentation",
+      "Confidence reporting"
+    ],
+    "keywords": [
+      "sudoku",
+      "perspective transform",
+      "digit recognition",
+      "grid"
+    ]
+  },
+  {
+    "title": "Whiteboard Capture with Rectification and Enhancement",
+    "description": "Turns a slanted photo of a whiteboard into a clean, evenly lit page by finding its corners, flattening it and removing shadows, ready to share as a PDF.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Pillow"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Corner detection",
+      "Perspective correction",
+      "Illumination normalisation"
+    ],
+    "keywords": [
+      "whiteboard",
+      "document scan",
+      "perspective",
+      "enhancement"
+    ]
+  },
+  {
+    "title": "Analogue Gauge and Meter Reader",
+    "description": "Reads the value shown on a dial gauge from a photo by locating the needle and the scale marks, and converts the angle into a reading with an estimate of the error.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Hough transforms",
+      "Angle measurement",
+      "Calibration",
+      "Error estimation"
+    ],
+    "keywords": [
+      "gauge reading",
+      "dial",
+      "hough transform",
+      "measurement"
+    ]
+  },
+  {
+    "title": "Camera Calibration and Lens Distortion Correction Tool",
+    "description": "Calibrates a camera from chessboard photographs, computes its intrinsic parameters and straightens distorted images, reporting the reprojection error for each calibration photo.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Camera models",
+      "Calibration",
+      "Reprojection error",
+      "Image undistortion"
+    ],
+    "keywords": [
+      "calibration",
+      "distortion",
+      "intrinsics",
+      "chessboard"
+    ]
+  },
+  {
+    "title": "Vehicle Speed Estimation with Optical Flow",
+    "description": "Estimates the speed of vehicles in roadside video by tracking motion and converting pixel displacement to metres using a measured reference distance, validated against known speeds.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Optical flow",
+      "Tracking",
+      "Metric calibration",
+      "Validation"
+    ],
+    "keywords": [
+      "optical flow",
+      "speed estimation",
+      "tracking",
+      "traffic"
+    ]
+  },
+  {
+    "title": "Building Footprint Extraction from Aerial Tiles",
+    "description": "Outlines buildings on aerial image tiles with a segmentation model and converts masks into clean polygons that can be loaded into a map layer.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "rasterio",
+      "GeoPandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Segmentation",
+      "Mask to polygon conversion",
+      "Geospatial output",
+      "IoU evaluation"
+    ],
+    "keywords": [
+      "building footprints",
+      "segmentation",
+      "aerial",
+      "polygons"
+    ]
+  },
+  {
+    "title": "Face Blurring Privacy Filter for Videos",
+    "description": "Detects faces in a video and blurs them frame by frame, keeping the blur steady when a detection briefly drops out between frames.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "MediaPipe",
+      "NumPy"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Face detection",
+      "Temporal smoothing",
+      "Video processing"
+    ],
+    "keywords": [
+      "face blur",
+      "privacy",
+      "video",
+      "detection"
+    ]
+  },
+  {
+    "title": "Printed Sheet Music Symbol Recognition",
+    "description": "Detects staff lines and recognises note heads, rests and clefs in a scanned score, then produces a playable representation of a single melody line.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "PyTorch",
+      "music21"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Staff line removal",
+      "Symbol classification",
+      "Structured output",
+      "Evaluation"
+    ],
+    "keywords": [
+      "sheet music",
+      "omr",
+      "staff lines",
+      "symbols"
+    ]
+  },
+  {
+    "title": "Chess Position Recognition from a Board Photo",
+    "description": "Reads the pieces on a physical chessboard from a photograph, converts the position to standard notation and checks that the result is a legal position.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "PyTorch",
+      "python-chess"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 10,
+    "skills": [
+      "Board detection",
+      "Piece classification",
+      "Legality checking",
+      "Data collection"
+    ],
+    "keywords": [
+      "chess",
+      "board recognition",
+      "notation",
+      "classification"
+    ]
+  },
+  {
+    "title": "Posture Monitor for Desk Workers via Webcam",
+    "description": "Estimates head and shoulder angles from a webcam and nudges the user when they slump for too long, with all video processed locally and never stored.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "MediaPipe",
+      "OpenCV",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Pose landmarks",
+      "Angle computation",
+      "Privacy by design",
+      "Threshold tuning"
+    ],
+    "keywords": [
+      "posture",
+      "pose estimation",
+      "webcam",
+      "ergonomics"
+    ]
+  },
+  {
+    "title": "Fabric Pattern Defect Detection",
+    "description": "Detects flaws such as snags and misprinted patterns in textile images by learning what normal fabric looks like and flagging regions that differ.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "OpenCV",
+      "scikit-learn"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Anomaly detection",
+      "Texture modelling",
+      "Unsupervised methods",
+      "Evaluation"
+    ],
+    "keywords": [
+      "fabric",
+      "defects",
+      "anomaly detection",
+      "texture"
+    ]
+  },
+  {
+    "title": "Coin Counter from a Tabletop Photo",
+    "description": "Finds round coins in a photo, classifies them by size and then totals their value, using a reference coin for scale and reporting overlapping coins it cannot separate.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Circle detection",
+      "Scale reference",
+      "Classification by size",
+      "Edge cases"
+    ],
+    "keywords": [
+      "coin counting",
+      "hough circles",
+      "scale",
+      "detection"
+    ]
+  },
+  {
+    "title": "Colony Counting on Petri Dish Images",
+    "description": "Counts bacterial colonies on culture plate photographs, splits touching colonies and reports counts with an uncertainty estimate for use in teaching laboratories.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "scikit-image",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Segmentation",
+      "Touching-object splitting",
+      "Counting accuracy",
+      "Lab image handling"
+    ],
+    "keywords": [
+      "colony counting",
+      "segmentation",
+      "petri dish",
+      "laboratory"
+    ]
+  },
+  {
+    "title": "Handwriting Slant and Spacing Analyser for Penmanship Practice",
+    "description": "Measures slant, letter spacing and baseline consistency in a photo of handwriting and gives practice feedback, without trying to read the text itself.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Image geometry",
+      "Projection profiles",
+      "Feedback design"
+    ],
+    "keywords": [
+      "handwriting",
+      "penmanship",
+      "slant",
+      "projection profile"
+    ]
+  }
+]

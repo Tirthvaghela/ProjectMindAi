@@ -1,0 +1,20 @@
+# q21 robot that avoids obstacles
+159a04 2
+16b7dd 2
+8ec7f5 2
+bc61ac 2
+e2a506 2
+4cdd29 2u
+1a6196 1
+486565 1
+6bece1 1
+7723aa 1
+780d17 1
+ba18b1 1
+d97148 1
+fc0350 1
+42109a 0
+69ba08 0
+d3cee4 0
+e1c3bd 0
+6c126b 0u

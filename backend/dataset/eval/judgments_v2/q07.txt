@@ -1,0 +1,18 @@
+# q07 blockchain voting system
+1baf36 2
+217b0a 2
+4da2bc 2
+5781ed 1
+055a93 0
+1f5d42 0
+294243 0
+58c570 0
+5a8c70 0
+653271 0
+6800d4 0
+9a1293 0
+a07cb8 0
+bbbdfe 0
+cfeebc 0
+e807ec 0
+23ecc8 0u

@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Live Bus Arrival Widget with Home Screen Updates",
+    "description": "Shows predicted bus arrivals in a home screen widget, refreshes within the platform's update limits and explains when predictions are stale, with tests using recorded transit feed data.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "Jetpack Glance",
+      "GTFS Realtime",
+      "Retrofit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Widgets",
+      "Update limits",
+      "Transit data",
+      "Stale data messaging"
+    ],
+    "keywords": [
+      "widget",
+      "transit",
+      "gtfs",
+      "android"
+    ]
+  }
+]

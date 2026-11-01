@@ -1,0 +1,19 @@
+# q06 IoT smart home automation
+0a98ce 2
+1dafd8 2
+4f2360 2
+b255e4 2
+bbbe98 2
+dd1679 2
+e1ccbf 2
+fe40d0 2
+c0ae0e 2u
+0e5398 1
+31923e 1
+31db6e 1
+3b8572 1
+4ec8e3 1
+596e9c 1
+c12a25 1
+13abfc 1u
+b11673 1u

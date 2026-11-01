@@ -1,0 +1,249 @@
+[
+  {
+    "title": "Edge Detection Explorer with Convolution from Scratch",
+    "description": "Implements convolution by hand, applies Sobel, Laplacian and Gaussian kernels to photographs and lets learners edit kernel values to see how each number changes the filtered result.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Convolution",
+      "Image kernels",
+      "Visualisation",
+      "Vectorised code"
+    ],
+    "keywords": [
+      "convolution",
+      "edge detection",
+      "kernels",
+      "filters"
+    ]
+  },
+  {
+    "title": "Histogram Equalisation and Contrast Enhancement Lab",
+    "description": "Implements histogram stretching and equalisation, applies them to under- and over-exposed photographs and compares the results with the adaptive version, noting where noise gets amplified.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 3,
+    "skills": [
+      "Histograms",
+      "Contrast methods",
+      "Noise side effects",
+      "Comparison"
+    ],
+    "keywords": [
+      "histogram equalisation",
+      "contrast",
+      "clahe",
+      "enhancement"
+    ]
+  },
+  {
+    "title": "Template Matching Part Finder for a Workbench Camera",
+    "description": "Locates known tools on a workbench in a fixed camera view by template matching, handling lighting changes and small rotations, and reports where matching fails so learners understand its limits.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Template matching",
+      "Normalised correlation",
+      "Failure analysis",
+      "Camera setup"
+    ],
+    "keywords": [
+      "template matching",
+      "tools",
+      "correlation",
+      "fixed camera"
+    ]
+  },
+  {
+    "title": "Colour-Blind Simulation and Palette Checker",
+    "description": "Simulates the main types of colour vision deficiency on any image and checks whether a chosen chart palette stays distinguishable, suggesting safer alternatives where it does not.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "JavaScript",
+      "HTML Canvas",
+      "Color.js"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Colour spaces",
+      "Accessibility",
+      "Image transformation",
+      "Contrast metrics"
+    ],
+    "keywords": [
+      "colour blindness",
+      "accessibility",
+      "palette",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Crop Row Detection from Tractor Camera Video",
+    "description": "Finds crop rows in field video using vegetation segmentation and line fitting, outputs a steering offset for each frame and evaluates it against hand-marked rows across growth stages.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "scikit-image",
+      "NumPy"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Vegetation indices",
+      "Line fitting",
+      "Temporal smoothing",
+      "Ground-truth evaluation"
+    ],
+    "keywords": [
+      "crop rows",
+      "line fitting",
+      "vegetation",
+      "agriculture"
+    ]
+  },
+  {
+    "title": "Rail Track Obstruction Detection from a Cab Camera",
+    "description": "Segments the rails in forward-facing video, defines a danger zone ahead and detects objects inside it, with latency and false-alarm analysis against the braking distance a train actually needs.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "OpenCV",
+      "ONNX"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Semantic segmentation",
+      "Region of interest",
+      "Latency budgets",
+      "Safety analysis"
+    ],
+    "keywords": [
+      "rail",
+      "obstacle detection",
+      "segmentation",
+      "latency"
+    ]
+  },
+  {
+    "title": "Document Image Quality Gate for a Scanning App",
+    "description": "Scores a photographed page for blur, glare, skew and low resolution before OCR, and tells the user in plain words what to fix, validated against how much each issue degrades text recognition.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "Tesseract",
+      "FastAPI"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Image quality measures",
+      "OCR sensitivity",
+      "Feedback design",
+      "API design"
+    ],
+    "keywords": [
+      "image quality",
+      "blur detection",
+      "ocr",
+      "document"
+    ]
+  },
+  {
+    "title": "Pedestrian Crossing Counter with Privacy by Design",
+    "description": "Counts people crossing at a junction from overhead video without storing frames, blurring faces at capture and exporting only aggregate counts per interval, with an audit of what leaves the device.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "MediaPipe",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "On-device processing",
+      "Privacy engineering",
+      "Counting",
+      "Auditability"
+    ],
+    "keywords": [
+      "people counting",
+      "privacy",
+      "edge",
+      "aggregate"
+    ]
+  },
+  {
+    "title": "Stereo Camera Distance Estimator",
+    "description": "Calibrates a pair of cameras, computes disparity maps and converts them to metric distance, comparing measured and true distances and showing how error grows with range. Includes a printed checkerboard calibration guide.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Stereo geometry",
+      "Calibration",
+      "Disparity",
+      "Error analysis"
+    ],
+    "keywords": [
+      "stereo vision",
+      "depth",
+      "calibration",
+      "disparity"
+    ]
+  },
+  {
+    "title": "Satellite Image Change Detection for Urban Growth",
+    "description": "Aligns satellite images from two years, detects new built-up areas with both index thresholds and a learned model, and quantifies agreement with a manually digitised reference.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "rasterio",
+      "scikit-image",
+      "PyTorch"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Image registration",
+      "Change detection",
+      "Remote sensing indices",
+      "Validation"
+    ],
+    "keywords": [
+      "change detection",
+      "satellite",
+      "urban growth",
+      "remote sensing"
+    ]
+  }
+]

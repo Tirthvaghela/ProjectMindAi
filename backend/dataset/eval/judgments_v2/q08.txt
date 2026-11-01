@@ -1,0 +1,22 @@
+# q08 beginner NLP project
+01527d 2
+1c8863 2
+220453 2
+41bd2b 2
+aa78ba 2
+b909f8 2
+b9bdf9 2
+37f124 1
+4b3269 1
+5a62ab 1
+6521dc 1
+b9b4c9 1
+bfff06 1
+e6f27f 1
+0f1807 0
+1fbdfb 0
+39518a 0
+8167f4 0
+ab111d 0
+c612df 0
+feef3a 0

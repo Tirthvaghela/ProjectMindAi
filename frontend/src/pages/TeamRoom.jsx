@@ -9,6 +9,7 @@ import { Spinner, ErrorNotice, EmptyState } from '../components/Feedback'
 import Panel from '../components/Panel'
 import { AssignmentCard, UnassignedMembers } from '../components/TeamBuilder'
 import RoleFitPanel from '../components/RoleFitPanel'
+import SubTeams from '../components/SubTeams'
 import { formatClockTime, formatDate } from '../utils/time'
 
 /**
@@ -563,6 +564,8 @@ export default function TeamRoom() {
           )}
         </aside>
       </div>
+
+      <SubTeams team={team} user={user} />
     </div>
   )
 }

@@ -1,0 +1,644 @@
+[
+  {
+    "title": "Dockerfile Linter and Image Size Optimiser",
+    "description": "Reads Dockerfiles, flags common problems such as unpinned bases and cache-busting layer order, and shows how each suggested change affects the built image size.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "Docker",
+      "pytest",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Docker layers",
+      "Static checks",
+      "Image size analysis",
+      "Test design"
+    ],
+    "keywords": [
+      "docker",
+      "dockerfile",
+      "linting",
+      "image size"
+    ]
+  },
+  {
+    "title": "Terraform Drift Detector with Scheduled Reports",
+    "description": "Compares deployed cloud resources with their declared infrastructure code on a schedule, reports differences with who or what changed them and files a ticket for each.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Terraform",
+      "Python",
+      "GitHub Actions",
+      "AWS"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Infrastructure drift",
+      "Plan parsing",
+      "Scheduled automation",
+      "Reporting"
+    ],
+    "keywords": [
+      "terraform",
+      "drift",
+      "infrastructure as code",
+      "automation"
+    ]
+  },
+  {
+    "title": "Kubernetes Pod Resource Right-Sizing Advisor",
+    "description": "Analyses historical CPU and memory use of workloads and recommends requests and limits that avoid both waste and throttling, with a simulation of the cost saving.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Kubernetes",
+      "Prometheus",
+      "Python",
+      "Grafana"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Resource management",
+      "Percentile analysis",
+      "Cost modelling",
+      "Metrics querying"
+    ],
+    "keywords": [
+      "kubernetes",
+      "right sizing",
+      "resources",
+      "cost"
+    ]
+  },
+  {
+    "title": "Zero-Downtime Database Migration Pipeline",
+    "description": "Applies schema changes in backward-compatible steps with expand and contract migrations, and proves with automated tests that the running application keeps working at each step.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "PostgreSQL",
+      "Docker",
+      "GitHub Actions",
+      "Python"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Online schema changes",
+      "Backward compatibility",
+      "Migration testing",
+      "Rollback planning"
+    ],
+    "keywords": [
+      "database migration",
+      "zero downtime",
+      "expand contract",
+      "ci"
+    ]
+  },
+  {
+    "title": "Pipeline Cache and Build Time Optimiser",
+    "description": "Instruments continuous integration runs, identifies slow steps and ineffective caches and measures how dependency caching and parallel jobs change total build time.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "GitHub Actions",
+      "Docker",
+      "Python",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Build profiling",
+      "Caching strategies",
+      "Parallelism",
+      "Metrics"
+    ],
+    "keywords": [
+      "ci",
+      "build time",
+      "caching",
+      "profiling"
+    ]
+  },
+  {
+    "title": "Secrets Rotation Automation for Cloud Credentials",
+    "description": "Rotates database passwords and API keys on a schedule without downtime by creating the new secret, switching consumers and retiring the old one, with an audit trail.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "AWS",
+      "Python",
+      "Terraform",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Secret lifecycle",
+      "Staged rotation",
+      "Audit logging",
+      "Failure recovery"
+    ],
+    "keywords": [
+      "secrets",
+      "rotation",
+      "automation",
+      "audit"
+    ]
+  },
+  {
+    "title": "Log-Based Alerting Rules Tester",
+    "description": "Replays recorded log streams through alert rules to check what would have fired, how often and how late, so rules can be tuned before they page anyone at night.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "Elasticsearch",
+      "Grafana",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Alert design",
+      "Backtesting",
+      "Signal-to-noise tuning",
+      "Test data"
+    ],
+    "keywords": [
+      "alerting",
+      "logs",
+      "backtesting",
+      "observability"
+    ]
+  },
+  {
+    "title": "Service Level Objective and Error Budget Dashboard",
+    "description": "Computes availability and latency objectives from request metrics, shows how much error budget remains this month and projects when it will run out at the current rate.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Prometheus",
+      "Grafana",
+      "Python",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "SLO design",
+      "Error budgets",
+      "Burn rates",
+      "Dashboarding"
+    ],
+    "keywords": [
+      "slo",
+      "error budget",
+      "burn rate",
+      "reliability"
+    ]
+  },
+  {
+    "title": "Distributed Tracing for a Microservice Demo",
+    "description": "Instruments a small set of services with trace context propagation and uses the traces to find which service adds the most latency under load.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "OpenTelemetry",
+      "Jaeger",
+      "Docker",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Trace propagation",
+      "Instrumentation",
+      "Latency analysis",
+      "Observability"
+    ],
+    "keywords": [
+      "tracing",
+      "opentelemetry",
+      "latency",
+      "microservices"
+    ]
+  },
+  {
+    "title": "Circuit Breaker and Retry Policy Lab",
+    "description": "Simulates a flaky downstream service and compares retries, timeouts and circuit breakers on latency and failure spread, showing how naive retries can make an outage worse.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "Docker",
+      "Locust"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Resilience patterns",
+      "Failure injection",
+      "Load testing",
+      "Metrics comparison"
+    ],
+    "keywords": [
+      "circuit breaker",
+      "retries",
+      "resilience",
+      "load testing"
+    ]
+  },
+  {
+    "title": "Environment Configuration Drift Checker",
+    "description": "Compares configuration files across development, staging and production, highlights differences that look accidental and ignores values that should legitimately differ.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "PyYAML",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Config comparison",
+      "Diff reporting",
+      "Rule-based filtering"
+    ],
+    "keywords": [
+      "configuration",
+      "drift",
+      "environments",
+      "diff"
+    ]
+  },
+  {
+    "title": "Cloud Resource Tagging Compliance Auditor",
+    "description": "Scans cloud accounts for resources missing required ownership and cost tags, reports offenders by team and suggests owners from creation history.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "AWS",
+      "Python",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Cloud APIs",
+      "Tag policies",
+      "Reporting",
+      "Ownership inference"
+    ],
+    "keywords": [
+      "tagging",
+      "compliance",
+      "cloud governance",
+      "audit"
+    ]
+  },
+  {
+    "title": "Spot Instance Interruption Handler",
+    "description": "Runs batch jobs on discounted interruptible machines, checkpoints progress on warning notices and resumes elsewhere, measuring cost saved against time lost.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "AWS",
+      "Python",
+      "Docker",
+      "Terraform"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Interruption handling",
+      "Checkpointing",
+      "Cost analysis",
+      "Job scheduling"
+    ],
+    "keywords": [
+      "spot instances",
+      "checkpointing",
+      "batch",
+      "cost"
+    ]
+  },
+  {
+    "title": "Blue-Green Database Credentials Rollover Demo",
+    "description": "Demonstrates switching an application to new database credentials with zero failed requests, using dual-credential periods and health checks at each stage.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "PostgreSQL",
+      "Docker",
+      "Python",
+      "Prometheus"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Credential overlap",
+      "Health checks",
+      "Traffic switching"
+    ],
+    "keywords": [
+      "credentials",
+      "rollover",
+      "zero downtime",
+      "health checks"
+    ]
+  },
+  {
+    "title": "Container Image Build Reproducibility Checker",
+    "description": "Builds the same image twice, compares the results layer by layer and tracks down sources of non-determinism such as timestamps and unpinned packages.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Docker",
+      "Python",
+      "GitHub Actions"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Reproducible builds",
+      "Layer diffing",
+      "Dependency pinning",
+      "Debugging"
+    ],
+    "keywords": [
+      "reproducible builds",
+      "docker",
+      "determinism",
+      "supply chain"
+    ]
+  },
+  {
+    "title": "Capacity Planning Model from Load Test Results",
+    "description": "Fits a simple model to load test results to estimate when a service will saturate, and recommends how many instances are needed for a forecast traffic peak.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Locust",
+      "Python",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Capacity modelling",
+      "Queueing basics",
+      "Curve fitting",
+      "Load testing"
+    ],
+    "keywords": [
+      "capacity planning",
+      "load test",
+      "saturation",
+      "scaling"
+    ]
+  },
+  {
+    "title": "Feature Branch Environment Cost Tracker",
+    "description": "Tracks how long temporary environments stay running per branch, estimates their cost and nudges owners to shut down ones that have been idle.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "AWS",
+      "Slack API",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Resource lifecycle",
+      "Cost estimation",
+      "Notifications"
+    ],
+    "keywords": [
+      "cost",
+      "preview environments",
+      "idle resources",
+      "notifications"
+    ]
+  },
+  {
+    "title": "Service Dependency Map from Network Flows",
+    "description": "Builds a map of which services talk to which from flow records, highlights unexpected connections and shows the blast radius if one service fails.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "NetworkX",
+      "Grafana",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Flow analysis",
+      "Graph modelling",
+      "Blast radius",
+      "Visualisation"
+    ],
+    "keywords": [
+      "dependency map",
+      "network flows",
+      "blast radius",
+      "graph"
+    ]
+  },
+  {
+    "title": "Runbook Automation Engine",
+    "description": "Turns written operational runbooks into executable steps with approvals, dry-run mode and a log of what ran, so routine incident actions are consistent and reviewable.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Workflow engines",
+      "Approvals",
+      "Dry runs",
+      "Audit trails"
+    ],
+    "keywords": [
+      "runbook",
+      "automation",
+      "incident response",
+      "workflow"
+    ]
+  },
+  {
+    "title": "Incident Timeline Builder from Alerts and Chat",
+    "description": "Merges alerts, deploys and chat messages into one timeline of an outage and drafts a post-incident review with the key events and durations filled in.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Streamlit",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Event correlation",
+      "Timeline construction",
+      "Report drafting"
+    ],
+    "keywords": [
+      "incident",
+      "timeline",
+      "postmortem",
+      "correlation"
+    ]
+  },
+  {
+    "title": "Dependency Update Bot with Safe Merge Rules",
+    "description": "Opens pull requests for outdated dependencies, groups related updates, runs tests and merges only those that meet defined risk rules, with a record of every decision.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "GitHub Actions",
+      "GitHub API",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Dependency management",
+      "Automation rules",
+      "Risk-based merging",
+      "Testing"
+    ],
+    "keywords": [
+      "dependencies",
+      "automation",
+      "pull requests",
+      "merge rules"
+    ]
+  },
+  {
+    "title": "Multi-Environment Helm Chart with Policy Checks",
+    "description": "Packages an application as a parameterised chart for several environments and validates each rendered result against policy rules before it can be deployed.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Kubernetes",
+      "Helm",
+      "Open Policy Agent",
+      "GitHub Actions"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Templating",
+      "Policy as code",
+      "Environment overlays",
+      "Validation"
+    ],
+    "keywords": [
+      "helm",
+      "policy",
+      "kubernetes",
+      "templating"
+    ]
+  },
+  {
+    "title": "Edge Cache Hit Ratio Analyser",
+    "description": "Analyses CDN logs to find which content is rarely cached, explains likely reasons such as cache-busting query strings and estimates the bandwidth saved by fixing them.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Log analysis",
+      "Cache headers",
+      "Impact estimation"
+    ],
+    "keywords": [
+      "cdn",
+      "caching",
+      "hit ratio",
+      "logs"
+    ]
+  },
+  {
+    "title": "Cold Start Latency Study for Serverless Functions",
+    "description": "Measures cold and warm start times for functions across runtimes, memory sizes and package sizes, and publishes guidance on what actually changes startup latency.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "AWS Lambda",
+      "Python",
+      "Node.js",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Serverless performance",
+      "Experiment design",
+      "Statistical reporting"
+    ],
+    "keywords": [
+      "serverless",
+      "cold start",
+      "latency",
+      "benchmarking"
+    ]
+  },
+  {
+    "title": "Terraform Module Test Harness",
+    "description": "Tests infrastructure modules by creating them in a temporary account, asserting on what was created and always destroying it afterwards, with cost limits on every run.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Terraform",
+      "Go",
+      "GitHub Actions",
+      "AWS"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Infrastructure testing",
+      "Cleanup guarantees",
+      "Cost safeguards",
+      "CI integration"
+    ],
+    "keywords": [
+      "terraform",
+      "testing",
+      "modules",
+      "infrastructure"
+    ]
+  },
+  {
+    "title": "Git Hooks Toolkit for Commit Quality",
+    "description": "Provides pre-commit hooks that check message format, run fast tests and block large files, with a shared configuration that new contributors install in one command.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "Git",
+      "pytest",
+      "pre-commit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Git hooks",
+      "Developer workflow",
+      "Configuration sharing"
+    ],
+    "keywords": [
+      "git hooks",
+      "commit quality",
+      "pre commit",
+      "workflow"
+    ]
+  }
+]

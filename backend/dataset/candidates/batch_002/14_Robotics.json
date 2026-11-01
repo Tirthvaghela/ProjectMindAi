@@ -1,0 +1,152 @@
+[
+  {
+    "title": "Line-Following Robot with PID Tuning Experiments",
+    "description": "Builds a small wheeled robot that follows a line, tunes proportional, integral and derivative terms in a documented sequence and plots how each setting changes speed and wobble on the same track.",
+    "domain": "Robotics",
+    "technologies": [
+      "C++",
+      "Arduino",
+      "Reflectance sensors",
+      "Motor driver"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "PID control",
+      "Tuning",
+      "Sensor arrays",
+      "Experimental method"
+    ],
+    "keywords": [
+      "pid",
+      "line following",
+      "tuning",
+      "arduino"
+    ]
+  },
+  {
+    "title": "Obstacle-Avoiding Robot with a State Machine",
+    "description": "Combines distance sensing and simple rules in a clear state machine so a robot explores a room without getting stuck, with a log of every situation where it failed. Includes a state diagram and a table of failure cases.",
+    "domain": "Robotics",
+    "technologies": [
+      "C++",
+      "Arduino",
+      "Ultrasonic sensor",
+      "Servo"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "State machines",
+      "Reactive behaviour",
+      "Failure logging",
+      "Sensors"
+    ],
+    "keywords": [
+      "obstacle avoidance",
+      "state machine",
+      "ultrasonic",
+      "reactive"
+    ]
+  },
+  {
+    "title": "ROS 2 Navigation Stack on a Simulated Warehouse",
+    "description": "Configures mapping and path planning for a simulated wheeled robot, tests it in a cluttered warehouse model and reports success rate, path length and recovery behaviours.",
+    "domain": "Robotics",
+    "technologies": [
+      "ROS 2",
+      "Gazebo",
+      "Nav2",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 10,
+    "skills": [
+      "Mapping",
+      "Path planning",
+      "Simulation",
+      "Behaviour evaluation"
+    ],
+    "keywords": [
+      "ros2",
+      "navigation",
+      "gazebo",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Sumo Robot Strategy Comparison with Match Simulation",
+    "description": "Simulates matches between different search and attack strategies, ranks them by win rate with confidence intervals and tests the winner on a physical robot in the ring. Includes a record of where simulation and reality disagreed.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "Pygame",
+      "Arduino",
+      "IR sensors"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Strategy comparison",
+      "Simulation",
+      "Statistical ranking",
+      "Hardware tests"
+    ],
+    "keywords": [
+      "sumo robot",
+      "strategy",
+      "simulation",
+      "ranking"
+    ]
+  },
+  {
+    "title": "Swarm Robot Coverage Simulation",
+    "description": "Simulates many simple robots covering an area using local rules only, measures time to full coverage for different rules and group sizes and tests resilience when some robots fail.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Pygame",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Swarm behaviour",
+      "Local rules",
+      "Coverage metrics",
+      "Fault tolerance"
+    ],
+    "keywords": [
+      "swarm",
+      "coverage",
+      "local rules",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Pick-and-Place Cell Planner with Collision Checking",
+    "description": "Plans arm motions between pick and place points in a simulated work cell, checks for collisions with fixtures and compares planners on success rate and motion time. Includes a table of failed plans and their causes.",
+    "domain": "Robotics",
+    "technologies": [
+      "Python",
+      "MoveIt",
+      "ROS 2",
+      "PyBullet"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Motion planning",
+      "Collision checking",
+      "Planner comparison",
+      "Simulation"
+    ],
+    "keywords": [
+      "motion planning",
+      "moveit",
+      "collision",
+      "pick and place"
+    ]
+  }
+]

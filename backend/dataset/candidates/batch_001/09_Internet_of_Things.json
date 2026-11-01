@@ -1,0 +1,692 @@
+[
+  {
+    "title": "LoRa Soil Sensor Network with a Long-Range Gateway",
+    "description": "Connects battery-powered soil sensors to a gateway kilometres away over LoRa, and measures packet loss, range and battery life under different spreading factors.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "LoRa",
+      "MQTT",
+      "InfluxDB"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 10,
+    "skills": [
+      "Low-power wide-area networks",
+      "Radio parameters",
+      "Telemetry pipelines",
+      "Range testing"
+    ],
+    "keywords": [
+      "lora",
+      "lpwan",
+      "soil sensors",
+      "range"
+    ]
+  },
+  {
+    "title": "Motor Current Signature Monitor for Early Fault Warning",
+    "description": "Samples motor current and looks for frequency patterns that signal bearing wear or imbalance, raising a warning when the pattern drifts from a recorded healthy baseline.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "Python",
+      "NumPy",
+      "Grafana"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Signal analysis",
+      "Fast Fourier transform",
+      "Baseline modelling",
+      "Condition monitoring"
+    ],
+    "keywords": [
+      "condition monitoring",
+      "fft",
+      "motor",
+      "predictive maintenance"
+    ]
+  },
+  {
+    "title": "Smart Plug Energy Logger with Standby Detection",
+    "description": "Measures power drawn by an appliance through a smart plug, identifies standby consumption and shows how much a household could save by switching idle devices off.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "Node-RED",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Power measurement",
+      "Threshold detection",
+      "Dashboards",
+      "Cost calculation"
+    ],
+    "keywords": [
+      "energy monitoring",
+      "standby power",
+      "smart plug",
+      "savings"
+    ]
+  },
+  {
+    "title": "Classroom CO2 Ventilation Advisor",
+    "description": "Reads carbon dioxide levels in a room and tells occupants when to open windows, showing a clear traffic-light display and logging levels through each lesson.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "ESP32",
+      "MQTT",
+      "Grafana"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Gas sensor calibration",
+      "Threshold displays",
+      "Data logging"
+    ],
+    "keywords": [
+      "co2",
+      "ventilation",
+      "indoor air",
+      "classroom"
+    ]
+  },
+  {
+    "title": "TinyML Anomaly Detector on a Microcontroller",
+    "description": "Trains a small model on vibration data and runs it directly on the microcontroller, reporting memory footprint, inference time and false alarms compared with sending raw data to the cloud.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "TensorFlow Lite",
+      "Python",
+      "Arduino"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Edge inference",
+      "Model size constraints",
+      "Feature extraction",
+      "Energy trade-offs"
+    ],
+    "keywords": [
+      "tinyml",
+      "edge ai",
+      "anomaly detection",
+      "microcontroller"
+    ]
+  },
+  {
+    "title": "Over-the-Air Firmware Update Server with Rollback",
+    "description": "Delivers signed firmware updates to a fleet of devices in staged waves, verifies each image before installing and automatically reverts a device that fails to report healthy after update.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "FastAPI",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "OTA updates",
+      "Code signing",
+      "Staged rollout",
+      "Rollback logic"
+    ],
+    "keywords": [
+      "ota",
+      "firmware",
+      "rollback",
+      "fleet"
+    ]
+  },
+  {
+    "title": "MQTT Broker Load and Retained Message Study",
+    "description": "Benchmarks an MQTT broker with many simulated clients, comparing quality-of-service levels and the effect of retained messages and persistent sessions on latency and memory.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Python",
+      "MQTT",
+      "Docker",
+      "Grafana"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Load testing",
+      "Quality of service",
+      "Broker behaviour",
+      "Metrics collection"
+    ],
+    "keywords": [
+      "mqtt",
+      "load test",
+      "qos",
+      "retained messages"
+    ]
+  },
+  {
+    "title": "Smart Locker Compartment Controller",
+    "description": "Controls a bank of lockers with electronic latches, assigns compartments to one-time codes and keeps an audit log of every open and close event.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "Flask",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Actuator control",
+      "One-time codes",
+      "Audit logging",
+      "State machines"
+    ],
+    "keywords": [
+      "locker",
+      "access control",
+      "audit",
+      "esp32"
+    ]
+  },
+  {
+    "title": "Water Meter Pulse Counter with Leak Detection",
+    "description": "Counts pulses from a household water meter, learns the normal daily pattern and flags continuous low flow overnight as a probable leak.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "InfluxDB",
+      "Grafana"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Pulse counting",
+      "Baseline learning",
+      "Leak heuristics",
+      "Alerting"
+    ],
+    "keywords": [
+      "water meter",
+      "leak detection",
+      "pulses",
+      "flow"
+    ]
+  },
+  {
+    "title": "Cold Storage Door-Open Alert System",
+    "description": "Detects when a cold room door stays open too long using a magnetic sensor and temperature rise, and sends escalating alerts until it is closed.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "ESP32",
+      "MQTT"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Sensor debouncing",
+      "Timer-based alerts",
+      "Escalation logic"
+    ],
+    "keywords": [
+      "cold storage",
+      "door sensor",
+      "alerts",
+      "temperature"
+    ]
+  },
+  {
+    "title": "Photoperiod Light Controller for Indoor Plants",
+    "description": "Switches grow lights on a schedule that follows each plant's day-length needs and adjusts automatically through the seasons, with a manual override.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "Raspberry Pi",
+      "MQTT"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Scheduling",
+      "Relay control",
+      "Real-time clocks",
+      "Configuration"
+    ],
+    "keywords": [
+      "grow light",
+      "photoperiod",
+      "scheduling",
+      "relay"
+    ]
+  },
+  {
+    "title": "Indoor Positioning from WiFi Signal Fingerprints",
+    "description": "Estimates which room a device is in by comparing live WiFi signal strengths with a fingerprint database collected beforehand, and reports accuracy by room size.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "Python",
+      "scikit-learn",
+      "MQTT"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Fingerprinting",
+      "k-nearest neighbours",
+      "Radio signal noise",
+      "Evaluation"
+    ],
+    "keywords": [
+      "indoor positioning",
+      "rssi",
+      "fingerprinting",
+      "localisation"
+    ]
+  },
+  {
+    "title": "Store-and-Forward Telemetry Gateway",
+    "description": "Buffers sensor readings to local storage when the network drops and forwards them in order when it returns, without duplicating or losing records.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Raspberry Pi",
+      "MQTT",
+      "SQLite",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Offline buffering",
+      "Ordering and deduplication",
+      "Retry logic",
+      "Edge gateways"
+    ],
+    "keywords": [
+      "gateway",
+      "store and forward",
+      "buffering",
+      "reliability"
+    ]
+  },
+  {
+    "title": "Digital Twin Dashboard for a Lab Bench Experiment",
+    "description": "Mirrors a physical heating experiment in a live model, compares predicted and measured temperatures in real time and highlights when the two diverge.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "Python",
+      "Grafana"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Digital twins",
+      "Model calibration",
+      "Residual analysis",
+      "Live dashboards"
+    ],
+    "keywords": [
+      "digital twin",
+      "simulation",
+      "calibration",
+      "telemetry"
+    ]
+  },
+  {
+    "title": "BLE Badge Attendance Tracker for Workshops",
+    "description": "Records who is present in a room from the Bluetooth badges they wear and produces attendance summaries, while letting people opt out and deleting raw data after a set period.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "Bluetooth LE",
+      "MQTT",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "BLE scanning",
+      "Presence detection",
+      "Privacy retention",
+      "Reporting"
+    ],
+    "keywords": [
+      "ble",
+      "attendance",
+      "presence",
+      "privacy"
+    ]
+  },
+  {
+    "title": "WiFi LED Matrix Notice Board",
+    "description": "Displays scrolling messages on an LED matrix that anyone with permission can update from a simple web page, with scheduling for when each message appears.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "Arduino",
+      "Flask"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Display drivers",
+      "Web control",
+      "Scheduling",
+      "Text rendering"
+    ],
+    "keywords": [
+      "led matrix",
+      "notice board",
+      "wifi",
+      "display"
+    ]
+  },
+  {
+    "title": "Home Network Device Inventory via mDNS",
+    "description": "Discovers smart devices on a local network using service announcements, lists what each exposes and flags devices that appeared without being registered.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Python",
+      "Raspberry Pi",
+      "MQTT",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Service discovery",
+      "Network scanning basics",
+      "Inventory design",
+      "Alerts"
+    ],
+    "keywords": [
+      "mdns",
+      "discovery",
+      "inventory",
+      "network"
+    ]
+  },
+  {
+    "title": "Bicycle Tracker with GPS and Motion Alarm",
+    "description": "Wakes on movement while a bike is locked, reports its position through a cellular module at low power and shows the track on a map.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "Python",
+      "Leaflet"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Low-power design",
+      "GPS handling",
+      "Motion sensing",
+      "Map display"
+    ],
+    "keywords": [
+      "gps tracker",
+      "anti theft",
+      "low power",
+      "motion"
+    ]
+  },
+  {
+    "title": "RFID Parking Barrier Controller",
+    "description": "Opens a barrier for registered cards, logs each entry and exit and refuses cards that are expired or already inside, using a small local database.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "Raspberry Pi",
+      "SQLite",
+      "Flask"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "RFID reading",
+      "Access rules",
+      "Actuator control",
+      "Logging"
+    ],
+    "keywords": [
+      "rfid",
+      "barrier",
+      "access control",
+      "parking"
+    ]
+  },
+  {
+    "title": "Calibrated Weather Station with Uncertainty Estimates",
+    "description": "Calibrates temperature and humidity sensors against a reference, publishes readings with an error estimate and shows how calibration changes the data.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "InfluxDB",
+      "Grafana"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Sensor calibration",
+      "Measurement uncertainty",
+      "Time-series storage",
+      "Visualisation"
+    ],
+    "keywords": [
+      "calibration",
+      "weather station",
+      "uncertainty",
+      "sensors"
+    ]
+  },
+  {
+    "title": "Thermal Comfort Index Display",
+    "description": "Combines temperature, humidity and air movement into a comfort index and shows whether a room feels too warm, too cold or comfortable.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "ESP32",
+      "MQTT"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Derived indices",
+      "Sensor fusion basics",
+      "Display design"
+    ],
+    "keywords": [
+      "thermal comfort",
+      "heat index",
+      "humidity",
+      "display"
+    ]
+  },
+  {
+    "title": "Wind Turbine Model Telemetry Lab",
+    "description": "Instruments a small model turbine with speed and power sensors and charts its power curve across wind speeds, comparing measured output with the theoretical limit.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "Raspberry Pi",
+      "MQTT",
+      "Grafana"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Power curves",
+      "Sensor interfacing",
+      "Experimental method",
+      "Charting"
+    ],
+    "keywords": [
+      "wind turbine",
+      "power curve",
+      "telemetry",
+      "experiment"
+    ]
+  },
+  {
+    "title": "Hydroponic pH and EC Dosing Controller",
+    "description": "Keeps nutrient solution within target pH and conductivity ranges by dosing small amounts with pumps, with safeguards that prevent over-dosing when a sensor fails.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "Python",
+      "Grafana"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Closed-loop control",
+      "Dosing safety interlocks",
+      "Sensor validation",
+      "Logging"
+    ],
+    "keywords": [
+      "hydroponics",
+      "ph",
+      "ec",
+      "dosing"
+    ]
+  },
+  {
+    "title": "Quiet Room Sound Level Event Detector",
+    "description": "Measures sound level in a study room, flags sustained noise above a threshold and shows a calm indicator, without ever recording speech.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "ESP32",
+      "MQTT"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Sound level measurement",
+      "Thresholding",
+      "Privacy by design"
+    ],
+    "keywords": [
+      "sound level",
+      "noise",
+      "study room",
+      "privacy"
+    ]
+  },
+  {
+    "title": "Secure Device Provisioning with Per-Device Certificates",
+    "description": "Gives every device its own certificate during first boot through a controlled enrolment flow, and shows that revoking one device does not affect the others.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "ESP32",
+      "MQTT",
+      "Python",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Public key infrastructure",
+      "Secure enrolment",
+      "Certificate revocation",
+      "Device identity"
+    ],
+    "keywords": [
+      "provisioning",
+      "certificates",
+      "tls",
+      "device identity"
+    ]
+  },
+  {
+    "title": "Mesh Network Routing Simulator for Sensor Nodes",
+    "description": "Simulates sensor nodes that relay each other's messages and compares routing strategies on delivery rate, hop count and energy use as nodes fail.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Python",
+      "NetworkX",
+      "Matplotlib",
+      "SimPy"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Routing protocols",
+      "Discrete-event simulation",
+      "Energy modelling",
+      "Failure analysis"
+    ],
+    "keywords": [
+      "mesh network",
+      "routing",
+      "simulation",
+      "wsn"
+    ]
+  },
+  {
+    "title": "Battery Life Estimator for Duty-Cycled Sensors",
+    "description": "Predicts how long a sensor node will run from its sleep and active currents and reporting interval, and validates the estimate against measured discharge.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "ESP32",
+      "Python",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Power budgeting",
+      "Duty cycling",
+      "Measurement",
+      "Model validation"
+    ],
+    "keywords": [
+      "battery life",
+      "duty cycle",
+      "power budget",
+      "low power"
+    ]
+  },
+  {
+    "title": "Pump Dry-Run Protection Controller",
+    "description": "Stops a water pump when flow or current shows it is running dry, retries after a delay and counts trips so repeated faults are reported to the owner.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Arduino",
+      "ESP32",
+      "MQTT"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Fault detection",
+      "Relay control",
+      "Retry logic",
+      "Alerts"
+    ],
+    "keywords": [
+      "pump",
+      "dry run",
+      "protection",
+      "controller"
+    ]
+  }
+]

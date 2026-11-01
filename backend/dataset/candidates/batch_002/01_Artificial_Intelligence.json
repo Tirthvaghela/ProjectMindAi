@@ -1,0 +1,286 @@
+[
+  {
+    "title": "Logic Puzzle Solver in Prolog",
+    "description": "Encodes classic grid logic puzzles, such as who-owns-which-pet clue sets, as Prolog facts and constraints, then lets the program find the unique solution. Learners see how declarative rules replace step-by-step search code.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "SWI-Prolog",
+      "Python"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Logic programming",
+      "Constraint modelling",
+      "Unification",
+      "Debugging rules"
+    ],
+    "keywords": [
+      "prolog",
+      "logic puzzle",
+      "constraints",
+      "declarative"
+    ]
+  },
+  {
+    "title": "Kinship and Genealogy Reasoner in Prolog",
+    "description": "Stores a small family tree as facts and defines rules for cousin, great-uncle and in-law relations, then answers relationship questions in both directions. The challenge is writing recursive rules that terminate on cyclic or incomplete data.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Prolog",
+      "SWI-Prolog"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Recursion in logic",
+      "Rule design",
+      "Querying knowledge",
+      "Termination"
+    ],
+    "keywords": [
+      "prolog",
+      "genealogy",
+      "recursion",
+      "knowledge base"
+    ]
+  },
+  {
+    "title": "Nonogram Puzzle Solver with Constraint Propagation",
+    "description": "Solves picture-grid puzzles from row and column clues by propagating line constraints until no more cells can be deduced, then backtracking only when stuck. Reports how often propagation alone finishes a puzzle.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "JavaScript",
+      "Node.js",
+      "Jest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Constraint propagation",
+      "Backtracking",
+      "Algorithm analysis",
+      "Testing puzzles"
+    ],
+    "keywords": [
+      "nonogram",
+      "constraint propagation",
+      "backtracking",
+      "puzzle"
+    ]
+  },
+  {
+    "title": "Evolving an Image from Polygons with a Genetic Algorithm",
+    "description": "Approximates a target picture by evolving a few hundred translucent polygons through mutation and selection, drawing every generation in the browser. Shows how fitness definition and mutation size change whether the image converges or stalls.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "JavaScript",
+      "HTML Canvas",
+      "Web Workers"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Genetic algorithms",
+      "Fitness functions",
+      "Canvas drawing",
+      "Parameter effects"
+    ],
+    "keywords": [
+      "genetic algorithm",
+      "evolution",
+      "canvas",
+      "optimisation"
+    ]
+  },
+  {
+    "title": "Wumpus World Logical Agent",
+    "description": "Builds an agent that explores a cave grid, records breezes and stenches as propositional facts and infers which squares are safe before stepping. Compares its behaviour with a random explorer over many generated caves.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "Pygame"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Propositional inference",
+      "Knowledge-based agents",
+      "Simulation",
+      "Evaluation by trials"
+    ],
+    "keywords": [
+      "wumpus world",
+      "logical agent",
+      "inference",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Twenty Questions Game that Learns Its Questions",
+    "description": "Plays the guessing game by choosing, at each step, the yes or no question that best splits the remaining candidates, and adds a new question when it fails. Demonstrates information gain on a tiny knowledge base.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "JavaScript",
+      "Node.js"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Information gain",
+      "Decision trees",
+      "Interactive design",
+      "Knowledge growth"
+    ],
+    "keywords": [
+      "decision tree",
+      "information gain",
+      "guessing game",
+      "learning"
+    ]
+  },
+  {
+    "title": "Mastermind Solver with Minimax over the Guess Space",
+    "description": "Chooses each code guess to minimise the worst-case number of remaining possibilities, and reports the average and maximum number of guesses needed across every possible secret.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "C++",
+      "CMake",
+      "Catch2"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 6,
+    "skills": [
+      "Minimax strategy",
+      "Search-space pruning",
+      "Benchmarking",
+      "Performance in C++"
+    ],
+    "keywords": [
+      "mastermind",
+      "minimax",
+      "game solving",
+      "c plus plus"
+    ]
+  },
+  {
+    "title": "Propositional Theorem Prover Using Resolution",
+    "description": "Converts formulas to clause form and decides satisfiability by resolution, with unit propagation and subsumption to keep the clause set small, and prints a human-readable proof when the formula is unsatisfiable.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Rust",
+      "Cargo"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Clause normal forms",
+      "Resolution",
+      "Data-structure design",
+      "Proof output"
+    ],
+    "keywords": [
+      "theorem proving",
+      "resolution",
+      "sat",
+      "rust"
+    ]
+  },
+  {
+    "title": "Rule Learner for Tabular Data with Weka",
+    "description": "Induces ordered if-then rules from a labelled table with a sequential covering algorithm, and compares rule length, coverage and accuracy with a decision tree so a domain expert could read and audit the model.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Java",
+      "Weka",
+      "Maven"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Rule induction",
+      "Model comparison",
+      "Interpretability",
+      "Java tooling"
+    ],
+    "keywords": [
+      "rule learning",
+      "weka",
+      "interpretability",
+      "java"
+    ]
+  },
+  {
+    "title": "Round-Robin Fixture Generator with Home and Away Constraints",
+    "description": "Builds a league schedule in which every team plays every other, avoids long runs of home or away games and respects venue clashes, expressed as a constraint model and checked by an independent validator.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "MiniZinc",
+      "Python",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Constraint models",
+      "Sports scheduling",
+      "Validation",
+      "Search strategies"
+    ],
+    "keywords": [
+      "scheduling",
+      "constraint programming",
+      "fixtures",
+      "minizinc"
+    ]
+  },
+  {
+    "title": "Adaptive Difficulty Controller for a Platform Game",
+    "description": "Models a player's skill from deaths and completion times and adjusts enemy speed and gap sizes between levels, with tests showing the controller neither oscillates nor lets a weak player stall.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Unity",
+      "C#",
+      "NUnit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Player modelling",
+      "Feedback control",
+      "Game balancing",
+      "Simulation testing"
+    ],
+    "keywords": [
+      "dynamic difficulty",
+      "player model",
+      "game ai",
+      "unity"
+    ]
+  },
+  {
+    "title": "Behaviour Cloning of Human Demonstrations for a Racing Agent",
+    "description": "Records a person driving a simulated track and trains an agent to imitate the demonstrations, then measures how compounding errors cause drift and how adding corrective recovery data reduces it.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Unity",
+      "Unity ML-Agents",
+      "C#",
+      "PyTorch"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Imitation learning",
+      "Distribution shift",
+      "Data collection",
+      "Evaluation on unseen tracks"
+    ],
+    "keywords": [
+      "imitation learning",
+      "behaviour cloning",
+      "racing",
+      "ml agents"
+    ]
+  }
+]

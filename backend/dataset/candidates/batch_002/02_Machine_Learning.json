@@ -1,0 +1,249 @@
+[
+  {
+    "title": "Linear Regression from Scratch with Gradient Descent in R",
+    "description": "Implements ordinary least squares and gradient descent by hand on a small housing table, plots the loss surface and compares the hand-written fit with the built-in function to see where numbers agree and why.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "R",
+      "ggplot2",
+      "RStudio"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Gradient descent",
+      "Loss surfaces",
+      "Model diagnostics",
+      "R plotting"
+    ],
+    "keywords": [
+      "regression",
+      "gradient descent",
+      "r language",
+      "from scratch"
+    ]
+  },
+  {
+    "title": "K-Nearest Neighbours Classifier with Scaling Experiments",
+    "description": "Builds a nearest-neighbour classifier and shows how unscaled features, the choice of k and the distance metric change accuracy on a small mixed-feature dataset, with a chart for each experiment.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Matplotlib",
+      "Jupyter"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Distance metrics",
+      "Feature scaling",
+      "Hyperparameters",
+      "Experiment reporting"
+    ],
+    "keywords": [
+      "knn",
+      "scaling",
+      "distance",
+      "experiment"
+    ]
+  },
+  {
+    "title": "Naive Bayes Fraud Screener for a Small Online Shop",
+    "description": "Trains a naive Bayes model on a few thousand orders to flag suspicious ones for manual review, and explains the cost of false alarms versus misses so the shop owner can pick a sensible threshold.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Probabilistic classifiers",
+      "Threshold choice",
+      "Cost of errors",
+      "Simple dashboards"
+    ],
+    "keywords": [
+      "naive bayes",
+      "screening",
+      "thresholds",
+      "small business"
+    ]
+  },
+  {
+    "title": "Customer Segmentation with RFM and Clustering in R",
+    "description": "Computes recency, frequency and monetary scores from a transactions table and groups customers with k-means, then describes each segment in plain language and suggests one action per segment.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "R",
+      "dplyr",
+      "ggplot2",
+      "Shiny"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Feature construction",
+      "Clustering",
+      "Segment description",
+      "Shiny dashboards"
+    ],
+    "keywords": [
+      "rfm",
+      "clustering",
+      "segmentation",
+      "shiny"
+    ]
+  },
+  {
+    "title": "Gradient Boosting from Scratch for Regression",
+    "description": "Implements a small gradient boosting regressor with shallow trees, then compares it with a library version on accuracy, training time and sensitivity to learning rate and tree depth.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "C++",
+      "Eigen",
+      "CMake",
+      "Catch2"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Boosting",
+      "Decision trees",
+      "Numerical code in C++",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "gradient boosting",
+      "from scratch",
+      "trees",
+      "c plus plus"
+    ]
+  },
+  {
+    "title": "Time-Aware Cross-Validation Library for Tabular Models",
+    "description": "Provides splitters that respect time order and group membership so a model is never scored on data from before its training period, and demonstrates the optimistic error that ordinary shuffled folds produce.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Leakage prevention",
+      "Cross-validation design",
+      "Library API",
+      "Testing"
+    ],
+    "keywords": [
+      "cross validation",
+      "leakage",
+      "time series",
+      "library"
+    ]
+  },
+  {
+    "title": "Anomaly Detection on Server Logs with Isolation Forest and Rules",
+    "description": "Turns request logs into per-minute features and combines an isolation forest with simple threshold rules, then compares which anomalies each approach catches and which it misses.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Feature extraction",
+      "Unsupervised detection",
+      "Method comparison",
+      "Visualisation"
+    ],
+    "keywords": [
+      "anomaly detection",
+      "logs",
+      "isolation forest",
+      "rules"
+    ]
+  },
+  {
+    "title": "Survey-Based Voting Intention Model with Poststratification",
+    "description": "Fits a multilevel model to a skewed opinion survey and reweights it to known population shares, reporting uncertainty by region and showing how raw averages mislead. Includes a written note on what the model cannot say.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "R",
+      "brms",
+      "tidyverse",
+      "Stan"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Multilevel models",
+      "Poststratification",
+      "Bayesian uncertainty",
+      "Communication"
+    ],
+    "keywords": [
+      "survey",
+      "multilevel model",
+      "poststratification",
+      "bayesian"
+    ]
+  },
+  {
+    "title": "Calibrated Probability Forecasts for Match Outcomes with Elo",
+    "description": "Builds an Elo-style rating system for a sport, converts rating gaps into win probabilities and checks calibration against results season by season. Includes reliability plots and a comparison with a naive home-advantage baseline.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Rating systems",
+      "Probability calibration",
+      "Backtesting",
+      "Sports data"
+    ],
+    "keywords": [
+      "elo",
+      "ratings",
+      "calibration",
+      "forecasting"
+    ]
+  },
+  {
+    "title": "Energy-Efficient Model Selection Under a Compute Budget",
+    "description": "Compares models of increasing size on accuracy per unit of measured training energy, and builds a recommendation rule that picks the smallest model within a chosen accuracy tolerance.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "CodeCarbon",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Efficiency measurement",
+      "Model selection",
+      "Trade-off analysis",
+      "Reporting"
+    ],
+    "keywords": [
+      "green ml",
+      "energy",
+      "model selection",
+      "efficiency"
+    ]
+  }
+]

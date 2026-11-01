@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Water Leak Detector with Flow Pattern Learning",
+    "description": "Learns a household's normal water flow pattern from a pulse flow meter and raises an alert for continuous low flow that suggests a leak, tested with deliberately simulated drips.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C++",
+      "ESP32",
+      "Flow sensor",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Flow patterns",
+      "Anomaly alerts",
+      "Simulated faults",
+      "Alert design"
+    ],
+    "keywords": [
+      "water leak",
+      "flow sensor",
+      "anomaly",
+      "alerts"
+    ]
+  },
+  {
+    "title": "Wearable Fall Detector with Threshold and Posture Checks",
+    "description": "Uses an accelerometer to spot falls by combining impact, free fall and lying posture checks, and measures false alarms during everyday movements recorded by volunteers. Includes a written safety note.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C",
+      "nRF52",
+      "Accelerometer",
+      "Python"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Inertial sensing",
+      "Threshold design",
+      "False alarm analysis",
+      "Wearable constraints"
+    ],
+    "keywords": [
+      "fall detection",
+      "accelerometer",
+      "wearable",
+      "false alarms"
+    ]
+  }
+]

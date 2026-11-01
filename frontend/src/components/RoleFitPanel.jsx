@@ -49,7 +49,7 @@ function DecisionLine({ decision }) {
   )
 }
 
-function MemberCard({ member, isSelf, decision, roles, teamId, onDecisions }) {
+function MemberCard({ member, isSelf, decision, roles, teamId, subTeamId, onDecisions }) {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState(null)
   const [choosing, setChoosing] = useState(false)
@@ -60,7 +60,7 @@ function MemberCard({ member, isSelf, decision, roles, teamId, onDecisions }) {
     setBusy(true)
     setError(null)
     try {
-      const { data } = await api.setMyRoleDecision(teamId, payload)
+      const { data } = subTeamId ? await api.setSubTeamRoleDecision(teamId, subTeamId, payload) : await api.setMyRoleDecision(teamId, payload)
       onDecisions(data)
       setChoosing(false)
     } catch (err) {
@@ -73,7 +73,7 @@ function MemberCard({ member, isSelf, decision, roles, teamId, onDecisions }) {
     setBusy(true)
     setError(null)
     try {
-      const { data } = await api.clearMyRoleDecision(teamId)
+      const { data } = subTeamId ? await api.clearSubTeamRoleDecision(teamId, subTeamId) : await api.clearMyRoleDecision(teamId)
       onDecisions(data)
     } catch (err) {
       setError(err.message)
@@ -231,7 +231,7 @@ function Coverage({ team }) {
  * separated from confirmed roles: a suggestion is advice until the member it
  * is about accepts it, declines it or picks another role themselves.
  */
-export default function RoleFitPanel({ result, userId, teamId }) {
+export default function RoleFitPanel({ result, userId, teamId, subTeamId }) {
   const [roles, setRoles] = useState([])
   const [decisions, setDecisions] = useState(result.decisions ?? [])
   const fit = result.role_fit
@@ -258,6 +258,7 @@ export default function RoleFitPanel({ result, userId, teamId }) {
             decision={decisionFor(m.user_id)}
             roles={roles}
             teamId={teamId}
+            subTeamId={subTeamId}
             onDecisions={setDecisions}
           />
         ))}

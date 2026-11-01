@@ -1,0 +1,3396 @@
+{
+ "depth": 10,
+ "snapshot": {
+  "project_count": 868,
+  "id_range": [
+   "pm-001",
+   "pm-868"
+  ],
+  "sha256": "37178c5d77d2a4792828b67f7b931990d870f1762cb74fd3b7e2754f6cf20188"
+ },
+ "pools": [
+  {
+   "query": "AI healthcare project",
+   "candidates": {
+    "pm-001": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-108": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-550": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-065": [
+     "dense_only",
+     "v1_label"
+    ],
+    "pm-073": [
+     "dense_only",
+     "v1_label"
+    ],
+    "pm-194": [
+     "dense_only",
+     "v1_label"
+    ],
+    "pm-097": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-245": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-105": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-521": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-118": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-110": [
+     "bm25_only"
+    ],
+    "pm-101": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-114": [
+     "bm25_only"
+    ],
+    "pm-519": [
+     "bm25_only"
+    ],
+    "pm-520": [
+     "bm25_only"
+    ],
+    "pm-526": [
+     "bm25_only"
+    ],
+    "pm-513": [
+     "bm25_only"
+    ],
+    "pm-115": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-117": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-512": [
+     "hybrid_0.5_0.5"
+    ],
+    "pm-002": [
+     "v1_label"
+    ],
+    "pm-048": [
+     "v1_label"
+    ],
+    "pm-066": [
+     "v1_label"
+    ],
+    "pm-067": [
+     "v1_label"
+    ],
+    "pm-070": [
+     "v1_label"
+    ],
+    "pm-121": [
+     "v1_label"
+    ],
+    "pm-123": [
+     "v1_label"
+    ],
+    "pm-133": [
+     "v1_label"
+    ],
+    "pm-153": [
+     "v1_label"
+    ],
+    "pm-183": [
+     "v1_label"
+    ],
+    "pm-184": [
+     "v1_label"
+    ],
+    "pm-185": [
+     "v1_label"
+    ],
+    "pm-186": [
+     "v1_label"
+    ],
+    "pm-200": [
+     "v1_label"
+    ],
+    "pm-215": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "I want a computer vision project using Python",
+   "candidates": {
+    "pm-622": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-192": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-191": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-612": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-619": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-177": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-174": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-630": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-625": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-374": [
+     "dense_only"
+    ],
+    "pm-618": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-627": [
+     "bm25_only"
+    ],
+    "pm-615": [
+     "bm25_only"
+    ],
+    "pm-609": [
+     "bm25_only"
+    ],
+    "pm-621": [
+     "bm25_only"
+    ],
+    "pm-620": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-629": [
+     "bm25_only"
+    ],
+    "pm-611": [
+     "bm25_only"
+    ],
+    "pm-613": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-002": [
+     "v1_label"
+    ],
+    "pm-003": [
+     "v1_label"
+    ],
+    "pm-004": [
+     "v1_label"
+    ],
+    "pm-005": [
+     "v1_label"
+    ],
+    "pm-048": [
+     "v1_label"
+    ],
+    "pm-156": [
+     "v1_label"
+    ],
+    "pm-157": [
+     "v1_label"
+    ],
+    "pm-158": [
+     "v1_label"
+    ],
+    "pm-159": [
+     "v1_label"
+    ],
+    "pm-160": [
+     "v1_label"
+    ],
+    "pm-161": [
+     "v1_label"
+    ],
+    "pm-162": [
+     "v1_label"
+    ],
+    "pm-163": [
+     "v1_label"
+    ],
+    "pm-164": [
+     "v1_label"
+    ],
+    "pm-165": [
+     "v1_label"
+    ],
+    "pm-166": [
+     "v1_label"
+    ],
+    "pm-167": [
+     "v1_label"
+    ],
+    "pm-168": [
+     "v1_label"
+    ],
+    "pm-169": [
+     "v1_label"
+    ],
+    "pm-170": [
+     "v1_label"
+    ],
+    "pm-171": [
+     "v1_label"
+    ],
+    "pm-172": [
+     "v1_label"
+    ],
+    "pm-173": [
+     "v1_label"
+    ],
+    "pm-175": [
+     "v1_label"
+    ],
+    "pm-176": [
+     "v1_label"
+    ],
+    "pm-178": [
+     "v1_label"
+    ],
+    "pm-179": [
+     "v1_label"
+    ],
+    "pm-180": [
+     "v1_label"
+    ],
+    "pm-181": [
+     "v1_label"
+    ],
+    "pm-182": [
+     "v1_label"
+    ],
+    "pm-183": [
+     "v1_label"
+    ],
+    "pm-184": [
+     "v1_label"
+    ],
+    "pm-185": [
+     "v1_label"
+    ],
+    "pm-186": [
+     "v1_label"
+    ],
+    "pm-187": [
+     "v1_label"
+    ],
+    "pm-188": [
+     "v1_label"
+    ],
+    "pm-189": [
+     "v1_label"
+    ],
+    "pm-190": [
+     "v1_label"
+    ],
+    "pm-193": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "cybersecurity final year project",
+   "candidates": {
+    "pm-780": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-783": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-031": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-790": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-034": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-452": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-797": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-473": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-796": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-470": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-794": [
+     "bm25_only"
+    ],
+    "pm-787": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-795": [
+     "bm25_only"
+    ],
+    "pm-785": [
+     "bm25_only"
+    ],
+    "pm-777": [
+     "bm25_only"
+    ],
+    "pm-792": [
+     "bm25_only"
+    ],
+    "pm-798": [
+     "bm25_only"
+    ],
+    "pm-782": [
+     "bm25_only"
+    ],
+    "pm-779": [
+     "bm25_only"
+    ],
+    "pm-789": [
+     "hybrid_0.5_0.5"
+    ],
+    "pm-455": [
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-032": [
+     "v1_label"
+    ],
+    "pm-033": [
+     "v1_label"
+    ],
+    "pm-446": [
+     "v1_label"
+    ],
+    "pm-447": [
+     "v1_label"
+    ],
+    "pm-448": [
+     "v1_label"
+    ],
+    "pm-449": [
+     "v1_label"
+    ],
+    "pm-450": [
+     "v1_label"
+    ],
+    "pm-451": [
+     "v1_label"
+    ],
+    "pm-453": [
+     "v1_label"
+    ],
+    "pm-454": [
+     "v1_label"
+    ],
+    "pm-456": [
+     "v1_label"
+    ],
+    "pm-457": [
+     "v1_label"
+    ],
+    "pm-458": [
+     "v1_label"
+    ],
+    "pm-459": [
+     "v1_label"
+    ],
+    "pm-460": [
+     "v1_label"
+    ],
+    "pm-461": [
+     "v1_label"
+    ],
+    "pm-462": [
+     "v1_label"
+    ],
+    "pm-463": [
+     "v1_label"
+    ],
+    "pm-464": [
+     "v1_label"
+    ],
+    "pm-465": [
+     "v1_label"
+    ],
+    "pm-466": [
+     "v1_label"
+    ],
+    "pm-467": [
+     "v1_label"
+    ],
+    "pm-468": [
+     "v1_label"
+    ],
+    "pm-469": [
+     "v1_label"
+    ],
+    "pm-471": [
+     "v1_label"
+    ],
+    "pm-472": [
+     "v1_label"
+    ],
+    "pm-474": [
+     "v1_label"
+    ],
+    "pm-475": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "machine learning for agriculture",
+   "candidates": {
+    "pm-013": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-072": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-081": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-048": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-077": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-097": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-244": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-112": [
+     "dense_only",
+     "v1_label"
+    ],
+    "pm-167": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-406": [
+     "dense_only"
+    ],
+    "pm-369": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-493": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-543": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-553": [
+     "bm25_only"
+    ],
+    "pm-534": [
+     "bm25_only"
+    ],
+    "pm-549": [
+     "bm25_only"
+    ],
+    "pm-548": [
+     "bm25_only"
+    ],
+    "pm-533": [
+     "bm25_only"
+    ],
+    "pm-071": [
+     "bm25_only"
+    ],
+    "pm-536": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-059": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-026": [
+     "v1_label"
+    ],
+    "pm-143": [
+     "v1_label"
+    ],
+    "pm-168": [
+     "v1_label"
+    ],
+    "pm-169": [
+     "v1_label"
+    ],
+    "pm-172": [
+     "v1_label"
+    ],
+    "pm-193": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "React Flask full stack web application",
+   "candidates": {
+    "pm-704": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-282": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "v1_label"
+    ],
+    "pm-307": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "v1_label"
+    ],
+    "pm-681": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25"
+    ],
+    "pm-776": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25"
+    ],
+    "pm-774": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25"
+    ],
+    "pm-308": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-467": [
+     "dense_only",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-664": [
+     "dense_only"
+    ],
+    "pm-676": [
+     "dense_only"
+    ],
+    "pm-019": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-313": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-670": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-446": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25"
+    ],
+    "pm-021": [
+     "bm25_only",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-685": [
+     "bm25_only"
+    ],
+    "pm-462": [
+     "bm25_only",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-040": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-309": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-686": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-457": [
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-470": [
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-353": [
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-099": [
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-050": [
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-471": [
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-463": [
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-020": [
+     "v1_label"
+    ],
+    "pm-022": [
+     "v1_label"
+    ],
+    "pm-023": [
+     "v1_label"
+    ],
+    "pm-269": [
+     "v1_label"
+    ],
+    "pm-270": [
+     "v1_label"
+    ],
+    "pm-271": [
+     "v1_label"
+    ],
+    "pm-272": [
+     "v1_label"
+    ],
+    "pm-273": [
+     "v1_label"
+    ],
+    "pm-274": [
+     "v1_label"
+    ],
+    "pm-275": [
+     "v1_label"
+    ],
+    "pm-276": [
+     "v1_label"
+    ],
+    "pm-277": [
+     "v1_label"
+    ],
+    "pm-278": [
+     "v1_label"
+    ],
+    "pm-279": [
+     "v1_label"
+    ],
+    "pm-280": [
+     "v1_label"
+    ],
+    "pm-281": [
+     "v1_label"
+    ],
+    "pm-283": [
+     "v1_label"
+    ],
+    "pm-284": [
+     "v1_label"
+    ],
+    "pm-285": [
+     "v1_label"
+    ],
+    "pm-286": [
+     "v1_label"
+    ],
+    "pm-287": [
+     "v1_label"
+    ],
+    "pm-288": [
+     "v1_label"
+    ],
+    "pm-289": [
+     "v1_label"
+    ],
+    "pm-290": [
+     "v1_label"
+    ],
+    "pm-291": [
+     "v1_label"
+    ],
+    "pm-292": [
+     "v1_label"
+    ],
+    "pm-293": [
+     "v1_label"
+    ],
+    "pm-294": [
+     "v1_label"
+    ],
+    "pm-295": [
+     "v1_label"
+    ],
+    "pm-296": [
+     "v1_label"
+    ],
+    "pm-297": [
+     "v1_label"
+    ],
+    "pm-298": [
+     "v1_label"
+    ],
+    "pm-299": [
+     "v1_label"
+    ],
+    "pm-300": [
+     "v1_label"
+    ],
+    "pm-301": [
+     "v1_label"
+    ],
+    "pm-302": [
+     "v1_label"
+    ],
+    "pm-303": [
+     "v1_label"
+    ],
+    "pm-304": [
+     "v1_label"
+    ],
+    "pm-305": [
+     "v1_label"
+    ],
+    "pm-306": [
+     "v1_label"
+    ],
+    "pm-310": [
+     "v1_label"
+    ],
+    "pm-311": [
+     "v1_label"
+    ],
+    "pm-312": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "IoT smart home automation",
+   "candidates": {
+    "pm-024": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-026": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-352": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-718": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-344": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-727": [
+     "dense_only"
+    ],
+    "pm-372": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-362": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-720": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-355": [
+     "dense_only"
+    ],
+    "pm-734": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-358": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-725": [
+     "bm25_only"
+    ],
+    "pm-369": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-227": [
+     "bm25_only"
+    ],
+    "pm-347": [
+     "bm25_only"
+    ],
+    "pm-359": [
+     "v1_label"
+    ],
+    "pm-373": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "blockchain voting system",
+   "candidates": {
+    "pm-028": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-438": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-425": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-431": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-756": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-423": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-428": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-443": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-755": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-754": [
+     "dense_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-301": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-445": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-300": [
+     "bm25_only"
+    ],
+    "pm-459": [
+     "bm25_only"
+    ],
+    "pm-713": [
+     "bm25_only"
+    ],
+    "pm-349": [
+     "bm25_only"
+    ],
+    "pm-767": [
+     "bm25_only"
+    ]
+   }
+  },
+  {
+   "query": "beginner NLP project",
+   "candidates": {
+    "pm-601": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-196": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-599": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-229": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-201": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-602": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-010": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-207": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-591": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-588": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-007": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-009": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-595": [
+     "bm25_only"
+    ],
+    "pm-211": [
+     "bm25_only"
+    ],
+    "pm-197": [
+     "bm25_only"
+    ],
+    "pm-590": [
+     "bm25_only"
+    ],
+    "pm-233": [
+     "bm25_only"
+    ],
+    "pm-008": [
+     "v1_label"
+    ],
+    "pm-205": [
+     "v1_label"
+    ],
+    "pm-212": [
+     "v1_label"
+    ],
+    "pm-220": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "deep learning image classification",
+   "candidates": {
+    "pm-556": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-559": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-146": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-015": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-122": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-126": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-555": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-543": [
+     "dense_only"
+    ],
+    "pm-565": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-578": [
+     "dense_only"
+    ],
+    "pm-576": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-016": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-143": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-167": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-136": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-127": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-002": [
+     "v1_label"
+    ],
+    "pm-004": [
+     "v1_label"
+    ],
+    "pm-005": [
+     "v1_label"
+    ],
+    "pm-017": [
+     "v1_label"
+    ],
+    "pm-048": [
+     "v1_label"
+    ],
+    "pm-121": [
+     "v1_label"
+    ],
+    "pm-124": [
+     "v1_label"
+    ],
+    "pm-125": [
+     "v1_label"
+    ],
+    "pm-128": [
+     "v1_label"
+    ],
+    "pm-132": [
+     "v1_label"
+    ],
+    "pm-133": [
+     "v1_label"
+    ],
+    "pm-134": [
+     "v1_label"
+    ],
+    "pm-135": [
+     "v1_label"
+    ],
+    "pm-138": [
+     "v1_label"
+    ],
+    "pm-149": [
+     "v1_label"
+    ],
+    "pm-150": [
+     "v1_label"
+    ],
+    "pm-156": [
+     "v1_label"
+    ],
+    "pm-160": [
+     "v1_label"
+    ],
+    "pm-161": [
+     "v1_label"
+    ],
+    "pm-162": [
+     "v1_label"
+    ],
+    "pm-165": [
+     "v1_label"
+    ],
+    "pm-166": [
+     "v1_label"
+    ],
+    "pm-168": [
+     "v1_label"
+    ],
+    "pm-170": [
+     "v1_label"
+    ],
+    "pm-171": [
+     "v1_label"
+    ],
+    "pm-172": [
+     "v1_label"
+    ],
+    "pm-173": [
+     "v1_label"
+    ],
+    "pm-176": [
+     "v1_label"
+    ],
+    "pm-177": [
+     "v1_label"
+    ],
+    "pm-181": [
+     "v1_label"
+    ],
+    "pm-182": [
+     "v1_label"
+    ],
+    "pm-183": [
+     "v1_label"
+    ],
+    "pm-184": [
+     "v1_label"
+    ],
+    "pm-190": [
+     "v1_label"
+    ],
+    "pm-191": [
+     "v1_label"
+    ],
+    "pm-192": [
+     "v1_label"
+    ],
+    "pm-193": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "smart attendance system",
+   "candidates": {
+    "pm-003": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-298": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-732": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-445": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-649": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-274": [
+     "dense_only"
+    ],
+    "pm-270": [
+     "dense_only"
+    ],
+    "pm-328": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-272": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-715": [
+     "dense_only"
+    ],
+    "pm-028": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-026": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-639": [
+     "bm25_only"
+    ],
+    "pm-720": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-014": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-372": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-078": [
+     "v1_label"
+    ],
+    "pm-240": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "YOLOv8 object detection",
+   "candidates": {
+    "pm-004": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-002": [
+     "dense_only",
+     "hybrid_0.8_0.2"
+    ],
+    "pm-157": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-565": [
+     "dense_only",
+     "hybrid_0.8_0.2"
+    ],
+    "pm-147": [
+     "dense_only"
+    ],
+    "pm-159": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-167": [
+     "dense_only"
+    ],
+    "pm-156": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-611": [
+     "dense_only"
+    ],
+    "pm-192": [
+     "dense_only"
+    ],
+    "pm-168": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-181": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-158": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-169": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-179": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-187": [
+     "bm25_only",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-160": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-379": [
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-178": [
+     "v1_label"
+    ],
+    "pm-180": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "chatbot that answers questions from documents",
+   "candidates": {
+    "pm-216": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-010": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-591": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-522": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-100": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-101": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-199": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-300": [
+     "dense_only"
+    ],
+    "pm-458": [
+     "dense_only"
+    ],
+    "pm-211": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-301": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-646": [
+     "bm25_only"
+    ],
+    "pm-238": [
+     "bm25_only"
+    ],
+    "pm-503": [
+     "bm25_only"
+    ],
+    "pm-047": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-189": [
+     "bm25_only"
+    ],
+    "pm-606": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-113": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-595": [
+     "hybrid_0.5_0.5"
+    ],
+    "pm-203": [
+     "v1_label"
+    ],
+    "pm-213": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "recommendation system with collaborative filtering",
+   "candidates": {
+    "pm-088": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-011": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-232": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-569": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-150": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-075": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-037": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-221": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-303": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-077": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-280": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-072": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-395": [
+     "bm25_only"
+    ],
+    "pm-205": [
+     "bm25_only"
+    ],
+    "pm-699": [
+     "bm25_only"
+    ],
+    "pm-278": [
+     "bm25_only"
+    ],
+    "pm-659": [
+     "hybrid_0.5_0.5"
+    ],
+    "pm-106": [
+     "v1_label"
+    ],
+    "pm-342": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "fraud detection in banking transactions",
+   "candidates": {
+    "pm-549": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-012": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-053": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-089": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-113": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-593": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-071": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-051": [
+     "dense_only"
+    ],
+    "pm-422": [
+     "dense_only"
+    ],
+    "pm-454": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-021": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-294": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-295": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-767": [
+     "bm25_only"
+    ],
+    "pm-444": [
+     "bm25_only"
+    ],
+    "pm-432": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-031": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-032": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "predict student marks and performance",
+   "candidates": {
+    "pm-014": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-240": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-547": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-091": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-531": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-298": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-649": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-078": [
+     "dense_only",
+     "v1_label"
+    ],
+    "pm-062": [
+     "dense_only"
+    ],
+    "pm-513": [
+     "dense_only"
+    ],
+    "pm-608": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-254": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-683": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-367": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-621": [
+     "bm25_only"
+    ],
+    "pm-362": [
+     "bm25_only"
+    ],
+    "pm-328": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-413": [
+     "bm25_only"
+    ],
+    "pm-189": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-120": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-003": [
+     "v1_label"
+    ],
+    "pm-044": [
+     "v1_label"
+    ],
+    "pm-400": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "audio and music processing project",
+   "candidates": {
+    "pm-151": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-570": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-140": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-016": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-626": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-125": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-838": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-514": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-561": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-079": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-124": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-210": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-700": [
+     "bm25_only"
+    ],
+    "pm-047": [
+     "v1_label"
+    ],
+    "pm-103": [
+     "v1_label"
+    ],
+    "pm-130": [
+     "v1_label"
+    ],
+    "pm-145": [
+     "v1_label"
+    ],
+    "pm-152": [
+     "v1_label"
+    ],
+    "pm-165": [
+     "v1_label"
+    ],
+    "pm-205": [
+     "v1_label"
+    ],
+    "pm-218": [
+     "v1_label"
+    ],
+    "pm-227": [
+     "v1_label"
+    ],
+    "pm-288": [
+     "v1_label"
+    ],
+    "pm-302": [
+     "v1_label"
+    ],
+    "pm-303": [
+     "v1_label"
+    ],
+    "pm-315": [
+     "v1_label"
+    ],
+    "pm-316": [
+     "v1_label"
+    ],
+    "pm-340": [
+     "v1_label"
+    ],
+    "pm-351": [
+     "v1_label"
+    ],
+    "pm-354": [
+     "v1_label"
+    ],
+    "pm-372": [
+     "v1_label"
+    ],
+    "pm-385": [
+     "v1_label"
+    ],
+    "pm-408": [
+     "v1_label"
+    ],
+    "pm-433": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "time series forecasting stock market",
+   "candidates": {
+    "pm-018": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-056": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-544": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-155": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-257": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-083": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-049": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-267": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-081": [
+     "dense_only"
+    ],
+    "pm-650": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-082": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-294": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-760": [
+     "bm25_only"
+    ],
+    "pm-055": [
+     "v1_label"
+    ],
+    "pm-074": [
+     "v1_label"
+    ],
+    "pm-087": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "mobile app development with React Native",
+   "candidates": {
+    "pm-342": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-704": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-322": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-040": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-038": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-320": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-339": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-326": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-698": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-697": [
+     "dense_only"
+    ],
+    "pm-328": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-334": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-332": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-316": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-330": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-318": [
+     "v1_label"
+    ],
+    "pm-324": [
+     "v1_label"
+    ],
+    "pm-337": [
+     "v1_label"
+    ],
+    "pm-340": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "docker kubernetes devops pipeline",
+   "candidates": {
+    "pm-477": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-041": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-801": [
+     "dense_only",
+     "hybrid_0.8_0.2"
+    ],
+    "pm-480": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-486": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-497": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-803": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-492": [
+     "dense_only",
+     "v1_label"
+    ],
+    "pm-478": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-500": [
+     "dense_only",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-482": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-483": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-476": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-481": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-479": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-042": [
+     "v1_label"
+    ],
+    "pm-484": [
+     "v1_label"
+    ],
+    "pm-487": [
+     "v1_label"
+    ],
+    "pm-488": [
+     "v1_label"
+    ],
+    "pm-489": [
+     "v1_label"
+    ],
+    "pm-491": [
+     "v1_label"
+    ],
+    "pm-493": [
+     "v1_label"
+    ],
+    "pm-495": [
+     "v1_label"
+    ],
+    "pm-496": [
+     "v1_label"
+    ],
+    "pm-498": [
+     "v1_label"
+    ],
+    "pm-499": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "augmented reality mobile application",
+   "candidates": {
+    "pm-043": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-403": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-406": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-827": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-401": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-845": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-405": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-831": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-399": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-826": [
+     "dense_only"
+    ],
+    "pm-833": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-825": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-835": [
+     "bm25_only"
+    ],
+    "pm-843": [
+     "bm25_only"
+    ],
+    "pm-839": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-837": [
+     "bm25_only"
+    ],
+    "pm-400": [
+     "v1_label"
+    ],
+    "pm-402": [
+     "v1_label"
+    ],
+    "pm-404": [
+     "v1_label"
+    ],
+    "pm-416": [
+     "v1_label"
+    ],
+    "pm-418": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "robot that avoids obstacles",
+   "candidates": {
+    "pm-045": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-389": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-383": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-375": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-852": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-860": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-861": [
+     "dense_only"
+    ],
+    "pm-046": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-378": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-849": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-391": [
+     "bm25_only",
+     "v1_label"
+    ],
+    "pm-856": [
+     "bm25_only"
+    ],
+    "pm-344": [
+     "bm25_only"
+    ],
+    "pm-862": [
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-854": [
+     "hybrid_0.5_0.5"
+    ],
+    "pm-379": [
+     "v1_label"
+    ],
+    "pm-382": [
+     "v1_label"
+    ],
+    "pm-386": [
+     "v1_label"
+    ],
+    "pm-393": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "encrypt files securely",
+   "candidates": {
+    "pm-033": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-786": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-423": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-459": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-708": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-306": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-458": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-427": [
+     "dense_only"
+    ],
+    "pm-694": [
+     "dense_only"
+    ],
+    "pm-305": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-788": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-449": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-809": [
+     "bm25_only"
+    ],
+    "pm-800": [
+     "bm25_only"
+    ],
+    "pm-577": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-668": [
+     "bm25_only"
+    ],
+    "pm-824": [
+     "hybrid_0.5_0.5"
+    ],
+    "pm-473": [
+     "hybrid_0.5_0.5"
+    ]
+   }
+  },
+  {
+   "query": "resume screening for recruitment",
+   "candidates": {
+    "pm-006": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-102": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-209": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-269": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-052": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-593": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-084": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-528": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-014": [
+     "dense_only"
+    ],
+    "pm-550": [
+     "dense_only"
+    ],
+    "pm-668": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-230": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-184": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-153": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-811": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-383": [
+     "bm25_only",
+     "hybrid_0.5_0.5",
+     "v1_label"
+    ],
+    "pm-864": [
+     "bm25_only"
+    ],
+    "pm-863": [
+     "bm25_only"
+    ],
+    "pm-222": [
+     "v1_label"
+    ],
+    "pm-464": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "detect fake news and misinformation",
+   "candidates": {
+    "pm-009": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-089": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-218": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-600": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-586": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-593": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-110": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-206": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-207": [
+     "dense_only"
+    ],
+    "pm-195": [
+     "dense_only"
+    ],
+    "pm-225": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-008": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-785": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-775": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-186": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-188": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-864": [
+     "bm25_only"
+    ],
+    "pm-863": [
+     "bm25_only"
+    ],
+    "pm-137": [
+     "v1_label"
+    ],
+    "pm-164": [
+     "v1_label"
+    ],
+    "pm-190": [
+     "v1_label"
+    ]
+   }
+  },
+  {
+   "query": "voice controlled assistant with speech recognition",
+   "candidates": {
+    "pm-047": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-385": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-227": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-130": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-698": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-152": [
+     "dense_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-145": [
+     "dense_only"
+    ],
+    "pm-124": [
+     "dense_only",
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-591": [
+     "dense_only"
+    ],
+    "pm-561": [
+     "dense_only"
+    ],
+    "pm-830": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-103": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-843": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4"
+    ],
+    "pm-692": [
+     "bm25_only",
+     "hybrid_0.5_0.5"
+    ],
+    "pm-210": [
+     "bm25_only",
+     "hybrid_0.8_0.2",
+     "hybrid_0.5_0.5",
+     "hybrid_0.8_0.2+tech_0.25",
+     "hybrid_0.8_0.2+tech_0.4",
+     "v1_label"
+    ],
+    "pm-372": [
+     "v1_label"
+    ]
+   }
+  }
+ ]
+}

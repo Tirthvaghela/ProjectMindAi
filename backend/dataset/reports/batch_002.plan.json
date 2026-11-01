@@ -1,0 +1,4367 @@
+{
+  "batch": "batch_002",
+  "content_hash": "c03d3f378c2f1f45f1f7a9ca8f5b8a024c32afada8d59c85891ba6f23a75d327",
+  "thresholds": {
+    "reject": 0.88,
+    "review": 0.8,
+    "min_description": 170
+  },
+  "counts": {
+    "candidates": 152,
+    "approved": 152,
+    "rejected": 0,
+    "already_present": 0,
+    "review_flagged": 5
+  },
+  "first_id": "pm-869",
+  "last_id": "pm-1020",
+  "approved": [
+    {
+      "project_id": "pm-869",
+      "title": "Logic Puzzle Solver in Prolog",
+      "description": "Encodes classic grid logic puzzles, such as who-owns-which-pet clue sets, as Prolog facts and constraints, then lets the program find the unique solution. Learners see how declarative rules replace step-by-step search code.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "SWI-Prolog",
+        "Python"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Logic programming",
+        "Constraint modelling",
+        "Unification",
+        "Debugging rules"
+      ],
+      "keywords": [
+        "prolog",
+        "logic puzzle",
+        "constraints",
+        "declarative"
+      ]
+    },
+    {
+      "project_id": "pm-870",
+      "title": "Kinship and Genealogy Reasoner in Prolog",
+      "description": "Stores a small family tree as facts and defines rules for cousin, great-uncle and in-law relations, then answers relationship questions in both directions. The challenge is writing recursive rules that terminate on cyclic or incomplete data.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Prolog",
+        "SWI-Prolog"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Recursion in logic",
+        "Rule design",
+        "Querying knowledge",
+        "Termination"
+      ],
+      "keywords": [
+        "prolog",
+        "genealogy",
+        "recursion",
+        "knowledge base"
+      ]
+    },
+    {
+      "project_id": "pm-871",
+      "title": "Nonogram Puzzle Solver with Constraint Propagation",
+      "description": "Solves picture-grid puzzles from row and column clues by propagating line constraints until no more cells can be deduced, then backtracking only when stuck. Reports how often propagation alone finishes a puzzle.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "JavaScript",
+        "Node.js",
+        "Jest"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Constraint propagation",
+        "Backtracking",
+        "Algorithm analysis",
+        "Testing puzzles"
+      ],
+      "keywords": [
+        "nonogram",
+        "constraint propagation",
+        "backtracking",
+        "puzzle"
+      ]
+    },
+    {
+      "project_id": "pm-872",
+      "title": "Evolving an Image from Polygons with a Genetic Algorithm",
+      "description": "Approximates a target picture by evolving a few hundred translucent polygons through mutation and selection, drawing every generation in the browser. Shows how fitness definition and mutation size change whether the image converges or stalls.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "JavaScript",
+        "HTML Canvas",
+        "Web Workers"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Genetic algorithms",
+        "Fitness functions",
+        "Canvas drawing",
+        "Parameter effects"
+      ],
+      "keywords": [
+        "genetic algorithm",
+        "evolution",
+        "canvas",
+        "optimisation"
+      ]
+    },
+    {
+      "project_id": "pm-873",
+      "title": "Wumpus World Logical Agent",
+      "description": "Builds an agent that explores a cave grid, records breezes and stenches as propositional facts and infers which squares are safe before stepping. Compares its behaviour with a random explorer over many generated caves.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Python",
+        "Pygame"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Propositional inference",
+        "Knowledge-based agents",
+        "Simulation",
+        "Evaluation by trials"
+      ],
+      "keywords": [
+        "wumpus world",
+        "logical agent",
+        "inference",
+        "simulation"
+      ]
+    },
+    {
+      "project_id": "pm-874",
+      "title": "Twenty Questions Game that Learns Its Questions",
+      "description": "Plays the guessing game by choosing, at each step, the yes or no question that best splits the remaining candidates, and adds a new question when it fails. Demonstrates information gain on a tiny knowledge base.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "JavaScript",
+        "Node.js"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Information gain",
+        "Decision trees",
+        "Interactive design",
+        "Knowledge growth"
+      ],
+      "keywords": [
+        "decision tree",
+        "information gain",
+        "guessing game",
+        "learning"
+      ]
+    },
+    {
+      "project_id": "pm-875",
+      "title": "Mastermind Solver with Minimax over the Guess Space",
+      "description": "Chooses each code guess to minimise the worst-case number of remaining possibilities, and reports the average and maximum number of guesses needed across every possible secret.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "C++",
+        "CMake",
+        "Catch2"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 6,
+      "skills": [
+        "Minimax strategy",
+        "Search-space pruning",
+        "Benchmarking",
+        "Performance in C++"
+      ],
+      "keywords": [
+        "mastermind",
+        "minimax",
+        "game solving",
+        "c plus plus"
+      ]
+    },
+    {
+      "project_id": "pm-876",
+      "title": "Propositional Theorem Prover Using Resolution",
+      "description": "Converts formulas to clause form and decides satisfiability by resolution, with unit propagation and subsumption to keep the clause set small, and prints a human-readable proof when the formula is unsatisfiable.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Rust",
+        "Cargo"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Clause normal forms",
+        "Resolution",
+        "Data-structure design",
+        "Proof output"
+      ],
+      "keywords": [
+        "theorem proving",
+        "resolution",
+        "sat",
+        "rust"
+      ]
+    },
+    {
+      "project_id": "pm-877",
+      "title": "Rule Learner for Tabular Data with Weka",
+      "description": "Induces ordered if-then rules from a labelled table with a sequential covering algorithm, and compares rule length, coverage and accuracy with a decision tree so a domain expert could read and audit the model.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Java",
+        "Weka",
+        "Maven"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Rule induction",
+        "Model comparison",
+        "Interpretability",
+        "Java tooling"
+      ],
+      "keywords": [
+        "rule learning",
+        "weka",
+        "interpretability",
+        "java"
+      ]
+    },
+    {
+      "project_id": "pm-878",
+      "title": "Round-Robin Fixture Generator with Home and Away Constraints",
+      "description": "Builds a league schedule in which every team plays every other, avoids long runs of home or away games and respects venue clashes, expressed as a constraint model and checked by an independent validator.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "MiniZinc",
+        "Python",
+        "pytest"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Constraint models",
+        "Sports scheduling",
+        "Validation",
+        "Search strategies"
+      ],
+      "keywords": [
+        "scheduling",
+        "constraint programming",
+        "fixtures",
+        "minizinc"
+      ]
+    },
+    {
+      "project_id": "pm-879",
+      "title": "Adaptive Difficulty Controller for a Platform Game",
+      "description": "Models a player's skill from deaths and completion times and adjusts enemy speed and gap sizes between levels, with tests showing the controller neither oscillates nor lets a weak player stall.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Unity",
+        "C#",
+        "NUnit"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Player modelling",
+        "Feedback control",
+        "Game balancing",
+        "Simulation testing"
+      ],
+      "keywords": [
+        "dynamic difficulty",
+        "player model",
+        "game ai",
+        "unity"
+      ]
+    },
+    {
+      "project_id": "pm-880",
+      "title": "Behaviour Cloning of Human Demonstrations for a Racing Agent",
+      "description": "Records a person driving a simulated track and trains an agent to imitate the demonstrations, then measures how compounding errors cause drift and how adding corrective recovery data reduces it.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Unity",
+        "Unity ML-Agents",
+        "C#",
+        "PyTorch"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 13,
+      "skills": [
+        "Imitation learning",
+        "Distribution shift",
+        "Data collection",
+        "Evaluation on unseen tracks"
+      ],
+      "keywords": [
+        "imitation learning",
+        "behaviour cloning",
+        "racing",
+        "ml agents"
+      ]
+    },
+    {
+      "project_id": "pm-881",
+      "title": "Linear Regression from Scratch with Gradient Descent in R",
+      "description": "Implements ordinary least squares and gradient descent by hand on a small housing table, plots the loss surface and compares the hand-written fit with the built-in function to see where numbers agree and why.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "R",
+        "ggplot2",
+        "RStudio"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Gradient descent",
+        "Loss surfaces",
+        "Model diagnostics",
+        "R plotting"
+      ],
+      "keywords": [
+        "regression",
+        "gradient descent",
+        "r language",
+        "from scratch"
+      ]
+    },
+    {
+      "project_id": "pm-882",
+      "title": "K-Nearest Neighbours Classifier with Scaling Experiments",
+      "description": "Builds a nearest-neighbour classifier and shows how unscaled features, the choice of k and the distance metric change accuracy on a small mixed-feature dataset, with a chart for each experiment.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "scikit-learn",
+        "Matplotlib",
+        "Jupyter"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Distance metrics",
+        "Feature scaling",
+        "Hyperparameters",
+        "Experiment reporting"
+      ],
+      "keywords": [
+        "knn",
+        "scaling",
+        "distance",
+        "experiment"
+      ]
+    },
+    {
+      "project_id": "pm-883",
+      "title": "Naive Bayes Fraud Screener for a Small Online Shop",
+      "description": "Trains a naive Bayes model on a few thousand orders to flag suspicious ones for manual review, and explains the cost of false alarms versus misses so the shop owner can pick a sensible threshold.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "scikit-learn",
+        "Pandas",
+        "Streamlit"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Probabilistic classifiers",
+        "Threshold choice",
+        "Cost of errors",
+        "Simple dashboards"
+      ],
+      "keywords": [
+        "naive bayes",
+        "screening",
+        "thresholds",
+        "small business"
+      ]
+    },
+    {
+      "project_id": "pm-884",
+      "title": "Customer Segmentation with RFM and Clustering in R",
+      "description": "Computes recency, frequency and monetary scores from a transactions table and groups customers with k-means, then describes each segment in plain language and suggests one action per segment.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "R",
+        "dplyr",
+        "ggplot2",
+        "Shiny"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Feature construction",
+        "Clustering",
+        "Segment description",
+        "Shiny dashboards"
+      ],
+      "keywords": [
+        "rfm",
+        "clustering",
+        "segmentation",
+        "shiny"
+      ]
+    },
+    {
+      "project_id": "pm-885",
+      "title": "Gradient Boosting from Scratch for Regression",
+      "description": "Implements a small gradient boosting regressor with shallow trees, then compares it with a library version on accuracy, training time and sensitivity to learning rate and tree depth.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "C++",
+        "Eigen",
+        "CMake",
+        "Catch2"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Boosting",
+        "Decision trees",
+        "Numerical code in C++",
+        "Benchmarking"
+      ],
+      "keywords": [
+        "gradient boosting",
+        "from scratch",
+        "trees",
+        "c plus plus"
+      ]
+    },
+    {
+      "project_id": "pm-886",
+      "title": "Time-Aware Cross-Validation Library for Tabular Models",
+      "description": "Provides splitters that respect time order and group membership so a model is never scored on data from before its training period, and demonstrates the optimistic error that ordinary shuffled folds produce.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "scikit-learn",
+        "pytest"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Leakage prevention",
+        "Cross-validation design",
+        "Library API",
+        "Testing"
+      ],
+      "keywords": [
+        "cross validation",
+        "leakage",
+        "time series",
+        "library"
+      ]
+    },
+    {
+      "project_id": "pm-887",
+      "title": "Anomaly Detection on Server Logs with Isolation Forest and Rules",
+      "description": "Turns request logs into per-minute features and combines an isolation forest with simple threshold rules, then compares which anomalies each approach catches and which it misses.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "scikit-learn",
+        "Pandas",
+        "Plotly"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Feature extraction",
+        "Unsupervised detection",
+        "Method comparison",
+        "Visualisation"
+      ],
+      "keywords": [
+        "anomaly detection",
+        "logs",
+        "isolation forest",
+        "rules"
+      ]
+    },
+    {
+      "project_id": "pm-888",
+      "title": "Survey-Based Voting Intention Model with Poststratification",
+      "description": "Fits a multilevel model to a skewed opinion survey and reweights it to known population shares, reporting uncertainty by region and showing how raw averages mislead. Includes a written note on what the model cannot say.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "R",
+        "brms",
+        "tidyverse",
+        "Stan"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Multilevel models",
+        "Poststratification",
+        "Bayesian uncertainty",
+        "Communication"
+      ],
+      "keywords": [
+        "survey",
+        "multilevel model",
+        "poststratification",
+        "bayesian"
+      ]
+    },
+    {
+      "project_id": "pm-889",
+      "title": "Calibrated Probability Forecasts for Match Outcomes with Elo",
+      "description": "Builds an Elo-style rating system for a sport, converts rating gaps into win probabilities and checks calibration against results season by season. Includes reliability plots and a comparison with a naive home-advantage baseline.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "Matplotlib"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Rating systems",
+        "Probability calibration",
+        "Backtesting",
+        "Sports data"
+      ],
+      "keywords": [
+        "elo",
+        "ratings",
+        "calibration",
+        "forecasting"
+      ]
+    },
+    {
+      "project_id": "pm-890",
+      "title": "Energy-Efficient Model Selection Under a Compute Budget",
+      "description": "Compares models of increasing size on accuracy per unit of measured training energy, and builds a recommendation rule that picks the smallest model within a chosen accuracy tolerance.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "scikit-learn",
+        "CodeCarbon",
+        "Pandas"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Efficiency measurement",
+        "Model selection",
+        "Trade-off analysis",
+        "Reporting"
+      ],
+      "keywords": [
+        "green ml",
+        "energy",
+        "model selection",
+        "efficiency"
+      ]
+    },
+    {
+      "project_id": "pm-891",
+      "title": "Training a Tiny Neural Network in the Browser",
+      "description": "Implements a small multi-layer network in JavaScript that trains on handwritten shapes drawn on a canvas, with live loss curves, so learners can watch weights change and see overfitting happen on a tiny dataset.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "JavaScript",
+        "HTML Canvas",
+        "Chart.js"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Neural network basics",
+        "Browser computation",
+        "Visualising training",
+        "Overfitting"
+      ],
+      "keywords": [
+        "neural network",
+        "javascript",
+        "visualisation",
+        "training"
+      ]
+    },
+    {
+      "project_id": "pm-892",
+      "title": "Image Classifier with Transfer Learning for Local Wildlife",
+      "description": "Fine-tunes a pretrained network on photos of ten local bird species collected by the learner, and shows how accuracy changes with the number of photos per species and with frozen versus unfrozen layers.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "torchvision",
+        "Streamlit"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Transfer learning",
+        "Small datasets",
+        "Fine-tuning choices",
+        "Evaluation"
+      ],
+      "keywords": [
+        "transfer learning",
+        "birds",
+        "small data",
+        "fine tuning"
+      ]
+    },
+    {
+      "project_id": "pm-893",
+      "title": "Handwritten Digits with a Convolutional Net in Java",
+      "description": "Builds and trains a small convolutional network for digit recognition with a Java deep learning library, and compares it with a plain feed-forward net to show what convolutions add.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Java",
+        "Deeplearning4j",
+        "Maven"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 7,
+      "skills": [
+        "Convolutional layers",
+        "JVM deep learning",
+        "Model comparison",
+        "Packaging"
+      ],
+      "keywords": [
+        "cnn",
+        "java",
+        "digits",
+        "deeplearning4j"
+      ]
+    },
+    {
+      "project_id": "pm-894",
+      "title": "Autoencoder for Detecting Defective Printed Characters",
+      "description": "Trains an autoencoder only on clean printed characters and flags those it reconstructs poorly, with a threshold chosen from the reconstruction error distribution of held-out good samples.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "OpenCV",
+        "Matplotlib"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Reconstruction error",
+        "Anomaly thresholds",
+        "Unsupervised training",
+        "Evaluation"
+      ],
+      "keywords": [
+        "autoencoder",
+        "defects",
+        "reconstruction error",
+        "anomaly"
+      ]
+    },
+    {
+      "project_id": "pm-895",
+      "title": "Sequence Model for Next-Day Hospital Bed Occupancy",
+      "description": "Forecasts occupancy of wards from admissions history and calendar effects with a recurrent network, and compares it against a seasonal baseline using rolling-origin evaluation on synthetic data.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "Pandas",
+        "Matplotlib"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Sequence forecasting",
+        "Rolling evaluation",
+        "Baselines",
+        "Operational metrics"
+      ],
+      "keywords": [
+        "forecasting",
+        "occupancy",
+        "rnn",
+        "healthcare operations"
+      ]
+    },
+    {
+      "project_id": "pm-896",
+      "title": "Efficient Image Classifier for Microcontrollers in C",
+      "description": "Trains a very small convolutional network, quantises it to eight bits and runs inference on a microcontroller with kilobytes of memory, reporting accuracy, latency and RAM against the desktop model.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "C",
+        "TensorFlow Lite",
+        "STM32",
+        "Python"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Quantisation",
+        "Embedded inference",
+        "Memory budgeting",
+        "Profiling"
+      ],
+      "keywords": [
+        "tinyml",
+        "quantisation",
+        "embedded",
+        "microcontroller"
+      ]
+    },
+    {
+      "project_id": "pm-897",
+      "title": "Self-Attention Layer Implemented from Scratch",
+      "description": "Writes scaled dot-product and multi-head attention without a framework, verifies the output against a library implementation on random inputs and visualises attention maps on a toy translation task.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Python",
+        "NumPy",
+        "Matplotlib",
+        "pytest"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 9,
+      "skills": [
+        "Attention mechanism",
+        "Numerical verification",
+        "Visualisation",
+        "Matrix calculus"
+      ],
+      "keywords": [
+        "attention",
+        "transformer",
+        "from scratch",
+        "verification"
+      ]
+    },
+    {
+      "project_id": "pm-898",
+      "title": "Model Compression Report for a Mobile Speech Model",
+      "description": "Measures how pruning, distillation and quantisation each change a speech model's accuracy, size and latency on a phone-class device, then recommends a combination for a stated memory limit.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "ONNX",
+        "Kotlin"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Compression methods",
+        "On-device latency",
+        "Trade-offs",
+        "Reporting"
+      ],
+      "keywords": [
+        "compression",
+        "speech",
+        "on device",
+        "benchmarking"
+      ]
+    },
+    {
+      "project_id": "pm-899",
+      "title": "Recurrent versus Convolutional Models for Short Time Series",
+      "description": "Trains both families on the same sensor classification task under equal parameter budgets and compares accuracy, training time and robustness to missing samples. Reports include a short write-up of when each family is preferable.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Python",
+        "TensorFlow",
+        "Keras",
+        "Pandas"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Model families",
+        "Fair comparison",
+        "Missing data",
+        "Training cost"
+      ],
+      "keywords": [
+        "time series",
+        "cnn",
+        "rnn",
+        "comparison"
+      ]
+    },
+    {
+      "project_id": "pm-900",
+      "title": "Continual Learning without Forgetting on Sequential Tasks",
+      "description": "Trains one network on a sequence of image tasks and measures how much earlier tasks are forgotten, then tests replay and regularisation methods and reports the memory each needs.",
+      "domain": "Deep Learning",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "torchvision",
+        "Matplotlib"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 13,
+      "skills": [
+        "Catastrophic forgetting",
+        "Replay methods",
+        "Regularisation",
+        "Evaluation protocols"
+      ],
+      "keywords": [
+        "continual learning",
+        "forgetting",
+        "replay",
+        "regularisation"
+      ]
+    },
+    {
+      "project_id": "pm-901",
+      "title": "N-gram Next-Word Predictor from Scratch",
+      "description": "Counts word sequences in a small text corpus and predicts the next word with smoothing, then shows how model order and smoothing change both accuracy and the fluency of generated sentences.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "NLTK",
+        "Streamlit"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "N-gram models",
+        "Smoothing",
+        "Perplexity",
+        "Text generation"
+      ],
+      "keywords": [
+        "n-gram",
+        "language model",
+        "smoothing",
+        "from scratch"
+      ]
+    },
+    {
+      "project_id": "pm-902",
+      "title": "Regular-Expression Toolkit for Extracting Dates, Phones and Emails",
+      "description": "Builds and tests a library of patterns for common contact details across several formats, with a labelled test set that shows exactly which inputs each pattern misses or wrongly accepts.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "regex",
+        "pytest"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Regular expressions",
+        "Test-driven design",
+        "Precision and recall",
+        "Edge cases"
+      ],
+      "keywords": [
+        "regex",
+        "extraction",
+        "testing",
+        "patterns"
+      ]
+    },
+    {
+      "project_id": "pm-903",
+      "title": "Word Frequency and Zipf's Law Explorer",
+      "description": "Counts words in several books, plots rank against frequency on log scales and shows how closely each text follows Zipf's law, comparing languages and genres. Includes a short write-up on where the law breaks down and why.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "NLTK",
+        "Matplotlib",
+        "Pandas"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 3,
+      "skills": [
+        "Corpus statistics",
+        "Log-log plots",
+        "Tokenisation",
+        "Text comparison"
+      ],
+      "keywords": [
+        "zipf",
+        "word frequency",
+        "corpus",
+        "statistics"
+      ]
+    },
+    {
+      "project_id": "pm-904",
+      "title": "Sentiment Lexicon Builder for a Niche Domain",
+      "description": "Grows a domain-specific sentiment word list from a few seed words by propagating through word embeddings, and checks the lexicon against labelled reviews from that domain versus a generic list.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "Gensim",
+        "scikit-learn",
+        "Pandas"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Lexicon induction",
+        "Word embeddings",
+        "Domain adaptation",
+        "Evaluation"
+      ],
+      "keywords": [
+        "lexicon",
+        "sentiment",
+        "embeddings",
+        "domain adaptation"
+      ]
+    },
+    {
+      "project_id": "pm-905",
+      "title": "Legal Plain-Language Rewriter with Readability Gates",
+      "description": "Rewrites dense clauses into shorter plain English with a language model, then rejects any rewrite that drops a defined term, number or negation, using automated checks before a human sees it.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "Transformers",
+        "spaCy",
+        "FastAPI"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Controlled generation",
+        "Faithfulness checks",
+        "Readability metrics",
+        "Pipeline design"
+      ],
+      "keywords": [
+        "plain language",
+        "rewriting",
+        "faithfulness",
+        "legal text"
+      ]
+    },
+    {
+      "project_id": "pm-906",
+      "title": "Named Entity Recognition for Kitchen Recipes",
+      "description": "Tags quantities, units, ingredients and cooking actions in recipe steps by training a sequence labeller on a hand-annotated sample, reporting per-entity scores and the most confusing cases.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "spaCy",
+        "Prodigy-style annotation",
+        "Pandas"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Annotation guidelines",
+        "Sequence labelling",
+        "Error analysis",
+        "Inter-annotator checks"
+      ],
+      "keywords": [
+        "ner",
+        "recipes",
+        "annotation",
+        "sequence labelling"
+      ]
+    },
+    {
+      "project_id": "pm-907",
+      "title": "Search Engine over a Local Document Folder in Java",
+      "description": "Indexes text and PDF files in a folder, supports phrase and fuzzy queries with ranked results and highlights, and measures query latency as the folder grows to tens of thousands of files.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Java",
+        "Apache Lucene",
+        "Apache Tika",
+        "Maven"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Inverted indexes",
+        "Text extraction",
+        "Ranking",
+        "Performance measurement"
+      ],
+      "keywords": [
+        "search engine",
+        "lucene",
+        "indexing",
+        "java"
+      ]
+    },
+    {
+      "project_id": "pm-908",
+      "title": "Accent-Robust Command Recognition Dataset Study",
+      "description": "Collects and evaluates spoken command recordings across several accent groups, measures error rates per group with a speech model, and tests simple augmentation that narrows the gap.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "Whisper",
+        "Librosa",
+        "Pandas"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Fairness measurement",
+        "Data collection ethics",
+        "Augmentation",
+        "Speech evaluation"
+      ],
+      "keywords": [
+        "speech",
+        "accents",
+        "fairness",
+        "evaluation"
+      ]
+    },
+    {
+      "project_id": "pm-909",
+      "title": "Tokenisation Comparison Lab across Languages",
+      "description": "Compares whitespace, rule-based and subword tokenisers on English, German and a morphologically rich language, reporting vocabulary size, out-of-vocabulary rate and effect on a downstream classifier.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "Hugging Face Tokenizers",
+        "scikit-learn"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Subword tokenisation",
+        "Linguistic variation",
+        "Downstream effects",
+        "Experiment design"
+      ],
+      "keywords": [
+        "tokenisation",
+        "bpe",
+        "multilingual",
+        "comparison"
+      ]
+    },
+    {
+      "project_id": "pm-910",
+      "title": "Topic Drift Tracker for Long-Running Forum Threads",
+      "description": "Monitors how the subject of a discussion thread moves over time using sliding-window topic vectors, flags threads that wander off topic and evaluates alerts against moderator judgments.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "BERTopic",
+        "Pandas",
+        "Streamlit"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Topic modelling over time",
+        "Change detection",
+        "Moderator evaluation",
+        "Dashboards"
+      ],
+      "keywords": [
+        "topic drift",
+        "forums",
+        "moderation",
+        "temporal"
+      ]
+    },
+    {
+      "project_id": "pm-911",
+      "title": "Edge Detection Explorer with Convolution from Scratch",
+      "description": "Implements convolution by hand, applies Sobel, Laplacian and Gaussian kernels to photographs and lets learners edit kernel values to see how each number changes the filtered result.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "NumPy",
+        "Matplotlib",
+        "Streamlit"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Convolution",
+        "Image kernels",
+        "Visualisation",
+        "Vectorised code"
+      ],
+      "keywords": [
+        "convolution",
+        "edge detection",
+        "kernels",
+        "filters"
+      ]
+    },
+    {
+      "project_id": "pm-912",
+      "title": "Histogram Equalisation and Contrast Enhancement Lab",
+      "description": "Implements histogram stretching and equalisation, applies them to under- and over-exposed photographs and compares the results with the adaptive version, noting where noise gets amplified.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "Matplotlib"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 3,
+      "skills": [
+        "Histograms",
+        "Contrast methods",
+        "Noise side effects",
+        "Comparison"
+      ],
+      "keywords": [
+        "histogram equalisation",
+        "contrast",
+        "clahe",
+        "enhancement"
+      ]
+    },
+    {
+      "project_id": "pm-913",
+      "title": "Template Matching Part Finder for a Workbench Camera",
+      "description": "Locates known tools on a workbench in a fixed camera view by template matching, handling lighting changes and small rotations, and reports where matching fails so learners understand its limits.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "NumPy"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Template matching",
+        "Normalised correlation",
+        "Failure analysis",
+        "Camera setup"
+      ],
+      "keywords": [
+        "template matching",
+        "tools",
+        "correlation",
+        "fixed camera"
+      ]
+    },
+    {
+      "project_id": "pm-914",
+      "title": "Colour-Blind Simulation and Palette Checker",
+      "description": "Simulates the main types of colour vision deficiency on any image and checks whether a chosen chart palette stays distinguishable, suggesting safer alternatives where it does not.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "JavaScript",
+        "HTML Canvas",
+        "Color.js"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Colour spaces",
+        "Accessibility",
+        "Image transformation",
+        "Contrast metrics"
+      ],
+      "keywords": [
+        "colour blindness",
+        "accessibility",
+        "palette",
+        "simulation"
+      ]
+    },
+    {
+      "project_id": "pm-915",
+      "title": "Crop Row Detection from Tractor Camera Video",
+      "description": "Finds crop rows in field video using vegetation segmentation and line fitting, outputs a steering offset for each frame and evaluates it against hand-marked rows across growth stages.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "scikit-image",
+        "NumPy"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Vegetation indices",
+        "Line fitting",
+        "Temporal smoothing",
+        "Ground-truth evaluation"
+      ],
+      "keywords": [
+        "crop rows",
+        "line fitting",
+        "vegetation",
+        "agriculture"
+      ]
+    },
+    {
+      "project_id": "pm-916",
+      "title": "Rail Track Obstruction Detection from a Cab Camera",
+      "description": "Segments the rails in forward-facing video, defines a danger zone ahead and detects objects inside it, with latency and false-alarm analysis against the braking distance a train actually needs.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "OpenCV",
+        "ONNX"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 13,
+      "skills": [
+        "Semantic segmentation",
+        "Region of interest",
+        "Latency budgets",
+        "Safety analysis"
+      ],
+      "keywords": [
+        "rail",
+        "obstacle detection",
+        "segmentation",
+        "latency"
+      ]
+    },
+    {
+      "project_id": "pm-917",
+      "title": "Document Image Quality Gate for a Scanning App",
+      "description": "Scores a photographed page for blur, glare, skew and low resolution before OCR, and tells the user in plain words what to fix, validated against how much each issue degrades text recognition.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "Tesseract",
+        "FastAPI"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Image quality measures",
+        "OCR sensitivity",
+        "Feedback design",
+        "API design"
+      ],
+      "keywords": [
+        "image quality",
+        "blur detection",
+        "ocr",
+        "document"
+      ]
+    },
+    {
+      "project_id": "pm-918",
+      "title": "Pedestrian Crossing Counter with Privacy by Design",
+      "description": "Counts people crossing at a junction from overhead video without storing frames, blurring faces at capture and exporting only aggregate counts per interval, with an audit of what leaves the device.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "MediaPipe",
+        "SQLite"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "On-device processing",
+        "Privacy engineering",
+        "Counting",
+        "Auditability"
+      ],
+      "keywords": [
+        "people counting",
+        "privacy",
+        "edge",
+        "aggregate"
+      ]
+    },
+    {
+      "project_id": "pm-919",
+      "title": "Stereo Camera Distance Estimator",
+      "description": "Calibrates a pair of cameras, computes disparity maps and converts them to metric distance, comparing measured and true distances and showing how error grows with range. Includes a printed checkerboard calibration guide.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "NumPy",
+        "Matplotlib"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Stereo geometry",
+        "Calibration",
+        "Disparity",
+        "Error analysis"
+      ],
+      "keywords": [
+        "stereo vision",
+        "depth",
+        "calibration",
+        "disparity"
+      ]
+    },
+    {
+      "project_id": "pm-920",
+      "title": "Satellite Image Change Detection for Urban Growth",
+      "description": "Aligns satellite images from two years, detects new built-up areas with both index thresholds and a learned model, and quantifies agreement with a manually digitised reference.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "rasterio",
+        "scikit-image",
+        "PyTorch"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Image registration",
+        "Change detection",
+        "Remote sensing indices",
+        "Validation"
+      ],
+      "keywords": [
+        "change detection",
+        "satellite",
+        "urban growth",
+        "remote sensing"
+      ]
+    },
+    {
+      "project_id": "pm-921",
+      "title": "Clean a Messy Spreadsheet: A Data Cleaning Playbook",
+      "description": "Takes a deliberately dirty sales workbook with mixed date formats, duplicate rows and misspelt categories and cleans it step by step, logging every change so the result can be audited and the process rerun.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "Jupyter"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 4,
+      "skills": [
+        "Data cleaning",
+        "Reproducible workflows",
+        "Change logging",
+        "Validation checks"
+      ],
+      "keywords": [
+        "data cleaning",
+        "pandas",
+        "reproducibility",
+        "audit"
+      ]
+    },
+    {
+      "project_id": "pm-922",
+      "title": "SQL Analytics Workbook for a Bike-Share Dataset",
+      "description": "Answers twenty business questions about trips and stations in SQL, from simple counts to window functions, and builds a short report that pairs each query with its chart and a plain-language reading.",
+      "domain": "Data Science",
+      "technologies": [
+        "SQL",
+        "SQLite",
+        "DuckDB",
+        "Jupyter"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "SQL aggregation",
+        "Window functions",
+        "Query writing",
+        "Reporting"
+      ],
+      "keywords": [
+        "sql",
+        "window functions",
+        "analytics",
+        "duckdb"
+      ]
+    },
+    {
+      "project_id": "pm-923",
+      "title": "Exploratory Analysis of a Public Health Survey in R",
+      "description": "Cleans a national health survey extract, weights responses and plots patterns by age group and region, with every chart labelled to avoid implying causes the data cannot support.",
+      "domain": "Data Science",
+      "technologies": [
+        "R",
+        "tidyverse",
+        "ggplot2",
+        "survey"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Survey weighting",
+        "Tidy data",
+        "Honest charts",
+        "R Markdown"
+      ],
+      "keywords": [
+        "survey",
+        "r",
+        "ggplot2",
+        "health data"
+      ]
+    },
+    {
+      "project_id": "pm-924",
+      "title": "Dashboard of Municipal Budget Spending with Apache Superset",
+      "description": "Loads city budget files into a database and builds drill-down dashboards by department and year, documenting the assumptions behind each measure so citizens can check the numbers.",
+      "domain": "Data Science",
+      "technologies": [
+        "Apache Superset",
+        "PostgreSQL",
+        "SQL",
+        "Docker"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Dashboard design",
+        "Data modelling",
+        "Documentation",
+        "Public data"
+      ],
+      "keywords": [
+        "budget",
+        "dashboard",
+        "superset",
+        "open data"
+      ]
+    },
+    {
+      "project_id": "pm-925",
+      "title": "Large Taxi Trip Dataset Processing with Apache Spark",
+      "description": "Processes tens of millions of trip records with Spark, compares the same aggregations on one machine and on a small cluster, and reports where partitioning and caching change runtimes.",
+      "domain": "Data Science",
+      "technologies": [
+        "Apache Spark",
+        "PySpark",
+        "Parquet",
+        "Docker"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Distributed processing",
+        "Partitioning",
+        "Performance comparison",
+        "Columnar formats"
+      ],
+      "keywords": [
+        "spark",
+        "big data",
+        "parquet",
+        "performance"
+      ]
+    },
+    {
+      "project_id": "pm-926",
+      "title": "Analytics Engineering Project with dbt and Tests",
+      "description": "Models raw order data into tested staging and mart tables with dbt, adds data quality tests for keys and accepted values and shows what breaks, and how it is caught, when the source changes.",
+      "domain": "Data Science",
+      "technologies": [
+        "dbt",
+        "PostgreSQL",
+        "SQL",
+        "GitHub Actions"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Data modelling",
+        "Automated tests",
+        "Documentation",
+        "Continuous integration"
+      ],
+      "keywords": [
+        "dbt",
+        "analytics engineering",
+        "data quality",
+        "testing"
+      ]
+    },
+    {
+      "project_id": "pm-927",
+      "title": "Fast Dataframe Pipeline Comparison: Pandas, Polars and DuckDB",
+      "description": "Implements one analysis three ways on a multi-gigabyte file, measures time and memory, and writes guidance on when each tool is the right choice for a student laptop. Includes a reproducible benchmark script.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "Polars",
+        "DuckDB"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Benchmarking",
+        "Memory profiling",
+        "Tool selection",
+        "Query engines"
+      ],
+      "keywords": [
+        "polars",
+        "duckdb",
+        "benchmark",
+        "dataframes"
+      ]
+    },
+    {
+      "project_id": "pm-928",
+      "title": "A/B Test Power and Sample Size Planner",
+      "description": "Lets a user enter a baseline rate and the smallest change worth detecting, computes the needed sample size and simulates repeated experiments to show how often wrong conclusions appear when tests are stopped early.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "SciPy",
+        "Streamlit",
+        "Matplotlib"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 6,
+      "skills": [
+        "Statistical power",
+        "Simulation",
+        "Peeking problems",
+        "Interactive tools"
+      ],
+      "keywords": [
+        "ab testing",
+        "power analysis",
+        "simulation",
+        "statistics"
+      ]
+    },
+    {
+      "project_id": "pm-929",
+      "title": "Carbon Footprint Calculator for Campus Travel",
+      "description": "Estimates emissions from how students and staff travel to campus using published factors, shows which changes would save the most and states the uncertainty of each factor rather than a falsely exact total.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "Plotly",
+        "Streamlit"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Emission factors",
+        "Uncertainty communication",
+        "Scenario analysis",
+        "Dashboards"
+      ],
+      "keywords": [
+        "carbon footprint",
+        "sustainability",
+        "emissions",
+        "scenarios"
+      ]
+    },
+    {
+      "project_id": "pm-930",
+      "title": "Household Energy Saving Recommender from Smart Meter Data",
+      "description": "Analyses half-hourly consumption to find standby loads and peak-time habits, estimates savings for each suggested change and ranks suggestions by effort and payback. Includes a plain-language summary page for householders.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "scikit-learn",
+        "Plotly"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Load profiles",
+        "Savings estimation",
+        "Ranking advice",
+        "Visualisation"
+      ],
+      "keywords": [
+        "energy saving",
+        "smart meter",
+        "recommendations",
+        "sustainability"
+      ]
+    },
+    {
+      "project_id": "pm-931",
+      "title": "Reproducible Research Report with Quarto and Containers",
+      "description": "Packages an analysis as a Quarto document with pinned dependencies in a container so a reader can regenerate every figure with one command, and documents what was needed to make it reproduce.",
+      "domain": "Data Science",
+      "technologies": [
+        "Quarto",
+        "R",
+        "Docker",
+        "Git"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 6,
+      "skills": [
+        "Reproducibility",
+        "Dependency pinning",
+        "Literate programming",
+        "Containers"
+      ],
+      "keywords": [
+        "reproducibility",
+        "quarto",
+        "docker",
+        "research"
+      ]
+    },
+    {
+      "project_id": "pm-932",
+      "title": "Bias Audit of a Public Benchmark Dataset",
+      "description": "Examines who is and is not represented in a popular open dataset, measures performance gaps of a simple model across groups and writes a datasheet documenting limits and recommended uses.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "Fairlearn",
+        "Matplotlib"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Dataset documentation",
+        "Subgroup analysis",
+        "Responsible reporting",
+        "Limitations"
+      ],
+      "keywords": [
+        "bias audit",
+        "datasheet",
+        "fairness",
+        "benchmark"
+      ]
+    },
+    {
+      "project_id": "pm-933",
+      "title": "Time Series Forecasting Competition Harness",
+      "description": "Builds an evaluation harness that scores forecasting methods under rolling origins with identical data access, preventing leakage by design and producing a leaderboard with confidence intervals.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "statsmodels",
+        "Prophet",
+        "pytest"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Fair evaluation",
+        "Rolling origins",
+        "Leakage prevention",
+        "Statistical comparison"
+      ],
+      "keywords": [
+        "forecasting",
+        "harness",
+        "evaluation",
+        "leakage"
+      ]
+    },
+    {
+      "project_id": "pm-934",
+      "title": "Hospital Waiting Time Analysis with Queueing Theory",
+      "description": "Fits arrival and service patterns for an emergency department from open data, compares a queueing model with a discrete-event simulation and tests staffing changes against both.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "SimPy",
+        "SciPy",
+        "Pandas"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Queueing models",
+        "Simulation",
+        "Model comparison",
+        "Staffing scenarios"
+      ],
+      "keywords": [
+        "queueing",
+        "simulation",
+        "emergency department",
+        "waiting times"
+      ]
+    },
+    {
+      "project_id": "pm-935",
+      "title": "Geospatial Accessibility Analysis of Public Services",
+      "description": "Computes travel-time catchments to clinics and schools from road networks, finds neighbourhoods with poor access and tests how siting one new facility changes coverage. Includes a map layer for each scenario.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "OSMnx",
+        "GeoPandas",
+        "NetworkX"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Network analysis",
+        "Catchment areas",
+        "Spatial equity",
+        "Scenario testing"
+      ],
+      "keywords": [
+        "accessibility",
+        "osmnx",
+        "spatial analysis",
+        "equity"
+      ]
+    },
+    {
+      "project_id": "pm-936",
+      "title": "Accessible Form Component Library with Keyboard Tests",
+      "description": "Builds a small set of form inputs, selects and error messages that work with keyboard and screen readers, and documents each accessibility decision with automated and manual test results.",
+      "domain": "Web Development",
+      "technologies": [
+        "TypeScript",
+        "React",
+        "Testing Library",
+        "Storybook"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Accessibility",
+        "Component design",
+        "Keyboard navigation",
+        "Documentation"
+      ],
+      "keywords": [
+        "accessibility",
+        "components",
+        "aria",
+        "forms"
+      ]
+    },
+    {
+      "project_id": "pm-937",
+      "title": "Static Site Generator in Go for a Personal Blog",
+      "description": "Converts Markdown files with front matter into a themed static website with tag pages and an RSS feed, then compares build time and page weight against an off-the-shelf generator.",
+      "domain": "Web Development",
+      "technologies": [
+        "Go",
+        "Markdown",
+        "HTML templates",
+        "GitHub Actions"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Templating",
+        "File processing",
+        "Static sites",
+        "Build pipelines"
+      ],
+      "keywords": [
+        "static site",
+        "go",
+        "markdown",
+        "rss"
+      ]
+    },
+    {
+      "project_id": "pm-938",
+      "title": "Real-Time Collaborative Whiteboard with CRDTs",
+      "description": "Implements shared drawing where simultaneous edits from many users converge without a central lock, using a conflict-free data type, and tests convergence under delay, loss and reordered messages.",
+      "domain": "Web Development",
+      "technologies": [
+        "TypeScript",
+        "Yjs",
+        "WebSocket",
+        "Canvas"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "CRDTs",
+        "Eventual consistency",
+        "Network faults",
+        "Real-time systems"
+      ],
+      "keywords": [
+        "crdt",
+        "collaboration",
+        "websocket",
+        "whiteboard"
+      ]
+    },
+    {
+      "project_id": "pm-939",
+      "title": "GraphQL API for a Course Timetable with Query Cost Limits",
+      "description": "Exposes timetable data through a typed GraphQL schema, prevents expensive nested queries with depth and cost limits and compares request counts with an equivalent REST design.",
+      "domain": "Web Development",
+      "technologies": [
+        "Node.js",
+        "GraphQL",
+        "Apollo Server",
+        "PostgreSQL"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Schema design",
+        "Query cost analysis",
+        "Dataloader batching",
+        "API comparison"
+      ],
+      "keywords": [
+        "graphql",
+        "api design",
+        "query cost",
+        "timetable"
+      ]
+    },
+    {
+      "project_id": "pm-940",
+      "title": "Server-Rendered Web App with Django and HTMX",
+      "description": "Builds a task tracker that updates parts of the page through HTML fragments instead of a single-page framework, and compares code size and interaction speed against a React version.",
+      "domain": "Web Development",
+      "technologies": [
+        "Python",
+        "Django",
+        "HTMX",
+        "SQLite"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 7,
+      "skills": [
+        "Server rendering",
+        "Partial updates",
+        "Framework trade-offs",
+        "Forms"
+      ],
+      "keywords": [
+        "django",
+        "htmx",
+        "server rendering",
+        "tracker"
+      ]
+    },
+    {
+      "project_id": "pm-941",
+      "title": "Rust Web Service for a Library Catalogue with Typed Errors",
+      "description": "Implements a catalogue API in Rust with compile-time checked queries and a typed error model, and measures throughput and memory against the same service written in a scripting language.",
+      "domain": "Web Development",
+      "technologies": [
+        "Rust",
+        "Axum",
+        "SQLx",
+        "PostgreSQL"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Typed errors",
+        "Async Rust",
+        "Query checking",
+        "Benchmarking"
+      ],
+      "keywords": [
+        "rust",
+        "axum",
+        "api",
+        "performance"
+      ]
+    },
+    {
+      "project_id": "pm-942",
+      "title": "Content Security Policy Builder and Violation Dashboard",
+      "description": "Helps developers draft a strict content security policy for an existing site by observing report-only violations, then charts which directives block which resources and suggests tightening steps.",
+      "domain": "Web Development",
+      "technologies": [
+        "Node.js",
+        "Express",
+        "PostgreSQL",
+        "React"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Security headers",
+        "Violation reports",
+        "Incremental hardening",
+        "Dashboards"
+      ],
+      "keywords": [
+        "csp",
+        "security headers",
+        "reports",
+        "hardening"
+      ]
+    },
+    {
+      "project_id": "pm-943",
+      "title": "Internationalised Event Page with Right-to-Left Support",
+      "description": "Produces an event site in several languages including Arabic, handling plural rules, date formats and mirrored layouts, and checks every screen with automated visual comparisons.",
+      "domain": "Web Development",
+      "technologies": [
+        "TypeScript",
+        "React",
+        "i18next",
+        "Playwright"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 6,
+      "skills": [
+        "Internationalisation",
+        "Bidirectional layout",
+        "Plural rules",
+        "Visual testing"
+      ],
+      "keywords": [
+        "i18n",
+        "rtl",
+        "localisation",
+        "visual testing"
+      ]
+    },
+    {
+      "project_id": "pm-944",
+      "title": "Micro-Frontend Dashboard with Independent Deployments",
+      "description": "Splits a dashboard into separately built and deployed parts loaded at runtime, shares authentication safely and measures the cost in bundle size against a single application.",
+      "domain": "Web Development",
+      "technologies": [
+        "TypeScript",
+        "Module Federation",
+        "Webpack",
+        "Docker"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Micro-frontends",
+        "Runtime composition",
+        "Shared dependencies",
+        "Deployment"
+      ],
+      "keywords": [
+        "micro frontends",
+        "module federation",
+        "deployment",
+        "bundle size"
+      ]
+    },
+    {
+      "project_id": "pm-945",
+      "title": "Expense Splitter for Flatmates on iOS",
+      "description": "Tracks shared bills among housemates, calculates who owes whom with the fewest payments and keeps data on the device with optional export, covering rounding and uneven splits with unit tests.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "Swift",
+        "SwiftUI",
+        "Core Data",
+        "XCTest"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 7,
+      "skills": [
+        "Data modelling",
+        "Settlement algorithms",
+        "SwiftUI",
+        "Unit testing"
+      ],
+      "keywords": [
+        "ios",
+        "expenses",
+        "swiftui",
+        "settlement"
+      ]
+    },
+    {
+      "project_id": "pm-946",
+      "title": "Cross-Platform Campus Map with Offline Tiles",
+      "description": "Shows building locations and walking routes on a map that works without data after an initial download, comparing storage use and start-up time of two offline tile approaches.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "Flutter",
+        "Dart",
+        "SQLite",
+        "OpenStreetMap"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Offline maps",
+        "Tile storage",
+        "Routing",
+        "Cross-platform UI"
+      ],
+      "keywords": [
+        "flutter",
+        "offline maps",
+        "campus",
+        "routing"
+      ]
+    },
+    {
+      "project_id": "pm-947",
+      "title": "Accessibility Audit Tool for Mobile Screens",
+      "description": "Walks through a running app and flags missing labels, small touch targets and low contrast, producing a report with screenshots and fixes ranked by how many users each issue affects.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "Kotlin",
+        "Android Accessibility API",
+        "Python",
+        "HTML"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Accessibility rules",
+        "UI inspection",
+        "Report design",
+        "Automation"
+      ],
+      "keywords": [
+        "accessibility",
+        "audit",
+        "mobile",
+        "touch targets"
+      ]
+    },
+    {
+      "project_id": "pm-948",
+      "title": "Medication Reminder App Designed for Older Adults",
+      "description": "Builds large-type, low-clutter reminders for daily tablets with a caregiver check-in, tested with a few older volunteers and revised twice based on what they struggled with.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "React Native",
+        "TypeScript",
+        "SQLite",
+        "Expo"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Inclusive design",
+        "Usability testing",
+        "Reminders",
+        "Iteration"
+      ],
+      "keywords": [
+        "older adults",
+        "reminders",
+        "usability",
+        "react native"
+      ]
+    },
+    {
+      "project_id": "pm-949",
+      "title": "Augmented Shelf Scanner using Barcodes and Local Lookup",
+      "description": "Scans product barcodes with the camera, looks details up in a local database first and an online one second, and shows how caching changes speed on a poor connection. Includes a test with deliberately damaged and missing codes.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "Kotlin",
+        "CameraX",
+        "ML Kit",
+        "Room"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Barcode scanning",
+        "Caching strategy",
+        "Camera APIs",
+        "Performance"
+      ],
+      "keywords": [
+        "barcode",
+        "camera",
+        "caching",
+        "android"
+      ]
+    },
+    {
+      "project_id": "pm-950",
+      "title": "App Size and Start-Up Time Optimisation Study",
+      "description": "Takes a sample app and reduces its package size and cold start time step by step, recording the measured effect of each change so students learn which optimisations matter most.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "Kotlin",
+        "Gradle",
+        "R8",
+        "Android Profiler"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 9,
+      "skills": [
+        "Profiling",
+        "Code shrinking",
+        "Start-up analysis",
+        "Evidence-based tuning"
+      ],
+      "keywords": [
+        "optimisation",
+        "app size",
+        "startup time",
+        "profiling"
+      ]
+    },
+    {
+      "project_id": "pm-951",
+      "title": "Language Flashcards with Spaced Repetition on Flutter",
+      "description": "Implements a spaced repetition scheduler from first principles, stores cards locally and charts how retention changes with different interval rules using simulated study histories.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "Flutter",
+        "Dart",
+        "SQLite",
+        "Provider"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Scheduling algorithms",
+        "State management",
+        "Local storage",
+        "Simulation"
+      ],
+      "keywords": [
+        "spaced repetition",
+        "flashcards",
+        "flutter",
+        "scheduling"
+      ]
+    },
+    {
+      "project_id": "pm-952",
+      "title": "Crowd-Sourced Pothole Reporter with Photo Upload Queue",
+      "description": "Lets residents report road defects with a photo and location, queues uploads when offline and groups duplicate reports for the council by distance and time. Includes tests for lost connections mid-upload and for repeated submissions of one report.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "React Native",
+        "Node.js",
+        "MongoDB",
+        "Expo"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Offline queues",
+        "Geolocation",
+        "Duplicate grouping",
+        "Mobile backends"
+      ],
+      "keywords": [
+        "reporting",
+        "offline queue",
+        "geolocation",
+        "community"
+      ]
+    },
+    {
+      "project_id": "pm-953",
+      "title": "Plant Watering Monitor with a Soil Moisture Sensor",
+      "description": "Reads soil moisture on a small board, calibrates the sensor against known wet and dry samples and switches a pump only when readings are stable, logging data for later review.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C++",
+        "Arduino",
+        "Soil sensor",
+        "Relay"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Sensor calibration",
+        "Debouncing",
+        "Actuator control",
+        "Data logging"
+      ],
+      "keywords": [
+        "arduino",
+        "soil moisture",
+        "calibration",
+        "irrigation"
+      ]
+    },
+    {
+      "project_id": "pm-954",
+      "title": "Room Occupancy Counter with Two Infrared Beams",
+      "description": "Counts people entering and leaving a room using two beam sensors to detect direction, handles simultaneous crossings and shows counts on a small display with a recorded accuracy test.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C++",
+        "Arduino",
+        "IR sensors",
+        "OLED display"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Direction detection",
+        "State machines",
+        "Error testing",
+        "Embedded displays"
+      ],
+      "keywords": [
+        "occupancy",
+        "infrared",
+        "state machine",
+        "counting"
+      ]
+    },
+    {
+      "project_id": "pm-955",
+      "title": "Low-Power Temperature Logger on a Coin Cell",
+      "description": "Wakes a microcontroller briefly to log temperature, sleeps deeply between readings and measures current draw to estimate battery life, comparing the estimate with a long real-world run.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C",
+        "STM32",
+        "FreeRTOS",
+        "Current probe"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Sleep modes",
+        "Power budgeting",
+        "Measurement",
+        "Data storage"
+      ],
+      "keywords": [
+        "low power",
+        "battery life",
+        "sleep mode",
+        "logger"
+      ]
+    },
+    {
+      "project_id": "pm-956",
+      "title": "Home Sensor Network over MQTT with Retained Status",
+      "description": "Connects several small boards that publish readings to a broker, uses last-will messages to show which devices went offline and charts live data on a local dashboard. Includes a test that unplugs devices at random.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "Python",
+        "MQTT",
+        "Mosquitto",
+        "Grafana"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Publish-subscribe",
+        "Last-will messages",
+        "Dashboards",
+        "Network reliability"
+      ],
+      "keywords": [
+        "mqtt",
+        "sensor network",
+        "dashboard",
+        "reliability"
+      ]
+    },
+    {
+      "project_id": "pm-957",
+      "title": "Bluetooth Low Energy Heart Rate Band Prototype",
+      "description": "Reads pulse from an optical sensor, filters motion noise and sends values to a phone over a standard BLE profile, validating readings against a reference chest strap. Includes a short note on the accuracy limits of wrist sensing.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C",
+        "nRF52",
+        "Zephyr",
+        "Android"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "BLE profiles",
+        "Signal filtering",
+        "Validation",
+        "Embedded RTOS"
+      ],
+      "keywords": [
+        "ble",
+        "heart rate",
+        "zephyr",
+        "signal filtering"
+      ]
+    },
+    {
+      "project_id": "pm-958",
+      "title": "LoRa Field Sensor Link with Range Testing",
+      "description": "Sends soil and weather readings over a long-range radio, measures packet loss at increasing distances and terrain types and documents how spreading factor trades range for airtime.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C++",
+        "LoRa",
+        "ESP32",
+        "PlatformIO"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Radio links",
+        "Link budgets",
+        "Field testing",
+        "Duty-cycle limits"
+      ],
+      "keywords": [
+        "lora",
+        "long range",
+        "packet loss",
+        "field test"
+      ]
+    },
+    {
+      "project_id": "pm-959",
+      "title": "Real-Time Operating System Scheduler Study",
+      "description": "Implements three task scheduling policies on a small board, measures missed deadlines under rising load and relates the results to rate-monotonic analysis. Includes timing traces captured with a logic analyser to support each claim.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C",
+        "FreeRTOS",
+        "STM32",
+        "Logic analyser"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Real-time scheduling",
+        "Deadline analysis",
+        "Measurement",
+        "Priority inversion"
+      ],
+      "keywords": [
+        "rtos",
+        "scheduling",
+        "deadlines",
+        "rate monotonic"
+      ]
+    },
+    {
+      "project_id": "pm-960",
+      "title": "Air Quality Station with Calibration Against a Reference",
+      "description": "Builds a particulate and gas sensing node, co-locates it with a reference monitor, fits correction models for humidity effects and reports uncertainty of the corrected readings.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "Python",
+        "ESP32",
+        "Pandas",
+        "scikit-learn"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Sensor calibration",
+        "Humidity correction",
+        "Uncertainty",
+        "Data comparison"
+      ],
+      "keywords": [
+        "air quality",
+        "calibration",
+        "particulates",
+        "uncertainty"
+      ]
+    },
+    {
+      "project_id": "pm-961",
+      "title": "Smart Door Sensor with Event Debouncing in Rust",
+      "description": "Detects door open and close events with a magnetic switch, ignores contact bounce and reports events reliably over Wi-Fi, written in embedded Rust with tests that run on a desktop.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "Rust",
+        "ESP32",
+        "embedded-hal",
+        "MQTT"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Embedded Rust",
+        "Hardware abstraction",
+        "Debouncing",
+        "Host-side tests"
+      ],
+      "keywords": [
+        "rust",
+        "embedded",
+        "door sensor",
+        "debouncing"
+      ]
+    },
+    {
+      "project_id": "pm-962",
+      "title": "Edge Gateway that Buffers Data During Outages",
+      "description": "Collects readings from many sensors, stores them locally when the uplink fails and forwards them in order with deduplication on reconnection, tested by repeatedly cutting the network.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "Go",
+        "SQLite",
+        "MQTT",
+        "Docker"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Store-and-forward",
+        "Ordering guarantees",
+        "Deduplication",
+        "Fault injection"
+      ],
+      "keywords": [
+        "edge gateway",
+        "buffering",
+        "outage",
+        "deduplication"
+      ]
+    },
+    {
+      "project_id": "pm-963",
+      "title": "Proof-of-Work Simulator with Adjustable Difficulty",
+      "description": "Simulates mining on a toy blockchain, plots how block time varies with difficulty and network hash power and shows how difficulty adjustment keeps block intervals steady.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Python",
+        "Matplotlib",
+        "Flask"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Mining",
+        "Difficulty adjustment",
+        "Statistical variation",
+        "Simulation"
+      ],
+      "keywords": [
+        "proof of work",
+        "mining",
+        "difficulty",
+        "simulation"
+      ]
+    },
+    {
+      "project_id": "pm-964",
+      "title": "Multi-Signature Wallet Contract with Spending Limits",
+      "description": "Implements a wallet requiring several approvers for large transfers, lets small daily spends through, and tests approval, revocation and replay cases with a documented test plan.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Solidity",
+        "Hardhat",
+        "TypeScript",
+        "OpenZeppelin"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Access control",
+        "Approval flows",
+        "Contract testing",
+        "Replay protection"
+      ],
+      "keywords": [
+        "multisig",
+        "wallet",
+        "solidity",
+        "testing"
+      ]
+    },
+    {
+      "project_id": "pm-965",
+      "title": "Decentralised Voting Prototype with Eligibility Proofs",
+      "description": "Lets registered voters cast a ballot once without revealing their choice to others, using a commitment scheme and eligibility proof, and documents attacks the prototype does not defend against.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Solidity",
+        "Circom",
+        "Hardhat",
+        "TypeScript"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Commitments",
+        "Zero-knowledge basics",
+        "Voting threat models",
+        "Smart contracts"
+      ],
+      "keywords": [
+        "voting",
+        "zero knowledge",
+        "commitment",
+        "threat model"
+      ]
+    },
+    {
+      "project_id": "pm-966",
+      "title": "Supply Chain Provenance Ledger on Hyperledger Fabric",
+      "description": "Records custody changes of goods between organisations on a permissioned ledger with endorsement rules, and compares what the ledger guarantees with what a shared database could do.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Go",
+        "Hyperledger Fabric",
+        "Docker",
+        "Node.js"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Permissioned ledgers",
+        "Endorsement policies",
+        "Chaincode",
+        "Design trade-offs"
+      ],
+      "keywords": [
+        "hyperledger fabric",
+        "provenance",
+        "chaincode",
+        "permissioned"
+      ]
+    },
+    {
+      "project_id": "pm-967",
+      "title": "Token Vesting Schedule Contract with Fuzz Testing",
+      "description": "Releases tokens to team members on a schedule with cliff periods and revocation, and uses fuzz and invariant testing to show the total released never exceeds the total granted.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Solidity",
+        "Foundry",
+        "OpenZeppelin"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Time-based logic",
+        "Invariants",
+        "Fuzz testing",
+        "Token standards"
+      ],
+      "keywords": [
+        "vesting",
+        "fuzzing",
+        "invariants",
+        "tokens"
+      ]
+    },
+    {
+      "project_id": "pm-968",
+      "title": "Peer-to-Peer Gossip Network Simulator",
+      "description": "Simulates how transactions spread across a network of nodes using gossip, measures propagation time and redundancy for different fan-out settings and node failure rates. Includes plots of how reach grows per round.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Python",
+        "NetworkX",
+        "Matplotlib",
+        "SimPy"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Gossip protocols",
+        "Network topology",
+        "Propagation delay",
+        "Simulation"
+      ],
+      "keywords": [
+        "gossip",
+        "p2p",
+        "propagation",
+        "simulation"
+      ]
+    },
+    {
+      "project_id": "pm-969",
+      "title": "Verifiable Certificate Registry on an Ethereum Test Network",
+      "description": "Lets an institution issue tamper-evident certificates by recording hashes on a test network, and gives employers a page that verifies a document without contacting the institution.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Solidity",
+        "React",
+        "ethers.js",
+        "IPFS"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Hash anchoring",
+        "Verification pages",
+        "Test networks",
+        "Privacy limits"
+      ],
+      "keywords": [
+        "certificates",
+        "verification",
+        "ethereum",
+        "hash anchoring"
+      ]
+    },
+    {
+      "project_id": "pm-970",
+      "title": "Rust Light Client that Verifies Block Headers",
+      "description": "Implements a minimal client that checks header chains and Merkle inclusion proofs without downloading full blocks, and measures bandwidth saved against a full node. Includes tests with deliberately corrupted headers and proofs.",
+      "domain": "Blockchain",
+      "technologies": [
+        "Rust",
+        "Tokio",
+        "SHA-256",
+        "Bitcoin test network"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Light clients",
+        "Header verification",
+        "Inclusion proofs",
+        "Bandwidth analysis"
+      ],
+      "keywords": [
+        "light client",
+        "headers",
+        "rust",
+        "inclusion proof"
+      ]
+    },
+    {
+      "project_id": "pm-971",
+      "title": "Password Strength Estimator with Honest Guess Counts",
+      "description": "Estimates how many guesses an attacker would need for a password using dictionary, pattern and keyboard-walk checks, and explains in plain words why a long passphrase beats a short complex password.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "JavaScript",
+        "React",
+        "zxcvbn",
+        "Vitest"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Password entropy",
+        "Pattern matching",
+        "Usable security",
+        "Explanations"
+      ],
+      "keywords": [
+        "password strength",
+        "entropy",
+        "patterns",
+        "usable security"
+      ]
+    },
+    {
+      "project_id": "pm-972",
+      "title": "Phishing Email Anatomy Trainer",
+      "description": "Presents real-looking emails with clickable clues such as sender domain mismatches and urgent wording, scores the learner and shows which warning signs they missed most often.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "Node.js"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Phishing indicators",
+        "Training design",
+        "Feedback",
+        "Scoring"
+      ],
+      "keywords": [
+        "phishing",
+        "training",
+        "awareness",
+        "indicators"
+      ]
+    },
+    {
+      "project_id": "pm-973",
+      "title": "Home Network Port Scanner and Exposure Report",
+      "description": "Scans devices on a home network that the user owns, lists open services in plain language and suggests which ones to close, with clear ethical limits built into the tool.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "Python",
+        "Nmap",
+        "Scapy",
+        "Flask"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Port scanning",
+        "Network exposure",
+        "Responsible use",
+        "Reporting"
+      ],
+      "keywords": [
+        "port scan",
+        "exposure",
+        "home network",
+        "nmap"
+      ]
+    },
+    {
+      "project_id": "pm-974",
+      "title": "Log-Based Intrusion Detection with Sigma-Style Rules",
+      "description": "Writes detection rules for brute-force logins and unusual privilege use, runs them over sample authentication logs and measures alert volume, true detections and false alarms.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "Python",
+        "Elasticsearch",
+        "Sigma",
+        "Pandas"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Detection rules",
+        "Log analysis",
+        "False alarm rates",
+        "Tuning"
+      ],
+      "keywords": [
+        "detection rules",
+        "logs",
+        "sigma",
+        "siem"
+      ]
+    },
+    {
+      "project_id": "pm-975",
+      "title": "Malware Behaviour Sandbox Report Parser",
+      "description": "Parses reports from an isolated analysis environment of benign test samples, extracts process, file and network behaviour and groups similar samples by behaviour for an analyst view.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "Python",
+        "Cuckoo-style reports",
+        "scikit-learn",
+        "Pandas"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Behaviour features",
+        "Clustering",
+        "Safe analysis",
+        "Reporting"
+      ],
+      "keywords": [
+        "malware analysis",
+        "behaviour",
+        "clustering",
+        "sandbox"
+      ]
+    },
+    {
+      "project_id": "pm-976",
+      "title": "Software Dependency Vulnerability Scanner",
+      "description": "Reads dependency files from a project, matches versions against public advisory data and ranks findings by severity and whether the vulnerable function is actually reachable.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "Python",
+        "OSV API",
+        "NetworkX",
+        "Click"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Dependency analysis",
+        "Advisory data",
+        "Reachability",
+        "Prioritisation"
+      ],
+      "keywords": [
+        "dependencies",
+        "vulnerabilities",
+        "advisories",
+        "osv"
+      ]
+    },
+    {
+      "project_id": "pm-977",
+      "title": "Multi-Factor Authentication Service with Recovery Codes",
+      "description": "Builds time-based one-time password login with rate limiting and one-use recovery codes, and tests lockout, clock drift and code reuse cases against a written security checklist.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "Node.js",
+        "Express",
+        "TOTP",
+        "PostgreSQL"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "One-time passwords",
+        "Rate limiting",
+        "Account recovery",
+        "Security testing"
+      ],
+      "keywords": [
+        "mfa",
+        "totp",
+        "recovery codes",
+        "authentication"
+      ]
+    },
+    {
+      "project_id": "pm-978",
+      "title": "Capture-the-Flag Platform for a Student Club",
+      "description": "Hosts challenges in isolated containers per team, tracks scores and hints, and prevents cross-team interference, with an operations guide for running a safe event. Includes a checklist for keeping the event legal and safe.",
+      "domain": "Cybersecurity",
+      "technologies": [
+        "Python",
+        "Django",
+        "Docker",
+        "Redis"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Isolation",
+        "Scoring",
+        "Challenge hosting",
+        "Event operations"
+      ],
+      "keywords": [
+        "ctf",
+        "docker",
+        "isolation",
+        "scoring"
+      ]
+    },
+    {
+      "project_id": "pm-979",
+      "title": "Containerise a Three-Tier Web App Step by Step",
+      "description": "Packages a front end, API and database as containers with a compose file, health checks and persistent volumes, explaining each configuration choice and how to debug a container that will not start.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "Docker",
+        "Docker Compose",
+        "Nginx",
+        "PostgreSQL"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Containers",
+        "Networking",
+        "Volumes",
+        "Health checks"
+      ],
+      "keywords": [
+        "docker",
+        "compose",
+        "three tier",
+        "containers"
+      ]
+    },
+    {
+      "project_id": "pm-980",
+      "title": "Continuous Integration Pipeline for a Student Repository",
+      "description": "Sets up automatic tests, linting and build checks on every pull request, caches dependencies to speed runs and reports the time saved by each pipeline improvement. Includes a short guide on reading failed runs.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "GitHub Actions",
+        "Node.js",
+        "Jest",
+        "ESLint"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Continuous integration",
+        "Caching",
+        "Quality gates",
+        "Pipeline timing"
+      ],
+      "keywords": [
+        "ci",
+        "github actions",
+        "linting",
+        "caching"
+      ]
+    },
+    {
+      "project_id": "pm-981",
+      "title": "Kubernetes Deployment with Rolling Updates and Probes",
+      "description": "Deploys a small service to a cluster with readiness and liveness probes, rolls out a new version without downtime and deliberately breaks it to show how rollbacks work. Includes a recorded walk-through of each failure.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "Kubernetes",
+        "Helm",
+        "Docker",
+        "Minikube"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Deployments",
+        "Probes",
+        "Rollbacks",
+        "Helm charts"
+      ],
+      "keywords": [
+        "kubernetes",
+        "rolling update",
+        "probes",
+        "helm"
+      ]
+    },
+    {
+      "project_id": "pm-982",
+      "title": "Observability Stack with Metrics, Logs and Traces",
+      "description": "Instruments a small multi-service app and links metrics, logs and traces to find the cause of an injected slowdown, documenting the steps an on-call engineer would follow.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "Prometheus",
+        "Grafana",
+        "OpenTelemetry",
+        "Loki"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Observability",
+        "Distributed tracing",
+        "Alerting",
+        "Incident diagnosis"
+      ],
+      "keywords": [
+        "observability",
+        "tracing",
+        "prometheus",
+        "incidents"
+      ]
+    },
+    {
+      "project_id": "pm-983",
+      "title": "Chaos Experiments for a Replicated Service",
+      "description": "Injects failures such as killed instances and delayed networks into a replicated service, states hypotheses beforehand and records whether the system behaved as expected.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "Go",
+        "Kubernetes",
+        "Chaos Mesh",
+        "Prometheus"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Failure injection",
+        "Hypothesis testing",
+        "Resilience",
+        "Runbooks"
+      ],
+      "keywords": [
+        "chaos engineering",
+        "resilience",
+        "failure injection",
+        "kubernetes"
+      ]
+    },
+    {
+      "project_id": "pm-984",
+      "title": "Cloud Cost Dashboard for a Student Team Account",
+      "description": "Collects billing exports, attributes spend to services and tags, flags unusual daily spikes and sends a weekly summary so a team notices forgotten resources early. Includes a clear explanation of how each saving was estimated.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "Python",
+        "AWS Cost Explorer",
+        "Pandas",
+        "Streamlit"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Cost attribution",
+        "Anomaly flags",
+        "Tagging",
+        "Reporting"
+      ],
+      "keywords": [
+        "cloud cost",
+        "billing",
+        "anomalies",
+        "tagging"
+      ]
+    },
+    {
+      "project_id": "pm-985",
+      "title": "Blue-Green Deployment Demo with Database Migrations",
+      "description": "Switches traffic between two identical environments and handles database schema changes with backward-compatible steps, proving with load tests that no requests fail during the cutover.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "Nginx",
+        "Docker",
+        "PostgreSQL",
+        "k6"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Zero-downtime releases",
+        "Schema migrations",
+        "Load testing",
+        "Traffic switching"
+      ],
+      "keywords": [
+        "blue green",
+        "migrations",
+        "zero downtime",
+        "k6"
+      ]
+    },
+    {
+      "project_id": "pm-986",
+      "title": "Self-Hosted Backup System with Restore Drills",
+      "description": "Backs up a small server with encrypted, deduplicated snapshots to cheap storage, schedules restore tests and reports how long recovery really takes compared with the stated goal.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "Restic",
+        "Bash",
+        "systemd",
+        "Backblaze B2"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Backups",
+        "Recovery objectives",
+        "Encryption",
+        "Restore testing"
+      ],
+      "keywords": [
+        "backup",
+        "restore",
+        "restic",
+        "recovery"
+      ]
+    },
+    {
+      "project_id": "pm-987",
+      "title": "Marker-Based Augmented Reality Poster for a Science Fair",
+      "description": "Overlays 3D models and short explanations on printed posters when viewed through a phone, and tests how lighting, distance and print quality affect how reliably the marker is recognised.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "JavaScript",
+        "AR.js",
+        "Three.js",
+        "A-Frame"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Marker tracking",
+        "3D overlays",
+        "Usability",
+        "Reliability testing"
+      ],
+      "keywords": [
+        "augmented reality",
+        "marker",
+        "poster",
+        "a-frame"
+      ]
+    },
+    {
+      "project_id": "pm-988",
+      "title": "Virtual Museum Room in the Browser with WebXR",
+      "description": "Builds a walk-through gallery with objects that can be inspected closely, runs in a headset or a normal browser and measures frame rate on different devices. Includes a fallback mode for visitors without a headset.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "JavaScript",
+        "WebXR",
+        "Three.js",
+        "Blender"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "WebXR",
+        "Scene optimisation",
+        "Interaction design",
+        "Performance"
+      ],
+      "keywords": [
+        "webxr",
+        "museum",
+        "three.js",
+        "vr"
+      ]
+    },
+    {
+      "project_id": "pm-989",
+      "title": "Anatomy Explorer in Augmented Reality with Quiz Mode",
+      "description": "Lets students peel back layers of a 3D body model on a table, answers label questions and tracks which structures they confuse most, with models checked for accuracy by a tutor.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "Unity",
+        "C#",
+        "ARCore",
+        "Blender"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "3D content",
+        "Interaction",
+        "Quiz design",
+        "Learning analytics"
+      ],
+      "keywords": [
+        "anatomy",
+        "ar",
+        "education",
+        "quiz"
+      ]
+    },
+    {
+      "project_id": "pm-990",
+      "title": "Photogrammetry Pipeline for Scanning Small Objects",
+      "description": "Turns phone photos of a small object into a textured 3D model, compares capture strategies for model quality and prepares the result for real-time viewing at a low polygon count.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "Meshroom",
+        "Blender",
+        "Python",
+        "Three.js"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Photogrammetry",
+        "Mesh decimation",
+        "Texture baking",
+        "Capture technique"
+      ],
+      "keywords": [
+        "photogrammetry",
+        "3d scanning",
+        "mesh",
+        "optimisation"
+      ]
+    },
+    {
+      "project_id": "pm-991",
+      "title": "Shared Mixed-Reality Whiteboard for Remote Classrooms",
+      "description": "Lets two people see and edit the same virtual drawings in their own rooms, synchronises positions through a shared anchor and measures delay under different network conditions.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "Unity",
+        "Netcode",
+        "C#",
+        "WebRTC"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Shared anchors",
+        "Synchronisation",
+        "Latency",
+        "Collaboration"
+      ],
+      "keywords": [
+        "mixed reality",
+        "shared anchors",
+        "latency",
+        "collaboration"
+      ]
+    },
+    {
+      "project_id": "pm-992",
+      "title": "Low-Vision Reading Aid with Adjustable Text Overlay",
+      "description": "Magnifies and re-colours printed text seen through the camera with adjustable contrast and spacing, tested with volunteers who report which settings help them read faster.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "Kotlin",
+        "CameraX",
+        "OpenCV",
+        "ML Kit"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Accessibility",
+        "Image enhancement",
+        "User testing",
+        "Settings design"
+      ],
+      "keywords": [
+        "low vision",
+        "reading aid",
+        "contrast",
+        "camera"
+      ]
+    },
+    {
+      "project_id": "pm-993",
+      "title": "Virtual Chemistry Lab with Safe Reaction Rules",
+      "description": "Lets students mix virtual reagents and see rule-based outcomes with warnings about real hazards, built with a small, checked rule set and tested by a teacher for accuracy.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "Unity",
+        "C#",
+        "JSON",
+        "XR Interaction Toolkit"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 7,
+      "skills": [
+        "Rule engines",
+        "Simulation limits",
+        "Educational design",
+        "Safety messaging"
+      ],
+      "keywords": [
+        "chemistry",
+        "vr lab",
+        "rules",
+        "education"
+      ]
+    },
+    {
+      "project_id": "pm-994",
+      "title": "Line-Following Robot with PID Tuning Experiments",
+      "description": "Builds a small wheeled robot that follows a line, tunes proportional, integral and derivative terms in a documented sequence and plots how each setting changes speed and wobble on the same track.",
+      "domain": "Robotics",
+      "technologies": [
+        "C++",
+        "Arduino",
+        "Reflectance sensors",
+        "Motor driver"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "PID control",
+        "Tuning",
+        "Sensor arrays",
+        "Experimental method"
+      ],
+      "keywords": [
+        "pid",
+        "line following",
+        "tuning",
+        "arduino"
+      ]
+    },
+    {
+      "project_id": "pm-995",
+      "title": "Obstacle-Avoiding Robot with a State Machine",
+      "description": "Combines distance sensing and simple rules in a clear state machine so a robot explores a room without getting stuck, with a log of every situation where it failed. Includes a state diagram and a table of failure cases.",
+      "domain": "Robotics",
+      "technologies": [
+        "C++",
+        "Arduino",
+        "Ultrasonic sensor",
+        "Servo"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "State machines",
+        "Reactive behaviour",
+        "Failure logging",
+        "Sensors"
+      ],
+      "keywords": [
+        "obstacle avoidance",
+        "state machine",
+        "ultrasonic",
+        "reactive"
+      ]
+    },
+    {
+      "project_id": "pm-996",
+      "title": "ROS 2 Navigation Stack on a Simulated Warehouse",
+      "description": "Configures mapping and path planning for a simulated wheeled robot, tests it in a cluttered warehouse model and reports success rate, path length and recovery behaviours.",
+      "domain": "Robotics",
+      "technologies": [
+        "ROS 2",
+        "Gazebo",
+        "Nav2",
+        "Python"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 10,
+      "skills": [
+        "Mapping",
+        "Path planning",
+        "Simulation",
+        "Behaviour evaluation"
+      ],
+      "keywords": [
+        "ros2",
+        "navigation",
+        "gazebo",
+        "simulation"
+      ]
+    },
+    {
+      "project_id": "pm-997",
+      "title": "Sumo Robot Strategy Comparison with Match Simulation",
+      "description": "Simulates matches between different search and attack strategies, ranks them by win rate with confidence intervals and tests the winner on a physical robot in the ring. Includes a record of where simulation and reality disagreed.",
+      "domain": "Robotics",
+      "technologies": [
+        "Python",
+        "Pygame",
+        "Arduino",
+        "IR sensors"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Strategy comparison",
+        "Simulation",
+        "Statistical ranking",
+        "Hardware tests"
+      ],
+      "keywords": [
+        "sumo robot",
+        "strategy",
+        "simulation",
+        "ranking"
+      ]
+    },
+    {
+      "project_id": "pm-998",
+      "title": "Swarm Robot Coverage Simulation",
+      "description": "Simulates many simple robots covering an area using local rules only, measures time to full coverage for different rules and group sizes and tests resilience when some robots fail.",
+      "domain": "Robotics",
+      "technologies": [
+        "Python",
+        "NumPy",
+        "Pygame",
+        "Matplotlib"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Swarm behaviour",
+        "Local rules",
+        "Coverage metrics",
+        "Fault tolerance"
+      ],
+      "keywords": [
+        "swarm",
+        "coverage",
+        "local rules",
+        "simulation"
+      ]
+    },
+    {
+      "project_id": "pm-999",
+      "title": "Pick-and-Place Cell Planner with Collision Checking",
+      "description": "Plans arm motions between pick and place points in a simulated work cell, checks for collisions with fixtures and compares planners on success rate and motion time. Includes a table of failed plans and their causes.",
+      "domain": "Robotics",
+      "technologies": [
+        "Python",
+        "MoveIt",
+        "ROS 2",
+        "PyBullet"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 12,
+      "skills": [
+        "Motion planning",
+        "Collision checking",
+        "Planner comparison",
+        "Simulation"
+      ],
+      "keywords": [
+        "motion planning",
+        "moveit",
+        "collision",
+        "pick and place"
+      ]
+    },
+    {
+      "project_id": "pm-1000",
+      "title": "Behaviour Tree Controller for a Simulated Delivery Robot",
+      "description": "Structures the decisions of a delivery robot as a behaviour tree with recovery branches, compares it with a hand-coded state machine for readability and testability, and measures mission success in a simulated office.",
+      "domain": "Robotics",
+      "technologies": [
+        "Python",
+        "py_trees",
+        "ROS 2",
+        "Gazebo"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Behaviour trees",
+        "Mission logic",
+        "Recovery behaviours",
+        "Comparison"
+      ],
+      "keywords": [
+        "behaviour trees",
+        "delivery robot",
+        "ros2",
+        "mission logic"
+      ]
+    },
+    {
+      "project_id": "pm-1001",
+      "title": "Remote-Controlled Robot with Latency-Aware Safety Stop",
+      "description": "Drives a robot over Wi-Fi from a browser, measures command delay under congestion and stops the robot automatically when the link degrades, tested by throttling the network during runs.",
+      "domain": "Robotics",
+      "technologies": [
+        "Python",
+        "Raspberry Pi",
+        "WebSocket",
+        "OpenCV"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Teleoperation",
+        "Latency",
+        "Fail-safe design",
+        "Network testing"
+      ],
+      "keywords": [
+        "teleoperation",
+        "latency",
+        "safety stop",
+        "wifi"
+      ]
+    },
+    {
+      "project_id": "pm-1002",
+      "title": "Virtual Reality Fire Evacuation Drill with Decision Logging",
+      "description": "Places learners in a smoke-filled building where choices of exit are recorded, and produces a debrief showing hesitations, wrong turns and time to safety compared with a cohort average.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "Unity",
+        "C#",
+        "XR Interaction Toolkit",
+        "SQLite"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 10,
+      "skills": [
+        "Scenario design",
+        "Decision logging",
+        "Debriefing",
+        "Safety training"
+      ],
+      "keywords": [
+        "vr training",
+        "evacuation",
+        "logging",
+        "debrief"
+      ]
+    },
+    {
+      "project_id": "pm-1003",
+      "title": "Spatial Audio Orientation Aid for Visually Impaired Users",
+      "description": "Uses stereo sound cues from a headset and camera depth data to signal obstacles and doorways, and evaluates with volunteers how quickly they navigate a marked course compared with a cane alone.",
+      "domain": "Augmented & Virtual Reality",
+      "technologies": [
+        "Unity",
+        "C#",
+        "ARCore",
+        "FMOD"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Spatial audio",
+        "Depth sensing",
+        "Accessibility",
+        "User evaluation"
+      ],
+      "keywords": [
+        "spatial audio",
+        "accessibility",
+        "navigation",
+        "depth"
+      ]
+    },
+    {
+      "project_id": "pm-1004",
+      "title": "Secrets Management Workflow for a Small Team",
+      "description": "Moves passwords and keys out of code into a managed store with rotation, access policies and a scan that fails builds when secrets are committed, with a written incident response for leaks.",
+      "domain": "Cloud & DevOps",
+      "technologies": [
+        "HashiCorp Vault",
+        "Git",
+        "GitHub Actions",
+        "Bash"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Secrets handling",
+        "Rotation",
+        "Commit scanning",
+        "Incident response"
+      ],
+      "keywords": [
+        "secrets",
+        "vault",
+        "rotation",
+        "scanning"
+      ]
+    },
+    {
+      "project_id": "pm-1005",
+      "title": "Live Bus Arrival Widget with Home Screen Updates",
+      "description": "Shows predicted bus arrivals in a home screen widget, refreshes within the platform's update limits and explains when predictions are stale, with tests using recorded transit feed data.",
+      "domain": "Mobile Development",
+      "technologies": [
+        "Kotlin",
+        "Jetpack Glance",
+        "GTFS Realtime",
+        "Retrofit"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Widgets",
+        "Update limits",
+        "Transit data",
+        "Stale data messaging"
+      ],
+      "keywords": [
+        "widget",
+        "transit",
+        "gtfs",
+        "android"
+      ]
+    },
+    {
+      "project_id": "pm-1006",
+      "title": "Explainable Loan Rule Engine with Counterfactual Advice",
+      "description": "Applies transparent eligibility rules to applicants and, for rejections, computes the smallest change that would flip the decision, checking that advice is actionable and does not require impossible changes.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "FastAPI",
+        "pytest"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Rule systems",
+        "Counterfactuals",
+        "Actionability",
+        "Explanations"
+      ],
+      "keywords": [
+        "counterfactual",
+        "explainability",
+        "rules",
+        "lending"
+      ]
+    },
+    {
+      "project_id": "pm-1007",
+      "title": "Monte Carlo Tree Search Player for Connect Four",
+      "description": "Implements tree search with random playouts, tests how playout count changes strength against a fixed opponent and plots win rates with confidence intervals across many games.",
+      "domain": "Artificial Intelligence",
+      "technologies": [
+        "Python",
+        "NumPy",
+        "Matplotlib",
+        "pytest"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Tree search",
+        "Playout policies",
+        "Statistical testing",
+        "Game AI"
+      ],
+      "keywords": [
+        "mcts",
+        "connect four",
+        "game ai",
+        "playouts"
+      ]
+    },
+    {
+      "project_id": "pm-1008",
+      "title": "Crop Yield Anomaly Explorer from Weather and Satellite Indices",
+      "description": "Joins district yield records with rainfall and vegetation index time series, flags seasons that deviate from what weather alone predicts and discusses what else could explain each deviation.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "GeoPandas",
+        "Plotly"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Data joining",
+        "Residual analysis",
+        "Remote sensing indices",
+        "Careful interpretation"
+      ],
+      "keywords": [
+        "crop yield",
+        "anomalies",
+        "satellite",
+        "agriculture"
+      ]
+    },
+    {
+      "project_id": "pm-1009",
+      "title": "Library Loan Patterns and Collection Planning Analysis",
+      "description": "Analyses anonymised borrowing records to show which genres peak in exam weeks, which titles are never borrowed and what weeding or purchasing choices the numbers could support.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "Seaborn",
+        "Jupyter"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 6,
+      "skills": [
+        "Descriptive analysis",
+        "Seasonality",
+        "Anonymisation",
+        "Decision support"
+      ],
+      "keywords": [
+        "library",
+        "loans",
+        "seasonality",
+        "collection"
+      ]
+    },
+    {
+      "project_id": "pm-1010",
+      "title": "Music Listening Habits Report from Exported Streaming History",
+      "description": "Reads a personal listening history export, charts how taste changes across months and times of day and lets the user explore the data locally without uploading it anywhere.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "Pandas",
+        "Plotly",
+        "Streamlit"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Personal data",
+        "Time features",
+        "Interactive charts",
+        "Local processing"
+      ],
+      "keywords": [
+        "music",
+        "listening history",
+        "personal data",
+        "dashboard"
+      ]
+    },
+    {
+      "project_id": "pm-1011",
+      "title": "Match Event Data Analysis for Football Passing Networks",
+      "description": "Builds passing networks from open event data, measures which players link the team together and compares network measures with simple match outcomes while noting how small the samples are.",
+      "domain": "Data Science",
+      "technologies": [
+        "Python",
+        "NetworkX",
+        "Pandas",
+        "Matplotlib"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Network measures",
+        "Sports data",
+        "Small samples",
+        "Visual communication"
+      ],
+      "keywords": [
+        "football",
+        "passing networks",
+        "networkx",
+        "sports analytics"
+      ]
+    },
+    {
+      "project_id": "pm-1012",
+      "title": "Predicting Student Assignment Lateness with Interpretable Models",
+      "description": "Builds a simple interpretable model from synthetic course records to flag students likely to submit late, and examines the ethical risks of using such flags and how advisers should and should not act on them.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "scikit-learn",
+        "SHAP",
+        "Pandas"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 7,
+      "skills": [
+        "Interpretable models",
+        "Responsible use",
+        "Feature importance",
+        "Risk communication"
+      ],
+      "keywords": [
+        "student support",
+        "interpretable",
+        "ethics",
+        "prediction"
+      ]
+    },
+    {
+      "project_id": "pm-1013",
+      "title": "Semi-Supervised Label Propagation for Scarce Medical Text Labels",
+      "description": "Labels a handful of clinical-style notes by hand, spreads labels to similar unlabelled notes and measures how performance depends on label count, with checks against confidently wrong propagation.",
+      "domain": "Machine Learning",
+      "technologies": [
+        "Python",
+        "scikit-learn",
+        "sentence-transformers",
+        "Pandas"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Semi-supervised learning",
+        "Label propagation",
+        "Embeddings",
+        "Error checks"
+      ],
+      "keywords": [
+        "semi supervised",
+        "label propagation",
+        "scarce labels",
+        "text"
+      ]
+    },
+    {
+      "project_id": "pm-1014",
+      "title": "Water Leak Detector with Flow Pattern Learning",
+      "description": "Learns a household's normal water flow pattern from a pulse flow meter and raises an alert for continuous low flow that suggests a leak, tested with deliberately simulated drips.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C++",
+        "ESP32",
+        "Flow sensor",
+        "Python"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Flow patterns",
+        "Anomaly alerts",
+        "Simulated faults",
+        "Alert design"
+      ],
+      "keywords": [
+        "water leak",
+        "flow sensor",
+        "anomaly",
+        "alerts"
+      ]
+    },
+    {
+      "project_id": "pm-1015",
+      "title": "Wearable Fall Detector with Threshold and Posture Checks",
+      "description": "Uses an accelerometer to spot falls by combining impact, free fall and lying posture checks, and measures false alarms during everyday movements recorded by volunteers. Includes a written safety note.",
+      "domain": "Internet of Things",
+      "technologies": [
+        "C",
+        "nRF52",
+        "Accelerometer",
+        "Python"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 10,
+      "skills": [
+        "Inertial sensing",
+        "Threshold design",
+        "False alarm analysis",
+        "Wearable constraints"
+      ],
+      "keywords": [
+        "fall detection",
+        "accelerometer",
+        "wearable",
+        "false alarms"
+      ]
+    },
+    {
+      "project_id": "pm-1016",
+      "title": "Plant Disease Spotting on Leaf Photos with Honest Field Tests",
+      "description": "Trains a small classifier on leaf images and tests it on photos taken with a different phone and background, showing how much accuracy drops outside lab-style images and how augmentation helps.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "torchvision",
+        "Albumentations"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 9,
+      "skills": [
+        "Domain shift",
+        "Augmentation",
+        "Field testing",
+        "Small datasets"
+      ],
+      "keywords": [
+        "plant disease",
+        "domain shift",
+        "augmentation",
+        "leaves"
+      ]
+    },
+    {
+      "project_id": "pm-1017",
+      "title": "Parking Lot Occupancy from a Single Fixed Camera",
+      "description": "Marks parking bays once, classifies each as free or taken in every frame, smooths over time and compares accuracy across daylight, rain and night images. Includes a labelled test set of at least five hundred bay images and a table of per-condition errors.",
+      "domain": "Computer Vision",
+      "technologies": [
+        "Python",
+        "OpenCV",
+        "PyTorch",
+        "SQLite"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Region classification",
+        "Temporal smoothing",
+        "Weather robustness",
+        "Evaluation"
+      ],
+      "keywords": [
+        "parking",
+        "occupancy",
+        "fixed camera",
+        "robustness"
+      ]
+    },
+    {
+      "project_id": "pm-1018",
+      "title": "Spelling Corrector for Student Essays with Edit-Distance Candidates",
+      "description": "Builds a spelling corrector using edit distance and word frequencies, then adds context from neighbouring words and measures how much context reduces wrong corrections of real words.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "NLTK",
+        "pytest",
+        "Pandas"
+      ],
+      "difficulty": "Beginner",
+      "duration_weeks": 5,
+      "skills": [
+        "Edit distance",
+        "Candidate ranking",
+        "Context models",
+        "Evaluation"
+      ],
+      "keywords": [
+        "spelling correction",
+        "edit distance",
+        "context",
+        "essays"
+      ]
+    },
+    {
+      "project_id": "pm-1019",
+      "title": "Meeting Minutes Action Item Extractor",
+      "description": "Finds tasks, owners and due dates in meeting transcripts using rules and a small classifier, compares the two on hand-labelled transcripts and shows where each approach fails.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "spaCy",
+        "scikit-learn",
+        "FastAPI"
+      ],
+      "difficulty": "Intermediate",
+      "duration_weeks": 8,
+      "skills": [
+        "Information extraction",
+        "Rules versus learning",
+        "Annotation",
+        "Error analysis"
+      ],
+      "keywords": [
+        "action items",
+        "extraction",
+        "meetings",
+        "spacy"
+      ]
+    },
+    {
+      "project_id": "pm-1020",
+      "title": "Question Answering over a University Handbook with Citations",
+      "description": "Answers student questions from a handbook by retrieving passages and quoting them, refuses when no passage supports an answer and measures how often answers are wrong or unsupported.",
+      "domain": "Natural Language Processing",
+      "technologies": [
+        "Python",
+        "sentence-transformers",
+        "FAISS",
+        "FastAPI"
+      ],
+      "difficulty": "Advanced",
+      "duration_weeks": 11,
+      "skills": [
+        "Retrieval",
+        "Grounded answers",
+        "Refusal behaviour",
+        "Evaluation"
+      ],
+      "keywords": [
+        "question answering",
+        "retrieval",
+        "citations",
+        "handbook"
+      ]
+    }
+  ],
+  "rejected": [],
+  "already_present": [],
+  "review": [
+    {
+      "title": "Customer Segmentation with RFM and Clustering in R",
+      "similar_to": "pm-252 'RFM Segmentation for Customer Marketing'",
+      "similarity": 0.818
+    },
+    {
+      "title": "Edge Gateway that Buffers Data During Outages",
+      "similar_to": "pm-730 'Store-and-Forward Telemetry Gateway'",
+      "similarity": 0.8
+    },
+    {
+      "title": "Home Network Port Scanner and Exposure Report",
+      "similar_to": "pm-447 'Port Scanner and Service Fingerprinting Tool'",
+      "similarity": 0.809
+    },
+    {
+      "title": "Log-Based Intrusion Detection with Sigma-Style Rules",
+      "similar_to": "pm-448 'Log Analysis for Intrusion Indicators'",
+      "similarity": 0.803
+    },
+    {
+      "title": "Plant Disease Spotting on Leaf Photos with Honest Field Tests",
+      "similar_to": "pm-048 'Plant Disease Identification from Leaf Images'",
+      "similarity": 0.811
+    }
+  ],
+  "warnings": {
+    "Logic Puzzle Solver in Prolog": [
+      "technology name(s) not seen in the catalogue or alias table: ['SWI-Prolog']"
+    ],
+    "Kinship and Genealogy Reasoner in Prolog": [
+      "technology name(s) not seen in the catalogue or alias table: ['Prolog', 'SWI-Prolog']"
+    ],
+    "Nonogram Puzzle Solver with Constraint Propagation": [
+      "technology name(s) not seen in the catalogue or alias table: ['Jest']"
+    ],
+    "Wumpus World Logical Agent": [
+      "technology name(s) not seen in the catalogue or alias table: ['Pygame']"
+    ],
+    "Mastermind Solver with Minimax over the Guess Space": [
+      "technology name(s) not seen in the catalogue or alias table: ['CMake', 'Catch2']"
+    ],
+    "Propositional Theorem Prover Using Resolution": [
+      "technology name(s) not seen in the catalogue or alias table: ['Rust', 'Cargo']"
+    ],
+    "Rule Learner for Tabular Data with Weka": [
+      "technology name(s) not seen in the catalogue or alias table: ['Weka', 'Maven']"
+    ],
+    "Round-Robin Fixture Generator with Home and Away Constraints": [
+      "technology name(s) not seen in the catalogue or alias table: ['MiniZinc']"
+    ],
+    "Adaptive Difficulty Controller for a Platform Game": [
+      "technology name(s) not seen in the catalogue or alias table: ['NUnit']"
+    ],
+    "Behaviour Cloning of Human Demonstrations for a Racing Agent": [
+      "technology name(s) not seen in the catalogue or alias table: ['Unity ML-Agents']"
+    ],
+    "Linear Regression from Scratch with Gradient Descent in R": [
+      "technology name(s) not seen in the catalogue or alias table: ['ggplot2', 'RStudio']"
+    ],
+    "K-Nearest Neighbours Classifier with Scaling Experiments": [
+      "technology name(s) not seen in the catalogue or alias table: ['Jupyter']"
+    ],
+    "Customer Segmentation with RFM and Clustering in R": [
+      "technology name(s) not seen in the catalogue or alias table: ['dplyr', 'ggplot2', 'Shiny']"
+    ],
+    "Gradient Boosting from Scratch for Regression": [
+      "technology name(s) not seen in the catalogue or alias table: ['Eigen', 'CMake', 'Catch2']"
+    ],
+    "Survey-Based Voting Intention Model with Poststratification": [
+      "technology name(s) not seen in the catalogue or alias table: ['brms', 'tidyverse', 'Stan']"
+    ],
+    "Energy-Efficient Model Selection Under a Compute Budget": [
+      "technology name(s) not seen in the catalogue or alias table: ['CodeCarbon']"
+    ],
+    "Handwritten Digits with a Convolutional Net in Java": [
+      "technology name(s) not seen in the catalogue or alias table: ['Deeplearning4j', 'Maven']"
+    ],
+    "Efficient Image Classifier for Microcontrollers in C": [
+      "technology name(s) not seen in the catalogue or alias table: ['STM32']"
+    ],
+    "Regular-Expression Toolkit for Extracting Dates, Phones and Emails": [
+      "technology name(s) not seen in the catalogue or alias table: ['regex']"
+    ],
+    "Named Entity Recognition for Kitchen Recipes": [
+      "technology name(s) not seen in the catalogue or alias table: ['Prodigy-style annotation']"
+    ],
+    "Search Engine over a Local Document Folder in Java": [
+      "technology name(s) not seen in the catalogue or alias table: ['Apache Lucene', 'Apache Tika', 'Maven']"
+    ],
+    "Tokenisation Comparison Lab across Languages": [
+      "technology name(s) not seen in the catalogue or alias table: ['Hugging Face Tokenizers']"
+    ],
+    "Topic Drift Tracker for Long-Running Forum Threads": [
+      "technology name(s) not seen in the catalogue or alias table: ['BERTopic']"
+    ],
+    "Colour-Blind Simulation and Palette Checker": [
+      "technology name(s) not seen in the catalogue or alias table: ['Color.js']"
+    ],
+    "Clean a Messy Spreadsheet: A Data Cleaning Playbook": [
+      "technology name(s) not seen in the catalogue or alias table: ['Jupyter']"
+    ],
+    "SQL Analytics Workbook for a Bike-Share Dataset": [
+      "technology name(s) not seen in the catalogue or alias table: ['Jupyter']"
+    ],
+    "Exploratory Analysis of a Public Health Survey in R": [
+      "technology name(s) not seen in the catalogue or alias table: ['tidyverse', 'ggplot2', 'survey']"
+    ],
+    "Dashboard of Municipal Budget Spending with Apache Superset": [
+      "technology name(s) not seen in the catalogue or alias table: ['Apache Superset']"
+    ],
+    "Large Taxi Trip Dataset Processing with Apache Spark": [
+      "technology name(s) not seen in the catalogue or alias table: ['Apache Spark', 'PySpark', 'Parquet']"
+    ],
+    "Analytics Engineering Project with dbt and Tests": [
+      "technology name(s) not seen in the catalogue or alias table: ['dbt']"
+    ],
+    "Fast Dataframe Pipeline Comparison: Pandas, Polars and DuckDB": [
+      "technology name(s) not seen in the catalogue or alias table: ['Polars']"
+    ],
+    "Reproducible Research Report with Quarto and Containers": [
+      "technology name(s) not seen in the catalogue or alias table: ['Quarto']"
+    ],
+    "Geospatial Accessibility Analysis of Public Services": [
+      "technology name(s) not seen in the catalogue or alias table: ['OSMnx']"
+    ],
+    "Accessible Form Component Library with Keyboard Tests": [
+      "technology name(s) not seen in the catalogue or alias table: ['Testing Library']"
+    ],
+    "Static Site Generator in Go for a Personal Blog": [
+      "technology name(s) not seen in the catalogue or alias table: ['Markdown', 'HTML templates']"
+    ],
+    "Real-Time Collaborative Whiteboard with CRDTs": [
+      "technology name(s) not seen in the catalogue or alias table: ['Yjs', 'WebSocket', 'Canvas']"
+    ],
+    "Server-Rendered Web App with Django and HTMX": [
+      "technology name(s) not seen in the catalogue or alias table: ['HTMX']"
+    ],
+    "Rust Web Service for a Library Catalogue with Typed Errors": [
+      "technology name(s) not seen in the catalogue or alias table: ['Rust', 'Axum', 'SQLx']"
+    ],
+    "Internationalised Event Page with Right-to-Left Support": [
+      "technology name(s) not seen in the catalogue or alias table: ['i18next']"
+    ],
+    "Micro-Frontend Dashboard with Independent Deployments": [
+      "technology name(s) not seen in the catalogue or alias table: ['Module Federation', 'Webpack']"
+    ],
+    "Expense Splitter for Flatmates on iOS": [
+      "technology name(s) not seen in the catalogue or alias table: ['SwiftUI', 'Core Data', 'XCTest']"
+    ],
+    "Cross-Platform Campus Map with Offline Tiles": [
+      "technology name(s) not seen in the catalogue or alias table: ['OpenStreetMap']"
+    ],
+    "Accessibility Audit Tool for Mobile Screens": [
+      "technology name(s) not seen in the catalogue or alias table: ['Android Accessibility API']"
+    ],
+    "Augmented Shelf Scanner using Barcodes and Local Lookup": [
+      "technology name(s) not seen in the catalogue or alias table: ['CameraX', 'ML Kit', 'Room']"
+    ],
+    "App Size and Start-Up Time Optimisation Study": [
+      "technology name(s) not seen in the catalogue or alias table: ['Gradle', 'R8', 'Android Profiler']"
+    ],
+    "Language Flashcards with Spaced Repetition on Flutter": [
+      "technology name(s) not seen in the catalogue or alias table: ['Provider']"
+    ],
+    "Plant Watering Monitor with a Soil Moisture Sensor": [
+      "technology name(s) not seen in the catalogue or alias table: ['Soil sensor', 'Relay']"
+    ],
+    "Room Occupancy Counter with Two Infrared Beams": [
+      "technology name(s) not seen in the catalogue or alias table: ['IR sensors', 'OLED display']"
+    ],
+    "Low-Power Temperature Logger on a Coin Cell": [
+      "technology name(s) not seen in the catalogue or alias table: ['STM32', 'FreeRTOS', 'Current probe']"
+    ],
+    "Home Sensor Network over MQTT with Retained Status": [
+      "technology name(s) not seen in the catalogue or alias table: ['Mosquitto']"
+    ],
+    "Bluetooth Low Energy Heart Rate Band Prototype": [
+      "technology name(s) not seen in the catalogue or alias table: ['nRF52', 'Zephyr', 'Android']"
+    ],
+    "LoRa Field Sensor Link with Range Testing": [
+      "technology name(s) not seen in the catalogue or alias table: ['PlatformIO']"
+    ],
+    "Real-Time Operating System Scheduler Study": [
+      "technology name(s) not seen in the catalogue or alias table: ['FreeRTOS', 'STM32', 'Logic analyser']"
+    ],
+    "Smart Door Sensor with Event Debouncing in Rust": [
+      "technology name(s) not seen in the catalogue or alias table: ['Rust', 'embedded-hal']"
+    ],
+    "Supply Chain Provenance Ledger on Hyperledger Fabric": [
+      "technology name(s) not seen in the catalogue or alias table: ['Hyperledger Fabric']"
+    ],
+    "Rust Light Client that Verifies Block Headers": [
+      "technology name(s) not seen in the catalogue or alias table: ['Rust', 'Tokio', 'SHA-256', 'Bitcoin test network']"
+    ],
+    "Password Strength Estimator with Honest Guess Counts": [
+      "technology name(s) not seen in the catalogue or alias table: ['zxcvbn', 'Vitest']"
+    ],
+    "Log-Based Intrusion Detection with Sigma-Style Rules": [
+      "technology name(s) not seen in the catalogue or alias table: ['Sigma']"
+    ],
+    "Malware Behaviour Sandbox Report Parser": [
+      "technology name(s) not seen in the catalogue or alias table: ['Cuckoo-style reports']"
+    ],
+    "Software Dependency Vulnerability Scanner": [
+      "technology name(s) not seen in the catalogue or alias table: ['OSV API', 'Click']"
+    ],
+    "Multi-Factor Authentication Service with Recovery Codes": [
+      "technology name(s) not seen in the catalogue or alias table: ['TOTP']"
+    ],
+    "Containerise a Three-Tier Web App Step by Step": [
+      "technology name(s) not seen in the catalogue or alias table: ['Docker Compose', 'Nginx']"
+    ],
+    "Continuous Integration Pipeline for a Student Repository": [
+      "technology name(s) not seen in the catalogue or alias table: ['Jest', 'ESLint']"
+    ],
+    "Kubernetes Deployment with Rolling Updates and Probes": [
+      "technology name(s) not seen in the catalogue or alias table: ['Minikube']"
+    ],
+    "Observability Stack with Metrics, Logs and Traces": [
+      "technology name(s) not seen in the catalogue or alias table: ['Loki']"
+    ],
+    "Chaos Experiments for a Replicated Service": [
+      "technology name(s) not seen in the catalogue or alias table: ['Chaos Mesh']"
+    ],
+    "Cloud Cost Dashboard for a Student Team Account": [
+      "technology name(s) not seen in the catalogue or alias table: ['AWS Cost Explorer']"
+    ],
+    "Blue-Green Deployment Demo with Database Migrations": [
+      "technology name(s) not seen in the catalogue or alias table: ['Nginx', 'k6']"
+    ],
+    "Self-Hosted Backup System with Restore Drills": [
+      "technology name(s) not seen in the catalogue or alias table: ['Restic', 'Bash', 'systemd', 'Backblaze B2']"
+    ],
+    "Marker-Based Augmented Reality Poster for a Science Fair": [
+      "technology name(s) not seen in the catalogue or alias table: ['AR.js', 'Three.js', 'A-Frame']"
+    ],
+    "Virtual Museum Room in the Browser with WebXR": [
+      "technology name(s) not seen in the catalogue or alias table: ['WebXR', 'Three.js']"
+    ],
+    "Photogrammetry Pipeline for Scanning Small Objects": [
+      "technology name(s) not seen in the catalogue or alias table: ['Meshroom', 'Three.js']"
+    ],
+    "Shared Mixed-Reality Whiteboard for Remote Classrooms": [
+      "technology name(s) not seen in the catalogue or alias table: ['Netcode', 'WebRTC']"
+    ],
+    "Low-Vision Reading Aid with Adjustable Text Overlay": [
+      "technology name(s) not seen in the catalogue or alias table: ['CameraX', 'ML Kit']"
+    ],
+    "Virtual Chemistry Lab with Safe Reaction Rules": [
+      "technology name(s) not seen in the catalogue or alias table: ['JSON', 'XR Interaction Toolkit']"
+    ],
+    "Line-Following Robot with PID Tuning Experiments": [
+      "technology name(s) not seen in the catalogue or alias table: ['Reflectance sensors', 'Motor driver']"
+    ],
+    "Obstacle-Avoiding Robot with a State Machine": [
+      "technology name(s) not seen in the catalogue or alias table: ['Ultrasonic sensor', 'Servo']"
+    ],
+    "ROS 2 Navigation Stack on a Simulated Warehouse": [
+      "technology name(s) not seen in the catalogue or alias table: ['ROS 2', 'Nav2']"
+    ],
+    "Sumo Robot Strategy Comparison with Match Simulation": [
+      "technology name(s) not seen in the catalogue or alias table: ['Pygame', 'IR sensors']"
+    ],
+    "Swarm Robot Coverage Simulation": [
+      "technology name(s) not seen in the catalogue or alias table: ['Pygame']"
+    ],
+    "Pick-and-Place Cell Planner with Collision Checking": [
+      "technology name(s) not seen in the catalogue or alias table: ['MoveIt', 'ROS 2']"
+    ],
+    "Behaviour Tree Controller for a Simulated Delivery Robot": [
+      "technology name(s) not seen in the catalogue or alias table: ['ROS 2']"
+    ],
+    "Remote-Controlled Robot with Latency-Aware Safety Stop": [
+      "technology name(s) not seen in the catalogue or alias table: ['WebSocket']"
+    ],
+    "Virtual Reality Fire Evacuation Drill with Decision Logging": [
+      "technology name(s) not seen in the catalogue or alias table: ['XR Interaction Toolkit']"
+    ],
+    "Secrets Management Workflow for a Small Team": [
+      "technology name(s) not seen in the catalogue or alias table: ['HashiCorp Vault', 'Bash']"
+    ],
+    "Live Bus Arrival Widget with Home Screen Updates": [
+      "technology name(s) not seen in the catalogue or alias table: ['Jetpack Glance', 'GTFS Realtime']"
+    ],
+    "Library Loan Patterns and Collection Planning Analysis": [
+      "technology name(s) not seen in the catalogue or alias table: ['Jupyter']"
+    ],
+    "Water Leak Detector with Flow Pattern Learning": [
+      "technology name(s) not seen in the catalogue or alias table: ['Flow sensor']"
+    ],
+    "Wearable Fall Detector with Threshold and Posture Checks": [
+      "technology name(s) not seen in the catalogue or alias table: ['nRF52', 'Accelerometer']"
+    ],
+    "Plant Disease Spotting on Leaf Photos with Honest Field Tests": [
+      "technology name(s) not seen in the catalogue or alias table: ['Albumentations']"
+    ]
+  },
+  "projected": {
+    "total_records": 1020,
+    "non_object_records": 0,
+    "unique_project_ids": 1020,
+    "duplicate_project_ids": [],
+    "records_without_id": 0,
+    "ids_off_convention": [],
+    "id_number_range": [
+      1,
+      1020
+    ],
+    "id_gaps": [],
+    "next_free_id": "pm-1021",
+    "duplicate_titles": {},
+    "schema_problems": {},
+    "missing": {
+      "difficulty": [],
+      "technologies": [],
+      "skills": [],
+      "keywords": [],
+      "description": []
+    },
+    "unknown_or_invalid_duration": [],
+    "by_domain": {
+      "Web Development": 92,
+      "Natural Language Processing": 85,
+      "Data Science": 84,
+      "Machine Learning": 82,
+      "Computer Vision": 81,
+      "Deep Learning": 75,
+      "Internet of Things": 74,
+      "Artificial Intelligence": 73,
+      "Cybersecurity": 69,
+      "Mobile Development": 69,
+      "Blockchain": 64,
+      "Cloud & DevOps": 62,
+      "Robotics": 57,
+      "Augmented & Virtual Reality": 53
+    },
+    "by_difficulty": {
+      "Intermediate": 467,
+      "Advanced": 345,
+      "Beginner": 208
+    },
+    "by_duration_weeks": {
+      "3": 3,
+      "4": 20,
+      "5": 100,
+      "6": 87,
+      "7": 119,
+      "8": 211,
+      "9": 146,
+      "10": 105,
+      "11": 98,
+      "12": 117,
+      "13": 12,
+      "14": 2
+    },
+    "technology_names": 325,
+    "technology_names_in_alias_table": 48,
+    "top_technologies": [
+      [
+        "Python",
+        669
+      ],
+      [
+        "Pandas",
+        233
+      ],
+      [
+        "React",
+        158
+      ],
+      [
+        "scikit-learn",
+        133
+      ],
+      [
+        "NumPy",
+        128
+      ],
+      [
+        "Node.js",
+        116
+      ],
+      [
+        "OpenCV",
+        108
+      ],
+      [
+        "Streamlit",
+        102
+      ],
+      [
+        "Matplotlib",
+        101
+      ],
+      [
+        "Flask",
+        99
+      ],
+      [
+        "PyTorch",
+        91
+      ],
+      [
+        "PostgreSQL",
+        75
+      ],
+      [
+        "SQLite",
+        73
+      ],
+      [
+        "Plotly",
+        61
+      ],
+      [
+        "MQTT",
+        60
+      ]
+    ],
+    "semantic_duplicate_pairs": null
+  }
+}

@@ -60,6 +60,7 @@ def create_app() -> Flask:
     from routes.projects import bp as projects_bp
     from routes.roadmap import bp as roadmap_bp
     from routes.search import bp as search_bp
+    from routes.subteams import bp as subteams_bp
     from routes.teams import bp as teams_bp
     from routes.user import bp as user_bp
 
@@ -72,6 +73,7 @@ def create_app() -> Flask:
     app.register_blueprint(ideas_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(teams_bp)
+    app.register_blueprint(subteams_bp)
     app.register_blueprint(notifications_bp)
     app.register_blueprint(profile_bp)
     app.register_blueprint(roadmap_bp)

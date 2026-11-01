@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Plant Disease Spotting on Leaf Photos with Honest Field Tests",
+    "description": "Trains a small classifier on leaf images and tests it on photos taken with a different phone and background, showing how much accuracy drops outside lab-style images and how augmentation helps.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Albumentations"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Domain shift",
+      "Augmentation",
+      "Field testing",
+      "Small datasets"
+    ],
+    "keywords": [
+      "plant disease",
+      "domain shift",
+      "augmentation",
+      "leaves"
+    ]
+  },
+  {
+    "title": "Parking Lot Occupancy from a Single Fixed Camera",
+    "description": "Marks parking bays once, classifies each as free or taken in every frame, smooths over time and compares accuracy across daylight, rain and night images. Includes a labelled test set of at least five hundred bay images and a table of per-condition errors.",
+    "domain": "Computer Vision",
+    "technologies": [
+      "Python",
+      "OpenCV",
+      "PyTorch",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Region classification",
+      "Temporal smoothing",
+      "Weather robustness",
+      "Evaluation"
+    ],
+    "keywords": [
+      "parking",
+      "occupancy",
+      "fixed camera",
+      "robustness"
+    ]
+  }
+]

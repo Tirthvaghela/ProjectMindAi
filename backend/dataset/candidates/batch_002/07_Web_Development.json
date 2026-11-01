@@ -1,0 +1,227 @@
+[
+  {
+    "title": "Accessible Form Component Library with Keyboard Tests",
+    "description": "Builds a small set of form inputs, selects and error messages that work with keyboard and screen readers, and documents each accessibility decision with automated and manual test results.",
+    "domain": "Web Development",
+    "technologies": [
+      "TypeScript",
+      "React",
+      "Testing Library",
+      "Storybook"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Accessibility",
+      "Component design",
+      "Keyboard navigation",
+      "Documentation"
+    ],
+    "keywords": [
+      "accessibility",
+      "components",
+      "aria",
+      "forms"
+    ]
+  },
+  {
+    "title": "Static Site Generator in Go for a Personal Blog",
+    "description": "Converts Markdown files with front matter into a themed static website with tag pages and an RSS feed, then compares build time and page weight against an off-the-shelf generator.",
+    "domain": "Web Development",
+    "technologies": [
+      "Go",
+      "Markdown",
+      "HTML templates",
+      "GitHub Actions"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Templating",
+      "File processing",
+      "Static sites",
+      "Build pipelines"
+    ],
+    "keywords": [
+      "static site",
+      "go",
+      "markdown",
+      "rss"
+    ]
+  },
+  {
+    "title": "Real-Time Collaborative Whiteboard with CRDTs",
+    "description": "Implements shared drawing where simultaneous edits from many users converge without a central lock, using a conflict-free data type, and tests convergence under delay, loss and reordered messages.",
+    "domain": "Web Development",
+    "technologies": [
+      "TypeScript",
+      "Yjs",
+      "WebSocket",
+      "Canvas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "CRDTs",
+      "Eventual consistency",
+      "Network faults",
+      "Real-time systems"
+    ],
+    "keywords": [
+      "crdt",
+      "collaboration",
+      "websocket",
+      "whiteboard"
+    ]
+  },
+  {
+    "title": "GraphQL API for a Course Timetable with Query Cost Limits",
+    "description": "Exposes timetable data through a typed GraphQL schema, prevents expensive nested queries with depth and cost limits and compares request counts with an equivalent REST design.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "GraphQL",
+      "Apollo Server",
+      "PostgreSQL"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Schema design",
+      "Query cost analysis",
+      "Dataloader batching",
+      "API comparison"
+    ],
+    "keywords": [
+      "graphql",
+      "api design",
+      "query cost",
+      "timetable"
+    ]
+  },
+  {
+    "title": "Server-Rendered Web App with Django and HTMX",
+    "description": "Builds a task tracker that updates parts of the page through HTML fragments instead of a single-page framework, and compares code size and interaction speed against a React version.",
+    "domain": "Web Development",
+    "technologies": [
+      "Python",
+      "Django",
+      "HTMX",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 7,
+    "skills": [
+      "Server rendering",
+      "Partial updates",
+      "Framework trade-offs",
+      "Forms"
+    ],
+    "keywords": [
+      "django",
+      "htmx",
+      "server rendering",
+      "tracker"
+    ]
+  },
+  {
+    "title": "Rust Web Service for a Library Catalogue with Typed Errors",
+    "description": "Implements a catalogue API in Rust with compile-time checked queries and a typed error model, and measures throughput and memory against the same service written in a scripting language.",
+    "domain": "Web Development",
+    "technologies": [
+      "Rust",
+      "Axum",
+      "SQLx",
+      "PostgreSQL"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Typed errors",
+      "Async Rust",
+      "Query checking",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "rust",
+      "axum",
+      "api",
+      "performance"
+    ]
+  },
+  {
+    "title": "Content Security Policy Builder and Violation Dashboard",
+    "description": "Helps developers draft a strict content security policy for an existing site by observing report-only violations, then charts which directives block which resources and suggests tightening steps.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "React"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Security headers",
+      "Violation reports",
+      "Incremental hardening",
+      "Dashboards"
+    ],
+    "keywords": [
+      "csp",
+      "security headers",
+      "reports",
+      "hardening"
+    ]
+  },
+  {
+    "title": "Internationalised Event Page with Right-to-Left Support",
+    "description": "Produces an event site in several languages including Arabic, handling plural rules, date formats and mirrored layouts, and checks every screen with automated visual comparisons.",
+    "domain": "Web Development",
+    "technologies": [
+      "TypeScript",
+      "React",
+      "i18next",
+      "Playwright"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 6,
+    "skills": [
+      "Internationalisation",
+      "Bidirectional layout",
+      "Plural rules",
+      "Visual testing"
+    ],
+    "keywords": [
+      "i18n",
+      "rtl",
+      "localisation",
+      "visual testing"
+    ]
+  },
+  {
+    "title": "Micro-Frontend Dashboard with Independent Deployments",
+    "description": "Splits a dashboard into separately built and deployed parts loaded at runtime, shares authentication safely and measures the cost in bundle size against a single application.",
+    "domain": "Web Development",
+    "technologies": [
+      "TypeScript",
+      "Module Federation",
+      "Webpack",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Micro-frontends",
+      "Runtime composition",
+      "Shared dependencies",
+      "Deployment"
+    ],
+    "keywords": [
+      "micro frontends",
+      "module federation",
+      "deployment",
+      "bundle size"
+    ]
+  }
+]

@@ -363,6 +363,39 @@ export const api = {
   setMyRoleDecision: (teamId, payload) => client.put(`/teams/${teamId}/roles/mine`, payload).then(unwrap),
   clearMyRoleDecision: (teamId) => client.delete(`/teams/${teamId}/roles/mine`).then(unwrap),
 
+  // Module sub-teams inside a parent team (backend/routes/subteams.py). The owner
+  // manages them; members use chat, tasks and roles. Every call is authorised
+  // server-side against the parent team's current roster.
+  listSubTeams: (teamId) => client.get(`/teams/${teamId}/sub-teams`).then(unwrap),
+  createSubTeam: (teamId, payload) => client.post(`/teams/${teamId}/sub-teams`, payload).then(unwrap),
+  getSubTeam: (teamId, subId) => client.get(`/teams/${teamId}/sub-teams/${subId}`).then(unwrap),
+  updateSubTeam: (teamId, subId, payload) => client.patch(`/teams/${teamId}/sub-teams/${subId}`, payload).then(unwrap),
+  deleteSubTeam: (teamId, subId) =>
+    client.delete(`/teams/${teamId}/sub-teams/${subId}`, { data: { confirm: true } }).then(unwrap),
+  addSubTeamMember: (teamId, subId, userId) =>
+    client.post(`/teams/${teamId}/sub-teams/${subId}/members`, { user_id: userId }).then(unwrap),
+  removeSubTeamMember: (teamId, subId, userId) =>
+    client.delete(`/teams/${teamId}/sub-teams/${subId}/members/${userId}`).then(unwrap),
+  // The invitation code is in the create/rotate response only; it is never listed.
+  createSubTeamInvite: (teamId, subId, expiresInDays) =>
+    client.post(`/teams/${teamId}/sub-teams/${subId}/invite`, { expires_in_days: expiresInDays }).then(unwrap),
+  revokeSubTeamInvite: (teamId, subId) => client.delete(`/teams/${teamId}/sub-teams/${subId}/invite`).then(unwrap),
+  joinSubTeam: (inviteCode) => client.post('/teams/sub-join', { invite_code: inviteCode }).then(unwrap),
+  subTeamMessages: (teamId, subId, { before, limit } = {}) =>
+    client.get(`/teams/${teamId}/sub-teams/${subId}/messages`, { params: { before, limit } }).then(unwrap),
+  postSubTeamMessage: (teamId, subId, content) =>
+    client.post(`/teams/${teamId}/sub-teams/${subId}/messages`, { content }).then(unwrap),
+  subTeamRoles: (teamId, subId) => client.get(`/teams/${teamId}/sub-teams/${subId}/roles`).then(unwrap),
+  setSubTeamRoleDecision: (teamId, subId, payload) =>
+    client.put(`/teams/${teamId}/sub-teams/${subId}/roles/mine`, payload).then(unwrap),
+  clearSubTeamRoleDecision: (teamId, subId) => client.delete(`/teams/${teamId}/sub-teams/${subId}/roles/mine`).then(unwrap),
+  subTeamTasks: (teamId, subId) => client.get(`/teams/${teamId}/sub-teams/${subId}/tasks`).then(unwrap),
+  createSubTeamTask: (teamId, subId, payload) => client.post(`/teams/${teamId}/sub-teams/${subId}/tasks`, payload).then(unwrap),
+  updateSubTeamTask: (teamId, subId, taskId, payload) =>
+    client.patch(`/teams/${teamId}/sub-teams/${subId}/tasks/${taskId}`, payload).then(unwrap),
+  deleteSubTeamTask: (teamId, subId, taskId) =>
+    client.delete(`/teams/${teamId}/sub-teams/${subId}/tasks/${taskId}`, { data: { confirm: true } }).then(unwrap),
+
   teamMessages: (teamId) => client.get(`/teams/${teamId}/messages`).then(unwrap),
 
   postTeamMessage: (teamId, content) =>

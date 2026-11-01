@@ -1,0 +1,647 @@
+[
+  {
+    "title": "Knowledge Distillation into a Mobile-Sized Image Classifier",
+    "description": "Trains a small student network to imitate a large teacher by matching softened outputs, and reports accuracy, model size and inference time for students with and without distillation.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Knowledge distillation",
+      "Temperature scaling",
+      "Model compression",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "distillation",
+      "compression",
+      "student teacher",
+      "mobile"
+    ]
+  },
+  {
+    "title": "Contrastive Learning of Image Embeddings without Labels",
+    "description": "Learns useful image representations from unlabelled pictures using contrastive loss on augmented views, then tests them with a linear classifier trained on very few labels.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "NumPy"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Self-supervised learning",
+      "Contrastive loss",
+      "Data augmentation",
+      "Linear probing"
+    ],
+    "keywords": [
+      "contrastive learning",
+      "self supervised",
+      "embeddings",
+      "simclr"
+    ]
+  },
+  {
+    "title": "Variational Autoencoder for Exploring a Font Latent Space",
+    "description": "Trains a variational autoencoder on font glyphs and lets users move through the latent space to blend styles, while checking how smooth and meaningful the interpolations are.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Variational autoencoders",
+      "Latent spaces",
+      "Reconstruction versus KL loss",
+      "Interactive demos"
+    ],
+    "keywords": [
+      "vae",
+      "latent space",
+      "fonts",
+      "generative"
+    ]
+  },
+  {
+    "title": "GAN for Synthetic Tabular Data with Privacy Evaluation",
+    "description": "Generates synthetic customer-style records with a conditional GAN and evaluates both how useful they are for training and how easily real rows can be re-identified from them.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Pandas",
+      "scikit-learn"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Generative adversarial networks",
+      "Synthetic data",
+      "Privacy risk measures",
+      "Utility evaluation"
+    ],
+    "keywords": [
+      "gan",
+      "synthetic data",
+      "privacy",
+      "tabular"
+    ]
+  },
+  {
+    "title": "Prototypical Networks for Few-Shot Image Classification",
+    "description": "Classifies new categories from five examples each by comparing images with learned class prototypes, and studies how accuracy changes with the number of shots and ways.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "NumPy"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Few-shot learning",
+      "Metric learning",
+      "Episodic training",
+      "Evaluation protocols"
+    ],
+    "keywords": [
+      "few shot",
+      "prototypical network",
+      "meta learning",
+      "metric learning"
+    ]
+  },
+  {
+    "title": "Transformer Encoder for Multivariate Sensor Forecasting",
+    "description": "Forecasts several correlated sensor channels with a transformer encoder and compares it with LSTM and linear baselines, including how each handles long input windows.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Transformer architectures",
+      "Time-series windowing",
+      "Baseline comparison",
+      "Positional encoding"
+    ],
+    "keywords": [
+      "transformer",
+      "forecasting",
+      "sensors",
+      "time series"
+    ]
+  },
+  {
+    "title": "Keyword Spotting for Tiny Devices",
+    "description": "Trains a compact network to recognise a handful of spoken commands from audio spectrograms and measures how small it can be made before accuracy on noisy clips falls.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "TensorFlow",
+      "TensorFlow Lite",
+      "Librosa"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Audio feature extraction",
+      "Small model design",
+      "Quantisation",
+      "Noise robustness"
+    ],
+    "keywords": [
+      "keyword spotting",
+      "tinyml",
+      "speech commands",
+      "spectrogram"
+    ]
+  },
+  {
+    "title": "Neural Network from Scratch with a Backpropagation Visualiser",
+    "description": "Implements a small feed-forward network using only NumPy and animates how gradients flow backwards through each layer on a toy problem, so each update can be traced by hand.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Backpropagation",
+      "Gradient descent",
+      "Vectorised computation",
+      "Visualisation"
+    ],
+    "keywords": [
+      "backpropagation",
+      "neural network",
+      "numpy",
+      "gradients"
+    ]
+  },
+  {
+    "title": "Optimiser and Learning Rate Schedule Comparison Lab",
+    "description": "Trains the same small network with different optimisers and learning rate schedules and plots loss curves side by side, so the effect of each choice is visible rather than assumed.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Matplotlib",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Optimisers",
+      "Learning rate schedules",
+      "Experiment tracking",
+      "Plot interpretation"
+    ],
+    "keywords": [
+      "optimiser",
+      "learning rate",
+      "adam",
+      "schedules"
+    ]
+  },
+  {
+    "title": "Adversarial Robustness Testing for Image Classifiers",
+    "description": "Crafts small perturbations that fool a trained classifier, measures how accuracy falls with perturbation size, and tests whether adversarial training restores robustness.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Adversarial examples",
+      "FGSM and PGD attacks",
+      "Adversarial training",
+      "Robustness evaluation"
+    ],
+    "keywords": [
+      "adversarial",
+      "robustness",
+      "fgsm",
+      "security"
+    ]
+  },
+  {
+    "title": "Grad-CAM Explanations for CNN Predictions",
+    "description": "Highlights the image regions a convolutional network relied on for a prediction using Grad-CAM, and checks whether the highlights move when the model is trained on a biased dataset.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "OpenCV"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Model interpretability",
+      "Gradient-based attribution",
+      "Bias detection",
+      "Visualisation"
+    ],
+    "keywords": [
+      "grad cam",
+      "explainability",
+      "cnn",
+      "saliency"
+    ]
+  },
+  {
+    "title": "Siamese Network for Few-Shot Character Recognition",
+    "description": "Learns whether two handwritten characters belong to the same alphabet symbol and uses that similarity to recognise symbols seen only once during training.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "NumPy"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Siamese networks",
+      "Contrastive and triplet loss",
+      "One-shot learning",
+      "Pair sampling"
+    ],
+    "keywords": [
+      "siamese",
+      "one shot",
+      "omniglot",
+      "similarity"
+    ]
+  },
+  {
+    "title": "Sequence-to-Sequence Date and Number Format Normaliser",
+    "description": "Trains a small encoder-decoder to convert dates and numbers written in many human formats into one standard form, and inspects which input styles it still gets wrong.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "NumPy"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Sequence-to-sequence models",
+      "Tokenisation at character level",
+      "Error analysis"
+    ],
+    "keywords": [
+      "seq2seq",
+      "normalisation",
+      "encoder decoder",
+      "dates"
+    ]
+  },
+  {
+    "title": "Graph Neural Network for Citation Network Classification",
+    "description": "Classifies research papers into topics using both their text features and the citation links between them, and compares a graph network with a model that ignores the links.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch Geometric",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Graph neural networks",
+      "Message passing",
+      "Node classification",
+      "Ablation studies"
+    ],
+    "keywords": [
+      "graph neural network",
+      "citation",
+      "node classification",
+      "gnn"
+    ]
+  },
+  {
+    "title": "Autoencoder Recommender for Sparse Rating Matrices",
+    "description": "Predicts missing ratings by training an autoencoder on partially observed user histories, and compares it with matrix factorisation on held-out entries.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "NumPy",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Autoencoders",
+      "Sparse inputs",
+      "Masked loss",
+      "Recommender evaluation"
+    ],
+    "keywords": [
+      "autoencoder",
+      "recommender",
+      "ratings",
+      "sparse"
+    ]
+  },
+  {
+    "title": "Beat and Tempo Tracking from Audio with a Small CNN",
+    "description": "Detects beat positions in music from spectrogram features using a convolutional network, then estimates tempo and checks it against annotated tracks.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Librosa",
+      "NumPy"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Audio spectrograms",
+      "Temporal convolution",
+      "Peak picking",
+      "Evaluation against annotations"
+    ],
+    "keywords": [
+      "beat tracking",
+      "tempo",
+      "audio",
+      "cnn"
+    ]
+  },
+  {
+    "title": "Mixed-Precision and Gradient Accumulation Study for Small GPUs",
+    "description": "Measures how mixed-precision training and gradient accumulation change memory use, speed and final accuracy so a student with a modest GPU can train larger models.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Matplotlib",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Memory profiling",
+      "Mixed precision",
+      "Gradient accumulation",
+      "Performance measurement"
+    ],
+    "keywords": [
+      "mixed precision",
+      "memory",
+      "training efficiency",
+      "profiling"
+    ]
+  },
+  {
+    "title": "Deep Q-Network Agent for Lunar Landing",
+    "description": "Trains a deep Q-network to land a simulated craft, adding experience replay and a target network, and shows the effect of each ingredient on learning stability.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Gymnasium",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Deep reinforcement learning",
+      "Experience replay",
+      "Target networks",
+      "Stability analysis"
+    ],
+    "keywords": [
+      "dqn",
+      "reinforcement learning",
+      "lunar lander",
+      "replay"
+    ]
+  },
+  {
+    "title": "Small Diffusion Model for Handwritten Digit Generation",
+    "description": "Builds a denoising diffusion model on a small image set, visualises the reverse denoising steps and compares sample quality as the number of sampling steps is reduced.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Diffusion models",
+      "Noise schedules",
+      "Sampling trade-offs",
+      "Generative evaluation"
+    ],
+    "keywords": [
+      "diffusion",
+      "generative",
+      "denoising",
+      "sampling"
+    ]
+  },
+  {
+    "title": "Pretrained Backbone Transfer Learning Benchmark",
+    "description": "Fine-tunes several pretrained image backbones on the same small dataset under one training budget and compares accuracy, training time and sensitivity to learning rate.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Transfer learning",
+      "Fine-tuning strategies",
+      "Fair comparison",
+      "Result reporting"
+    ],
+    "keywords": [
+      "transfer learning",
+      "fine tuning",
+      "backbones",
+      "benchmark"
+    ]
+  },
+  {
+    "title": "LSTM versus GRU Temperature Forecast Comparison",
+    "description": "Forecasts next-day temperature from recent history with LSTM and GRU models of matching size and compares accuracy, training speed and behaviour on unusual weeks.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Recurrent networks",
+      "Windowed datasets",
+      "Model comparison",
+      "Forecast error"
+    ],
+    "keywords": [
+      "lstm",
+      "gru",
+      "forecasting",
+      "temperature"
+    ]
+  },
+  {
+    "title": "Bird Call Classification from Spectrogram Images",
+    "description": "Identifies bird species from short field recordings by converting audio to spectrograms and training a CNN, with attention to background noise and overlapping calls.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Librosa",
+      "torchvision"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Audio to image conversion",
+      "Noise handling",
+      "Multi-class classification",
+      "Data augmentation"
+    ],
+    "keywords": [
+      "bird calls",
+      "bioacoustics",
+      "spectrogram",
+      "cnn"
+    ]
+  },
+  {
+    "title": "Learned Image Compression with an Autoencoder",
+    "description": "Compresses images with a convolutional autoencoder trained against a rate and distortion trade-off, and compares quality at equal file size with JPEG.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "NumPy"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Rate-distortion trade-off",
+      "Quantisation in the latent space",
+      "Image quality metrics"
+    ],
+    "keywords": [
+      "image compression",
+      "autoencoder",
+      "rate distortion",
+      "psnr"
+    ]
+  },
+  {
+    "title": "Data Augmentation Policy Study for Small Datasets",
+    "description": "Tests which augmentations help a small-image classifier and which hurt, by training with each one alone and in combination and reporting the accuracy change with its variance.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Data augmentation",
+      "Controlled experiments",
+      "Variance across runs"
+    ],
+    "keywords": [
+      "augmentation",
+      "small data",
+      "ablation",
+      "overfitting"
+    ]
+  },
+  {
+    "title": "Model Quantisation and Pruning Impact Study",
+    "description": "Applies post-training quantisation and weight pruning to a trained network and charts the trade-off between size, latency and accuracy on a target device.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "ONNX",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Quantisation",
+      "Pruning",
+      "Latency measurement",
+      "Deployment trade-offs"
+    ],
+    "keywords": [
+      "quantisation",
+      "pruning",
+      "onnx",
+      "latency"
+    ]
+  },
+  {
+    "title": "Physics-Informed Neural Network for the Heat Equation",
+    "description": "Solves a one-dimensional heat conduction problem with a network trained to satisfy the differential equation and boundary conditions, and compares the result with a numerical solver.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Physics-informed learning",
+      "Automatic differentiation",
+      "Boundary conditions",
+      "Numerical validation"
+    ],
+    "keywords": [
+      "pinn",
+      "heat equation",
+      "scientific machine learning",
+      "pde"
+    ]
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Explainable Loan Rule Engine with Counterfactual Advice",
+    "description": "Applies transparent eligibility rules to applicants and, for rejections, computes the smallest change that would flip the decision, checking that advice is actionable and does not require impossible changes.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "FastAPI",
+      "pytest"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Rule systems",
+      "Counterfactuals",
+      "Actionability",
+      "Explanations"
+    ],
+    "keywords": [
+      "counterfactual",
+      "explainability",
+      "rules",
+      "lending"
+    ]
+  },
+  {
+    "title": "Monte Carlo Tree Search Player for Connect Four",
+    "description": "Implements tree search with random playouts, tests how playout count changes strength against a fixed opponent and plots win rates with confidence intervals across many games.",
+    "domain": "Artificial Intelligence",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Tree search",
+      "Playout policies",
+      "Statistical testing",
+      "Game AI"
+    ],
+    "keywords": [
+      "mcts",
+      "connect four",
+      "game ai",
+      "playouts"
+    ]
+  }
+]

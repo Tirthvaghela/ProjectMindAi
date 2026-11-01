@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Predicting Student Assignment Lateness with Interpretable Models",
+    "description": "Builds a simple interpretable model from synthetic course records to flag students likely to submit late, and examines the ethical risks of using such flags and how advisers should and should not act on them.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "SHAP",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Interpretable models",
+      "Responsible use",
+      "Feature importance",
+      "Risk communication"
+    ],
+    "keywords": [
+      "student support",
+      "interpretable",
+      "ethics",
+      "prediction"
+    ]
+  },
+  {
+    "title": "Semi-Supervised Label Propagation for Scarce Medical Text Labels",
+    "description": "Labels a handful of clinical-style notes by hand, spreads labels to similar unlabelled notes and measures how performance depends on label count, with checks against confidently wrong propagation.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "sentence-transformers",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Semi-supervised learning",
+      "Label propagation",
+      "Embeddings",
+      "Error checks"
+    ],
+    "keywords": [
+      "semi supervised",
+      "label propagation",
+      "scarce labels",
+      "text"
+    ]
+  }
+]

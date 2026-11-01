@@ -1,0 +1,250 @@
+[
+  {
+    "title": "Training a Tiny Neural Network in the Browser",
+    "description": "Implements a small multi-layer network in JavaScript that trains on handwritten shapes drawn on a canvas, with live loss curves, so learners can watch weights change and see overfitting happen on a tiny dataset.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "JavaScript",
+      "HTML Canvas",
+      "Chart.js"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Neural network basics",
+      "Browser computation",
+      "Visualising training",
+      "Overfitting"
+    ],
+    "keywords": [
+      "neural network",
+      "javascript",
+      "visualisation",
+      "training"
+    ]
+  },
+  {
+    "title": "Image Classifier with Transfer Learning for Local Wildlife",
+    "description": "Fine-tunes a pretrained network on photos of ten local bird species collected by the learner, and shows how accuracy changes with the number of photos per species and with frozen versus unfrozen layers.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Transfer learning",
+      "Small datasets",
+      "Fine-tuning choices",
+      "Evaluation"
+    ],
+    "keywords": [
+      "transfer learning",
+      "birds",
+      "small data",
+      "fine tuning"
+    ]
+  },
+  {
+    "title": "Handwritten Digits with a Convolutional Net in Java",
+    "description": "Builds and trains a small convolutional network for digit recognition with a Java deep learning library, and compares it with a plain feed-forward net to show what convolutions add.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Java",
+      "Deeplearning4j",
+      "Maven"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 7,
+    "skills": [
+      "Convolutional layers",
+      "JVM deep learning",
+      "Model comparison",
+      "Packaging"
+    ],
+    "keywords": [
+      "cnn",
+      "java",
+      "digits",
+      "deeplearning4j"
+    ]
+  },
+  {
+    "title": "Autoencoder for Detecting Defective Printed Characters",
+    "description": "Trains an autoencoder only on clean printed characters and flags those it reconstructs poorly, with a threshold chosen from the reconstruction error distribution of held-out good samples.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "OpenCV",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Reconstruction error",
+      "Anomaly thresholds",
+      "Unsupervised training",
+      "Evaluation"
+    ],
+    "keywords": [
+      "autoencoder",
+      "defects",
+      "reconstruction error",
+      "anomaly"
+    ]
+  },
+  {
+    "title": "Sequence Model for Next-Day Hospital Bed Occupancy",
+    "description": "Forecasts occupancy of wards from admissions history and calendar effects with a recurrent network, and compares it against a seasonal baseline using rolling-origin evaluation on synthetic data.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Sequence forecasting",
+      "Rolling evaluation",
+      "Baselines",
+      "Operational metrics"
+    ],
+    "keywords": [
+      "forecasting",
+      "occupancy",
+      "rnn",
+      "healthcare operations"
+    ]
+  },
+  {
+    "title": "Efficient Image Classifier for Microcontrollers in C",
+    "description": "Trains a very small convolutional network, quantises it to eight bits and runs inference on a microcontroller with kilobytes of memory, reporting accuracy, latency and RAM against the desktop model.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "C",
+      "TensorFlow Lite",
+      "STM32",
+      "Python"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Quantisation",
+      "Embedded inference",
+      "Memory budgeting",
+      "Profiling"
+    ],
+    "keywords": [
+      "tinyml",
+      "quantisation",
+      "embedded",
+      "microcontroller"
+    ]
+  },
+  {
+    "title": "Self-Attention Layer Implemented from Scratch",
+    "description": "Writes scaled dot-product and multi-head attention without a framework, verifies the output against a library implementation on random inputs and visualises attention maps on a toy translation task.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "pytest"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 9,
+    "skills": [
+      "Attention mechanism",
+      "Numerical verification",
+      "Visualisation",
+      "Matrix calculus"
+    ],
+    "keywords": [
+      "attention",
+      "transformer",
+      "from scratch",
+      "verification"
+    ]
+  },
+  {
+    "title": "Model Compression Report for a Mobile Speech Model",
+    "description": "Measures how pruning, distillation and quantisation each change a speech model's accuracy, size and latency on a phone-class device, then recommends a combination for a stated memory limit.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "ONNX",
+      "Kotlin"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Compression methods",
+      "On-device latency",
+      "Trade-offs",
+      "Reporting"
+    ],
+    "keywords": [
+      "compression",
+      "speech",
+      "on device",
+      "benchmarking"
+    ]
+  },
+  {
+    "title": "Recurrent versus Convolutional Models for Short Time Series",
+    "description": "Trains both families on the same sensor classification task under equal parameter budgets and compares accuracy, training time and robustness to missing samples. Reports include a short write-up of when each family is preferable.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Model families",
+      "Fair comparison",
+      "Missing data",
+      "Training cost"
+    ],
+    "keywords": [
+      "time series",
+      "cnn",
+      "rnn",
+      "comparison"
+    ]
+  },
+  {
+    "title": "Continual Learning without Forgetting on Sequential Tasks",
+    "description": "Trains one network on a sequence of image tasks and measures how much earlier tasks are forgotten, then tests replay and regularisation methods and reports the memory each needs.",
+    "domain": "Deep Learning",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "torchvision",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Catastrophic forgetting",
+      "Replay methods",
+      "Regularisation",
+      "Evaluation protocols"
+    ],
+    "keywords": [
+      "continual learning",
+      "forgetting",
+      "replay",
+      "regularisation"
+    ]
+  }
+]

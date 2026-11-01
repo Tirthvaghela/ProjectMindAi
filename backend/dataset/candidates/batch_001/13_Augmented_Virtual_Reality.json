@@ -1,0 +1,548 @@
+[
+  {
+    "title": "AR Shelf Wayfinder for Library Books",
+    "description": "Guides a visitor to a book's shelf with on-screen arrows anchored to the building and highlights the exact shelf level once they arrive, using the catalogue's location data.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Spatial anchors",
+      "Indoor navigation",
+      "Data integration",
+      "UX for AR"
+    ],
+    "keywords": [
+      "ar navigation",
+      "library",
+      "anchors",
+      "wayfinding"
+    ]
+  },
+  {
+    "title": "AR Solar System Scale Explorer",
+    "description": "Places the planets in a room at a true relative scale that learners can walk through, with sizes and distances switchable so the vast emptiness of space becomes visible.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Plane detection",
+      "Scale modelling",
+      "Educational design",
+      "3D asset handling"
+    ],
+    "keywords": [
+      "ar education",
+      "solar system",
+      "scale",
+      "astronomy"
+    ]
+  },
+  {
+    "title": "Real-Time Occlusion Demo for AR Objects",
+    "description": "Makes virtual objects appear behind real furniture using depth sensing, and compares how convincing the effect is with and without depth-based occlusion.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "Blender"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Depth APIs",
+      "Occlusion rendering",
+      "Visual quality evaluation",
+      "Performance"
+    ],
+    "keywords": [
+      "occlusion",
+      "depth",
+      "ar realism",
+      "rendering"
+    ]
+  },
+  {
+    "title": "VR Reaction Time and Attention Test Bench",
+    "description": "Measures how quickly a user responds to stimuli in different parts of the visual field in VR, logging results per session so changes over time can be compared.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Timing accuracy",
+      "Stimulus design",
+      "Data logging",
+      "Experimental method"
+    ],
+    "keywords": [
+      "vr",
+      "reaction time",
+      "attention",
+      "experiment"
+    ]
+  },
+  {
+    "title": "VR Comfort Settings Study for Locomotion",
+    "description": "Implements teleport, smooth movement and vignette options in one scene and collects short comfort ratings so designers can see which choices suit which users.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "VR locomotion",
+      "Motion comfort",
+      "Survey design",
+      "Data analysis"
+    ],
+    "keywords": [
+      "vr locomotion",
+      "comfort",
+      "motion sickness",
+      "usability"
+    ]
+  },
+  {
+    "title": "VR Language Practice Market Scene",
+    "description": "Places learners in a simulated market where they must buy items by speaking the target language, with speech recognition and instant feedback on pronunciation targets.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Whisper"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Speech recognition",
+      "Scenario design",
+      "Feedback loops",
+      "Spatial audio"
+    ],
+    "keywords": [
+      "vr language learning",
+      "speech",
+      "scenario",
+      "pronunciation"
+    ]
+  },
+  {
+    "title": "Hand-Tracking Piano Practice in AR",
+    "description": "Shows falling note guides on a real keyboard through the headset and uses hand tracking to check which keys were pressed, scoring timing accuracy per phrase.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "MIDI"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Hand tracking",
+      "Alignment with real objects",
+      "Timing analysis",
+      "Music data"
+    ],
+    "keywords": [
+      "hand tracking",
+      "piano",
+      "ar",
+      "music"
+    ]
+  },
+  {
+    "title": "Virtual Gallery with Procedural Layout",
+    "description": "Generates an exhibition space automatically from a list of artworks, balancing walking routes, viewing distance and lighting, and lets a curator adjust the result.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "C#",
+      "Blender"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Procedural generation",
+      "Spatial layout rules",
+      "Lighting",
+      "Authoring tools"
+    ],
+    "keywords": [
+      "virtual gallery",
+      "procedural generation",
+      "layout",
+      "curator"
+    ]
+  },
+  {
+    "title": "AR Product Colour and Finish Visualiser",
+    "description": "Lets shoppers preview paint colours or materials on real walls and objects with lighting-aware rendering, and compares appearance under different room lighting.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "Blender"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Material rendering",
+      "Lighting estimation",
+      "Colour accuracy",
+      "Mobile AR"
+    ],
+    "keywords": [
+      "ar shopping",
+      "materials",
+      "lighting estimation",
+      "colour"
+    ]
+  },
+  {
+    "title": "VR Cognitive Load Dashboard for Training Scenarios",
+    "description": "Collects head movement, gaze and task timing during a VR training run and summarises where trainees hesitated, supporting debrief discussion rather than automated judgement.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Python"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Telemetry capture",
+      "Gaze analysis",
+      "Dashboard design",
+      "Ethical use of data"
+    ],
+    "keywords": [
+      "vr training",
+      "telemetry",
+      "gaze",
+      "debrief"
+    ]
+  },
+  {
+    "title": "AR Origami Folding Guide",
+    "description": "Overlays the next fold on a paper model step by step with animated arrows, advancing automatically when the fold is detected as complete.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "OpenCV"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Overlay alignment",
+      "Step sequencing",
+      "Marker tracking"
+    ],
+    "keywords": [
+      "origami",
+      "ar guide",
+      "instructions",
+      "tracking"
+    ]
+  },
+  {
+    "title": "VR Historical Timeline Walkthrough",
+    "description": "Lets visitors walk along a timeline where each era is a small room with objects and short narration, with events linked to maps and sources.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Blender"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Scene design",
+      "Narration",
+      "Teleport navigation",
+      "Content authoring"
+    ],
+    "keywords": [
+      "vr history",
+      "timeline",
+      "education",
+      "narration"
+    ]
+  },
+  {
+    "title": "AR Cable and Port Labeller for Server Rooms",
+    "description": "Recognises tagged ports and cables and overlays their labels and connection destinations, so technicians can trace a cable without opening spreadsheets.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Marker detection",
+      "Overlay anchoring",
+      "Database lookup",
+      "Usability in the field"
+    ],
+    "keywords": [
+      "ar maintenance",
+      "labels",
+      "markers",
+      "server room"
+    ]
+  },
+  {
+    "title": "Spatial Audio Soundscape Experience",
+    "description": "Builds an environment where sound sources move and reflect in rooms, and tests whether listeners can locate sources correctly with different audio settings.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "FMOD"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Spatial audio",
+      "Room acoustics",
+      "Listening tests",
+      "Audio middleware"
+    ],
+    "keywords": [
+      "spatial audio",
+      "soundscape",
+      "acoustics",
+      "hrtf"
+    ]
+  },
+  {
+    "title": "Multi-User AR Whiteboard with Shared Anchors",
+    "description": "Lets several people draw on the same virtual surface in a room from their own devices, keeping everyone's view aligned through shared spatial anchors.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "Firebase"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Shared anchors",
+      "Network synchronisation",
+      "Drawing tools",
+      "Latency"
+    ],
+    "keywords": [
+      "multi user ar",
+      "shared anchors",
+      "collaboration",
+      "whiteboard"
+    ]
+  },
+  {
+    "title": "VR Study of Presence and Embodiment with Avatars",
+    "description": "Compares how strongly users feel present when their avatar is a floating hand, full body or abstract shape, using a questionnaire and movement data.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Python"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Avatar design",
+      "Presence measurement",
+      "Experimental design",
+      "Statistics"
+    ],
+    "keywords": [
+      "presence",
+      "embodiment",
+      "avatars",
+      "experiment"
+    ]
+  },
+  {
+    "title": "AR Garden Planner with Sun Path Simulation",
+    "description": "Lets a user place plants in a real garden and shows how sunlight and shade will fall across the day and season, warning when a plant is in the wrong spot.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Sun position calculation",
+      "Plant data",
+      "Placement tools",
+      "Simulation"
+    ],
+    "keywords": [
+      "garden",
+      "sun path",
+      "ar planner",
+      "simulation"
+    ]
+  },
+  {
+    "title": "VR Circuit Building Lab",
+    "description": "Lets students assemble simple circuits with virtual components and see current and voltage animate, with mistakes such as short circuits explained rather than just failing.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Blender"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Circuit simulation basics",
+      "Feedback design",
+      "Interaction design"
+    ],
+    "keywords": [
+      "vr lab",
+      "circuits",
+      "physics education",
+      "simulation"
+    ]
+  },
+  {
+    "title": "AR Subtitles for Spoken Conversations",
+    "description": "Displays live captions near the speaker's position in view using direction of arrival from microphone arrays, and evaluates readability in a noisy room.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Whisper"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Speech recognition",
+      "Sound localisation",
+      "Caption placement",
+      "Accessibility"
+    ],
+    "keywords": [
+      "ar captions",
+      "sound localisation",
+      "accessibility",
+      "speech"
+    ]
+  },
+  {
+    "title": "VR Virtual Wardrobe Fitting Room",
+    "description": "Fits garment models to an adjustable body shape and shows how fabric drapes and moves, comparing sizes side by side from the user's own measurements.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "C#",
+      "Blender",
+      "OpenXR"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 10,
+    "skills": [
+      "Cloth simulation",
+      "Parametric bodies",
+      "Asset pipelines",
+      "Performance"
+    ],
+    "keywords": [
+      "virtual fitting",
+      "cloth simulation",
+      "avatar",
+      "fashion"
+    ]
+  },
+  {
+    "title": "Gaze-Controlled Menu System for Hands-Free VR",
+    "description": "Implements menus selected by looking and dwelling, compares dwell times and layouts for speed and error rate, and tests with users who cannot use controllers.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "OpenXR",
+      "C#",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Eye tracking input",
+      "Dwell selection",
+      "Accessibility",
+      "Usability testing"
+    ],
+    "keywords": [
+      "gaze control",
+      "accessibility",
+      "menus",
+      "vr"
+    ]
+  },
+  {
+    "title": "AR Archaeology Dig Reconstruction Viewer",
+    "description": "Overlays reconstructed walls and artefacts onto a physical model of a dig site, with layers a user can toggle to compare evidence with interpretation.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "ARCore",
+      "C#",
+      "Blender"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "3D reconstruction",
+      "Layered content",
+      "Source attribution",
+      "Marker tracking"
+    ],
+    "keywords": [
+      "archaeology",
+      "reconstruction",
+      "ar",
+      "layers"
+    ]
+  }
+]

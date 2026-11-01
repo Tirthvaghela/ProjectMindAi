@@ -1,0 +1,647 @@
+[
+  {
+    "title": "Zero-Knowledge Age Verification Demo",
+    "description": "Lets a user prove they are over a required age without revealing their date of birth, using a zero-knowledge circuit and an on-chain verifier contract, and measures proving time and gas cost.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "circom",
+      "snarkjs",
+      "Hardhat"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Zero-knowledge proofs",
+      "Circuit design",
+      "On-chain verification",
+      "Performance measurement"
+    ],
+    "keywords": [
+      "zero knowledge",
+      "zk snark",
+      "privacy",
+      "verification"
+    ]
+  },
+  {
+    "title": "Token Vesting Schedule Contracts",
+    "description": "Releases tokens to team members gradually with a cliff and linear unlock, supports revocation by the grantor and tests every schedule boundary and rounding case.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "OpenZeppelin",
+      "Ethereum"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "ERC-20 tokens",
+      "Time-based logic",
+      "Access control",
+      "Edge-case testing"
+    ],
+    "keywords": [
+      "vesting",
+      "erc20",
+      "cliff",
+      "token"
+    ]
+  },
+  {
+    "title": "Upgradeable Smart Contracts with the Proxy Pattern",
+    "description": "Builds a contract that can be upgraded without changing its address or losing state, and demonstrates the storage layout mistakes that corrupt data during an upgrade.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "OpenZeppelin",
+      "Ethereum"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Proxy patterns",
+      "Storage layout",
+      "Upgrade safety",
+      "Security testing"
+    ],
+    "keywords": [
+      "proxy",
+      "upgradeable",
+      "storage layout",
+      "delegatecall"
+    ]
+  },
+  {
+    "title": "Gas Optimisation Study of Common Solidity Patterns",
+    "description": "Measures the gas cost of equivalent implementations, such as storage packing and loop styles, and publishes a table of which optimisations matter and which are noise.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Ethereum",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Gas measurement",
+      "Storage costs",
+      "Benchmark design",
+      "Trade-off analysis"
+    ],
+    "keywords": [
+      "gas",
+      "optimisation",
+      "solidity",
+      "benchmarks"
+    ]
+  },
+  {
+    "title": "Merkle Tree Airdrop Claim Contract",
+    "description": "Distributes tokens to thousands of addresses by storing only a Merkle root on-chain and letting each recipient claim with a proof, with a script that builds the tree and proofs.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "OpenZeppelin",
+      "JavaScript"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Merkle proofs",
+      "Cheap on-chain verification",
+      "Double-claim prevention",
+      "Scripting"
+    ],
+    "keywords": [
+      "merkle tree",
+      "airdrop",
+      "proofs",
+      "claims"
+    ]
+  },
+  {
+    "title": "Commit-Reveal Sealed-Bid Auction",
+    "description": "Runs an auction where bids stay hidden until a reveal phase, using hashed commitments and deposits that punish bidders who never reveal.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Ethereum",
+      "JavaScript"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Commit-reveal schemes",
+      "Deposits and penalties",
+      "Phase timing",
+      "Front-running awareness"
+    ],
+    "keywords": [
+      "auction",
+      "commit reveal",
+      "sealed bid",
+      "front running"
+    ]
+  },
+  {
+    "title": "Rental Deposit Escrow Contract",
+    "description": "Holds a tenant's deposit in a contract and releases it according to a move-out checklist agreed by both sides, with a time-out and a neutral arbiter for disputes.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Ethereum",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Escrow logic",
+      "Multi-party approvals",
+      "Timeouts",
+      "Dispute resolution"
+    ],
+    "keywords": [
+      "escrow",
+      "rental",
+      "deposit",
+      "arbiter"
+    ]
+  },
+  {
+    "title": "Soulbound Skill Badges for Course Completion",
+    "description": "Issues non-transferable tokens that record completed courses, lets employers verify them without trusting a central site and handles revocation when a badge was issued in error.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "IPFS",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Non-transferable tokens",
+      "Metadata storage",
+      "Verification flows",
+      "Revocation"
+    ],
+    "keywords": [
+      "soulbound",
+      "badges",
+      "credentials",
+      "nft"
+    ]
+  },
+  {
+    "title": "Tamper-Evident Audit Log with Hash Chains",
+    "description": "Builds a log where each entry includes the hash of the previous one so any later edit is detectable, and compares what this proves with what a blockchain would add.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Python",
+      "hashlib",
+      "SQLite",
+      "Flask"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Hash functions",
+      "Hash chains",
+      "Integrity verification",
+      "Threat modelling"
+    ],
+    "keywords": [
+      "hash chain",
+      "audit log",
+      "integrity",
+      "tamper evident"
+    ]
+  },
+  {
+    "title": "Blockchain from Scratch with Proof of Work",
+    "description": "Implements blocks, transactions and mining in plain code, then shows how changing one old block invalidates every block after it and how difficulty affects mining time.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Python",
+      "hashlib",
+      "Flask"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Block structure",
+      "Proof of work",
+      "Chain validation",
+      "Difficulty adjustment"
+    ],
+    "keywords": [
+      "blockchain basics",
+      "proof of work",
+      "mining",
+      "validation"
+    ]
+  },
+  {
+    "title": "Proof of Stake Validator Selection Simulator",
+    "description": "Simulates validators chosen in proportion to their stake and explores how stake concentration, slashing and random seeds change fairness and the chance of attack.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Consensus mechanisms",
+      "Probability",
+      "Simulation",
+      "Security reasoning"
+    ],
+    "keywords": [
+      "proof of stake",
+      "validators",
+      "slashing",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Oracle Price Feed Manipulation Simulation",
+    "description": "Models how a lending contract can be exploited when it trusts a thin price source, and tests defences such as time-weighted averages and multiple feeds against simulated attacks.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Python",
+      "Ethereum"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Oracle design",
+      "Attack simulation",
+      "Time-weighted prices",
+      "Defensive design"
+    ],
+    "keywords": [
+      "oracle",
+      "price manipulation",
+      "defi security",
+      "twap"
+    ]
+  },
+  {
+    "title": "Event Indexer for Smart Contract Data",
+    "description": "Reads contract events from a node, stores them in a relational database and serves queries through an API, handling chain reorganisations without leaving stale rows.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Node.js",
+      "ethers.js",
+      "PostgreSQL",
+      "Express"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Event logs",
+      "Reorg handling",
+      "Indexing pipelines",
+      "API design"
+    ],
+    "keywords": [
+      "indexer",
+      "events",
+      "reorg",
+      "ethereum"
+    ]
+  },
+  {
+    "title": "Cross-Chain Bridge Concept Simulation",
+    "description": "Simulates locking assets on one chain and minting wrapped assets on another with relayers and confirmations, and walks through how common bridge failures arise.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Node.js",
+      "Ethereum"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Lock and mint design",
+      "Relayers",
+      "Failure modes",
+      "Trust assumptions"
+    ],
+    "keywords": [
+      "bridge",
+      "cross chain",
+      "relayer",
+      "wrapped tokens"
+    ]
+  },
+  {
+    "title": "Prediction Market Contract",
+    "description": "Lets participants trade shares in the outcome of an event, prices them with an automated market maker and settles from a trusted resolution source with dispute handling.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "React",
+      "Ethereum"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Automated market makers",
+      "Settlement",
+      "Dispute handling",
+      "Frontend integration"
+    ],
+    "keywords": [
+      "prediction market",
+      "amm",
+      "settlement",
+      "markets"
+    ]
+  },
+  {
+    "title": "Time-Locked Inheritance Wallet",
+    "description": "Lets an owner designate beneficiaries who can claim funds only after a long period of inactivity, with a simple check-in action that resets the timer.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Ethereum",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Time locks",
+      "Heartbeat patterns",
+      "Access control",
+      "Security review"
+    ],
+    "keywords": [
+      "inheritance",
+      "time lock",
+      "dead mans switch",
+      "wallet"
+    ]
+  },
+  {
+    "title": "Streaming Salary Payments Contract",
+    "description": "Pays an employee continuously by the second from an employer's deposit, supports pausing and cancellation and shows balances updating in real time.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "React",
+      "Web3.js"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Continuous payments",
+      "Rate calculation",
+      "State accounting",
+      "Frontend updates"
+    ],
+    "keywords": [
+      "streaming payments",
+      "salary",
+      "cashflow",
+      "contract"
+    ]
+  },
+  {
+    "title": "Rotating Savings Group Contract",
+    "description": "Implements a community savings circle where members contribute each round and one member receives the pot in turn, with rules for missed contributions.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Ethereum",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Group finance logic",
+      "Round scheduling",
+      "Default handling",
+      "Testing"
+    ],
+    "keywords": [
+      "savings circle",
+      "rosca",
+      "group finance",
+      "contract"
+    ]
+  },
+  {
+    "title": "Bug Bounty Escrow with Staged Payouts",
+    "description": "Escrows a bounty for a software project, releases staged payments as reports are verified by a reviewer panel and returns unspent funds after the deadline.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Ethereum",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Escrow patterns",
+      "Multi-signature approvals",
+      "Payment staging"
+    ],
+    "keywords": [
+      "bug bounty",
+      "escrow",
+      "review",
+      "payouts"
+    ]
+  },
+  {
+    "title": "Gasless Meta-Transaction Relay",
+    "description": "Lets users interact with a contract without holding native currency by signing messages that a relayer submits, protecting against replayed or forged requests.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "ethers.js",
+      "Node.js"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Meta-transactions",
+      "Signature verification",
+      "Replay protection",
+      "Relayer economics"
+    ],
+    "keywords": [
+      "meta transactions",
+      "relayer",
+      "signatures",
+      "gasless"
+    ]
+  },
+  {
+    "title": "Wallet with Spending Limits and Social Recovery",
+    "description": "Builds a smart wallet that caps daily spending and lets trusted guardians help recover access after a lost key, with delays that give the owner time to object.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "OpenZeppelin",
+      "React"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Account abstraction concepts",
+      "Guardians",
+      "Recovery delays",
+      "Security design"
+    ],
+    "keywords": [
+      "smart wallet",
+      "social recovery",
+      "spending limit",
+      "guardians"
+    ]
+  },
+  {
+    "title": "Blockchain Data Structure Visualiser for Teaching",
+    "description": "Animates how transactions are grouped into blocks and hashed into a chain, lets learners change data and shows exactly which hashes break as a result.",
+    "domain": "Blockchain",
+    "technologies": [
+      "JavaScript",
+      "React",
+      "D3.js"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Hashing",
+      "Merkle trees",
+      "Interactive visualisation"
+    ],
+    "keywords": [
+      "blockchain education",
+      "hashing",
+      "merkle tree",
+      "visualisation"
+    ]
+  },
+  {
+    "title": "Smart Contract Fuzzing and Invariant Testing",
+    "description": "Writes invariant tests that hold whatever sequence of calls is made to a small lending contract and uses fuzzing to find the inputs that break them.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Foundry",
+      "Ethereum"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Fuzz testing",
+      "Invariants",
+      "Test design",
+      "Vulnerability discovery"
+    ],
+    "keywords": [
+      "fuzzing",
+      "invariants",
+      "foundry",
+      "testing"
+    ]
+  },
+  {
+    "title": "Token Bonding Curve Simulator",
+    "description": "Simulates tokens priced by a bonding curve, so buying raises the price and selling lowers it, and explores how curve shape affects early buyers and liquidity.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Bonding curves",
+      "Price discovery",
+      "Parameter exploration",
+      "Visualisation"
+    ],
+    "keywords": [
+      "bonding curve",
+      "token economics",
+      "pricing",
+      "simulation"
+    ]
+  },
+  {
+    "title": "Pull-Payment Subscription Contract",
+    "description": "Lets customers authorise recurring charges up to a limit and period, so a merchant can collect each cycle without the customer signing again and the customer can cancel any time.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Ethereum",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Allowances",
+      "Recurring payments",
+      "Cancellation",
+      "Security checks"
+    ],
+    "keywords": [
+      "subscription",
+      "allowance",
+      "recurring payments",
+      "pull payment"
+    ]
+  },
+  {
+    "title": "Hash Time-Locked Contract Atomic Swap Demo",
+    "description": "Demonstrates swapping assets between two chains without a trusted party using hash and time locks, and shows what happens when either side walks away.",
+    "domain": "Blockchain",
+    "technologies": [
+      "Solidity",
+      "Hardhat",
+      "Node.js",
+      "Ethereum"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Hash time locks",
+      "Atomic swaps",
+      "Timeout design",
+      "Protocol analysis"
+    ],
+    "keywords": [
+      "htlc",
+      "atomic swap",
+      "hash lock",
+      "cross chain"
+    ]
+  }
+]

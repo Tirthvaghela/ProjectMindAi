@@ -1,0 +1,376 @@
+[
+  {
+    "title": "Clean a Messy Spreadsheet: A Data Cleaning Playbook",
+    "description": "Takes a deliberately dirty sales workbook with mixed date formats, duplicate rows and misspelt categories and cleans it step by step, logging every change so the result can be audited and the process rerun.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Jupyter"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Data cleaning",
+      "Reproducible workflows",
+      "Change logging",
+      "Validation checks"
+    ],
+    "keywords": [
+      "data cleaning",
+      "pandas",
+      "reproducibility",
+      "audit"
+    ]
+  },
+  {
+    "title": "SQL Analytics Workbook for a Bike-Share Dataset",
+    "description": "Answers twenty business questions about trips and stations in SQL, from simple counts to window functions, and builds a short report that pairs each query with its chart and a plain-language reading.",
+    "domain": "Data Science",
+    "technologies": [
+      "SQL",
+      "SQLite",
+      "DuckDB",
+      "Jupyter"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "SQL aggregation",
+      "Window functions",
+      "Query writing",
+      "Reporting"
+    ],
+    "keywords": [
+      "sql",
+      "window functions",
+      "analytics",
+      "duckdb"
+    ]
+  },
+  {
+    "title": "Exploratory Analysis of a Public Health Survey in R",
+    "description": "Cleans a national health survey extract, weights responses and plots patterns by age group and region, with every chart labelled to avoid implying causes the data cannot support.",
+    "domain": "Data Science",
+    "technologies": [
+      "R",
+      "tidyverse",
+      "ggplot2",
+      "survey"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Survey weighting",
+      "Tidy data",
+      "Honest charts",
+      "R Markdown"
+    ],
+    "keywords": [
+      "survey",
+      "r",
+      "ggplot2",
+      "health data"
+    ]
+  },
+  {
+    "title": "Dashboard of Municipal Budget Spending with Apache Superset",
+    "description": "Loads city budget files into a database and builds drill-down dashboards by department and year, documenting the assumptions behind each measure so citizens can check the numbers.",
+    "domain": "Data Science",
+    "technologies": [
+      "Apache Superset",
+      "PostgreSQL",
+      "SQL",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Dashboard design",
+      "Data modelling",
+      "Documentation",
+      "Public data"
+    ],
+    "keywords": [
+      "budget",
+      "dashboard",
+      "superset",
+      "open data"
+    ]
+  },
+  {
+    "title": "Large Taxi Trip Dataset Processing with Apache Spark",
+    "description": "Processes tens of millions of trip records with Spark, compares the same aggregations on one machine and on a small cluster, and reports where partitioning and caching change runtimes.",
+    "domain": "Data Science",
+    "technologies": [
+      "Apache Spark",
+      "PySpark",
+      "Parquet",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Distributed processing",
+      "Partitioning",
+      "Performance comparison",
+      "Columnar formats"
+    ],
+    "keywords": [
+      "spark",
+      "big data",
+      "parquet",
+      "performance"
+    ]
+  },
+  {
+    "title": "Analytics Engineering Project with dbt and Tests",
+    "description": "Models raw order data into tested staging and mart tables with dbt, adds data quality tests for keys and accepted values and shows what breaks, and how it is caught, when the source changes.",
+    "domain": "Data Science",
+    "technologies": [
+      "dbt",
+      "PostgreSQL",
+      "SQL",
+      "GitHub Actions"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Data modelling",
+      "Automated tests",
+      "Documentation",
+      "Continuous integration"
+    ],
+    "keywords": [
+      "dbt",
+      "analytics engineering",
+      "data quality",
+      "testing"
+    ]
+  },
+  {
+    "title": "Fast Dataframe Pipeline Comparison: Pandas, Polars and DuckDB",
+    "description": "Implements one analysis three ways on a multi-gigabyte file, measures time and memory, and writes guidance on when each tool is the right choice for a student laptop. Includes a reproducible benchmark script.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Polars",
+      "DuckDB"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Benchmarking",
+      "Memory profiling",
+      "Tool selection",
+      "Query engines"
+    ],
+    "keywords": [
+      "polars",
+      "duckdb",
+      "benchmark",
+      "dataframes"
+    ]
+  },
+  {
+    "title": "A/B Test Power and Sample Size Planner",
+    "description": "Lets a user enter a baseline rate and the smallest change worth detecting, computes the needed sample size and simulates repeated experiments to show how often wrong conclusions appear when tests are stopped early.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "SciPy",
+      "Streamlit",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 6,
+    "skills": [
+      "Statistical power",
+      "Simulation",
+      "Peeking problems",
+      "Interactive tools"
+    ],
+    "keywords": [
+      "ab testing",
+      "power analysis",
+      "simulation",
+      "statistics"
+    ]
+  },
+  {
+    "title": "Carbon Footprint Calculator for Campus Travel",
+    "description": "Estimates emissions from how students and staff travel to campus using published factors, shows which changes would save the most and states the uncertainty of each factor rather than a falsely exact total.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Plotly",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Emission factors",
+      "Uncertainty communication",
+      "Scenario analysis",
+      "Dashboards"
+    ],
+    "keywords": [
+      "carbon footprint",
+      "sustainability",
+      "emissions",
+      "scenarios"
+    ]
+  },
+  {
+    "title": "Household Energy Saving Recommender from Smart Meter Data",
+    "description": "Analyses half-hourly consumption to find standby loads and peak-time habits, estimates savings for each suggested change and ranks suggestions by effort and payback. Includes a plain-language summary page for householders.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "scikit-learn",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Load profiles",
+      "Savings estimation",
+      "Ranking advice",
+      "Visualisation"
+    ],
+    "keywords": [
+      "energy saving",
+      "smart meter",
+      "recommendations",
+      "sustainability"
+    ]
+  },
+  {
+    "title": "Reproducible Research Report with Quarto and Containers",
+    "description": "Packages an analysis as a Quarto document with pinned dependencies in a container so a reader can regenerate every figure with one command, and documents what was needed to make it reproduce.",
+    "domain": "Data Science",
+    "technologies": [
+      "Quarto",
+      "R",
+      "Docker",
+      "Git"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 6,
+    "skills": [
+      "Reproducibility",
+      "Dependency pinning",
+      "Literate programming",
+      "Containers"
+    ],
+    "keywords": [
+      "reproducibility",
+      "quarto",
+      "docker",
+      "research"
+    ]
+  },
+  {
+    "title": "Bias Audit of a Public Benchmark Dataset",
+    "description": "Examines who is and is not represented in a popular open dataset, measures performance gaps of a simple model across groups and writes a datasheet documenting limits and recommended uses.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Fairlearn",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Dataset documentation",
+      "Subgroup analysis",
+      "Responsible reporting",
+      "Limitations"
+    ],
+    "keywords": [
+      "bias audit",
+      "datasheet",
+      "fairness",
+      "benchmark"
+    ]
+  },
+  {
+    "title": "Time Series Forecasting Competition Harness",
+    "description": "Builds an evaluation harness that scores forecasting methods under rolling origins with identical data access, preventing leakage by design and producing a leaderboard with confidence intervals.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "statsmodels",
+      "Prophet",
+      "pytest"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Fair evaluation",
+      "Rolling origins",
+      "Leakage prevention",
+      "Statistical comparison"
+    ],
+    "keywords": [
+      "forecasting",
+      "harness",
+      "evaluation",
+      "leakage"
+    ]
+  },
+  {
+    "title": "Hospital Waiting Time Analysis with Queueing Theory",
+    "description": "Fits arrival and service patterns for an emergency department from open data, compares a queueing model with a discrete-event simulation and tests staffing changes against both.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "SimPy",
+      "SciPy",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Queueing models",
+      "Simulation",
+      "Model comparison",
+      "Staffing scenarios"
+    ],
+    "keywords": [
+      "queueing",
+      "simulation",
+      "emergency department",
+      "waiting times"
+    ]
+  },
+  {
+    "title": "Geospatial Accessibility Analysis of Public Services",
+    "description": "Computes travel-time catchments to clinics and schools from road networks, finds neighbourhoods with poor access and tests how siting one new facility changes coverage. Includes a map layer for each scenario.",
+    "domain": "Data Science",
+    "technologies": [
+      "Python",
+      "OSMnx",
+      "GeoPandas",
+      "NetworkX"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Network analysis",
+      "Catchment areas",
+      "Spatial equity",
+      "Scenario testing"
+    ],
+    "keywords": [
+      "accessibility",
+      "osmnx",
+      "spatial analysis",
+      "equity"
+    ]
+  }
+]

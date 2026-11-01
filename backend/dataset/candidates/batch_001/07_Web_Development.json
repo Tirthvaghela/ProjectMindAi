@@ -1,0 +1,796 @@
+[
+  {
+    "title": "Collaborative Spreadsheet with a Formula Dependency Graph",
+    "description": "Builds a browser spreadsheet where cells hold formulas, recalculating only the cells affected by an edit through a dependency graph and detecting circular references before they freeze the page.",
+    "domain": "Web Development",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Socket.IO"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 13,
+    "skills": [
+      "Dependency graphs",
+      "Incremental recalculation",
+      "Real-time sync",
+      "Parser design"
+    ],
+    "keywords": [
+      "spreadsheet",
+      "dependency graph",
+      "formulas",
+      "real time"
+    ]
+  },
+  {
+    "title": "Client-Side Search Index for Static Sites",
+    "description": "Generates an inverted index at build time and searches it in the browser with ranking and prefix matching, so a documentation site gets search without any server.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "Node.js",
+      "Web Workers",
+      "Vite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Inverted indexes",
+      "Build pipelines",
+      "Browser performance",
+      "Ranking basics"
+    ],
+    "keywords": [
+      "static site",
+      "search index",
+      "inverted index",
+      "client side"
+    ]
+  },
+  {
+    "title": "Feature Flag Service with Percentage Rollouts",
+    "description": "Serves feature flags to client apps with targeting rules and gradual percentage rollouts that keep each user in a stable bucket, and records which flag state each request saw.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "Redis",
+      "PostgreSQL"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Deterministic bucketing",
+      "Rule evaluation",
+      "Caching",
+      "Audit logging"
+    ],
+    "keywords": [
+      "feature flags",
+      "rollout",
+      "targeting",
+      "bucketing"
+    ]
+  },
+  {
+    "title": "API Gateway with Keys, Quotas and Usage Metering",
+    "description": "Fronts a small API with key issuing, per-key rate limits and monthly quotas, and shows each customer their usage in a dashboard built from the same metering data.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "Redis",
+      "PostgreSQL"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Rate limiting algorithms",
+      "API key management",
+      "Metering",
+      "Dashboards"
+    ],
+    "keywords": [
+      "api gateway",
+      "rate limiting",
+      "quotas",
+      "metering"
+    ]
+  },
+  {
+    "title": "Webhook Delivery Service with Retries and Signatures",
+    "description": "Delivers event notifications to subscriber URLs with signed payloads, exponential backoff retries, a dead-letter queue and a log showing every attempt and response.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Redis",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Reliable delivery",
+      "HMAC signatures",
+      "Backoff strategies",
+      "Failure handling"
+    ],
+    "keywords": [
+      "webhooks",
+      "retries",
+      "hmac",
+      "dead letter"
+    ]
+  },
+  {
+    "title": "Offline-Capable Textbook Reader as a Progressive Web App",
+    "description": "Lets students download chapters for offline reading, keeps notes and highlights in local storage, and syncs them when the connection returns without losing edits.",
+    "domain": "Web Development",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "IndexedDB",
+      "Workbox"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Service workers",
+      "Offline storage",
+      "Sync strategies",
+      "Installability"
+    ],
+    "keywords": [
+      "pwa",
+      "offline",
+      "service worker",
+      "indexeddb"
+    ]
+  },
+  {
+    "title": "Live Election Results Dashboard with Server-Sent Events",
+    "description": "Streams constituency results to thousands of viewers using server-sent events, with charts that update smoothly and a replay mode for reviewing how the count evolved.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "React",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Server-sent events",
+      "Streaming updates",
+      "Data visualisation",
+      "Load behaviour"
+    ],
+    "keywords": [
+      "server sent events",
+      "live results",
+      "streaming",
+      "charts"
+    ]
+  },
+  {
+    "title": "GraphQL API for a Library Catalogue with Batched Loading",
+    "description": "Exposes books, authors and loans through a GraphQL schema and uses batching to avoid the N+1 query problem, showing query counts before and after.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "GraphQL",
+      "PostgreSQL",
+      "Apollo Server"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Schema design",
+      "Resolvers",
+      "Batching with dataloaders",
+      "Query profiling"
+    ],
+    "keywords": [
+      "graphql",
+      "n plus one",
+      "dataloader",
+      "schema"
+    ]
+  },
+  {
+    "title": "OAuth Sign-In Integration with Secure Session Handling",
+    "description": "Adds sign-in with an external identity provider using the authorisation code flow with PKCE, and secures the resulting session with careful cookie settings and logout handling.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Redis"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "OAuth 2.0 flows",
+      "PKCE",
+      "Session security",
+      "CSRF defences"
+    ],
+    "keywords": [
+      "oauth",
+      "pkce",
+      "sessions",
+      "authentication"
+    ]
+  },
+  {
+    "title": "Markdown Resume Builder with Print Stylesheets",
+    "description": "Turns a Markdown file into a clean, printable resume with selectable themes, so layout is controlled entirely with CSS and prints correctly to A4 and Letter.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "CSS",
+      "Vite",
+      "Markdown-it"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Markdown parsing",
+      "Print CSS",
+      "Theming",
+      "Static builds"
+    ],
+    "keywords": [
+      "resume",
+      "markdown",
+      "print css",
+      "themes"
+    ]
+  },
+  {
+    "title": "CSS Grid and Flexbox Playground for Learners",
+    "description": "Provides an interactive page where changing layout properties updates a live preview and shows the generated CSS, with guided challenges that check the learner's result.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "CSS",
+      "React"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "CSS layout models",
+      "Interactive tooling",
+      "Challenge validation"
+    ],
+    "keywords": [
+      "css grid",
+      "flexbox",
+      "learning",
+      "playground"
+    ]
+  },
+  {
+    "title": "Browser Image Editor with Canvas Filters",
+    "description": "Edits images entirely in the browser with crop, rotate, brightness and convolution filters on a canvas, with undo history and exports that never leave the device.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "HTML Canvas",
+      "React",
+      "Web Workers"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Canvas pixel operations",
+      "Convolution",
+      "Undo stacks",
+      "Worker offloading"
+    ],
+    "keywords": [
+      "canvas",
+      "image editing",
+      "filters",
+      "undo"
+    ]
+  },
+  {
+    "title": "In-Browser SQL Playground with Guided Exercises",
+    "description": "Runs SQLite compiled to WebAssembly in the page so learners can practise queries against sample databases, with exercises that compare their result sets with the expected ones.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "SQLite",
+      "WebAssembly",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "WebAssembly",
+      "SQL",
+      "Exercise checking",
+      "Browser storage"
+    ],
+    "keywords": [
+      "sql",
+      "webassembly",
+      "playground",
+      "education"
+    ]
+  },
+  {
+    "title": "Localised Storefront with Locale Formatting and Right-to-Left Layout",
+    "description": "Builds a storefront that switches language, currency, date and number formats at runtime and mirrors its layout correctly for right-to-left languages.",
+    "domain": "Web Development",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "PostgreSQL"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Internationalisation",
+      "Locale formatting",
+      "RTL layout",
+      "Translation workflow"
+    ],
+    "keywords": [
+      "i18n",
+      "rtl",
+      "localisation",
+      "formatting"
+    ]
+  },
+  {
+    "title": "Multi-Tenant SaaS Starter with Row-Level Isolation",
+    "description": "Hosts many customer organisations in one database with row-level security policies, and proves with automated tests that one tenant can never read or write another's data.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Multi-tenancy",
+      "Row-level security",
+      "Tenant-aware testing",
+      "Migrations"
+    ],
+    "keywords": [
+      "multi tenant",
+      "row level security",
+      "saas",
+      "isolation"
+    ]
+  },
+  {
+    "title": "Link Preview Service with Server-Side Request Forgery Defences",
+    "description": "Fetches titles and images for pasted links while blocking requests to internal addresses, redirects to private ranges and oversized responses, with tests that attempt each attack.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "Redis",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "SSRF defences",
+      "Safe HTTP fetching",
+      "Caching",
+      "Security testing"
+    ],
+    "keywords": [
+      "ssrf",
+      "link preview",
+      "security",
+      "fetching"
+    ]
+  },
+  {
+    "title": "Web Components Design System Library",
+    "description": "Publishes a small set of accessible buttons, dialogs and form controls as framework-independent web components with documented tokens and keyboard behaviour.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "Web Components",
+      "CSS",
+      "Storybook"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Custom elements",
+      "Shadow DOM",
+      "Accessibility",
+      "Design tokens"
+    ],
+    "keywords": [
+      "web components",
+      "design system",
+      "shadow dom",
+      "accessibility"
+    ]
+  },
+  {
+    "title": "Windowed Infinite List for Large Datasets",
+    "description": "Renders a list of hundreds of thousands of rows by drawing only the visible slice, handling variable row heights and scroll restoration, and measures the memory saved.",
+    "domain": "Web Development",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Vite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Virtualisation",
+      "Scroll mechanics",
+      "Performance profiling",
+      "Component design"
+    ],
+    "keywords": [
+      "virtual list",
+      "windowing",
+      "performance",
+      "scrolling"
+    ]
+  },
+  {
+    "title": "Quiz Show Host with WebSocket Lobbies",
+    "description": "Runs live multiplayer quizzes where a host creates a lobby, players join with a code and answers are scored by speed and correctness, with reconnection handling for dropped players.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Socket.IO",
+      "React",
+      "Redis"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "WebSockets",
+      "Room management",
+      "State reconciliation",
+      "Scoring"
+    ],
+    "keywords": [
+      "websocket",
+      "lobby",
+      "quiz",
+      "real time"
+    ]
+  },
+  {
+    "title": "Personal Knowledge Wiki with Backlinks",
+    "description": "Stores linked notes in Markdown, detects references between them to show backlinks and a graph view, and offers full-text search across every note.",
+    "domain": "Web Development",
+    "technologies": [
+      "React",
+      "Node.js",
+      "SQLite",
+      "Markdown-it"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Link parsing",
+      "Graph views",
+      "Full-text search",
+      "Markdown processing"
+    ],
+    "keywords": [
+      "wiki",
+      "backlinks",
+      "notes",
+      "knowledge graph"
+    ]
+  },
+  {
+    "title": "Typing Practice with Keystroke Analytics",
+    "description": "Measures typing speed and accuracy as a user types, and breaks the results down by key and finger to show which letters cause the most errors over time.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "React",
+      "Chart.js"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Keyboard events",
+      "Statistics",
+      "Chart design",
+      "Local persistence"
+    ],
+    "keywords": [
+      "typing test",
+      "keystroke",
+      "accuracy",
+      "analytics"
+    ]
+  },
+  {
+    "title": "Recipe Scaler and Unit Converter",
+    "description": "Scales ingredient quantities to a chosen number of servings and converts between metric and imperial units, rounding sensibly to measures a cook can actually use.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "React",
+      "CSS"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Unit conversion",
+      "Rounding rules",
+      "Form handling",
+      "Testing edge cases"
+    ],
+    "keywords": [
+      "recipe",
+      "scaling",
+      "units",
+      "conversion"
+    ]
+  },
+  {
+    "title": "Responsive HTML Email Template Builder",
+    "description": "Builds email templates from reusable blocks that render consistently across mail clients by generating table-based markup with inlined styles, and previews them at several widths.",
+    "domain": "Web Development",
+    "technologies": [
+      "React",
+      "Node.js",
+      "MJML",
+      "Express"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Email rendering constraints",
+      "Template composition",
+      "Inlining styles",
+      "Preview tooling"
+    ],
+    "keywords": [
+      "email templates",
+      "responsive",
+      "mjml",
+      "html"
+    ]
+  },
+  {
+    "title": "Social Card Image Generator Service",
+    "description": "Generates preview images for shared pages from a template and page metadata on demand, caching results so repeated shares are served instantly.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "Redis",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "HTML to image rendering",
+      "Caching",
+      "Template design",
+      "Service deployment"
+    ],
+    "keywords": [
+      "open graph",
+      "image generation",
+      "caching",
+      "social"
+    ]
+  },
+  {
+    "title": "Website Performance Budget Monitor",
+    "description": "Runs automated performance audits against pages on every change and fails a build when load time, script size or layout shift exceed agreed budgets, charting the trend.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Lighthouse",
+      "GitHub Actions",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Web performance metrics",
+      "Budgets",
+      "CI integration",
+      "Trend reporting"
+    ],
+    "keywords": [
+      "performance budget",
+      "lighthouse",
+      "ci",
+      "web vitals"
+    ]
+  },
+  {
+    "title": "Idempotent Payments API Simulation",
+    "description": "Implements a payments endpoint that stays correct when clients retry, using idempotency keys and a state machine, and tests duplicate requests and mid-request failures.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Idempotency",
+      "State machines",
+      "Transactional integrity",
+      "Failure testing"
+    ],
+    "keywords": [
+      "idempotency",
+      "payments",
+      "retries",
+      "state machine"
+    ]
+  },
+  {
+    "title": "Search Box with Debounce, Caching and Keyboard Navigation",
+    "description": "Builds a type-ahead search box that waits for the user to pause, caches earlier results and supports full keyboard control with accessible announcements.",
+    "domain": "Web Development",
+    "technologies": [
+      "React",
+      "JavaScript",
+      "CSS"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Debouncing",
+      "Client-side caching",
+      "Keyboard accessibility",
+      "Race conditions"
+    ],
+    "keywords": [
+      "typeahead",
+      "debounce",
+      "accessibility",
+      "caching"
+    ]
+  },
+  {
+    "title": "Web Push Notification Service",
+    "description": "Lets users subscribe to browser notifications, stores their subscriptions and sends targeted messages with delivery tracking, while handling expired subscriptions cleanly.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "PostgreSQL",
+      "Workbox"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Push API",
+      "Subscription lifecycle",
+      "VAPID keys",
+      "Delivery tracking"
+    ],
+    "keywords": [
+      "web push",
+      "notifications",
+      "service worker",
+      "subscriptions"
+    ]
+  },
+  {
+    "title": "Event-Sourced Order Tracking Backend",
+    "description": "Stores every change to an order as an immutable event and rebuilds current state and history from the event log, with projections that power a customer tracking page.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "PostgreSQL",
+      "Express",
+      "Redis"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Event sourcing",
+      "Projections",
+      "Consistency",
+      "Replay"
+    ],
+    "keywords": [
+      "event sourcing",
+      "cqrs",
+      "projections",
+      "orders"
+    ]
+  },
+  {
+    "title": "Cookie Consent Manager with Auditable Preferences",
+    "description": "Collects visitors' cookie choices, only loads optional scripts after consent and keeps a timestamped record of each decision that can be shown on request.",
+    "domain": "Web Development",
+    "technologies": [
+      "JavaScript",
+      "Node.js",
+      "Express",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Consent logic",
+      "Conditional script loading",
+      "Audit trails",
+      "Privacy basics"
+    ],
+    "keywords": [
+      "cookie consent",
+      "privacy",
+      "audit",
+      "gdpr"
+    ]
+  },
+  {
+    "title": "Shared Reading List with Link Archiving",
+    "description": "Lets a group save articles to a shared list with tags and notes, and stores a readable copy of each page so links keep working after the original disappears.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "SQLite",
+      "React"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Content extraction",
+      "Archiving",
+      "Tagging",
+      "Shared state"
+    ],
+    "keywords": [
+      "reading list",
+      "archive",
+      "readability",
+      "tags"
+    ]
+  },
+  {
+    "title": "Status Page and Uptime Checker",
+    "description": "Probes a list of endpoints on a schedule, records response times, opens and closes incidents automatically and publishes a public page showing current status and past uptime.",
+    "domain": "Web Development",
+    "technologies": [
+      "Node.js",
+      "PostgreSQL",
+      "React",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Scheduled jobs",
+      "Incident modelling",
+      "Availability calculations",
+      "Public status pages"
+    ],
+    "keywords": [
+      "uptime",
+      "status page",
+      "monitoring",
+      "incidents"
+    ]
+  }
+]

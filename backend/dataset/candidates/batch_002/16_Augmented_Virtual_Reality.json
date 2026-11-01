@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Virtual Reality Fire Evacuation Drill with Decision Logging",
+    "description": "Places learners in a smoke-filled building where choices of exit are recorded, and produces a debrief showing hesitations, wrong turns and time to safety compared with a cohort average.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "C#",
+      "XR Interaction Toolkit",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 10,
+    "skills": [
+      "Scenario design",
+      "Decision logging",
+      "Debriefing",
+      "Safety training"
+    ],
+    "keywords": [
+      "vr training",
+      "evacuation",
+      "logging",
+      "debrief"
+    ]
+  },
+  {
+    "title": "Spatial Audio Orientation Aid for Visually Impaired Users",
+    "description": "Uses stereo sound cues from a headset and camera depth data to signal obstacles and doorways, and evaluates with volunteers how quickly they navigate a marked course compared with a cane alone.",
+    "domain": "Augmented & Virtual Reality",
+    "technologies": [
+      "Unity",
+      "C#",
+      "ARCore",
+      "FMOD"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Spatial audio",
+      "Depth sensing",
+      "Accessibility",
+      "User evaluation"
+    ],
+    "keywords": [
+      "spatial audio",
+      "accessibility",
+      "navigation",
+      "depth"
+    ]
+  }
+]

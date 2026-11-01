@@ -1,0 +1,24 @@
+# q15 predict student marks and performance
+02de0b 2
+0c3c71 2
+d2f644 2u
+1d36af 1
+23ecb1 1
+7196e8 1
+750ee5 1
+956e2c 1u
+f51d84 1u
+2d7a53 0
+2daa3c 0
+318ea6 0
+3c41c7 0
+57c8ce 0
+5df4c4 0
+7b5aa1 0
+7ccee8 0
+87a195 0
+9c1657 0
+a2bff7 0
+d07a21 0
+e9c089 0
+ee9c34 0

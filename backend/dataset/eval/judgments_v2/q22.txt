@@ -1,0 +1,19 @@
+# q22 encrypt files securely
+8799eb 2
+c78cbb 2
+291d07 1
+574681 1
+8674f3 1
+873c3a 1
+d07058 1
+34cb7d 1u
+4e5a2c 1u
+6eeb1b 1u
+827dda 1u
+00b6b2 0
+329bd3 0
+3f889e 0
+455337 0
+4c584e 0
+b14214 0
+c42c93 0

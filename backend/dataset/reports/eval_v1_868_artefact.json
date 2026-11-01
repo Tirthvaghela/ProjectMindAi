@@ -1,0 +1,202 @@
+{
+  "dataset": "v1",
+  "k": 5,
+  "configuration": {
+    "dense_weight": 0.8,
+    "sparse_weight": 0.2,
+    "technology_weight": 0.0,
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+  },
+  "catalogue": {
+    "project_count": 868,
+    "id_range": [
+      "pm-001",
+      "pm-868"
+    ],
+    "sha256": "37178c5d77d2a4792828b67f7b931990d870f1762cb74fd3b7e2754f6cf20188"
+  },
+  "max_project": null,
+  "result": {
+    "recall_at_k": 0.3353391339325438,
+    "mrr": 0.8466666666666666,
+    "ndcg_at_k": 0.6821182412873749,
+    "per_query": [
+      {
+        "query": "AI healthcare project",
+        "top1": "pm-001",
+        "recall": 0.16666666666666666,
+        "mrr": 1.0,
+        "ndcg": 0.8539316501572937
+      },
+      {
+        "query": "I want a computer vision project using Python",
+        "top1": "pm-622",
+        "recall": 0.046511627906976744,
+        "mrr": 0.5,
+        "ndcg": 0.36005461457723403
+      },
+      {
+        "query": "cybersecurity final year project",
+        "top1": "pm-780",
+        "recall": 0.029411764705882353,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.16958010263680806
+      },
+      {
+        "query": "machine learning for agriculture",
+        "top1": "pm-013",
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "React Flask full stack web application",
+        "top1": "pm-704",
+        "recall": 0.0392156862745098,
+        "mrr": 0.5,
+        "ndcg": 0.38356636737133565
+      },
+      {
+        "query": "IoT smart home automation",
+        "top1": "pm-024",
+        "recall": 0.5,
+        "mrr": 1.0,
+        "ndcg": 0.8539316501572937
+      },
+      {
+        "query": "blockchain voting system",
+        "top1": "pm-028",
+        "recall": 1.0,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "beginner NLP project",
+        "top1": "pm-601",
+        "recall": 0.2857142857142857,
+        "mrr": 0.5,
+        "ndcg": 0.38356636737133565
+      },
+      {
+        "query": "deep learning image classification",
+        "top1": "pm-559",
+        "recall": 0.06521739130434782,
+        "mrr": 0.3333333333333333,
+        "ndcg": 0.4468535299918563
+      },
+      {
+        "query": "smart attendance system",
+        "top1": "pm-003",
+        "recall": 0.42857142857142855,
+        "mrr": 1.0,
+        "ndcg": 0.6992148198508501
+      },
+      {
+        "query": "YOLOv8 object detection",
+        "top1": "pm-004",
+        "recall": 0.38461538461538464,
+        "mrr": 1.0,
+        "ndcg": 1.0
+      },
+      {
+        "query": "chatbot that answers questions from documents",
+        "top1": "pm-010",
+        "recall": 0.375,
+        "mrr": 1.0,
+        "ndcg": 0.6992148198508501
+      },
+      {
+        "query": "recommendation system with collaborative filtering",
+        "top1": "pm-011",
+        "recall": 0.4,
+        "mrr": 1.0,
+        "ndcg": 0.8687949224876582
+      },
+      {
+        "query": "fraud detection in banking transactions",
+        "top1": "pm-549",
+        "recall": 0.75,
+        "mrr": 0.5,
+        "ndcg": 0.592512031964586
+      },
+      {
+        "query": "predict student marks and performance",
+        "top1": "pm-240",
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "ndcg": 0.6548086577531307
+      },
+      {
+        "query": "audio and music processing project",
+        "top1": "pm-570",
+        "recall": 0.10714285714285714,
+        "mrr": 0.5,
+        "ndcg": 0.5296347172140421
+      },
+      {
+        "query": "time series forecasting stock market",
+        "top1": "pm-018",
+        "recall": 0.2857142857142857,
+        "mrr": 1.0,
+        "ndcg": 0.5531464700081437
+      },
+      {
+        "query": "mobile app development with React Native",
+        "top1": "pm-342",
+        "recall": 0.25,
+        "mrr": 1.0,
+        "ndcg": 0.7860137352654724
+      },
+      {
+        "query": "docker kubernetes devops pipeline",
+        "top1": "pm-041",
+        "recall": 0.16666666666666666,
+        "mrr": 1.0,
+        "ndcg": 0.8687949224876582
+      },
+      {
+        "query": "augmented reality mobile application",
+        "top1": "pm-043",
+        "recall": 0.2727272727272727,
+        "mrr": 1.0,
+        "ndcg": 0.7227265726449519
+      },
+      {
+        "query": "robot that avoids obstacles",
+        "top1": "pm-045",
+        "recall": 0.36363636363636365,
+        "mrr": 1.0,
+        "ndcg": 0.8687949224876582
+      },
+      {
+        "query": "encrypt files securely",
+        "top1": "pm-033",
+        "recall": 0.5,
+        "mrr": 1.0,
+        "ndcg": 0.6131471927654584
+      },
+      {
+        "query": "resume screening for recruitment",
+        "top1": "pm-006",
+        "recall": 0.4,
+        "mrr": 1.0,
+        "ndcg": 0.8687949224876582
+      },
+      {
+        "query": "detect fake news and misinformation",
+        "top1": "pm-009",
+        "recall": 0.4,
+        "mrr": 1.0,
+        "ndcg": 0.5531464700081437
+      },
+      {
+        "query": "voice controlled assistant with speech recognition",
+        "top1": "pm-047",
+        "recall": 0.5,
+        "mrr": 1.0,
+        "ndcg": 0.7227265726449519
+      }
+    ],
+    "k": 5
+  }
+}

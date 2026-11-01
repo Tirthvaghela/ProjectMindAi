@@ -1,0 +1,202 @@
+[
+  {
+    "title": "Containerise a Three-Tier Web App Step by Step",
+    "description": "Packages a front end, API and database as containers with a compose file, health checks and persistent volumes, explaining each configuration choice and how to debug a container that will not start.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Docker",
+      "Docker Compose",
+      "Nginx",
+      "PostgreSQL"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Containers",
+      "Networking",
+      "Volumes",
+      "Health checks"
+    ],
+    "keywords": [
+      "docker",
+      "compose",
+      "three tier",
+      "containers"
+    ]
+  },
+  {
+    "title": "Continuous Integration Pipeline for a Student Repository",
+    "description": "Sets up automatic tests, linting and build checks on every pull request, caches dependencies to speed runs and reports the time saved by each pipeline improvement. Includes a short guide on reading failed runs.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "GitHub Actions",
+      "Node.js",
+      "Jest",
+      "ESLint"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Continuous integration",
+      "Caching",
+      "Quality gates",
+      "Pipeline timing"
+    ],
+    "keywords": [
+      "ci",
+      "github actions",
+      "linting",
+      "caching"
+    ]
+  },
+  {
+    "title": "Kubernetes Deployment with Rolling Updates and Probes",
+    "description": "Deploys a small service to a cluster with readiness and liveness probes, rolls out a new version without downtime and deliberately breaks it to show how rollbacks work. Includes a recorded walk-through of each failure.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Kubernetes",
+      "Helm",
+      "Docker",
+      "Minikube"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Deployments",
+      "Probes",
+      "Rollbacks",
+      "Helm charts"
+    ],
+    "keywords": [
+      "kubernetes",
+      "rolling update",
+      "probes",
+      "helm"
+    ]
+  },
+  {
+    "title": "Observability Stack with Metrics, Logs and Traces",
+    "description": "Instruments a small multi-service app and links metrics, logs and traces to find the cause of an injected slowdown, documenting the steps an on-call engineer would follow.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Prometheus",
+      "Grafana",
+      "OpenTelemetry",
+      "Loki"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Observability",
+      "Distributed tracing",
+      "Alerting",
+      "Incident diagnosis"
+    ],
+    "keywords": [
+      "observability",
+      "tracing",
+      "prometheus",
+      "incidents"
+    ]
+  },
+  {
+    "title": "Chaos Experiments for a Replicated Service",
+    "description": "Injects failures such as killed instances and delayed networks into a replicated service, states hypotheses beforehand and records whether the system behaved as expected.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Go",
+      "Kubernetes",
+      "Chaos Mesh",
+      "Prometheus"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Failure injection",
+      "Hypothesis testing",
+      "Resilience",
+      "Runbooks"
+    ],
+    "keywords": [
+      "chaos engineering",
+      "resilience",
+      "failure injection",
+      "kubernetes"
+    ]
+  },
+  {
+    "title": "Cloud Cost Dashboard for a Student Team Account",
+    "description": "Collects billing exports, attributes spend to services and tags, flags unusual daily spikes and sends a weekly summary so a team notices forgotten resources early. Includes a clear explanation of how each saving was estimated.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Python",
+      "AWS Cost Explorer",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Cost attribution",
+      "Anomaly flags",
+      "Tagging",
+      "Reporting"
+    ],
+    "keywords": [
+      "cloud cost",
+      "billing",
+      "anomalies",
+      "tagging"
+    ]
+  },
+  {
+    "title": "Blue-Green Deployment Demo with Database Migrations",
+    "description": "Switches traffic between two identical environments and handles database schema changes with backward-compatible steps, proving with load tests that no requests fail during the cutover.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Nginx",
+      "Docker",
+      "PostgreSQL",
+      "k6"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Zero-downtime releases",
+      "Schema migrations",
+      "Load testing",
+      "Traffic switching"
+    ],
+    "keywords": [
+      "blue green",
+      "migrations",
+      "zero downtime",
+      "k6"
+    ]
+  },
+  {
+    "title": "Self-Hosted Backup System with Restore Drills",
+    "description": "Backs up a small server with encrypted, deduplicated snapshots to cheap storage, schedules restore tests and reports how long recovery really takes compared with the stated goal.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "Restic",
+      "Bash",
+      "systemd",
+      "Backblaze B2"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Backups",
+      "Recovery objectives",
+      "Encryption",
+      "Restore testing"
+    ],
+    "keywords": [
+      "backup",
+      "restore",
+      "restic",
+      "recovery"
+    ]
+  }
+]

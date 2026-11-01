@@ -64,6 +64,11 @@ def create():
 
 
 @bp.post("/join")
+# Invite codes are the credential that grants membership, so guessing them is
+# the attack. Per-IP, with a slower hourly cap so a patient guesser is also
+# bounded; a bad code answers with the same 404 as before either way.
+@limiter.limit("10 per minute")
+@limiter.limit("60 per hour")
 def join():
     user = current_user()
     body = json_body()

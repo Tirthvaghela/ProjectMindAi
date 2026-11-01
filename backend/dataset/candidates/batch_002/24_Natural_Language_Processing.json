@@ -1,0 +1,77 @@
+[
+  {
+    "title": "Spelling Corrector for Student Essays with Edit-Distance Candidates",
+    "description": "Builds a spelling corrector using edit distance and word frequencies, then adds context from neighbouring words and measures how much context reduces wrong corrections of real words.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "NLTK",
+      "pytest",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Edit distance",
+      "Candidate ranking",
+      "Context models",
+      "Evaluation"
+    ],
+    "keywords": [
+      "spelling correction",
+      "edit distance",
+      "context",
+      "essays"
+    ]
+  },
+  {
+    "title": "Meeting Minutes Action Item Extractor",
+    "description": "Finds tasks, owners and due dates in meeting transcripts using rules and a small classifier, compares the two on hand-labelled transcripts and shows where each approach fails.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "spaCy",
+      "scikit-learn",
+      "FastAPI"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Information extraction",
+      "Rules versus learning",
+      "Annotation",
+      "Error analysis"
+    ],
+    "keywords": [
+      "action items",
+      "extraction",
+      "meetings",
+      "spacy"
+    ]
+  },
+  {
+    "title": "Question Answering over a University Handbook with Citations",
+    "description": "Answers student questions from a handbook by retrieving passages and quoting them, refuses when no passage supports an answer and measures how often answers are wrong or unsupported.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "sentence-transformers",
+      "FAISS",
+      "FastAPI"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Retrieval",
+      "Grounded answers",
+      "Refusal behaviour",
+      "Evaluation"
+    ],
+    "keywords": [
+      "question answering",
+      "retrieval",
+      "citations",
+      "handbook"
+    ]
+  }
+]

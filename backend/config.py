@@ -56,6 +56,13 @@ COLL_USERS = "users"
 COLL_SESSIONS = "sessions"
 COLL_TEAMS = "teams"
 COLL_TEAM_MESSAGES = "team_messages"
+# Module/workstream sub-teams under a parent team. Separate collections (not
+# embedded in `teams`) so a sub-team's chat and tasks never inflate or contend
+# with the parent document; every access is still authorised against the
+# parent's CURRENT roster (teams/subteams.py).
+COLL_SUB_TEAMS = "sub_teams"
+COLL_SUB_TEAM_MESSAGES = "sub_team_messages"
+COLL_SUB_TEAM_TASKS = "sub_team_tasks"
 COLL_NOTIFICATIONS = "notifications"
 # One learner-profile document per account; the users collection is untouched.
 COLL_PROFILES = "user_profiles"

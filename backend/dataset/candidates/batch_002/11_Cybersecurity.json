@@ -1,0 +1,202 @@
+[
+  {
+    "title": "Password Strength Estimator with Honest Guess Counts",
+    "description": "Estimates how many guesses an attacker would need for a password using dictionary, pattern and keyboard-walk checks, and explains in plain words why a long passphrase beats a short complex password.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "JavaScript",
+      "React",
+      "zxcvbn",
+      "Vitest"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Password entropy",
+      "Pattern matching",
+      "Usable security",
+      "Explanations"
+    ],
+    "keywords": [
+      "password strength",
+      "entropy",
+      "patterns",
+      "usable security"
+    ]
+  },
+  {
+    "title": "Phishing Email Anatomy Trainer",
+    "description": "Presents real-looking emails with clickable clues such as sender domain mismatches and urgent wording, scores the learner and shows which warning signs they missed most often.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "Node.js"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Phishing indicators",
+      "Training design",
+      "Feedback",
+      "Scoring"
+    ],
+    "keywords": [
+      "phishing",
+      "training",
+      "awareness",
+      "indicators"
+    ]
+  },
+  {
+    "title": "Home Network Port Scanner and Exposure Report",
+    "description": "Scans devices on a home network that the user owns, lists open services in plain language and suggests which ones to close, with clear ethical limits built into the tool.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Nmap",
+      "Scapy",
+      "Flask"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Port scanning",
+      "Network exposure",
+      "Responsible use",
+      "Reporting"
+    ],
+    "keywords": [
+      "port scan",
+      "exposure",
+      "home network",
+      "nmap"
+    ]
+  },
+  {
+    "title": "Log-Based Intrusion Detection with Sigma-Style Rules",
+    "description": "Writes detection rules for brute-force logins and unusual privilege use, runs them over sample authentication logs and measures alert volume, true detections and false alarms.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Elasticsearch",
+      "Sigma",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Detection rules",
+      "Log analysis",
+      "False alarm rates",
+      "Tuning"
+    ],
+    "keywords": [
+      "detection rules",
+      "logs",
+      "sigma",
+      "siem"
+    ]
+  },
+  {
+    "title": "Malware Behaviour Sandbox Report Parser",
+    "description": "Parses reports from an isolated analysis environment of benign test samples, extracts process, file and network behaviour and groups similar samples by behaviour for an analyst view.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Cuckoo-style reports",
+      "scikit-learn",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Behaviour features",
+      "Clustering",
+      "Safe analysis",
+      "Reporting"
+    ],
+    "keywords": [
+      "malware analysis",
+      "behaviour",
+      "clustering",
+      "sandbox"
+    ]
+  },
+  {
+    "title": "Software Dependency Vulnerability Scanner",
+    "description": "Reads dependency files from a project, matches versions against public advisory data and ranks findings by severity and whether the vulnerable function is actually reachable.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "OSV API",
+      "NetworkX",
+      "Click"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Dependency analysis",
+      "Advisory data",
+      "Reachability",
+      "Prioritisation"
+    ],
+    "keywords": [
+      "dependencies",
+      "vulnerabilities",
+      "advisories",
+      "osv"
+    ]
+  },
+  {
+    "title": "Multi-Factor Authentication Service with Recovery Codes",
+    "description": "Builds time-based one-time password login with rate limiting and one-use recovery codes, and tests lockout, clock drift and code reuse cases against a written security checklist.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "TOTP",
+      "PostgreSQL"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "One-time passwords",
+      "Rate limiting",
+      "Account recovery",
+      "Security testing"
+    ],
+    "keywords": [
+      "mfa",
+      "totp",
+      "recovery codes",
+      "authentication"
+    ]
+  },
+  {
+    "title": "Capture-the-Flag Platform for a Student Club",
+    "description": "Hosts challenges in isolated containers per team, tracks scores and hints, and prevents cross-team interference, with an operations guide for running a safe event. Includes a checklist for keeping the event legal and safe.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Django",
+      "Docker",
+      "Redis"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Isolation",
+      "Scoring",
+      "Challenge hosting",
+      "Event operations"
+    ],
+    "keywords": [
+      "ctf",
+      "docker",
+      "isolation",
+      "scoring"
+    ]
+  }
+]

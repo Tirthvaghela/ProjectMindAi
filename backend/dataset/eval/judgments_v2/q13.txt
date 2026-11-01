@@ -1,0 +1,20 @@
+# q13 recommendation system with collaborative filtering
+7a1daf 2
+dd8077 2
+f9cd94 2
+69183b 1
+7c463c 1
+9ec9d1 1
+bb5bbb 1
+092baa 0
+0ffa91 0
+265f89 0
+26fa89 0
+475cc7 0
+6048df 0
+89c3fe 0
+8e8a65 0
+9e6925 0
+c984c6 0
+dd8377 0
+ed6191 0u

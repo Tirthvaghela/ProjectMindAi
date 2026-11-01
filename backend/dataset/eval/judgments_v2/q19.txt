@@ -1,0 +1,27 @@
+# q19 docker kubernetes devops pipeline
+0e4584 2
+102a24 2
+1b3a91 2
+1d2faa 2
+20f135 2
+347b3b 2
+3ae4da 2
+3b59de 2
+3c2cec 2
+40d8ac 2
+44a776 2
+53b127 2
+646d25 2
+89bff1 2
+8c4d93 2
+ab6805 2
+bf42ec 2
+c76791 2
+e25581 2
+f9bc03 2
+1d5718 2u
+66f779 2u
+722575 1
+f6c922 1
+822fd6 1u
+b52b57 1u

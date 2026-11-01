@@ -1,0 +1,202 @@
+[
+  {
+    "title": "Expense Splitter for Flatmates on iOS",
+    "description": "Tracks shared bills among housemates, calculates who owes whom with the fewest payments and keeps data on the device with optional export, covering rounding and uneven splits with unit tests.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Swift",
+      "SwiftUI",
+      "Core Data",
+      "XCTest"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 7,
+    "skills": [
+      "Data modelling",
+      "Settlement algorithms",
+      "SwiftUI",
+      "Unit testing"
+    ],
+    "keywords": [
+      "ios",
+      "expenses",
+      "swiftui",
+      "settlement"
+    ]
+  },
+  {
+    "title": "Cross-Platform Campus Map with Offline Tiles",
+    "description": "Shows building locations and walking routes on a map that works without data after an initial download, comparing storage use and start-up time of two offline tile approaches.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite",
+      "OpenStreetMap"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Offline maps",
+      "Tile storage",
+      "Routing",
+      "Cross-platform UI"
+    ],
+    "keywords": [
+      "flutter",
+      "offline maps",
+      "campus",
+      "routing"
+    ]
+  },
+  {
+    "title": "Accessibility Audit Tool for Mobile Screens",
+    "description": "Walks through a running app and flags missing labels, small touch targets and low contrast, producing a report with screenshots and fixes ranked by how many users each issue affects.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "Android Accessibility API",
+      "Python",
+      "HTML"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Accessibility rules",
+      "UI inspection",
+      "Report design",
+      "Automation"
+    ],
+    "keywords": [
+      "accessibility",
+      "audit",
+      "mobile",
+      "touch targets"
+    ]
+  },
+  {
+    "title": "Medication Reminder App Designed for Older Adults",
+    "description": "Builds large-type, low-clutter reminders for daily tablets with a caregiver check-in, tested with a few older volunteers and revised twice based on what they struggled with.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "React Native",
+      "TypeScript",
+      "SQLite",
+      "Expo"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Inclusive design",
+      "Usability testing",
+      "Reminders",
+      "Iteration"
+    ],
+    "keywords": [
+      "older adults",
+      "reminders",
+      "usability",
+      "react native"
+    ]
+  },
+  {
+    "title": "Augmented Shelf Scanner using Barcodes and Local Lookup",
+    "description": "Scans product barcodes with the camera, looks details up in a local database first and an online one second, and shows how caching changes speed on a poor connection. Includes a test with deliberately damaged and missing codes.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "CameraX",
+      "ML Kit",
+      "Room"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Barcode scanning",
+      "Caching strategy",
+      "Camera APIs",
+      "Performance"
+    ],
+    "keywords": [
+      "barcode",
+      "camera",
+      "caching",
+      "android"
+    ]
+  },
+  {
+    "title": "App Size and Start-Up Time Optimisation Study",
+    "description": "Takes a sample app and reduces its package size and cold start time step by step, recording the measured effect of each change so students learn which optimisations matter most.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "Gradle",
+      "R8",
+      "Android Profiler"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 9,
+    "skills": [
+      "Profiling",
+      "Code shrinking",
+      "Start-up analysis",
+      "Evidence-based tuning"
+    ],
+    "keywords": [
+      "optimisation",
+      "app size",
+      "startup time",
+      "profiling"
+    ]
+  },
+  {
+    "title": "Language Flashcards with Spaced Repetition on Flutter",
+    "description": "Implements a spaced repetition scheduler from first principles, stores cards locally and charts how retention changes with different interval rules using simulated study histories.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite",
+      "Provider"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Scheduling algorithms",
+      "State management",
+      "Local storage",
+      "Simulation"
+    ],
+    "keywords": [
+      "spaced repetition",
+      "flashcards",
+      "flutter",
+      "scheduling"
+    ]
+  },
+  {
+    "title": "Crowd-Sourced Pothole Reporter with Photo Upload Queue",
+    "description": "Lets residents report road defects with a photo and location, queues uploads when offline and groups duplicate reports for the council by distance and time. Includes tests for lost connections mid-upload and for repeated submissions of one report.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "React Native",
+      "Node.js",
+      "MongoDB",
+      "Expo"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Offline queues",
+      "Geolocation",
+      "Duplicate grouping",
+      "Mobile backends"
+    ],
+    "keywords": [
+      "reporting",
+      "offline queue",
+      "geolocation",
+      "community"
+    ]
+  }
+]

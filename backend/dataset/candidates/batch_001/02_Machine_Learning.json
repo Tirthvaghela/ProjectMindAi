@@ -1,0 +1,648 @@
+[
+  {
+    "title": "Subscriber Survival Analysis for Time-to-Cancellation",
+    "description": "Models how long subscribers stay rather than only whether they leave, using Kaplan-Meier curves and a Cox model, and shows which plan features lengthen or shorten the expected lifetime.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "lifelines",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Survival analysis",
+      "Censored data",
+      "Hazard ratios",
+      "Result interpretation"
+    ],
+    "keywords": [
+      "survival analysis",
+      "cox model",
+      "retention",
+      "censoring"
+    ]
+  },
+  {
+    "title": "Uplift Modelling for Discount Targeting",
+    "description": "Estimates which customers are actually persuaded by a discount, rather than those who would buy anyway, by modelling the difference in outcome between treated and untreated groups.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Uplift modelling",
+      "Treatment effect estimation",
+      "Qini curves",
+      "Experiment data"
+    ],
+    "keywords": [
+      "uplift",
+      "causal",
+      "marketing",
+      "treatment effect"
+    ]
+  },
+  {
+    "title": "Propensity Score Matching for Evaluating a Tutoring Programme",
+    "description": "Estimates the effect of an optional tutoring scheme on exam results from observational records by matching similar students and checking covariate balance before and after matching.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "statsmodels",
+      "scikit-learn",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Causal inference",
+      "Propensity scores",
+      "Balance diagnostics",
+      "Bias awareness"
+    ],
+    "keywords": [
+      "causal inference",
+      "propensity score",
+      "matching",
+      "education"
+    ]
+  },
+  {
+    "title": "Probability Calibration Toolkit for Classifiers",
+    "description": "Checks whether predicted probabilities can be trusted by drawing reliability curves, then fixes miscalibrated models with Platt scaling and isotonic regression and reports the change in Brier score.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Matplotlib",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Probability calibration",
+      "Reliability diagrams",
+      "Brier score",
+      "Model evaluation"
+    ],
+    "keywords": [
+      "calibration",
+      "probabilities",
+      "brier score",
+      "reliability"
+    ]
+  },
+  {
+    "title": "Imbalanced Learning Benchmark on Rare-Event Datasets",
+    "description": "Compares resampling, class weighting and threshold moving on datasets where the positive class is under one percent, and reports precision-recall behaviour rather than accuracy.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "imbalanced-learn",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Imbalanced classification",
+      "Resampling methods",
+      "Precision-recall analysis",
+      "Cross-validation"
+    ],
+    "keywords": [
+      "class imbalance",
+      "smote",
+      "rare events",
+      "precision recall"
+    ]
+  },
+  {
+    "title": "Learning to Rank Search Results from Click Logs",
+    "description": "Trains a ranking model from simulated click data, corrects for position bias in the clicks, and evaluates the ordering with normalised discounted cumulative gain.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "LightGBM",
+      "Pandas",
+      "NumPy"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Learning to rank",
+      "Position bias",
+      "Ranking metrics",
+      "Gradient boosting"
+    ],
+    "keywords": [
+      "learning to rank",
+      "clicks",
+      "position bias",
+      "ndcg"
+    ]
+  },
+  {
+    "title": "Bus Arrival Time Prediction from Historical GPS Traces",
+    "description": "Predicts when a bus will reach each remaining stop using past trips, time of day and the delay already accumulated on the current route, and reports error by distance to the stop.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "scikit-learn",
+      "GeoPandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Time-series features",
+      "Spatial data",
+      "Regression",
+      "Error analysis"
+    ],
+    "keywords": [
+      "transit",
+      "arrival time",
+      "gps",
+      "regression"
+    ]
+  },
+  {
+    "title": "Perishable Stock Spoilage Predictor for Grocers",
+    "description": "Predicts how many units of fresh produce will spoil before sale from delivery date, storage temperature and sales rate, so ordering can be trimmed without causing stock-outs.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Regression",
+      "Feature engineering",
+      "Cost-sensitive evaluation",
+      "Inventory reasoning"
+    ],
+    "keywords": [
+      "spoilage",
+      "inventory",
+      "grocery",
+      "forecasting"
+    ]
+  },
+  {
+    "title": "Conformal Prediction Intervals for Delivery Time Estimates",
+    "description": "Wraps any regression model with conformal prediction so each delivery estimate comes with an interval that provably covers the true time at a chosen rate, and checks coverage by customer segment.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "MAPIE",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Conformal prediction",
+      "Coverage guarantees",
+      "Uncertainty quantification",
+      "Segment analysis"
+    ],
+    "keywords": [
+      "conformal prediction",
+      "uncertainty",
+      "intervals",
+      "delivery"
+    ]
+  },
+  {
+    "title": "Model Drift Monitor for a Deployed Classifier",
+    "description": "Detects when live input data no longer resembles training data using population stability and statistical tests, and raises an alert before accuracy visibly degrades.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Evidently",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Data drift detection",
+      "Statistical testing",
+      "Monitoring design",
+      "Alert thresholds"
+    ],
+    "keywords": [
+      "drift",
+      "monitoring",
+      "mlops",
+      "population stability"
+    ]
+  },
+  {
+    "title": "Bayesian Hyperparameter Optimisation Workbench",
+    "description": "Compares random search, grid search and Bayesian optimisation on the same models and budgets, and plots how quickly each finds good settings.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "Optuna",
+      "scikit-learn",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Hyperparameter tuning",
+      "Bayesian optimisation",
+      "Experiment design",
+      "Result visualisation"
+    ],
+    "keywords": [
+      "hyperparameters",
+      "bayesian optimisation",
+      "optuna",
+      "tuning"
+    ]
+  },
+  {
+    "title": "Quantile Regression for Energy Price Risk Bands",
+    "description": "Predicts the range a day-ahead electricity price is likely to fall in rather than one number, using quantile regression and evaluating the bands with pinball loss.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "statsmodels",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Quantile regression",
+      "Probabilistic forecasting",
+      "Pinball loss",
+      "Time-series features"
+    ],
+    "keywords": [
+      "quantile regression",
+      "price forecasting",
+      "risk",
+      "energy"
+    ]
+  },
+  {
+    "title": "Mobility Pattern Clustering from Anonymised Trip Records",
+    "description": "Groups commuters by when and where they travel using clustering on trip features, and describes each group in terms a transport planner can act on.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "GeoPandas",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Clustering",
+      "Feature scaling",
+      "Cluster validation",
+      "Spatial visualisation"
+    ],
+    "keywords": [
+      "clustering",
+      "mobility",
+      "transport",
+      "segmentation"
+    ]
+  },
+  {
+    "title": "Multi-Label Tagging of Support Articles",
+    "description": "Assigns several topic tags to each help-centre article at once with a multi-label classifier, and shows per-tag precision so weak tags can be reviewed by a person.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Multi-label classification",
+      "Text vectorisation",
+      "Per-class metrics"
+    ],
+    "keywords": [
+      "multi-label",
+      "tagging",
+      "tf-idf",
+      "classification"
+    ]
+  },
+  {
+    "title": "Semi-Supervised Image Feature Classifier with Few Labels",
+    "description": "Trains a classifier when only a tenth of the data is labelled by propagating labels through feature similarity, and charts accuracy against the number of true labels used.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Semi-supervised learning",
+      "Label propagation",
+      "Learning curves"
+    ],
+    "keywords": [
+      "semi supervised",
+      "label propagation",
+      "few labels",
+      "learning curve"
+    ]
+  },
+  {
+    "title": "Spare Part Demand Forecasting with Intermittent Series",
+    "description": "Forecasts demand for parts that sell in sporadic bursts using methods built for intermittent data, and shows why ordinary error metrics mislead on such series.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "statsmodels",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Intermittent demand",
+      "Croston methods",
+      "Forecast accuracy metrics",
+      "Time series"
+    ],
+    "keywords": [
+      "intermittent demand",
+      "croston",
+      "spare parts",
+      "forecasting"
+    ]
+  },
+  {
+    "title": "Feature Store Prototype for Reusable Model Inputs",
+    "description": "Builds a small feature store that computes features once, serves them consistently to training and prediction code, and prevents leakage from future data with point-in-time joins.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "DuckDB",
+      "FastAPI"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Feature engineering pipelines",
+      "Point-in-time correctness",
+      "API design",
+      "Data leakage"
+    ],
+    "keywords": [
+      "feature store",
+      "leakage",
+      "mlops",
+      "point in time"
+    ]
+  },
+  {
+    "title": "Interpretable Credit Limit Scorecard with Monotonic Constraints",
+    "description": "Builds a scorecard where each variable moves the score in a sensible direction, using monotonic constraints and weight of evidence, and documents every reason code.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "XGBoost",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Scorecard modelling",
+      "Monotonic constraints",
+      "Weight of evidence",
+      "Documentation"
+    ],
+    "keywords": [
+      "scorecard",
+      "monotonic",
+      "credit",
+      "reason codes"
+    ]
+  },
+  {
+    "title": "Course Grade Prediction with Prerequisite Performance",
+    "description": "Predicts a student's grade in a course from their results in prerequisite courses, and shows which earlier subjects are the strongest predictors.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Seaborn"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Regression",
+      "Feature importance",
+      "Train-test splitting",
+      "Plotting"
+    ],
+    "keywords": [
+      "grades",
+      "regression",
+      "prerequisites",
+      "education"
+    ]
+  },
+  {
+    "title": "Matching Engine for Peer Study Groups",
+    "description": "Forms study groups by clustering students on course load, availability windows and learning preferences, and checks that groups are balanced in size and schedule overlap.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Clustering",
+      "Constraint balancing",
+      "Data preparation"
+    ],
+    "keywords": [
+      "clustering",
+      "study groups",
+      "scheduling",
+      "matching"
+    ]
+  },
+  {
+    "title": "Online Learning Fraud Detector for Streaming Transactions",
+    "description": "Updates a fraud model one transaction at a time without retraining from scratch, and compares its adaptation to changing fraud patterns with a periodically retrained batch model.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "River",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Online learning",
+      "Concept drift",
+      "Streaming evaluation",
+      "Prequential testing"
+    ],
+    "keywords": [
+      "online learning",
+      "streaming",
+      "concept drift",
+      "fraud"
+    ]
+  },
+  {
+    "title": "Patient No-Show Predictor for Clinic Scheduling",
+    "description": "Estimates which appointments are likely to be missed so a clinic can plan overbooking and reminder calls, and audits the model for unequal error rates across age groups.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Fairlearn"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Classification",
+      "Fairness auditing",
+      "Operational thresholds",
+      "Metric trade-offs"
+    ],
+    "keywords": [
+      "no show",
+      "scheduling",
+      "fairness",
+      "classification"
+    ]
+  },
+  {
+    "title": "Ensemble Stacking Playground for Tabular Data",
+    "description": "Lets a learner combine several base models through stacking and blending, and measures when the combination beats the best single model and when it only adds complexity.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Ensemble methods",
+      "Stacking",
+      "Cross-validation",
+      "Overfitting checks"
+    ],
+    "keywords": [
+      "ensemble",
+      "stacking",
+      "blending",
+      "tabular"
+    ]
+  },
+  {
+    "title": "Outlier Detection Comparison on Sensor Readings",
+    "description": "Applies several outlier detectors to the same sensor dataset with known injected faults and compares how many faults each finds and how many normal readings it wrongly flags.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Outlier detection",
+      "Evaluation with injected anomalies",
+      "Visual comparison"
+    ],
+    "keywords": [
+      "outlier detection",
+      "isolation forest",
+      "sensors",
+      "comparison"
+    ]
+  },
+  {
+    "title": "Learning Curve Explorer for Model Selection",
+    "description": "Plots training and validation scores against dataset size and model complexity so a beginner can see whether a model needs more data, more capacity or less of both.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Matplotlib",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Bias and variance",
+      "Learning curves",
+      "Model complexity",
+      "Interactive plotting"
+    ],
+    "keywords": [
+      "learning curve",
+      "bias variance",
+      "overfitting",
+      "model selection"
+    ]
+  },
+  {
+    "title": "Cricket Run-Rate Projection from Ball-by-Ball Data",
+    "description": "Projects the final score of an innings from the match state so far, accounting for wickets in hand and overs left, and measures how projection error shrinks as the innings progresses.",
+    "domain": "Machine Learning",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "scikit-learn",
+      "Plotly"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Sports analytics",
+      "Regression",
+      "State features",
+      "Error by match phase"
+    ],
+    "keywords": [
+      "cricket",
+      "projection",
+      "sports analytics",
+      "regression"
+    ]
+  }
+]

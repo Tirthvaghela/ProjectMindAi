@@ -1,0 +1,21 @@
+# q11 YOLOv8 object detection
+027745 2
+2a8b8b 2
+2da27e 2
+357952 2
+5b2ca5 2
+914aa8 2
+9e7883 2
+9ebc48 2
+9fce62 2
+b748fe 2
+b9eb95 2
+d0616d 2
+d45fa5 2
+3b86cd 0
+43fc6b 0
+678658 0
+7d5c66 0
+94ad30 0
+e99a52 0
+f04a69 0

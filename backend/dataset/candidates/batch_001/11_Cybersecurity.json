@@ -1,0 +1,668 @@
+[
+  {
+    "title": "Password Hashing Algorithm Comparison Lab",
+    "description": "Measures how long MD5, SHA-256, bcrypt and Argon2 take on the same machine and uses the numbers to explain why slow, salted hashes protect stored passwords better than fast ones.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "hashlib",
+      "bcrypt",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Password hashing",
+      "Salting",
+      "Work factors",
+      "Benchmarking"
+    ],
+    "keywords": [
+      "password hashing",
+      "bcrypt",
+      "argon2",
+      "salting"
+    ]
+  },
+  {
+    "title": "Secrets Scanner for Git Repositories",
+    "description": "Scans commit history for accidentally committed keys and tokens using patterns and entropy checks, reports each finding with the commit that introduced it and measures false positives.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "GitPython",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Pattern matching",
+      "Entropy analysis",
+      "Repository traversal",
+      "False-positive tuning"
+    ],
+    "keywords": [
+      "secrets",
+      "git",
+      "scanning",
+      "entropy"
+    ]
+  },
+  {
+    "title": "JSON Web Token Misconfiguration Tester",
+    "description": "Checks a test API for weak token handling such as accepted none algorithms, missing expiry and signature confusion, and reports each issue with the fix.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "PyJWT",
+      "Flask",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Token security",
+      "Test automation",
+      "Vulnerability reporting",
+      "Secure defaults"
+    ],
+    "keywords": [
+      "jwt",
+      "authentication",
+      "misconfiguration",
+      "api security"
+    ]
+  },
+  {
+    "title": "Cross-Origin Resource Sharing Misconfiguration Checker",
+    "description": "Probes a site with crafted origins to detect overly permissive cross-origin policies and explains how each risky setting could expose user data.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "requests",
+      "Flask",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "CORS rules",
+      "Probing methodology",
+      "Risk explanation",
+      "Reporting"
+    ],
+    "keywords": [
+      "cors",
+      "misconfiguration",
+      "web security",
+      "headers"
+    ]
+  },
+  {
+    "title": "Vulnerable-by-Design Practice App with Guided Fixes",
+    "description": "Builds a deliberately flawed web app for local use, with exercises that walk learners from exploiting each flaw to patching it and then confirming the fix with tests.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Flask",
+      "SQLite",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 10,
+    "skills": [
+      "Common web vulnerabilities",
+      "Secure coding",
+      "Regression testing",
+      "Teaching design"
+    ],
+    "keywords": [
+      "secure coding",
+      "owasp",
+      "training",
+      "vulnerabilities"
+    ]
+  },
+  {
+    "title": "TLS Configuration Grader for Servers",
+    "description": "Connects to a server, inspects protocol versions, cipher suites and certificate chain and produces a graded report that explains each weakness in plain language.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "sslyze",
+      "Flask",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "TLS fundamentals",
+      "Certificate validation",
+      "Report grading"
+    ],
+    "keywords": [
+      "tls",
+      "certificates",
+      "ciphers",
+      "grading"
+    ]
+  },
+  {
+    "title": "Email Authentication Checker for SPF, DKIM and DMARC",
+    "description": "Looks up a domain's mail authentication records, checks them for common mistakes and explains how a spoofed message would be treated under the published policy.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "dnspython",
+      "Flask",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "DNS records",
+      "Email authentication",
+      "Policy analysis",
+      "Validation"
+    ],
+    "keywords": [
+      "spf",
+      "dkim",
+      "dmarc",
+      "email security"
+    ]
+  },
+  {
+    "title": "Phishing Email Header Analyser",
+    "description": "Parses raw email headers to trace the path a message took, compares the sender claims with authentication results and highlights inconsistencies in plain language.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Header parsing",
+      "Mail routing",
+      "Spoofing indicators",
+      "Interface design"
+    ],
+    "keywords": [
+      "email headers",
+      "phishing",
+      "spoofing",
+      "analysis"
+    ]
+  },
+  {
+    "title": "Software Bill of Materials Generator and Vulnerability Matcher",
+    "description": "Lists every dependency of a project in a standard bill-of-materials format and matches versions against a vulnerability database, showing which findings are reachable from the code.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "CycloneDX",
+      "SQLite",
+      "Streamlit"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Dependency analysis",
+      "SBOM formats",
+      "Vulnerability matching",
+      "Prioritisation"
+    ],
+    "keywords": [
+      "sbom",
+      "dependencies",
+      "vulnerabilities",
+      "supply chain"
+    ]
+  },
+  {
+    "title": "Browser Extension Permission Risk Analyser",
+    "description": "Reads extension manifests, scores the risk of requested permissions and combinations, and explains which permissions would let an extension read data from every site.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "JavaScript",
+      "Node.js",
+      "React"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Manifest analysis",
+      "Permission models",
+      "Risk scoring",
+      "Communication"
+    ],
+    "keywords": [
+      "browser extension",
+      "permissions",
+      "risk scoring",
+      "manifest"
+    ]
+  },
+  {
+    "title": "Android App Permission and Tracker Analysis",
+    "description": "Examines application packages for requested permissions and embedded third-party tracking libraries, and compares apps in the same category on privacy exposure.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "androguard",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Static analysis",
+      "Permission analysis",
+      "Tracker signatures",
+      "Comparative reporting"
+    ],
+    "keywords": [
+      "android",
+      "permissions",
+      "trackers",
+      "privacy"
+    ]
+  },
+  {
+    "title": "Endpoint Hardening Baseline Checker",
+    "description": "Checks a machine's settings against a published hardening baseline, reports which controls pass or fail and offers safe, reversible fix commands for each failure.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "PowerShell",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Configuration auditing",
+      "Baselines",
+      "Remediation scripting",
+      "Reporting"
+    ],
+    "keywords": [
+      "hardening",
+      "baseline",
+      "configuration",
+      "compliance"
+    ]
+  },
+  {
+    "title": "Anomalous Login Geovelocity Detector",
+    "description": "Flags sign-ins that would require impossible travel between locations, while handling VPN use and shared offices to keep false alarms low.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "GeoPandas",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Geospatial distance",
+      "Rule design",
+      "False-positive reduction",
+      "Alert triage"
+    ],
+    "keywords": [
+      "impossible travel",
+      "login anomaly",
+      "geolocation",
+      "authentication"
+    ]
+  },
+  {
+    "title": "Honeytoken Credential Tripwires",
+    "description": "Plants fake credentials and documents in places an intruder would look and raises an alert the moment one is used, with no impact on real users.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Flask",
+      "SQLite",
+      "Docker"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Deception techniques",
+      "Alert design",
+      "Safe deployment",
+      "Logging"
+    ],
+    "keywords": [
+      "honeytoken",
+      "deception",
+      "tripwire",
+      "intrusion detection"
+    ]
+  },
+  {
+    "title": "Encrypted Backup Tool with Key Rotation",
+    "description": "Backs up folders with authenticated encryption, supports changing the master key without re-encrypting everything and verifies that restored files match the originals.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "cryptography",
+      "SQLite",
+      "pytest"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Authenticated encryption",
+      "Key hierarchy",
+      "Integrity checks",
+      "Restore testing"
+    ],
+    "keywords": [
+      "backup",
+      "encryption",
+      "key rotation",
+      "integrity"
+    ]
+  },
+  {
+    "title": "Shamir Secret Sharing Tool",
+    "description": "Splits a secret into shares so that any chosen number can rebuild it but fewer reveal nothing, with a clear demonstration of why the threshold property holds.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "cryptography",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Secret sharing",
+      "Finite field arithmetic",
+      "Threshold schemes"
+    ],
+    "keywords": [
+      "shamir",
+      "secret sharing",
+      "threshold",
+      "cryptography"
+    ]
+  },
+  {
+    "title": "Document and Image Metadata Scrubber",
+    "description": "Shows what hidden metadata such as author names and GPS coordinates a file carries and removes it before sharing, verifying that the cleaned file no longer contains it.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Pillow",
+      "pypdf",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Metadata formats",
+      "Privacy leakage",
+      "Safe rewriting",
+      "Verification"
+    ],
+    "keywords": [
+      "metadata",
+      "privacy",
+      "exif",
+      "scrubbing"
+    ]
+  },
+  {
+    "title": "Behavioural Bot Detection from Interaction Signals",
+    "description": "Distinguishes people from scripts using pointer movement, timing and navigation patterns instead of puzzles, and evaluates how well simple evasion attempts fool it.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "JavaScript",
+      "Flask"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Behavioural features",
+      "Classification",
+      "Adversarial thinking",
+      "Privacy trade-offs"
+    ],
+    "keywords": [
+      "bot detection",
+      "behavioural analysis",
+      "fraud",
+      "classification"
+    ]
+  },
+  {
+    "title": "Process Behaviour Monitor for Suspicious Parent-Child Chains",
+    "description": "Watches which programs launch which on a test machine and raises alerts on chains that typical office software should never produce, mapped to published attack techniques.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "psutil",
+      "SQLite",
+      "Streamlit"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Process telemetry",
+      "Detection logic",
+      "Technique mapping",
+      "Tuning"
+    ],
+    "keywords": [
+      "process monitoring",
+      "detection",
+      "parent child",
+      "mitre"
+    ]
+  },
+  {
+    "title": "Sigma-Style Detection Rule Engine for Log Events",
+    "description": "Loads vendor-neutral detection rules written in a simple format and evaluates them over event logs, reporting which rules fired and why, with a test set of known-bad events.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "PyYAML",
+      "Pandas",
+      "pytest"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Detection engineering",
+      "Rule languages",
+      "Log normalisation",
+      "Test suites"
+    ],
+    "keywords": [
+      "sigma",
+      "detection rules",
+      "logs",
+      "detection engineering"
+    ]
+  },
+  {
+    "title": "Container Runtime Misconfiguration Auditor",
+    "description": "Inspects running containers for risky settings such as privileged mode, host mounts and added capabilities, and ranks each finding by how far it weakens isolation.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Docker",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Container isolation",
+      "Linux capabilities",
+      "Risk ranking",
+      "Reporting"
+    ],
+    "keywords": [
+      "container security",
+      "privileged",
+      "capabilities",
+      "audit"
+    ]
+  },
+  {
+    "title": "Kubernetes RBAC Over-Permission Analyser",
+    "description": "Reads role bindings from a cluster export, finds identities that can do far more than they use and proposes tighter roles while showing exactly what would stop working.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Kubernetes",
+      "PyYAML",
+      "NetworkX"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Role-based access control",
+      "Permission graphs",
+      "Least privilege",
+      "Impact analysis"
+    ],
+    "keywords": [
+      "kubernetes",
+      "rbac",
+      "least privilege",
+      "audit"
+    ]
+  },
+  {
+    "title": "Privacy Impact Assessment Questionnaire Tool",
+    "description": "Guides a project team through questions about the personal data it collects and produces a structured assessment with identified risks and suggested mitigations.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Flask",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Privacy principles",
+      "Structured questionnaires",
+      "Report generation"
+    ],
+    "keywords": [
+      "privacy",
+      "impact assessment",
+      "questionnaire",
+      "data protection"
+    ]
+  },
+  {
+    "title": "Third-Party Tracker Scanner for Websites",
+    "description": "Loads pages in a headless browser, lists every third-party request and cookie set before consent, and groups them by company and purpose.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Playwright",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Browser automation",
+      "Network inspection",
+      "Classification",
+      "Privacy reporting"
+    ],
+    "keywords": [
+      "trackers",
+      "cookies",
+      "privacy",
+      "scanning"
+    ]
+  },
+  {
+    "title": "Differentially Private Statistics Release Demo",
+    "description": "Releases summary statistics from a sensitive dataset with calibrated noise, shows how the privacy budget trades accuracy for protection and demonstrates a reconstruction attack on unprotected releases.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "NumPy",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Differential privacy",
+      "Noise mechanisms",
+      "Privacy budgets",
+      "Attack demonstration"
+    ],
+    "keywords": [
+      "differential privacy",
+      "noise",
+      "privacy budget",
+      "statistics"
+    ]
+  },
+  {
+    "title": "Timing Attack Demonstration and Constant-Time Comparison",
+    "description": "Shows how response-time differences can leak a secret one character at a time against a naive comparison, then fixes it with constant-time comparison and measures the difference.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Python",
+      "Flask",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Side channels",
+      "Timing measurement",
+      "Constant-time code",
+      "Statistical testing"
+    ],
+    "keywords": [
+      "timing attack",
+      "side channel",
+      "constant time",
+      "comparison"
+    ]
+  },
+  {
+    "title": "Passkey Login with WebAuthn",
+    "description": "Adds passwordless sign-in using hardware-backed credentials, covering registration, authentication, multiple devices per user and account recovery without a password.",
+    "domain": "Cybersecurity",
+    "technologies": [
+      "Node.js",
+      "Express",
+      "WebAuthn",
+      "PostgreSQL"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "WebAuthn flows",
+      "Public-key credentials",
+      "Account recovery",
+      "Session handling"
+    ],
+    "keywords": [
+      "webauthn",
+      "passkeys",
+      "passwordless",
+      "authentication"
+    ]
+  }
+]

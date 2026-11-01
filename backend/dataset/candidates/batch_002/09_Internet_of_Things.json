@@ -1,0 +1,252 @@
+[
+  {
+    "title": "Plant Watering Monitor with a Soil Moisture Sensor",
+    "description": "Reads soil moisture on a small board, calibrates the sensor against known wet and dry samples and switches a pump only when readings are stable, logging data for later review.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C++",
+      "Arduino",
+      "Soil sensor",
+      "Relay"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Sensor calibration",
+      "Debouncing",
+      "Actuator control",
+      "Data logging"
+    ],
+    "keywords": [
+      "arduino",
+      "soil moisture",
+      "calibration",
+      "irrigation"
+    ]
+  },
+  {
+    "title": "Room Occupancy Counter with Two Infrared Beams",
+    "description": "Counts people entering and leaving a room using two beam sensors to detect direction, handles simultaneous crossings and shows counts on a small display with a recorded accuracy test.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C++",
+      "Arduino",
+      "IR sensors",
+      "OLED display"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Direction detection",
+      "State machines",
+      "Error testing",
+      "Embedded displays"
+    ],
+    "keywords": [
+      "occupancy",
+      "infrared",
+      "state machine",
+      "counting"
+    ]
+  },
+  {
+    "title": "Low-Power Temperature Logger on a Coin Cell",
+    "description": "Wakes a microcontroller briefly to log temperature, sleeps deeply between readings and measures current draw to estimate battery life, comparing the estimate with a long real-world run.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C",
+      "STM32",
+      "FreeRTOS",
+      "Current probe"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Sleep modes",
+      "Power budgeting",
+      "Measurement",
+      "Data storage"
+    ],
+    "keywords": [
+      "low power",
+      "battery life",
+      "sleep mode",
+      "logger"
+    ]
+  },
+  {
+    "title": "Home Sensor Network over MQTT with Retained Status",
+    "description": "Connects several small boards that publish readings to a broker, uses last-will messages to show which devices went offline and charts live data on a local dashboard. Includes a test that unplugs devices at random.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Python",
+      "MQTT",
+      "Mosquitto",
+      "Grafana"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Publish-subscribe",
+      "Last-will messages",
+      "Dashboards",
+      "Network reliability"
+    ],
+    "keywords": [
+      "mqtt",
+      "sensor network",
+      "dashboard",
+      "reliability"
+    ]
+  },
+  {
+    "title": "Bluetooth Low Energy Heart Rate Band Prototype",
+    "description": "Reads pulse from an optical sensor, filters motion noise and sends values to a phone over a standard BLE profile, validating readings against a reference chest strap. Includes a short note on the accuracy limits of wrist sensing.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C",
+      "nRF52",
+      "Zephyr",
+      "Android"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "BLE profiles",
+      "Signal filtering",
+      "Validation",
+      "Embedded RTOS"
+    ],
+    "keywords": [
+      "ble",
+      "heart rate",
+      "zephyr",
+      "signal filtering"
+    ]
+  },
+  {
+    "title": "LoRa Field Sensor Link with Range Testing",
+    "description": "Sends soil and weather readings over a long-range radio, measures packet loss at increasing distances and terrain types and documents how spreading factor trades range for airtime.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C++",
+      "LoRa",
+      "ESP32",
+      "PlatformIO"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Radio links",
+      "Link budgets",
+      "Field testing",
+      "Duty-cycle limits"
+    ],
+    "keywords": [
+      "lora",
+      "long range",
+      "packet loss",
+      "field test"
+    ]
+  },
+  {
+    "title": "Real-Time Operating System Scheduler Study",
+    "description": "Implements three task scheduling policies on a small board, measures missed deadlines under rising load and relates the results to rate-monotonic analysis. Includes timing traces captured with a logic analyser to support each claim.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "C",
+      "FreeRTOS",
+      "STM32",
+      "Logic analyser"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Real-time scheduling",
+      "Deadline analysis",
+      "Measurement",
+      "Priority inversion"
+    ],
+    "keywords": [
+      "rtos",
+      "scheduling",
+      "deadlines",
+      "rate monotonic"
+    ]
+  },
+  {
+    "title": "Air Quality Station with Calibration Against a Reference",
+    "description": "Builds a particulate and gas sensing node, co-locates it with a reference monitor, fits correction models for humidity effects and reports uncertainty of the corrected readings.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Python",
+      "ESP32",
+      "Pandas",
+      "scikit-learn"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Sensor calibration",
+      "Humidity correction",
+      "Uncertainty",
+      "Data comparison"
+    ],
+    "keywords": [
+      "air quality",
+      "calibration",
+      "particulates",
+      "uncertainty"
+    ]
+  },
+  {
+    "title": "Smart Door Sensor with Event Debouncing in Rust",
+    "description": "Detects door open and close events with a magnetic switch, ignores contact bounce and reports events reliably over Wi-Fi, written in embedded Rust with tests that run on a desktop.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Rust",
+      "ESP32",
+      "embedded-hal",
+      "MQTT"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Embedded Rust",
+      "Hardware abstraction",
+      "Debouncing",
+      "Host-side tests"
+    ],
+    "keywords": [
+      "rust",
+      "embedded",
+      "door sensor",
+      "debouncing"
+    ]
+  },
+  {
+    "title": "Edge Gateway that Buffers Data During Outages",
+    "description": "Collects readings from many sensors, stores them locally when the uplink fails and forwards them in order with deduplication on reconnection, tested by repeatedly cutting the network.",
+    "domain": "Internet of Things",
+    "technologies": [
+      "Go",
+      "SQLite",
+      "MQTT",
+      "Docker"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Store-and-forward",
+      "Ordering guarantees",
+      "Deduplication",
+      "Fault injection"
+    ],
+    "keywords": [
+      "edge gateway",
+      "buffering",
+      "outage",
+      "deduplication"
+    ]
+  }
+]

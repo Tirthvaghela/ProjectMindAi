@@ -1,0 +1,657 @@
+[
+  {
+    "title": "Offline Field Inspection App with Photo Evidence and Conflict Handling",
+    "description": "Lets inspectors fill checklists and attach photos without signal, then syncs to a server and resolves cases where two people edited the same record while offline.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite",
+      "Firebase"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Offline-first design",
+      "Conflict resolution",
+      "Background sync",
+      "Media handling"
+    ],
+    "keywords": [
+      "offline first",
+      "sync",
+      "conflicts",
+      "field work"
+    ]
+  },
+  {
+    "title": "Live Caption Display for Conversations",
+    "description": "Shows large, high-contrast captions from the phone microphone for people with hearing loss, with speaker turns separated by colour and an option to save the transcript locally.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Firebase"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Speech recognition APIs",
+      "Accessible UI",
+      "Streaming text",
+      "Permissions"
+    ],
+    "keywords": [
+      "captions",
+      "accessibility",
+      "speech recognition",
+      "hearing"
+    ]
+  },
+  {
+    "title": "Bluetooth Beacon Proximity Notifier",
+    "description": "Detects nearby Bluetooth beacons in a building and triggers context-aware messages such as room information, while limiting battery drain and repeat notifications.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "React Native",
+      "Expo",
+      "Bluetooth LE",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Bluetooth LE scanning",
+      "Proximity estimation",
+      "Background modes",
+      "Notification throttling"
+    ],
+    "keywords": [
+      "ble",
+      "beacons",
+      "proximity",
+      "notifications"
+    ]
+  },
+  {
+    "title": "Secure Notes with Biometric Unlock",
+    "description": "Stores notes encrypted with a key held in the device's secure hardware and unlocked by fingerprint or face, with a safe fallback when biometrics are unavailable.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Biometric authentication",
+      "Secure key storage",
+      "Encryption at rest",
+      "Fallback design"
+    ],
+    "keywords": [
+      "biometric",
+      "encryption",
+      "secure storage",
+      "notes"
+    ]
+  },
+  {
+    "title": "Child Screen-Time Controller with Parental PIN",
+    "description": "Lets a parent set daily limits per app category, locks the device into a calm screen when time runs out and requires a PIN to extend it, with a simple weekly usage report.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "Jetpack Compose",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Usage statistics",
+      "Device policy basics",
+      "PIN handling",
+      "Reporting"
+    ],
+    "keywords": [
+      "screen time",
+      "parental control",
+      "usage stats",
+      "locking"
+    ]
+  },
+  {
+    "title": "Contactless Queue Ticketing App",
+    "description": "Issues virtual queue tickets for a clinic or office, shows live position and estimated wait, and notifies the user in time to arrive without standing in line.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Firebase",
+      "Cloud Firestore"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Real-time data",
+      "Wait-time estimation",
+      "Push notifications",
+      "Queue logic"
+    ],
+    "keywords": [
+      "queue",
+      "tickets",
+      "wait time",
+      "notifications"
+    ]
+  },
+  {
+    "title": "On-Device Plant and Object Classifier with TensorFlow Lite",
+    "description": "Runs an image classifier fully on the phone so it works without internet, and measures inference time and memory on devices of different ages.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "TensorFlow Lite",
+      "Python"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "On-device inference",
+      "Model conversion",
+      "Performance profiling",
+      "Camera integration"
+    ],
+    "keywords": [
+      "tflite",
+      "on device",
+      "classifier",
+      "camera"
+    ]
+  },
+  {
+    "title": "Voice Memo Recorder with On-Device Transcription",
+    "description": "Records meetings, transcribes them locally so audio never leaves the phone, and makes the transcript searchable with timestamps that jump to the matching moment.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "React Native",
+      "Whisper",
+      "SQLite",
+      "Expo"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Audio capture",
+      "Local speech models",
+      "Full-text search",
+      "Storage management"
+    ],
+    "keywords": [
+      "voice memo",
+      "transcription",
+      "on device",
+      "privacy"
+    ]
+  },
+  {
+    "title": "Step Counter from Raw Accelerometer Signals",
+    "description": "Counts steps by processing accelerometer data with filtering and peak detection instead of relying on the platform step counter, and checks its accuracy against manual counts.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "Android Sensors",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Signal filtering",
+      "Peak detection",
+      "Sensor sampling",
+      "Validation"
+    ],
+    "keywords": [
+      "accelerometer",
+      "step counting",
+      "signal processing",
+      "sensors"
+    ]
+  },
+  {
+    "title": "Offline Travel Phrasebook",
+    "description": "Bundles categorised phrases in several languages with audio and a quick search, working entirely offline so travellers can use it without roaming.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Local data bundling",
+      "Search",
+      "Audio playback",
+      "List UI"
+    ],
+    "keywords": [
+      "phrasebook",
+      "offline",
+      "travel",
+      "languages"
+    ]
+  },
+  {
+    "title": "Carpool Cost Splitter",
+    "description": "Calculates fair shares of fuel and toll costs for each passenger from their pickup and drop-off points along a shared route, and keeps a running balance of who owes whom.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Firebase"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Distance calculation",
+      "Cost allocation rules",
+      "Balances",
+      "Form validation"
+    ],
+    "keywords": [
+      "carpool",
+      "cost sharing",
+      "distance",
+      "balances"
+    ]
+  },
+  {
+    "title": "Sign Language Alphabet Learning Game",
+    "description": "Teaches a hand-shape alphabet through short lessons and quizzes, using the camera to check that the learner's hand matches the target shape and tracking progress per letter.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "MediaPipe",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Hand landmark detection",
+      "Game loop design",
+      "Progress tracking",
+      "Camera permissions"
+    ],
+    "keywords": [
+      "sign language",
+      "hand tracking",
+      "learning game",
+      "camera"
+    ]
+  },
+  {
+    "title": "Battery-Aware Background Sync Scheduler",
+    "description": "Schedules background uploads according to battery level, network type and charging state, and compares battery cost against a naive fixed-interval sync on a test device.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "WorkManager",
+      "SQLite"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Background execution limits",
+      "Constraint-based scheduling",
+      "Battery profiling",
+      "Retry policies"
+    ],
+    "keywords": [
+      "background sync",
+      "battery",
+      "workmanager",
+      "scheduling"
+    ]
+  },
+  {
+    "title": "Universal Link Router for a Content App",
+    "description": "Opens the right screen when a user taps a web link to an article or profile, handling logged-out users, missing content and the case where the app is not installed.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "React Native",
+      "Expo",
+      "TypeScript"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Deep linking",
+      "Navigation state",
+      "Fallback flows",
+      "Link verification"
+    ],
+    "keywords": [
+      "deep links",
+      "routing",
+      "navigation",
+      "universal links"
+    ]
+  },
+  {
+    "title": "Digital Student ID Wallet Card",
+    "description": "Presents a student's ID as a card with a rotating code that gate readers can verify, working offline for short periods and revoking cards that are reported lost.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Firebase",
+      "SQLite"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Time-based codes",
+      "Offline verification",
+      "Revocation",
+      "Secure storage"
+    ],
+    "keywords": [
+      "digital id",
+      "totp",
+      "wallet",
+      "revocation"
+    ]
+  },
+  {
+    "title": "Location-Based Task Reminders",
+    "description": "Reminds the user of a task when they arrive at or leave a place, such as buying milk near a shop, using geofences that avoid draining the battery.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Geofencing",
+      "Local notifications",
+      "Permissions",
+      "Battery awareness"
+    ],
+    "keywords": [
+      "geofence",
+      "reminders",
+      "location",
+      "notifications"
+    ]
+  },
+  {
+    "title": "Time Zone Meeting Planner",
+    "description": "Finds meeting times that fall within reasonable working hours for people in several time zones and shows clearly who would be joining at an awkward hour.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Time zone handling",
+      "Daylight saving edge cases",
+      "Interval overlap",
+      "UI design"
+    ],
+    "keywords": [
+      "time zones",
+      "meetings",
+      "scheduling",
+      "daylight saving"
+    ]
+  },
+  {
+    "title": "Private Mood Journal with Local Encryption",
+    "description": "Lets a user log mood and short notes, view trends over weeks and keep everything encrypted on the device, with no account and no claim to diagnose anything.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Encrypted storage",
+      "Chart design",
+      "Privacy-first design",
+      "Data export"
+    ],
+    "keywords": [
+      "journal",
+      "mood",
+      "privacy",
+      "encryption"
+    ]
+  },
+  {
+    "title": "GPS Track Recorder with Elevation Profile",
+    "description": "Records a walking or cycling route, smooths noisy GPS points and shows distance, pace and an elevation profile, saving tracks for later comparison.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "Jetpack Compose",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Location APIs",
+      "Track smoothing",
+      "Charting",
+      "Foreground services"
+    ],
+    "keywords": [
+      "gps",
+      "tracking",
+      "elevation",
+      "route recording"
+    ]
+  },
+  {
+    "title": "Bus Stop Announcer for Visually Impaired Riders",
+    "description": "Announces approaching stops and nearby landmarks through audio using location and schedule data, with large controls and full screen-reader support.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Firebase"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Text-to-speech",
+      "Location triggers",
+      "Accessibility",
+      "Schedule data"
+    ],
+    "keywords": [
+      "accessibility",
+      "text to speech",
+      "transit",
+      "visually impaired"
+    ]
+  },
+  {
+    "title": "Shake-to-Report Bug Reporter Library",
+    "description": "Provides a small library that lets testers shake the phone to capture a screenshot, device details and recent logs and send them as a ready-made bug report.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "Android Sensors",
+      "Retrofit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Gesture detection",
+      "Screenshot capture",
+      "Library API design",
+      "Log collection"
+    ],
+    "keywords": [
+      "bug reporting",
+      "shake",
+      "library",
+      "testing"
+    ]
+  },
+  {
+    "title": "Batching Telemetry Library for Mobile Analytics",
+    "description": "Collects usage events on the device, batches and compresses them, retries on failure and respects user consent, with tests for flaky networks and process kills.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Kotlin",
+      "SQLite",
+      "Retrofit",
+      "WorkManager"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Event batching",
+      "Persistence",
+      "Retry logic",
+      "Consent handling"
+    ],
+    "keywords": [
+      "analytics",
+      "telemetry",
+      "batching",
+      "consent"
+    ]
+  },
+  {
+    "title": "Design System Demo with Dynamic Type and Dark Mode",
+    "description": "Builds a small component library that adapts to system text size and dark mode, with screenshots that show every component at the largest accessibility settings.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Theming",
+      "Accessibility text scaling",
+      "Component design",
+      "Visual testing"
+    ],
+    "keywords": [
+      "dark mode",
+      "dynamic type",
+      "design system",
+      "accessibility"
+    ]
+  },
+  {
+    "title": "Localisation Pipeline with Pseudo-Locale Testing",
+    "description": "Extracts strings for translation, generates a pseudo-locale that stretches text and adds accents, and uses it in tests to catch truncated labels and hard-coded strings.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "GitHub Actions"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "String extraction",
+      "Pseudo-localisation",
+      "Layout testing",
+      "CI checks"
+    ],
+    "keywords": [
+      "localisation",
+      "pseudo locale",
+      "translation",
+      "testing"
+    ]
+  },
+  {
+    "title": "Smartwatch Interval Timer Companion",
+    "description": "Runs workout interval timers on a watch with haptic cues, syncing sessions to a phone app that stores history and lets the user design new interval plans.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Firebase"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Watch connectivity",
+      "Haptics",
+      "Data sync",
+      "Timer accuracy"
+    ],
+    "keywords": [
+      "smartwatch",
+      "interval timer",
+      "haptics",
+      "sync"
+    ]
+  },
+  {
+    "title": "Adaptive Split-View Notes App for Tablets",
+    "description": "Adapts a notes app to phones, tablets and foldables with list and detail panes that rearrange as the window size changes, preserving selection state through resizes.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "SQLite"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Adaptive layouts",
+      "State preservation",
+      "Responsive design",
+      "Navigation"
+    ],
+    "keywords": [
+      "adaptive layout",
+      "tablet",
+      "foldable",
+      "split view"
+    ]
+  },
+  {
+    "title": "Review Prompt Timing Experiment",
+    "description": "Tests when to ask users to rate an app by showing the prompt after different events, and compares prompt acceptance rates without interrupting people mid-task.",
+    "domain": "Mobile Development",
+    "technologies": [
+      "Flutter",
+      "Dart",
+      "Firebase"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Experiment design",
+      "Event triggers",
+      "Analytics",
+      "User experience"
+    ],
+    "keywords": [
+      "in app review",
+      "experiment",
+      "timing",
+      "analytics"
+    ]
+  }
+]

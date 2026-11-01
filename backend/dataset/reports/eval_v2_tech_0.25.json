@@ -1,0 +1,458 @@
+{
+  "dataset": "v2",
+  "k": 5,
+  "configuration": {
+    "dense_weight": 0.8,
+    "sparse_weight": 0.2,
+    "technology_weight": 0.25,
+    "embedding_model": "sentence-transformers/all-MiniLM-L6-v2"
+  },
+  "catalogue": {
+    "project_count": 868,
+    "id_range": [
+      "pm-001",
+      "pm-868"
+    ],
+    "sha256": "37178c5d77d2a4792828b67f7b931990d870f1762cb74fd3b7e2754f6cf20188"
+  },
+  "max_project": null,
+  "result": {
+    "k": 5,
+    "metrics": {
+      "lenient/low": {
+        "recall_at_k": 0.3710562404795815,
+        "mrr": 1.0,
+        "ndcg_at_k": 0.9103414574377069
+      },
+      "lenient/point": {
+        "recall_at_k": 0.3561889898714151,
+        "mrr": 1.0,
+        "ndcg_at_k": 0.9454952089438408
+      },
+      "lenient/high": {
+        "recall_at_k": 0.3426775033068044,
+        "mrr": 1.0,
+        "ndcg_at_k": 0.9537553113996643
+      },
+      "strict/low": {
+        "recall_at_k": 0.5911927589318895,
+        "mrr": 0.96,
+        "ndcg_at_k": 0.8634916254079965
+      },
+      "strict/point": {
+        "recall_at_k": 0.5502665062589875,
+        "mrr": 0.96,
+        "ndcg_at_k": 0.8487709796345081
+      },
+      "strict/high": {
+        "recall_at_k": 0.4768650480680556,
+        "mrr": 0.96,
+        "ndcg_at_k": 0.8059225178096284
+      }
+    },
+    "graded_ndcg_at_k": 0.9002852886286487,
+    "judged_at_k": 1.0,
+    "per_query": [
+      {
+        "query": "AI healthcare project",
+        "top5": [
+          "pm-001",
+          "pm-108",
+          "pm-105",
+          "pm-245",
+          "pm-097"
+        ],
+        "lenient_ndcg": 0.6992148198508501,
+        "lenient_recall": 0.13636363636363635,
+        "strict_ndcg": 0.5531464700081437,
+        "strict_recall": 0.1111111111111111,
+        "graded_ndcg": 0.6261806449294969,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "I want a computer vision project using Python",
+        "top5": [
+          "pm-622",
+          "pm-192",
+          "pm-612",
+          "pm-191",
+          "pm-619"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.08620689655172414,
+        "strict_ndcg": 1.0,
+        "strict_recall": 0.08771929824561403,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "cybersecurity final year project",
+        "top5": [
+          "pm-780",
+          "pm-783",
+          "pm-031",
+          "pm-790",
+          "pm-797"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.10204081632653061,
+        "strict_ndcg": 1.0,
+        "strict_recall": 0.10204081632653061,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "machine learning for agriculture",
+        "top5": [
+          "pm-013",
+          "pm-072",
+          "pm-081",
+          "pm-077",
+          "pm-048"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.3333333333333333,
+        "strict_ndcg": 1.0,
+        "strict_recall": 0.625,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "React Flask full stack web application",
+        "top5": [
+          "pm-467",
+          "pm-457",
+          "pm-282",
+          "pm-021",
+          "pm-470"
+        ],
+        "lenient_ndcg": 0.830419897363192,
+        "lenient_recall": 0.06779661016949153,
+        "strict_ndcg": 0.830419897363192,
+        "strict_recall": 0.4,
+        "graded_ndcg": 0.830419897363192,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "IoT smart home automation",
+        "top5": [
+          "pm-024",
+          "pm-026",
+          "pm-352",
+          "pm-718",
+          "pm-344"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.2777777777777778,
+        "strict_ndcg": 0.4703652827859579,
+        "strict_recall": 0.2222222222222222,
+        "graded_ndcg": 0.735182641392979,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "blockchain voting system",
+        "top5": [
+          "pm-028",
+          "pm-425",
+          "pm-438",
+          "pm-301",
+          "pm-431"
+        ],
+        "lenient_ndcg": 0.8318724637288826,
+        "lenient_recall": 0.75,
+        "strict_ndcg": 1.0,
+        "strict_recall": 1.0,
+        "graded_ndcg": 0.9082209380838205,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "beginner NLP project",
+        "top5": [
+          "pm-601",
+          "pm-196",
+          "pm-207",
+          "pm-229",
+          "pm-599"
+        ],
+        "lenient_ndcg": 0.8687949224876582,
+        "lenient_recall": 0.2857142857142857,
+        "strict_ndcg": 0.38356636737133565,
+        "strict_recall": 0.2857142857142857,
+        "graded_ndcg": 0.6261806449294969,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "deep learning image classification",
+        "top5": [
+          "pm-559",
+          "pm-556",
+          "pm-122",
+          "pm-015",
+          "pm-146"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.10869565217391304,
+        "strict_ndcg": 0.6548086577531307,
+        "strict_recall": 0.13636363636363635,
+        "graded_ndcg": 0.8274043288765652,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "smart attendance system",
+        "top5": [
+          "pm-003",
+          "pm-298",
+          "pm-732",
+          "pm-445",
+          "pm-649"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.8333333333333334,
+        "strict_ndcg": 0.7039180890341347,
+        "strict_recall": 0.6666666666666666,
+        "graded_ndcg": 0.8757862866154155,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "YOLOv8 object detection",
+        "top5": [
+          "pm-004",
+          "pm-157",
+          "pm-159",
+          "pm-156",
+          "pm-168"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.38461538461538464,
+        "strict_ndcg": 1.0,
+        "strict_recall": 0.38461538461538464,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "chatbot that answers questions from documents",
+        "top5": [
+          "pm-010",
+          "pm-216",
+          "pm-199",
+          "pm-100",
+          "pm-591"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.5,
+        "strict_ndcg": 1.0,
+        "strict_recall": 1.0,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "recommendation system with collaborative filtering",
+        "top5": [
+          "pm-011",
+          "pm-088",
+          "pm-232",
+          "pm-150",
+          "pm-569"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.7142857142857143,
+        "strict_ndcg": 0.9469024295259745,
+        "strict_recall": 1.0,
+        "graded_ndcg": 0.9777242507697853,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "fraud detection in banking transactions",
+        "top5": [
+          "pm-549",
+          "pm-012",
+          "pm-053",
+          "pm-113",
+          "pm-089"
+        ],
+        "lenient_ndcg": 0.8539316501572937,
+        "lenient_recall": 0.4444444444444444,
+        "strict_ndcg": 1.0,
+        "strict_recall": 1.0,
+        "graded_ndcg": 0.9059532679864118,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "predict student marks and performance",
+        "top5": [
+          "pm-240",
+          "pm-547",
+          "pm-014",
+          "pm-120",
+          "pm-091"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.5555555555555556,
+        "strict_ndcg": 0.7122630665145961,
+        "strict_recall": 1.0,
+        "graded_ndcg": 0.8792872118748393,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "audio and music processing project",
+        "top5": [
+          "pm-570",
+          "pm-016",
+          "pm-151",
+          "pm-140",
+          "pm-626"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.18518518518518517,
+        "strict_ndcg": 0.8687949224876582,
+        "strict_recall": 0.2857142857142857,
+        "graded_ndcg": 0.934397461243829,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "time series forecasting stock market",
+        "top5": [
+          "pm-018",
+          "pm-056",
+          "pm-544",
+          "pm-155",
+          "pm-083"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.4166666666666667,
+        "strict_ndcg": 0.6131471927654584,
+        "strict_recall": 0.5,
+        "graded_ndcg": 0.8622240278900382,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "mobile app development with React Native",
+        "top5": [
+          "pm-342",
+          "pm-704",
+          "pm-322",
+          "pm-040",
+          "pm-038"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.2631578947368421,
+        "strict_ndcg": 1.0,
+        "strict_recall": 0.2777777777777778,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "docker kubernetes devops pipeline",
+        "top5": [
+          "pm-041",
+          "pm-477",
+          "pm-480",
+          "pm-497",
+          "pm-486"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.19230769230769232,
+        "strict_ndcg": 1.0,
+        "strict_recall": 0.22727272727272727,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "augmented reality mobile application",
+        "top5": [
+          "pm-043",
+          "pm-406",
+          "pm-403",
+          "pm-827",
+          "pm-833"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.25,
+        "strict_ndcg": 1.0,
+        "strict_recall": 0.2777777777777778,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "robot that avoids obstacles",
+        "top5": [
+          "pm-045",
+          "pm-389",
+          "pm-375",
+          "pm-383",
+          "pm-852"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.35714285714285715,
+        "strict_ndcg": 0.8687949224876582,
+        "strict_recall": 0.6666666666666666,
+        "graded_ndcg": 0.934397461243829,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "encrypt files securely",
+        "top5": [
+          "pm-033",
+          "pm-786",
+          "pm-423",
+          "pm-459",
+          "pm-305"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.45454545454545453,
+        "strict_ndcg": 1.0,
+        "strict_recall": 1.0,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "resume screening for recruitment",
+        "top5": [
+          "pm-006",
+          "pm-102",
+          "pm-209",
+          "pm-269",
+          "pm-668"
+        ],
+        "lenient_ndcg": 1.0,
+        "lenient_recall": 0.5555555555555556,
+        "strict_ndcg": 1.0,
+        "strict_recall": 1.0,
+        "graded_ndcg": 1.0,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "detect fake news and misinformation",
+        "top5": [
+          "pm-009",
+          "pm-089",
+          "pm-225",
+          "pm-218",
+          "pm-008"
+        ],
+        "lenient_ndcg": 0.6992148198508501,
+        "lenient_recall": 0.25,
+        "strict_ndcg": 0.6131471927654584,
+        "strict_recall": 0.5,
+        "graded_ndcg": 0.6685622027129364,
+        "judged_at_k": 1.0
+      },
+      {
+        "query": "voice controlled assistant with speech recognition",
+        "top5": [
+          "pm-047",
+          "pm-385",
+          "pm-227",
+          "pm-124",
+          "pm-698"
+        ],
+        "lenient_ndcg": 0.8539316501572937,
+        "lenient_recall": 0.4,
+        "strict_ndcg": 1.0,
+        "strict_recall": 1.0,
+        "graded_ndcg": 0.915210949803576,
+        "judged_at_k": 1.0
+      }
+    ]
+  }
+}

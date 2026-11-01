@@ -11,6 +11,7 @@ ever genuinely needs to feel instant rather than "refresh and see it."
 
 from __future__ import annotations
 
+import logging
 import secrets
 import uuid
 from datetime import datetime, timezone
@@ -25,7 +26,15 @@ from nlp.team_builder import role_fit, suggest_roles
 from profiles import service as profile_service
 from notify import notify
 
+log = logging.getLogger(__name__)
+
 _MAX_SKILLS = 30
+
+# A notification belongs to its recipient, not the team: it outlives their membership
+# and is emailed when SMTP is configured. So it never carries chat text - only the fact
+# that a message exists. (scripts/redact_notification_snippets.py uses the same wording
+# to clean up older records; a test keeps the two identical.)
+TEAM_MESSAGE_NOTIFICATION_BODY = "A new message was posted in your team."
 
 
 class TeamError(Exception):
@@ -302,6 +311,16 @@ def remove_member(team_id: str, acting_user_id: str, target_user_id: str) -> dic
     )
     remaining = [m for m in team["members"] if m["user_id"] != target_user_id]
 
+    # Sub-teams: their membership rows / decisions / task assignments go too. Access
+    # is already revoked by the roster change above (teams/subteams.py reads the
+    # parent roster on every request), so a failure here only leaves inert rows.
+    try:
+        from teams import subteams
+
+        subteams.on_parent_member_removed(team_id, target_user_id)
+    except Exception:  # noqa: BLE001
+        log.warning("Could not clear sub-team leftovers for a removed member")
+
     for member in remaining:
         notify(
             member["user_id"],
@@ -341,7 +360,7 @@ def post_message(team_id: str, user: dict[str, Any], content: str) -> dict[str, 
                 member["user_id"],
                 type_="team_message",
                 title=f"New message in {team['name']}",
-                body=f"{user['name']}: {content.strip()[:120]}",
+                body=TEAM_MESSAGE_NOTIFICATION_BODY,
                 team_id=team_id,
                 project_id=team["project_id"],
             )
@@ -592,6 +611,21 @@ def _member_team_or_none(team_id: str, user_id: str) -> dict[str, Any] | None:
     return team
 
 
+# Fields a team payload may carry. Notably absent: _id, role_decisions and any
+# member email (see _public_member).
+_TEAM_FIELDS = ("team_id", "project_id", "idea", "project_title", "name", "invite_code", "owner_user_id", "created_at")
+
+
+def _public_member(member: dict[str, Any]) -> dict[str, Any]:
+    """What a teammate may see of another member: id, display name and the
+    skills they typed for this team. Never the account email - that is looked
+    up server-side (notify.py) only when an email is actually being sent."""
+    out = {"user_id": member.get("user_id"), "name": member.get("name") or member.get("user_id")}
+    if member.get("skills"):
+        out["skills"] = member["skills"]
+    return out
+
+
 def _public_team(team: dict[str, Any], context: dict[str, Any] | None, caller_user_id: str) -> dict[str, Any]:
     """Team + its live project/idea context (see _context_for), one payload
     — `context` is None only when a catalogue-backed team's project has
@@ -616,7 +650,11 @@ def _public_team(team: dict[str, Any], context: dict[str, Any] | None, caller_us
     the idea's own workspace, since `project` here is idea_doc()'s
     generic project-shaped view of it, not the original idea fields.
     """
-    payload = {k: v for k, v in team.items() if k not in ("_id", "role_decisions")}  # decisions are served by GET /roles
+    # An allowlist, not "everything except _id": the stored document carries
+    # each member's account email (copied in at join time) and other internals
+    # that no collaborator needs. Role decisions are served by GET /roles.
+    payload = {k: team[k] for k in _TEAM_FIELDS if k in team}
+    payload["members"] = [_public_member(m) for m in team.get("members") or [] if isinstance(m, dict)]
     if team.get("owner_user_id") != caller_user_id:
         payload.pop("invite_code", None)
     payload["created_at"] = payload["created_at"].isoformat()

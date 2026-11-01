@@ -1,0 +1,22 @@
+# q12 chatbot that answers questions from documents
+80d00a 2
+fd04df 2
+6e971c 1
+981564 1
+9ef5d3 1
+b3ac8a 1
+d3c77f 1
+e81579 1
+f9d525 1
+51efdc 1u
+1eff90 0
+231661 0
+795ce9 0
+7ee124 0
+a6ec77 0
+de919a 0
+e38e1a 0
+e3d3f8 0
+ee2ef2 0
+f865d8 0
+feccea 0

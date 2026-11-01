@@ -71,7 +71,6 @@ def test_route_has_expected_rate_limit(client, endpoint, expected):
         # extensions.py: only expensive/external/security-sensitive routes
         # opt in).
         "teams.create",
-        "teams.join",
         "teams.mine",
         "teams.get_one",
         "teams.update",

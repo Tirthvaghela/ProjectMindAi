@@ -68,6 +68,18 @@ def team_messages() -> Collection:
     return get_db()[config.COLL_TEAM_MESSAGES]
 
 
+def sub_teams() -> Collection:
+    return get_db()[config.COLL_SUB_TEAMS]
+
+
+def sub_team_messages() -> Collection:
+    return get_db()[config.COLL_SUB_TEAM_MESSAGES]
+
+
+def sub_team_tasks() -> Collection:
+    return get_db()[config.COLL_SUB_TEAM_TASKS]
+
+
 def notifications() -> Collection:
     return get_db()[config.COLL_NOTIFICATIONS]
 
@@ -163,6 +175,20 @@ def ensure_indexes() -> None:
     )
 
     team_messages().create_index([("team_id", ASCENDING), ("created_at", ASCENDING)], name="ix_team_recent")
+
+    # Sub-teams. Queries: by id (+ parent), all of one parent's, by invite hash.
+    sub_teams().create_index([("sub_team_id", ASCENDING)], unique=True, name="uq_sub_team_id")
+    sub_teams().create_index([("parent_team_id", ASCENDING), ("created_at", ASCENDING)], name="ix_sub_parent")
+    # Names are unique per parent (case-insensitive); this also makes a concurrent
+    # double-create of the same name resolve to one winner.
+    sub_teams().create_index([("parent_team_id", ASCENDING), ("name_key", ASCENDING)], unique=True, name="uq_sub_name")
+    # Only a hash of the invite code is stored; sparse so sub-teams with no
+    # active invitation do not collide on "missing".
+    sub_teams().create_index([("invite.code_hash", ASCENDING)], unique=True, sparse=True, name="uq_sub_invite_hash")
+    # Backstop for concurrent joins/adds: one membership row per (sub-team, user).
+    sub_teams().create_index([("sub_team_id", ASCENDING), ("members.user_id", ASCENDING)], unique=True, name="uq_sub_member")
+    sub_team_messages().create_index([("sub_team_id", ASCENDING), ("created_at", ASCENDING)], name="ix_sub_msg_recent")
+    sub_team_tasks().create_index([("sub_team_id", ASCENDING), ("created_at", ASCENDING)], name="ix_sub_task_recent")
 
     notifications().create_index([("user_id", ASCENDING), ("created_at", DESCENDING)], name="ix_user_recent")
 

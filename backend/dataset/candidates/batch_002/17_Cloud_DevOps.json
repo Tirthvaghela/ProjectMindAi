@@ -1,0 +1,27 @@
+[
+  {
+    "title": "Secrets Management Workflow for a Small Team",
+    "description": "Moves passwords and keys out of code into a managed store with rotation, access policies and a scan that fails builds when secrets are committed, with a written incident response for leaks.",
+    "domain": "Cloud & DevOps",
+    "technologies": [
+      "HashiCorp Vault",
+      "Git",
+      "GitHub Actions",
+      "Bash"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Secrets handling",
+      "Rotation",
+      "Commit scanning",
+      "Incident response"
+    ],
+    "keywords": [
+      "secrets",
+      "vault",
+      "rotation",
+      "scanning"
+    ]
+  }
+]

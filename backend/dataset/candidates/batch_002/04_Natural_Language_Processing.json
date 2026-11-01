@@ -1,0 +1,249 @@
+[
+  {
+    "title": "N-gram Next-Word Predictor from Scratch",
+    "description": "Counts word sequences in a small text corpus and predicts the next word with smoothing, then shows how model order and smoothing change both accuracy and the fluency of generated sentences.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "NLTK",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "N-gram models",
+      "Smoothing",
+      "Perplexity",
+      "Text generation"
+    ],
+    "keywords": [
+      "n-gram",
+      "language model",
+      "smoothing",
+      "from scratch"
+    ]
+  },
+  {
+    "title": "Regular-Expression Toolkit for Extracting Dates, Phones and Emails",
+    "description": "Builds and tests a library of patterns for common contact details across several formats, with a labelled test set that shows exactly which inputs each pattern misses or wrongly accepts.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "regex",
+      "pytest"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 4,
+    "skills": [
+      "Regular expressions",
+      "Test-driven design",
+      "Precision and recall",
+      "Edge cases"
+    ],
+    "keywords": [
+      "regex",
+      "extraction",
+      "testing",
+      "patterns"
+    ]
+  },
+  {
+    "title": "Word Frequency and Zipf's Law Explorer",
+    "description": "Counts words in several books, plots rank against frequency on log scales and shows how closely each text follows Zipf's law, comparing languages and genres. Includes a short write-up on where the law breaks down and why.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "NLTK",
+      "Matplotlib",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 3,
+    "skills": [
+      "Corpus statistics",
+      "Log-log plots",
+      "Tokenisation",
+      "Text comparison"
+    ],
+    "keywords": [
+      "zipf",
+      "word frequency",
+      "corpus",
+      "statistics"
+    ]
+  },
+  {
+    "title": "Sentiment Lexicon Builder for a Niche Domain",
+    "description": "Grows a domain-specific sentiment word list from a few seed words by propagating through word embeddings, and checks the lexicon against labelled reviews from that domain versus a generic list.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Gensim",
+      "scikit-learn",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Lexicon induction",
+      "Word embeddings",
+      "Domain adaptation",
+      "Evaluation"
+    ],
+    "keywords": [
+      "lexicon",
+      "sentiment",
+      "embeddings",
+      "domain adaptation"
+    ]
+  },
+  {
+    "title": "Legal Plain-Language Rewriter with Readability Gates",
+    "description": "Rewrites dense clauses into shorter plain English with a language model, then rejects any rewrite that drops a defined term, number or negation, using automated checks before a human sees it.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Transformers",
+      "spaCy",
+      "FastAPI"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Controlled generation",
+      "Faithfulness checks",
+      "Readability metrics",
+      "Pipeline design"
+    ],
+    "keywords": [
+      "plain language",
+      "rewriting",
+      "faithfulness",
+      "legal text"
+    ]
+  },
+  {
+    "title": "Named Entity Recognition for Kitchen Recipes",
+    "description": "Tags quantities, units, ingredients and cooking actions in recipe steps by training a sequence labeller on a hand-annotated sample, reporting per-entity scores and the most confusing cases.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "spaCy",
+      "Prodigy-style annotation",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Annotation guidelines",
+      "Sequence labelling",
+      "Error analysis",
+      "Inter-annotator checks"
+    ],
+    "keywords": [
+      "ner",
+      "recipes",
+      "annotation",
+      "sequence labelling"
+    ]
+  },
+  {
+    "title": "Search Engine over a Local Document Folder in Java",
+    "description": "Indexes text and PDF files in a folder, supports phrase and fuzzy queries with ranked results and highlights, and measures query latency as the folder grows to tens of thousands of files.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Java",
+      "Apache Lucene",
+      "Apache Tika",
+      "Maven"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Inverted indexes",
+      "Text extraction",
+      "Ranking",
+      "Performance measurement"
+    ],
+    "keywords": [
+      "search engine",
+      "lucene",
+      "indexing",
+      "java"
+    ]
+  },
+  {
+    "title": "Accent-Robust Command Recognition Dataset Study",
+    "description": "Collects and evaluates spoken command recordings across several accent groups, measures error rates per group with a speech model, and tests simple augmentation that narrows the gap.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Whisper",
+      "Librosa",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Fairness measurement",
+      "Data collection ethics",
+      "Augmentation",
+      "Speech evaluation"
+    ],
+    "keywords": [
+      "speech",
+      "accents",
+      "fairness",
+      "evaluation"
+    ]
+  },
+  {
+    "title": "Tokenisation Comparison Lab across Languages",
+    "description": "Compares whitespace, rule-based and subword tokenisers on English, German and a morphologically rich language, reporting vocabulary size, out-of-vocabulary rate and effect on a downstream classifier.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Hugging Face Tokenizers",
+      "scikit-learn"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Subword tokenisation",
+      "Linguistic variation",
+      "Downstream effects",
+      "Experiment design"
+    ],
+    "keywords": [
+      "tokenisation",
+      "bpe",
+      "multilingual",
+      "comparison"
+    ]
+  },
+  {
+    "title": "Topic Drift Tracker for Long-Running Forum Threads",
+    "description": "Monitors how the subject of a discussion thread moves over time using sliding-window topic vectors, flags threads that wander off topic and evaluates alerts against moderator judgments.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "BERTopic",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 10,
+    "skills": [
+      "Topic modelling over time",
+      "Change detection",
+      "Moderator evaluation",
+      "Dashboards"
+    ],
+    "keywords": [
+      "topic drift",
+      "forums",
+      "moderation",
+      "temporal"
+    ]
+  }
+]

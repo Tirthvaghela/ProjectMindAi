@@ -1,0 +1,643 @@
+[
+  {
+    "title": "Code-Mixed Hinglish Sentiment Classifier",
+    "description": "Classifies sentiment in messages that mix Hindi written in Roman letters with English, handling inconsistent spellings and comparing a character-level model with a word-level one.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Transformers",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Code-mixed text",
+      "Character n-grams",
+      "Transfer learning",
+      "Error analysis"
+    ],
+    "keywords": [
+      "code mixing",
+      "hinglish",
+      "sentiment",
+      "transliteration"
+    ]
+  },
+  {
+    "title": "Contract Deadline and Renewal Date Extractor",
+    "description": "Finds notice periods, renewal dates and payment deadlines in contract text, normalises relative expressions such as thirty days after signing, and lists them in a calendar view.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "spaCy",
+      "dateparser",
+      "Streamlit"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Information extraction",
+      "Date normalisation",
+      "Rule and model hybrids",
+      "Evaluation on annotated clauses"
+    ],
+    "keywords": [
+      "contracts",
+      "date extraction",
+      "normalisation",
+      "deadlines"
+    ]
+  },
+  {
+    "title": "Commit Message Generator from Code Diffs",
+    "description": "Generates short imperative commit messages from a code diff with a sequence model, and evaluates them against real commit messages using overlap metrics and a manual quality check.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Transformers",
+      "PyTorch",
+      "GitPython"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Sequence generation",
+      "Code representation",
+      "Text generation metrics",
+      "Dataset curation"
+    ],
+    "keywords": [
+      "commit messages",
+      "code summarisation",
+      "diffs",
+      "generation"
+    ]
+  },
+  {
+    "title": "Duplicate Question Detector for a Programming Forum",
+    "description": "Flags new questions that repeat an existing one by comparing meaning rather than wording, and measures how many true duplicates surface in the top five suggestions.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Sentence Transformers",
+      "FAISS",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Semantic similarity",
+      "Vector search",
+      "Retrieval evaluation",
+      "Threshold selection"
+    ],
+    "keywords": [
+      "duplicate detection",
+      "semantic similarity",
+      "forum",
+      "retrieval"
+    ]
+  },
+  {
+    "title": "Lecture Transcript Glossary Builder",
+    "description": "Pulls out the technical terms a lecturer defines in a transcript and assembles a glossary with a definition sentence and first-mention timestamp for each term.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "spaCy",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Term extraction",
+      "Definition pattern matching",
+      "Output formatting"
+    ],
+    "keywords": [
+      "glossary",
+      "lecture",
+      "term extraction",
+      "definitions"
+    ]
+  },
+  {
+    "title": "Clickbait Headline Detector",
+    "description": "Trains a classifier to separate clickbait from informative headlines and shows which words and patterns push a headline towards each label.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Text classification",
+      "TF-IDF features",
+      "Feature inspection"
+    ],
+    "keywords": [
+      "clickbait",
+      "headlines",
+      "text classification",
+      "tf-idf"
+    ]
+  },
+  {
+    "title": "Review Helpfulness Predictor",
+    "description": "Predicts how useful a product review will be to other shoppers from its text, length and detail, and checks whether the model simply rewards long reviews.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Regression on text",
+      "Confound analysis",
+      "Feature design",
+      "Evaluation"
+    ],
+    "keywords": [
+      "helpfulness",
+      "reviews",
+      "regression",
+      "confounding"
+    ]
+  },
+  {
+    "title": "Poetry Meter and Rhyme Scheme Analyser",
+    "description": "Scans English verse for syllable stress patterns and end rhymes using a pronunciation dictionary, then labels the metre and rhyme scheme of each stanza.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "NLTK",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Phonetic dictionaries",
+      "Syllable counting",
+      "Pattern matching"
+    ],
+    "keywords": [
+      "poetry",
+      "meter",
+      "rhyme",
+      "phonetics"
+    ]
+  },
+  {
+    "title": "Phonetic Name Matching for Record Linkage",
+    "description": "Links records whose names are spelled differently but sound alike, by combining phonetic encodings with edit distance, and reports precision and recall on a labelled sample.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "jellyfish",
+      "Pandas",
+      "scikit-learn"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Phonetic algorithms",
+      "String similarity",
+      "Record linkage",
+      "Blocking"
+    ],
+    "keywords": [
+      "record linkage",
+      "phonetic",
+      "soundex",
+      "name matching"
+    ]
+  },
+  {
+    "title": "Transliteration of Indian Language Names into English",
+    "description": "Converts personal names from Devanagari script into Roman letters with a character-level sequence model and measures exact-match accuracy against several accepted spellings.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "PyTorch",
+      "NumPy",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Transliteration",
+      "Character-level modelling",
+      "Multiple valid outputs",
+      "Evaluation"
+    ],
+    "keywords": [
+      "transliteration",
+      "devanagari",
+      "names",
+      "seq2seq"
+    ]
+  },
+  {
+    "title": "Dialogue State Tracker for a Restaurant Booking Bot",
+    "description": "Tracks what a customer has asked for across turns, such as cuisine, party size and time, and updates or retracts slots as the user changes their mind.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Transformers",
+      "Rasa",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Dialogue state tracking",
+      "Slot filling",
+      "Multi-turn context",
+      "Joint goal accuracy"
+    ],
+    "keywords": [
+      "dialogue",
+      "state tracking",
+      "slot filling",
+      "chatbot"
+    ]
+  },
+  {
+    "title": "Emoji Suggestion for Short Messages",
+    "description": "Suggests an emoji that fits the tone of a short message by training a classifier on messages that already contain emoji, and discusses why many answers are equally valid.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Multi-class text classification",
+      "Label noise",
+      "Top-k evaluation"
+    ],
+    "keywords": [
+      "emoji",
+      "short text",
+      "classification",
+      "top k"
+    ]
+  },
+  {
+    "title": "Job Posting Scam Detector",
+    "description": "Identifies fraudulent job advertisements from wording, missing company details and payment requests, and reports which signals drive each decision so users can learn the warning signs.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "SHAP"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Text classification",
+      "Feature explanation",
+      "Class imbalance",
+      "Domain cues"
+    ],
+    "keywords": [
+      "scam detection",
+      "job postings",
+      "fraud",
+      "explainability"
+    ]
+  },
+  {
+    "title": "Entity Linking to a Reference Knowledge Base",
+    "description": "Maps mentions such as Apple or Mercury in text to the correct entry in a small knowledge base using context, and evaluates disambiguation accuracy on ambiguous mentions.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "spaCy",
+      "Sentence Transformers",
+      "FAISS"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Named entity linking",
+      "Candidate generation",
+      "Context disambiguation",
+      "Evaluation"
+    ],
+    "keywords": [
+      "entity linking",
+      "disambiguation",
+      "knowledge base",
+      "ner"
+    ]
+  },
+  {
+    "title": "Answer Attribution Checker for Retrieval-Based QA",
+    "description": "Verifies that each sentence in a generated answer is actually supported by one of the retrieved passages, highlights unsupported claims and scores overall faithfulness.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Transformers",
+      "Sentence Transformers",
+      "Streamlit"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Natural language inference",
+      "Attribution",
+      "Faithfulness scoring",
+      "Evaluation design"
+    ],
+    "keywords": [
+      "attribution",
+      "faithfulness",
+      "nli",
+      "question answering"
+    ]
+  },
+  {
+    "title": "Formal and Informal Style Transfer",
+    "description": "Rewrites informal messages in a formal register and back while preserving meaning, and evaluates style accuracy and content preservation separately.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Transformers",
+      "PyTorch",
+      "Pandas"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Text style transfer",
+      "Parallel data",
+      "Content preservation metrics",
+      "Fine-tuning"
+    ],
+    "keywords": [
+      "style transfer",
+      "formality",
+      "rewriting",
+      "generation"
+    ]
+  },
+  {
+    "title": "Acronym Disambiguation in Technical Documents",
+    "description": "Decides what an ambiguous acronym such as CPU, PCA or SDK stands for in a given paragraph, using the surrounding words and a dictionary of expansions found elsewhere in the document.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "spaCy",
+      "scikit-learn",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Word sense disambiguation",
+      "Context features",
+      "Document-level evidence"
+    ],
+    "keywords": [
+      "acronyms",
+      "disambiguation",
+      "technical text",
+      "context"
+    ]
+  },
+  {
+    "title": "Song Lyrics Mood Classifier",
+    "description": "Labels song lyrics as happy, sad, angry or calm with a text classifier, and examines where lyrics disagree with the mood a listener would assign.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Text classification",
+      "Label subjectivity",
+      "Confusion matrix reading"
+    ],
+    "keywords": [
+      "lyrics",
+      "mood",
+      "classification",
+      "subjectivity"
+    ]
+  },
+  {
+    "title": "Math Word Problem Solver for Primary Arithmetic",
+    "description": "Converts short arithmetic word problems into equations and solves them, showing the extracted quantities so a teacher can see where the interpretation went wrong.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Transformers",
+      "SymPy",
+      "Streamlit"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 12,
+    "skills": [
+      "Semantic parsing",
+      "Quantity extraction",
+      "Symbolic solving",
+      "Error categorisation"
+    ],
+    "keywords": [
+      "math word problems",
+      "semantic parsing",
+      "sympy",
+      "education"
+    ]
+  },
+  {
+    "title": "Claim Matching Against a Fact-Check Archive",
+    "description": "Retrieves previously fact-checked claims that match a new social media statement, even when the wording differs, and presents the original verdict with its source.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Sentence Transformers",
+      "FAISS",
+      "FastAPI"
+    ],
+    "difficulty": "Advanced",
+    "duration_weeks": 11,
+    "skills": [
+      "Claim retrieval",
+      "Semantic matching",
+      "Ranking evaluation",
+      "API design"
+    ],
+    "keywords": [
+      "fact checking",
+      "claim matching",
+      "retrieval",
+      "misinformation"
+    ]
+  },
+  {
+    "title": "Punctuation and Casing Restoration for Speech Transcripts",
+    "description": "Adds commas, full stops and capital letters to raw transcripts with a token classification model, and reports per-mark precision and recall.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Transformers",
+      "PyTorch",
+      "Pandas"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 9,
+    "skills": [
+      "Token classification",
+      "Sequence labelling",
+      "Per-class evaluation",
+      "Preprocessing"
+    ],
+    "keywords": [
+      "punctuation restoration",
+      "asr",
+      "sequence labelling",
+      "transcripts"
+    ]
+  },
+  {
+    "title": "Keyword-in-Context Concordancer for Language Learners",
+    "description": "Lets learners search a text collection for a word and see it in context with the words that commonly appear beside it, sorted by frequency and part of speech.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "NLTK",
+      "Pandas",
+      "Streamlit"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 5,
+    "skills": [
+      "Concordancing",
+      "Collocations",
+      "Corpus handling",
+      "Interface design"
+    ],
+    "keywords": [
+      "concordance",
+      "collocations",
+      "corpus",
+      "language learning"
+    ]
+  },
+  {
+    "title": "Sentence Embedding Model Comparison on Domain Similarity",
+    "description": "Compares several sentence embedding models on a hand-built similarity set from one domain, such as cooking or law, and reports which model ranks related sentences best.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Sentence Transformers",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Embedding evaluation",
+      "Benchmark construction",
+      "Correlation metrics"
+    ],
+    "keywords": [
+      "embeddings",
+      "benchmark",
+      "similarity",
+      "evaluation"
+    ]
+  },
+  {
+    "title": "Gender Bias Audit of Word Embeddings for Occupations",
+    "description": "Measures how strongly pretrained word vectors associate occupations with gendered words, and tests whether a simple debiasing step reduces the association without harming analogy accuracy.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "Gensim",
+      "NumPy",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 7,
+    "skills": [
+      "Embedding bias metrics",
+      "Debiasing",
+      "Ethical analysis",
+      "Visualisation"
+    ],
+    "keywords": [
+      "bias",
+      "word embeddings",
+      "fairness",
+      "occupations"
+    ]
+  },
+  {
+    "title": "English Dialect Classifier from Written Text",
+    "description": "Distinguishes regional varieties of English such as British, American and Indian from spelling and vocabulary, and lists the features that carry the most weight for each variety.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "difficulty": "Intermediate",
+    "duration_weeks": 8,
+    "skills": [
+      "Variety classification",
+      "Character n-grams",
+      "Feature interpretation"
+    ],
+    "keywords": [
+      "dialect",
+      "english varieties",
+      "classification",
+      "n-grams"
+    ]
+  },
+  {
+    "title": "Question Intent Router for a University Helpdesk",
+    "description": "Routes student questions to the right department with a small intent classifier, and shows a confidence score so low-confidence questions go to a human instead.",
+    "domain": "Natural Language Processing",
+    "technologies": [
+      "Python",
+      "scikit-learn",
+      "Flask",
+      "Pandas"
+    ],
+    "difficulty": "Beginner",
+    "duration_weeks": 6,
+    "skills": [
+      "Intent classification",
+      "Confidence thresholds",
+      "Fallback design"
+    ],
+    "keywords": [
+      "intent classification",
+      "helpdesk",
+      "routing",
+      "confidence"
+    ]
+  }
+]

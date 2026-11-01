@@ -1,0 +1,103 @@
+{
+  "_note": "Written from the query text alone, before any candidate project was viewed. Grade 0 is always 'does not satisfy the intent'. Difficulty and duration are used only when the query itself states them.",
+  "AI healthcare project": {
+    "2": "Health or medical application of AI/ML/NLP/CV: clinical decision support, triage, medical imaging, clinical text, patient-facing health tools with a learned component.",
+    "1": "Health-adjacent: hospital operations, wellness or health data analysis without a substantive learned component, or an AI project where health is only an example."
+  },
+  "I want a computer vision project using Python": {
+    "2": "Core task is analysing images or video, built in Python.",
+    "1": "Computer vision is a secondary component, the stack is not Python, or it is adjacent graphics/AR."
+  },
+  "cybersecurity final year project": {
+    "2": "Core of the project is security: detection, defence, auditing, cryptography or privacy engineering.",
+    "1": "Security is an important secondary concern of a project whose core is something else."
+  },
+  "machine learning for agriculture": {
+    "2": "Machine/deep learning or computer vision applied to farming, crops, soil, livestock or agricultural markets.",
+    "1": "Agriculture project with no learned component (sensing, control, analytics), or a generic ML project that uses agriculture only as one example."
+  },
+  "React Flask full stack web application": {
+    "2": "Web application whose listed technologies include BOTH React and Flask.",
+    "1": "Full-stack web application using React with another backend, or Flask with another frontend. React Native is not React for this query."
+  },
+  "IoT smart home automation": {
+    "2": "Automation or monitoring of a home or domestic building: lighting, locks, appliances, climate, household energy.",
+    "1": "IoT sensing or automation in another setting (farm, factory, city) with directly transferable techniques."
+  },
+  "blockchain voting system": {
+    "2": "Voting, ballot, election or governance-vote system on a blockchain.",
+    "1": "Closely related blockchain governance, identity or participation system that is not itself a vote."
+  },
+  "beginner NLP project": {
+    "2": "Natural language processing project whose stated difficulty is Beginner.",
+    "1": "Natural language processing project whose stated difficulty is Intermediate. Advanced projects are not relevant to a beginner request."
+  },
+  "deep learning image classification": {
+    "2": "Core task is classifying or recognising images (or image-like data such as spectrograms) with neural networks.",
+    "1": "Deep learning on images for another task (segmentation, generation, detection), or image classification with classical methods."
+  },
+  "smart attendance system": {
+    "2": "System that records presence or attendance automatically (vision, biometrics, BLE, RFID, geofencing).",
+    "1": "Attendance management without automatic presence detection, or attendance-adjacent (attendance tokens, attendance forecasting)."
+  },
+  "YOLOv8 object detection": {
+    "2": "Object detection project that lists YOLOv8 or is built around the YOLO family.",
+    "1": "Object detection or localisation project using another detector."
+  },
+  "chatbot that answers questions from documents": {
+    "2": "Question answering or chat grounded in a document collection through retrieval.",
+    "1": "Chatbot not grounded in documents, or document retrieval/search without a conversational answer."
+  },
+  "recommendation system with collaborative filtering": {
+    "2": "Recommender whose core is collaborative filtering, matrix factorisation or implicit-feedback modelling.",
+    "1": "Other recommender types (content-based, rules, bandits, association mining) or recommenders that only use collaborative signals as one input."
+  },
+  "fraud detection in banking transactions": {
+    "2": "Detecting fraudulent or anomalous financial transactions (cards, bank transfers, payments).",
+    "1": "Fraud, abuse or risk detection in a neighbouring domain (insurance claims, reviews, scams) or finance risk scoring."
+  },
+  "predict student marks and performance": {
+    "2": "Predicts student grades, marks or academic performance from data.",
+    "1": "Education analytics that is not grade prediction (dropout warning, knowledge tracing, item analysis, tutoring)."
+  },
+  "audio and music processing project": {
+    "2": "Core task is analysing, transforming or generating audio or music signals.",
+    "1": "Audio is secondary (speech interface around other logic, music metadata, lyrics text)."
+  },
+  "time series forecasting stock market": {
+    "2": "Forecasting financial market prices, returns or volatility.",
+    "1": "Time-series forecasting in another domain, or finance analytics that does not forecast."
+  },
+  "mobile app development with React Native": {
+    "2": "Mobile application whose listed technologies include React Native.",
+    "1": "Other mobile application (Flutter, Kotlin, native) or React web project."
+  },
+  "docker kubernetes devops pipeline": {
+    "2": "Delivery/infrastructure pipeline project that lists Docker or Kubernetes.",
+    "1": "DevOps or cloud-automation project without containers, or containers used in a non-DevOps project."
+  },
+  "augmented reality mobile application": {
+    "2": "Augmented reality application running on a phone or tablet.",
+    "1": "Augmented reality for headsets or other devices, or mobile VR."
+  },
+  "robot that avoids obstacles": {
+    "2": "Robot or vehicle that senses obstacles and avoids them autonomously.",
+    "1": "Other mobile robot navigation or path planning without an explicit obstacle-avoidance focus."
+  },
+  "encrypt files securely": {
+    "2": "Core is encrypting files, storage or backups.",
+    "1": "Other applied cryptography or secure-data tooling (secret sharing, encrypted notes or chat, secure deletion)."
+  },
+  "resume screening for recruitment": {
+    "2": "Screening, ranking or analysing resumes or candidates.",
+    "1": "Other recruitment or HR tooling (job postings, skill extraction, scam detection)."
+  },
+  "detect fake news and misinformation": {
+    "2": "Detecting false or misleading claims or fake news, including matching claims to fact-checks.",
+    "1": "Related content-integrity detection (clickbait, fake reviews, hate speech, deepfakes)."
+  },
+  "voice controlled assistant with speech recognition": {
+    "2": "Assistant, robot or application driven by spoken commands through speech recognition.",
+    "1": "Speech recognition component without assistant behaviour, or voice features that are secondary."
+  }
+}
